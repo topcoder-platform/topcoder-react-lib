@@ -14,16 +14,19 @@ jobs:
           paths:
             - node_modules
       - run: npm test
-      - run: npm build
+      - run: npm run build
       - persist_to_workspace:
-          root: /root/project
-          paths: .
+          root: .
+          paths:
+            - dist
 
   # NPM release
   release:
     docker:
       - image: circleci/node:8.11.1
     steps:
+      - attach_workspace:
+          at: dist
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: npm publish
 
@@ -34,6 +37,8 @@ workflows:
       - test
       - release:
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /v[0-9]+(\.[0-9]+)*/
           requires:
