@@ -25,6 +25,7 @@ jobs:
     docker:
       - image: circleci/node:8.11.1
     steps:
+      - checkout
       - attach_workspace:
           at: dist
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
