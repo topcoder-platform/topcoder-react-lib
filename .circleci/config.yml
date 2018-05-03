@@ -1,53 +1,40 @@
 version: 2
 jobs:
-  # Release.
-  # TODO: Probably, it is possible to reuse the test job below as a part of
-  # the release job; but as I don't know how to do it at the moment, let's
-  # just dublicate the logic for now.
-  release:
-    docker:
-      - image: circleci/node:8.9.4
-    steps:
-      - checkout
-      - restore_cache:
-          # Careful here, though, at the moment, there should be no problem
-          # to reuse the same cache of "node_modules" between test and release
-          # jobs.
-          key: test-node-modules-{{ checksum "package-lock.json" }}
-      - run: npm install
-      - save_cache:
-          key: test-node-modules-{{ checksum "package-lock.json" }}
-          paths:
-            - node_modules
-      - run: npm test
-      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-      - run: npm publish
-
-  # Just tests commited code.
+  # Code testing
   test:
     docker:
-      - image: circleci/node:8.9.4
+      - image: circleci/node:8.11.1
     steps:
       - checkout
       - restore_cache:
-          key: test-node-modules-{{ checksum "package-lock.json" }}
+          key: node-modules-{{ checksum "package-lock.json" }}
       - run: npm install
       - save_cache:
-          key: test-node-modules-{{ checksum "package-lock.json" }}
+          key: node-modules-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - run: npm test
+      - run: npm build
+      - persist_to_workspace:
+          root: /root/project
+          paths: .
+
+  # NPM release
+  release:
+    docker:
+      - image: circleci/node:8.11.1
+    steps:
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm publish
 
 workflows:
   version: 2
   build:
     jobs:
+      - test
       - release:
           filters:
-            branches:
-              only: master
-      - test:
-          filters:
-            branches:
-              ignore: master
-            
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+          requires:
+            - test

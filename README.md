@@ -1,4 +1,8 @@
 # Topcoder React Lib
+![Dev Build Status](https://img.shields.io/circleci/project/github/topcoder-platform/topcoder-react-lib/develop.svg?label=develop)
+![Master Build Status](https://img.shields.io/circleci/project/github/topcoder-platform/topcoder-react-lib/master.svg?label=master)
+![Latest NPM Release](https://img.shields.io/npm/v/topcoder-react-lib.svg)
+![NPM Downloads](https://img.shields.io/npm/dm/topcoder-react-lib.svg)
 
 The [Topcoder](https://www.topcoder.com) lib for internal ReactJS projects.
 
