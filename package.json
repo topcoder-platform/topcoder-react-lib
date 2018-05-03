@@ -1,0 +1,81 @@
+{
+  "bugs": {
+    "url": "https://github.com/topcoder-platform/topcoder-react-lib/issues"
+  },
+  "description": "The implementation of TC lib for ReactJS projects",
+  "engines": {
+    "node": "~8.9.4",
+    "npm": "~5.6.0"
+  },
+  "homepage": "https://github.com/topcoder-platform/topcoder-react-lib#readme",
+  "keywords": [
+    "Topcoder",
+    "React",
+    "Lib"
+  ],
+  "license": "UNLICENSED",
+  "main": "dist/index.js",
+  "name": "topcoder-react-lib",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/topcoder-platform/topcoder-react-lib.git"
+  },
+  "scripts": {
+    "build": "npm run clean && ./node_modules/.bin/webpack --env=production --progress --profile --colors --display-optimization-bailout",
+    "clean": "rimraf dist",
+    "jest": "jest --no-cache --maxWorkers=4 --config config/jest/default.js",
+    "lint": "npm run lint:js",
+    "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
+    "prepublishOnly": "npm run build",
+    "test": "npm run lint && npm run jest"
+  },
+  "version": "0.0.1",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1",
+    "le_node": "^1.7.0",
+    "lodash": "^4.17.5",
+    "moment": "^2.22.0",
+    "moment-duration-format": "^1.3.0",
+    "moment-timezone": "^0.5.14",
+    "qs": "^6.5.1",
+    "react": "^16.3.1",
+    "redux": "^3.6.0",
+    "redux-actions": "^2.0.1",
+    "topcoder-react-utils": "^0.3.4",
+    "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev"
+  },
+  "devDependencies": {
+    "autoprefixer": "^8.2.0",
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-css-modules-transform": "^1.5.0",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
+    "babel-plugin-inline-react-svg": "^0.5.2",
+    "babel-plugin-module-resolver": "^3.1.1",
+    "babel-plugin-react-css-modules": "^3.4.0",
+    "babel-plugin-transform-assets": "^0.2.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-import-resolver-babel-module": "^4.0.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "extract-css-chunks-webpack-plugin": "^2.0.18",
+    "jest": "^22.4.3",
+    "react-hot-loader": "^4.0.1",
+    "react-test-renderer": "^16.3.1",
+    "rimraf": "^2.6.2",
+    "webpack": "^3.11.0",
+    "webpack-dev-middleware": "^3.1.0",
+    "webpack-hot-middleware": "^2.21.2",
+    "webpack-merge": "^4.1.2"
+  }
+}

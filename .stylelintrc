@@ -1,0 +1,3 @@
+{
+  "extends": "topcoder-react-utils/config/stylelint/default"
+}
