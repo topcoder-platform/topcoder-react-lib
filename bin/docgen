@@ -10,6 +10,9 @@ const fs = require('fs');
 const jsdoc2md = require('jsdoc-to-markdown');
 const mkpath = require('mkpath');
 const path = require('path');
+const rimraf = require('rimraf');
+
+rimraf.sync(path.resolve(__dirname, '../_auto_doc_'));
 
 const outputDir = path.resolve(__dirname, '../_auto_doc_');
 
