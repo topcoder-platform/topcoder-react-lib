@@ -1,5 +1,6 @@
 /**
- * This module provides a service for convenient manipulation with Topcoder
+ * @module services/challenges
+ * @desc This module provides a service for convenient manipulation with Topcoder
  * challenges via TC API.
  */
 

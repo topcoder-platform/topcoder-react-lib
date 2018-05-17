@@ -1,5 +1,6 @@
 /**
- * Auth-related actions.
+ * @module actions/auth
+ * @desc Auth-related actions.
  */
 
 import _ from 'lodash';
@@ -9,8 +10,10 @@ import { getApiV3 } from '../services/api';
 
 /**
  * Loads profile of the authenticated user.
+ * @alias module:actions/auth
  * @param {String} userTokenV3 Topcoder auth token V3.
- * @return Promise which resolves to the loaded profile object.
+ * @return {Promise}
+ * @fulfil {Object} User profile object.
  */
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
@@ -25,6 +28,11 @@ function loadProfileDone(userTokenV3) {
         (res.result.status === 200 ? res.result.content : [])),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
+
+/**
+ * @function test
+ * @desc test
+ */
 
 export default createActions({
   AUTH: {

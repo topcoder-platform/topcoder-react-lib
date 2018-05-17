@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+/**
+ * POC doc generation script.
+ */
+
+/* eslint-disable import/no-extraneous-dependencies, no-console */
+
+const fs = require('fs');
+const jsdoc2md = require('jsdoc-to-markdown');
+const mkpath = require('mkpath');
+const path = require('path');
+
+const outputDir = path.resolve(__dirname, '../_auto_doc_');
+
+const data = jsdoc2md.getTemplateDataSync({ files: 'src/**/*.js' });
+
+const moduleNames = data.reduce((res, obj) => {
+  if (obj.kind === 'module') res.push(obj.name);
+  return res;
+}, []);
+
+moduleNames.forEach((name) => {
+  const template = `{{#module name="${name}"}}{{>docs}}{{/module}}`;
+  console.log(`rendering ${name}, template: ${template}`);
+  const output = jsdoc2md.renderSync({ data, template });
+  const destFile = `${outputDir}/${name}.md`;
+  mkpath.sync(path.dirname(destFile));
+  fs.writeFileSync(destFile, output);
+});
