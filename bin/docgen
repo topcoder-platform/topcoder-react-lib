@@ -12,9 +12,9 @@ const mkpath = require('mkpath');
 const path = require('path');
 const rimraf = require('rimraf');
 
-rimraf.sync(path.resolve(__dirname, '../_auto_doc_'));
+rimraf.sync(path.resolve(__dirname, '../docs/auto'));
 
-const outputDir = path.resolve(__dirname, '../_auto_doc_');
+const outputDir = path.resolve(__dirname, '../docs/auto');
 
 const data = jsdoc2md.getTemplateDataSync({ files: 'src/**/*.js' });
 
@@ -25,7 +25,7 @@ const moduleNames = data.reduce((res, obj) => {
 
 moduleNames.forEach((name) => {
   const template = `{{#module name="${name}"}}{{>docs}}{{/module}}`;
-  console.log(`rendering ${name}, template: ${template}`);
+  console.log(`rendering ${name}`);
   const output = jsdoc2md.renderSync({ data, template });
   const destFile = `${outputDir}/${name}.md`;
   mkpath.sync(path.dirname(destFile));

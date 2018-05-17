@@ -1,5 +1,6 @@
 /**
- * Actions related to members data.
+ * @module "actions.members"
+ * @desc Actions related to members data.
  */
 
 import { createActions } from 'redux-actions';
@@ -7,36 +8,42 @@ import { getService } from '../services/members';
 import { getService as getUserService } from '../services/user';
 
 /**
- * Payload creator for the action that drops all loaded information about
- * a member.
- * @param {String} handle
- * @return {String}
+ * @static
+ * @desc Creates an action that drops all information related to the specfied
+ *  member.
+ * @param {String} handle Topcoder user handle.
+ * @return {Action}
  */
 function drop(handle) {
   return handle;
 }
 
 /**
- * Payload creator for the action that drops all loaded information about
- * members.
+ * @static
+ * @desc Creates an action that drops all member information loaded by
+ *  actions from this module.
+ * @return {Action}
  */
 function dropAll() {}
 
 /**
- * Payload creator for the action that inits the loading of member achievements.
- * @param {String} handle
- * @param {String} uuid
- * @return {Object} Payload.
+ * @static
+ * @desc Creates an action that signals beginning of member achievements
+ *  loading.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Loading operation UUID.
+ * @return {Action}
  */
 function getAchievementsInit(handle, uuid) {
   return { handle, uuid };
 }
 
 /**
- * Payload creator for the action that loads member achievements.
- * @param {String} handle
- * @param {String} uuid
- * @return {Promise} Payload.
+ * @static
+ * @desc Creates an action that loads member achievements.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Loading operation
+ * @return {Action}
  */
 async function getAchievementsDone(handle, uuid) {
   let data;
@@ -49,23 +56,24 @@ async function getAchievementsDone(handle, uuid) {
 }
 
 /**
- * Payload creator for the action that initializes loading of financial
- * information about a member.
- * @param {String} handle
- * @param {String} uuid
- * @return {Object} Payload.
+ * @static
+ * @desc Creates an action that signals beginning of loading the member's
+ *  financial information.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
  */
 function getFinancesInit(handle, uuid) {
   return { handle, uuid };
 }
 
 /**
- * Payload creator for the action that actually loads financial information
- * about a member.
- * @param {String} handle
- * @param {String} uuid
- * @param {String} tokenV3
- * @return {Object} Payload.
+ * @static
+ * @desc Creates an action that loads member's financial information.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @param {String} tokenV3 v3 auth token.
+ * @return {Action}
  */
 async function getFinancesDone(handle, uuid, tokenV3) {
   const data = await getService(tokenV3).getMemberFinances(handle);
@@ -73,21 +81,23 @@ async function getFinancesDone(handle, uuid, tokenV3) {
 }
 
 /**
- * Payload creator for the action that inits the loading of member stats.
- * @param {String} handle
- * @param {String} uuid
- * @return {Object} Payload.
+ * @static
+ * @desc Creates an action that signals beginning of member stats loading.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
  */
 async function getStatsInit(handle, uuid) {
   return { handle, uuid };
 }
 
 /**
- * Payload creator for the action that loads the member stats.
- * @param {String} handle
- * @param {String} uuid
- * @param {String} tokenV3
- * @return {Object} Payload
+ * @static
+ * @desc Create an action that loads member statistics.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @param {String} tokenV3 v3 auth token.
+ * @return {Action}
  */
 async function getStatsDone(handle, uuid, tokenV3) {
   const data = await getService(tokenV3).getStats(handle);
