@@ -1,11 +1,15 @@
 /**
- * This module provides a service for searching for Topcoder
+ * @module "services.members"
+ * @desc  This module provides a service for searching for Topcoder
  * members via API V3.
  */
 
 import { getApiResponsePayloadV3 } from '../utils/tc';
 import { getApiV3 } from './api';
 
+/**
+ * Service class.
+ */
 class MembersService {
   /**
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
@@ -94,12 +98,12 @@ class MembersService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing members service.
  * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {MembersService} Members service object
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
     lastInstance = new MembersService(tokenV3);

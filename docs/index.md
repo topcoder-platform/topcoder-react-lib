@@ -62,9 +62,64 @@ actions and reducer; thus, this module.</p>
 <dd><p>This module provides a service for conventient access to Topcoder APIs.</p>
 </dd>
 <dt>
-<a href="services/challenges.md">services/challenges</a></dt>
-<dd><p>This module provides a service for convenient manipulation with Topcoder
-challenges via TC API.</p>
+<a href="services.billing.md">services.billing</a></dt>
+<dd><p>Access to Topcoder billing accounts.</p>
+</dd>
+<dt>
+<a href="services.challenges.md">services.challenges</a></dt>
+<dd><p>This module provides a service for convenient manipulation with
+ Topcoder challenges via TC API.</p>
+</dd>
+<dt>
+<a href="services.communities.md">services.communities</a></dt>
+<dd><p>Communities service.</p>
+</dd>
+<dt>
+<a href="services.direct.md">services.direct</a></dt>
+<dd><p>The Direct service takes care about communication with Direct APIs:
+ projects, billing accounts, copilots, all these stuff should be added here,
+ at least for now.</p>
+</dd>
+<dt>
+<a href="services.groups.md">services.groups</a></dt>
+<dd><p>Service for communication with group-related part of Topcoder API.</p>
+<p>NOTE: Through this file, and in related contexts, by loading a user group,
+or user groups data, we refer to loading the information about descendant
+user groups; i.e. given some user group(s) we speak about loading the sub-
+three of related child groups.</p>
+<p>By group maps we refer to the object having group IDs as the keys, and
+group data objects as the values. Any group object included into a group map
+has its &quot;subGroups&quot; array (if present) replaced by &quot;subGroupIds&quot;, that lists
+only the IDs of immediate child groups; actual child group objects from
+&quot;subGroups&quot; are recursively added to the top level of the group map.
+Also each group in the group map is timestamped to keep caching of
+the loaded data.</p>
+</dd>
+<dt>
+<a href="services.members.md">services.members</a></dt>
+<dd><p>This module provides a service for searching for Topcoder
+members via API V3.</p>
+</dd>
+<dt>
+<a href="services.reviewOpportunities.md">services.reviewOpportunities</a></dt>
+<dd><p>This module provides a service for retrieving Review Opportunities and
+submitting applications.</p>
+</dd>
+<dt>
+<a href="services.terms.md">services.terms</a></dt>
+<dd><p>This module provides a service for convenient manipulation with
+Topcoder challenges&#39; terms via TC API.</p>
+</dd>
+<dt>
+<a href="services.user-settings.md">services.user-settings</a></dt>
+<dd><p>User Settings service. Corresponding part of the backend is
+implemented as a separate Heroku App, which is set up only for prod.
+Currently, we use it to save user-defined filters in the challenge search.</p>
+</dd>
+<dt>
+<a href="services.user.md">services.user</a></dt>
+<dd><p>The User service provides functionality related to Topcoder user
+ accounts.</p>
 </dd>
 </dl>
 

@@ -1,7 +1,8 @@
 /**
- * User Settings service. Corresponding part of the backend is implemented as a
- * separate Heroku App, which is set up only for prod. Currently, we use it to
- * save user-defined filters in the challenge search.
+ * @module "services.user-settings"
+ * @desc User Settings service. Corresponding part of the backend is
+ * implemented as a separate Heroku App, which is set up only for prod.
+ * Currently, we use it to save user-defined filters in the challenge search.
  */
 
 import _ from 'lodash';
@@ -9,7 +10,17 @@ import { config } from 'topcoder-react-utils';
 
 import Api from './api';
 
-export default class UserSettings {
+/**
+ * @static
+ * @member default
+ * @desc Default export is {@link module:services.user-settings~UserSettings}
+ *  class.
+ */
+
+/**
+ * Service class.
+ */
+class UserSettings {
   /**
    * @param {String} tokenV2
    */
@@ -82,15 +93,18 @@ export default class UserSettings {
   }
 }
 
+let lastUserSettings = null;
+
 /**
  * Returns a new or existing instance of UserSettings service.
  * @param {String} tokenV2 Topcoder auth token v2.
  * @return {UserSettings}
  */
-let lastUserSettings = null;
 export function getUserSettingsService(tokenV2) {
   if (!lastUserSettings || lastUserSettings.private.token !== tokenV2) {
     lastUserSettings = new UserSettings(tokenV2);
   }
   return lastUserSettings;
 }
+
+export default UserSettings;

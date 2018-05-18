@@ -1,6 +1,7 @@
 /**
- * This module provides a service for convenient manipulation with Topcoder
- * challenges' terms via TC API.
+ * @module "services.terms"
+ * @desc This module provides a service for convenient manipulation with
+ * Topcoder challenges' terms via TC API.
  */
 
 import _ from 'lodash';
@@ -9,6 +10,9 @@ import { config } from 'topcoder-react-utils';
 import { getService as getCommunityService } from './communities';
 import { getApiV2 } from './api';
 
+/**
+ * Service class.
+ */
 class TermsService {
   /**
    * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
@@ -146,12 +150,12 @@ class TermsService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing terms service.
  * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
  * @return {TermsService} Terms service object
  */
-let lastInstance = null;
 export function getService(tokenV2) {
   /* Because of Topcoder backend restrictions, it is not straightforward to test
    * terms-related functionality in any other way than just providing an option

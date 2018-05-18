@@ -1,7 +1,6 @@
 /**
  * @module "services.api"
  * @desc This module provides a service for conventient access to Topcoder APIs.
- * @exports test
  */
 
 import _ from 'lodash';

@@ -1,9 +1,20 @@
 /**
- * The Billing service helps to handle Topcoder billing accounts.
+ * @module "services.billing"
+ * @desc Access to Topcoder billing accounts.
  */
 import { getApiV3 } from './api';
 
-export default class Billing {
+/**
+ * @static
+ * @member default
+ * @desc Default module export is
+ *  {@link module:services.billing~Billing} class.
+ */
+
+/**
+ * Billing service object.
+ */
+class Billing {
   /**
    * Creates a new service.
    * @param {String} tokenV3 Topcoder auth token v3.
@@ -24,15 +35,18 @@ export default class Billing {
   }
 }
 
+let lastInstance = null;
+
 /**
  * Returns a new or existing Billing service for the user specified by token.
  * @param {String} tokenV3 Topcoder auth token v3.
  * @return {Billing} Billing service instance.
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || lastInstance.private.tokenV3 !== tokenV3) {
     lastInstance = new Billing(tokenV3);
   }
   return lastInstance;
 }
+
+export default Billing;
