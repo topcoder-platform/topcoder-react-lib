@@ -1,6 +1,9 @@
 /**
- * This module provides a service for conventient access to Topcoder APIs.
+ * @module "services.api"
+ * @desc This module provides a service for conventient access to Topcoder APIs.
+ * @exports test
  */
+
 import _ from 'lodash';
 import 'isomorphic-fetch'; /* global fetch */
 import { config, isomorphy } from 'topcoder-react-utils';
@@ -18,12 +21,20 @@ const API_THROTTLING = true;
 let lastApiCallTimestamp = Date.now();
 
 /**
+ * @static
+ * @member default
+ * @desc The default export from the module is
+ *  {@link module:services.api~Api} class.
+ */
+
+/**
  * API service object. It is reused for both Topcoder API v2 and v3,
  * as in these cases we are fine with the same interface, and the only
  * thing we need to be different is the base URL and auth token to use.
  */
-export default class Api {
+class Api {
   /**
+   * Creates a new Api object.
    * @param {String} base Base URL of the API.
    * @param {String} token Optional. Authorization token.
    */
@@ -197,17 +208,18 @@ export default class Api {
   }
 }
 
+export default Api;
 
-/**
+/*
  * Topcoder API v2.
  */
 
+let lastApiV2 = null;
 /**
  * Returns a new or existing Api object for Topcoder API v2.
  * @param {String} token Optional. Auth token for Topcoder API v2.
  * @return {Api} API v2 service object.
  */
-let lastApiV2 = null;
 export function getApiV2(token) {
   if (!lastApiV2 || lastApiV2.private.token !== token) {
     lastApiV2 = new Api(config.API.V2, token);
@@ -215,16 +227,16 @@ export function getApiV2(token) {
   return lastApiV2;
 }
 
-/**
+/*
  * Topcoder API v3.
  */
 
+let lastApiV3 = null;
 /**
  * Returns a new or existing Api object for Topcoder API v3
  * @param {String} token Optional. Auth token for Topcoder API v3.
  * @return {Api} API v3 service object.
  */
-let lastApiV3 = null;
 export function getApiV3(token) {
   if (!lastApiV3 || lastApiV3.private.token !== token) {
     lastApiV3 = new Api(config.API.V3, token);

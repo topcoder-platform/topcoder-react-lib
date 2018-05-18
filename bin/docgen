@@ -12,9 +12,9 @@ const mkpath = require('mkpath');
 const path = require('path');
 const rimraf = require('rimraf');
 
-rimraf.sync(path.resolve(__dirname, '../docs/auto'));
+rimraf.sync(path.resolve(__dirname, '../docs'));
 
-const outputDir = path.resolve(__dirname, '../docs/auto');
+const outputDir = path.resolve(__dirname, '../docs');
 
 const data = jsdoc2md.getTemplateDataSync({ files: 'src/**/*.js' });
 
@@ -31,3 +31,15 @@ moduleNames.forEach((name) => {
   mkpath.sync(path.dirname(destFile));
   fs.writeFileSync(destFile, output);
 });
+
+const template = '{{>module-index}}';
+const output = jsdoc2md.renderSync({
+  data,
+  partial: [
+    `${__dirname}/misc/module-index-dl.hbs`,
+    `${__dirname}/misc/doc-link-html.hbs`,
+  ],
+  template,
+});
+const dest = `${outputDir}/index.md`;
+fs.writeFileSync(dest, output);
