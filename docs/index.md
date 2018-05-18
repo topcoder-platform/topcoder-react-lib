@@ -58,6 +58,72 @@ actions and reducer; thus, this module.</p>
 <dd><p>Actions related to Topcoder terms of use.</p>
 </dd>
 <dt>
+<a href="reducers.auth.md">reducers.auth</a></dt>
+<dd><p>Reducer for <a href="#module_actions.auth">actions.auth</a> actions.</p>
+<p>State segment managed by this reducer has the following structure:</p>
+</dd>
+<dt>
+<a href="reducers.challenge.md">reducers.challenge</a></dt>
+<dd><p>Reducer for <a href="#module_actions.challenge">actions.challenge</a> actions.</p>
+<p>State segment managed by this reducer has the following strcuture:</p>
+</dd>
+<dt>
+<a href="reducers.direct.md">reducers.direct</a></dt>
+<dd><p>Reducer for handling the results of Direct-related actions.</p>
+</dd>
+<dt>
+<a href="reducers.errors.md">reducers.errors</a></dt>
+<dd><p>Redux Reducer for application-wide error handling.</p>
+<p>Description:
+  Implements state reducers for application-wide error handling.</p>
+</dd>
+<dt>
+<a href="reducers.groups.md">reducers.groups</a></dt>
+<dd><p>This reducer handles information related to user-groups.</p>
+<p>Corresponding segment of the Redux state is designed to have the following
+fields:</p>
+<p>groups {Object} - Holds loaded information about user groups. Keys of this
+object are group IDs, and the values are group data object. To keep the state
+flat, and our code efficient; for any group that has sub-groups, subGroups
+field is removed, while subGroupsIds {String[]} field is added, and each
+sub group data object is added to the groups object.</p>
+<p>loading {Object} - Holds IDs of the groups being loaded. Removing ID from
+this object will result in silent discard of the data loaded by the
+corresponding GROUPS/GET_DONE action; though such functionality does
+not look really necessary at the moment, thus we do not provide an
+action to really cancel group loading.</p>
+</dd>
+<dt>
+<a href="reduces.member-tasks.md">reduces.member-tasks</a></dt>
+<dd><p>Member tasks reducer.</p>
+</dd>
+<dt>
+<a href="reducers.members.md">reducers.members</a></dt>
+<dd><p>Reducer for the Redux store segment that holds members data.</p>
+</dd>
+<dt>
+<a href="reducers.my-submissions-management.md">reducers.my-submissions-management</a></dt>
+<dd><p>This reducer and corresponding actions control the logic for
+ submission management.</p>
+</dd>
+<dt>
+<a href="reducers.profile.md">reducers.profile</a></dt>
+<dd><p>Reducer for Profile API data</p>
+</dd>
+<dt>
+<a href="reducers.reviewOpportunity.md">reducers.reviewOpportunity</a></dt>
+<dd><p>Reducer for state.reviewOpportunity</p>
+</dd>
+<dt>
+<a href="reducers.stats.md">reducers.stats</a></dt>
+<dd><p>Reducer for state.stats. That part of Redux state is intended to keep
+ user- and group-related statistics to render in the frontend.</p>
+</dd>
+<dt>
+<a href="reducers.terms.md">reducers.terms</a></dt>
+<dd><p>Reducer for state.terms.</p>
+</dd>
+<dt>
 <a href="services.api.md">services.api</a></dt>
 <dd><p>This module provides a service for conventient access to Topcoder APIs.</p>
 </dd>

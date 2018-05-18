@@ -1,11 +1,12 @@
 /**
- * Reducer for state.terms.
+ * @module "reducers.terms"
+ * @desc Reducer for state.terms.
+ * @todo Document state segment structure.
  */
 import _ from 'lodash';
 import { redux } from 'topcoder-react-utils';
 import logger from '../utils/logger';
 import actions from '../actions/terms';
-import { getOptionTokens } from '../utils/tc';
 
 /**
  * sort terms by agreed status
@@ -201,10 +202,9 @@ function onAgreeTermDone(state, action) {
 /**
  * Creates a new Profile reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
- * @return {Function} Profile reducer.
+ * @return {Function(state, action): state} Profile reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   return redux.handleActions({
     [actions.terms.getTermsInit]: onGetTermsInit,
     [actions.terms.getTermsDone]: onGetTermsDone,
@@ -236,7 +236,6 @@ function create(initialState, mergeReducers = {}) {
       checkingStatus: true,
     }),
     [actions.terms.checkStatusDone]: onCheckStatusDone,
-    ...mergeReducers,
   }, _.defaults(initialState, {
     terms: [],
     selectedTerm: null,
@@ -247,21 +246,16 @@ function create(initialState, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * auth.tokenV2: The V2 auth token
- *
- * auth.tokenV3: The V3 auth token
- *
- * terms.entity.type: The terms entity type ('challenge' or 'community' or 'reviewOpportunity')
- *
- * terms.entity.id: The terms entity id
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @param {Object} options={} Optional. Options object for initial state.
+ * @param {String} [options.auth.tokenV2=''] The V2 auth token
+ * @param {String} [options.auth.tokenV3=''] The V3 auth token
+ * @param {String} [options.terms.entity.type=''] The terms entity type:
+ *  - `challenge`
+ *  - `community`
+ *  - `reviewOpportunity`
+ * @param {String} [options.terms.entity.id=''] The terms entity id
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
 export function factory(options = {}) {
   const entityType = _.get(options, 'terms.entity.type');
@@ -269,19 +263,26 @@ export function factory(options = {}) {
 
   if (entityType && entityId) {
     const { entity } = options.terms;
-    const tokens = getOptionTokens(options);
+    const tokens = {
+      tokenV2: _.get(options.auth, 'tokenV2'),
+      tokenV3: _.get(options.auth, 'tokenV3'),
+    };
     return redux.resolveAction(actions.terms.getTermsDone(entity, tokens))
       .then((termsDoneAction) => {
         // we have to init first, otherwise results will be ignored by onGetTermsDone
         let state = onGetTermsInit({}, actions.terms.getTermsInit(entity));
         state = onGetTermsDone(state, termsDoneAction);
 
-        return create(_.merge(options.initialState, state), options.mergeReducers);
+        return create(state);
       });
   }
 
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+  return Promise.resolve(create());
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

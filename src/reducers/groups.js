@@ -1,4 +1,6 @@
 /**
+ * @module "reducers.groups"
+ * @desc
  * This reducer handles information related to user-groups.
  *
  * Corresponding segment of the Redux state is designed to have the following
@@ -15,6 +17,7 @@
  * corresponding GROUPS/GET_DONE action; though such functionality does
  * not look really necessary at the moment, thus we do not provide an
  * action to really cancel group loading.
+ * @todo Document state segment structure better.
  */
 
 import _ from 'lodash';
@@ -84,16 +87,14 @@ function onGetGroupsDone(state, action) {
 /**
  * Creates a new Groups reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Groups reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   const a = actions.groups;
   return handleActions({
     [a.dropGroups]: onDropGroups,
     [a.getGroupsInit]: onGetGroupsInit,
     [a.getGroupsDone]: onGetGroupsDone,
-    ...mergeReducers,
   }, _.defaults(initialState ? _.clone(initialState) : {}, {
     groups: {},
     loading: {},
@@ -104,17 +105,16 @@ function create(initialState, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
-export function factory(options = {}) {
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+export function factory() {
+  return Promise.resolve(create());
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

@@ -1,6 +1,8 @@
 /**
- * Reducer for state.stats. That part of Redux state is intended to keep user-
- * and group-related statistics to render in the frontend.
+ * @module "reducers.stats"
+ * @desc Reducer for state.stats. That part of Redux state is intended to keep
+ *  user- and group-related statistics to render in the frontend.
+ * @todo Document state segment structure.
  */
 
 import _ from 'lodash';
@@ -61,15 +63,13 @@ function onGetCommunityStatsDone(state, { error, payload }) {
 /**
  * Creates a new Stats reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Stats reducer.
  */
-function create(initialState = {}, mergeReducers = {}) {
+function create(initialState = {}) {
   const a = actions.stats;
   return handleActions({
     [a.getCommunityStatsInit]: onGetCommunityStatsInit,
     [a.getCommunityStatsDone]: onGetCommunityStatsDone,
-    ...mergeReducers,
   }, _.defaults(_.clone(initialState), {
     communities: {},
   }));
@@ -79,17 +79,16 @@ function create(initialState = {}, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
-export function factory(options = {}) {
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+export function factory() {
+  return Promise.resolve(create());
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

@@ -1,5 +1,7 @@
 /**
- * Reducer for Profile API data
+ * @module "reducers.profile"
+ * @desc Reducer for Profile API data
+ * @todo Document reducer state structure.
  */
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
@@ -104,10 +106,9 @@ function onGetStatsDone(state, { payload, error }) {
 /**
  * Creates a new Profile reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Profile reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   const a = actions.profile;
   return handleActions({
     [a.loadProfile]: (state, action) => ({ ...state, profileForHandle: action.payload }),
@@ -123,7 +124,6 @@ function create(initialState, mergeReducers = {}) {
     [a.getSkillsDone]: onGetSkillsDone,
     [a.getStatsInit]: state => state,
     [a.getStatsDone]: onGetStatsDone,
-    ...mergeReducers,
   }, _.defaults(initialState, {
     achievements: null,
     copilot: false,
@@ -139,16 +139,11 @@ function create(initialState, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @returns {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
-export function factory(options = {}) {
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+export function factory() {
+  return Promise.resolve(create());
 }
 
 /* Reducer with the default initial state. */

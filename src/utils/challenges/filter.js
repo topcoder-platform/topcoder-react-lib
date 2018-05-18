@@ -62,7 +62,7 @@
 
 import _ from 'lodash';
 import moment from 'moment';
-import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from './tc';
+import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
 
 /**
  * Here are many similiar filerBy..(challenge, state) functions. Each of them
