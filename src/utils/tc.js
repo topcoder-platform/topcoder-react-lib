@@ -1,5 +1,6 @@
 /**
- * Collection of small Topcoder-related functions.
+ * @module tc
+ * @desc Collection of small Topcoder-related functions.
  */
 
 import _ from 'lodash';

@@ -1,5 +1,7 @@
 /**
- * Collection of functions useful in unit tests.
+ * @module mock
+ * @desc Collection of functions useful in unit tests.
+ * @todo This will be moved to Jest utils in `topcoder-react-utils` soon.
  */
 
 /**

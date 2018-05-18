@@ -1,4 +1,7 @@
 /**
+ * @module "challenges.filter"
+ *
+ * @desc
  * Universal challenge filter. Must be used in all places where we need filter
  * or fetch challenges. This way we keep all related logic in the same place,
  * which simplifies maintenance and modifications of the code.

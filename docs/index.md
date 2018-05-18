@@ -121,5 +121,78 @@ Currently, we use it to save user-defined filters in the challenge search.</p>
 <dd><p>The User service provides functionality related to Topcoder user
  accounts.</p>
 </dd>
+<dt>
+<a href="challenges.filter.md">challenges.filter</a></dt>
+<dd><p>Universal challenge filter. Must be used in all places where we need filter
+or fetch challenges. This way we keep all related logic in the same place,
+which simplifies maintenance and modifications of the code.</p>
+<p>The state of challenge filter is a plain JS object, containing only plain
+data fields. It allows to avoid any problems with its storage inside Redux
+store; with its serialization into / deserialization from a string. Each
+field of the state describes a single rule for filtering the challenges.
+The filter allows only those challenges that match all defined rules.
+Undefined, null fields are ignored.</p>
+<p>The following fields are supported:</p>
+<p>endDate {Number|String} - Permits only those challenges with submission
+deadline before this date.</p>
+<p>groupIds {Array} - Permits only the challenges belonging to at least one
+of the groups which IDs are presented as keys in this object.</p>
+<p>or {Object[]} - All other filter fields applied to the challenge with AND
+logic, i.e. a challenge must satisfy each specified filter rule to match the
+filter as whole. In some cases we want to have OR logic between filter rules,
+and this array allows to achieve it: each object in this array is treated as
+an additional filter (these object may have all the same fields as the root
+filter state object), to be tested with OR logic.</p>
+<p>registrationOpen {Boolean} - Permits only the challenges with open or closed
+registration.</p>
+<p>startDate {Number|String} - Permits only those challenges started after this
+date.</p>
+<p>status {Array} - Permits only the challenges with status matching one of
+the keys of this object.</p>
+<p>started {Boolean} - Matches only the challenges with start date in past.
+It turns out that status ACTIVE also includes upcoming activated challenges,
+thus we need this additional filter.</p>
+<p>subtracks {Array} - Permits only the challenges belonging to at least one
+of the competition subtracks presented as keys of this object.</p>
+<p>tags {Array} - Permits only the challenges that have at least one of the
+tags within their platform and technology tags (keywords).</p>
+<p>text {String} - Free-text string which will be matched against challenge
+name, its platform and technology tags. If not found anywhere, the challenge
+is filtered out. Case-insensitive.</p>
+<p>tracks {Object} - Permits only the challenges belonging to at least one of
+the competition tracks presented as keys of this object.</p>
+<p>upcoming {Boolean} - Permits only upcoming challenges.</p>
+<p>users {Array} - Permits only the challenges where the specified (by handles)
+users are participating.</p>
+</dd>
+<dt>
+<a href="errors.md">errors</a></dt>
+<dd><p>Utility functions for the standard error handling.</p>
+</dd>
+<dt>
+<a href="logger.md">logger</a></dt>
+<dd><p>Isomorphic logger.</p>
+<p>At the server-side it outputs log messages to the console, and also sends
+them to the <a href="https://logentries.com">https://logentries.com</a> service (only if LOG_ENTRIES_TOKEN is
+set).</p>
+<p>At the front-end side it outputs log messages to the console (only when
+development build of the frontend is used), and sends them to the
+<a href="https://logentries.com">https://logentries.com</a> service (both dev and prod build of the frontend
+send messages to the service, proxying them through the App&#39;s server;
+the proxy will forward them to the service only if LOG_ENTRIES_TOKEN is set).</p>
+<p>In all case, interface of the logger matches that of the standard JS console.</p>
+</dd>
+<dt>
+<a href="mock.md">mock</a></dt>
+<dd><p>Collection of functions useful in unit tests.</p>
+</dd>
+<dt>
+<a href="tc.md">tc</a></dt>
+<dd><p>Collection of small Topcoder-related functions.</p>
+</dd>
+<dt>
+<a href="time.md">time</a></dt>
+<dd><p>Utility functions for time/date related stuff</p>
+</dd>
 </dl>
 
