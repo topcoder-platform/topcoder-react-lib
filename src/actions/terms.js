@@ -26,7 +26,7 @@ function getTermsInit(arg) {
  * @param {String}  [entity.type]  entity type: `challenge` or `community`
  * @param {String}  [entity.id]    entity id
  * @param {Object}  tokens       object with tokenV2 and tokenV3 properties
- * @param {Boolean} mockAgreed   if true, then all terms will be mocked as 
+ * @param {Boolean} mockAgreed   if true, then all terms will be mocked as
  *  agreed this only makes effect if MOCK_TERMS_SERVICE is `true` and the only
  *  purpose of this param is testing terms
  * @return {Action}

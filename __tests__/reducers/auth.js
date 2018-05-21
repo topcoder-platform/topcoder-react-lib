@@ -1,5 +1,5 @@
+import { mockAction } from 'utils/mock';
 import { redux } from 'topcoder-react-utils';
-import { mockAction } from '../../src/utils/mock';
 
 const dummy = 'DUMMY';
 
@@ -10,13 +10,16 @@ const mockActions = {
     setTcTokenV3: mockAction('SET_TC_TOKEN_V3', 'Token V3'),
   },
 };
-jest.setMock(require.resolve('../../src/actions/auth'), mockActions);
+jest.setMock(require.resolve('actions/auth'), mockActions);
 
-const { reducers } = require('../../src');
+jest.setMock('tc-accounts', {
+  decodeToken: () => 'User object',
+  isTokenExpired: () => false,
+});
 
-let reducer;
+const reducers = require('reducers/auth');
 
-function testReducer(istate) {
+function testReducer(reducer, istate) {
   test('Initial state', () => {
     const state = reducer(undefined, {});
     expect(state).toEqual(istate);
@@ -45,10 +48,7 @@ function testReducer(istate) {
     expect(state).toEqual({
       dummy,
       tokenV3: 'Token V3',
-      user: {
-        handle: 'username12345',
-        userId: '12345',
-      },
+      user: 'User object',
     });
   });
 
@@ -65,52 +65,24 @@ function testReducer(istate) {
 }
 
 describe('Default reducer', () => {
-  beforeAll(() => {
-    reducer = reducers.auth.default;
-  });
-
-  testReducer({
+  testReducer(reducers.default, {
     authenticating: true,
-  });
-});
-
-describe('Factory without server side rendering', () => {
-  beforeAll((done) => {
-    reducers.auth.factory().then((res) => {
-      reducer = res;
-      done();
-    });
-  });
-
-  testReducer({
-    authenticating: true,
+    profile: null,
     tokenV2: '',
     tokenV3: '',
     user: null,
   });
 });
 
-describe('Factory with server side rendering', () => {
-  beforeAll((done) => {
-    reducers.auth.factory({
-      auth: {
-        tokenV2: 'Token V2',
-        tokenV3: 'Token V3',
-      },
-    }).then((res) => {
-      reducer = res;
-      done();
-    });
-  });
+describe('Factory without server side rendering', () =>
+  reducers.factory().then(res =>
+    testReducer(res, {})));
 
-  testReducer({
-    authenticating: false,
-    profile: 'Profile',
-    tokenV2: 'Token V2',
-    tokenV3: 'Token V3',
-    user: {
-      handle: 'username12345',
-      userId: '12345',
+describe('Factory with server side rendering', () =>
+  reducers.factory({
+    cookies: {
+      tcjwt: 'Token V2',
+      v3jwt: 'Token V3',
     },
-  });
-});
+  }).then(res =>
+    testReducer(res, {})));

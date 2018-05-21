@@ -11,4 +11,4 @@ export { actions } from './actions';
 
 export { services } from './services';
 
-export { logger, errors, tc, time, mock, filter } from './utils';
+export { challenges, logger, errors, tc, time, mock } from './utils';

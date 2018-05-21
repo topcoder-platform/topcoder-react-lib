@@ -135,7 +135,7 @@ export default createActions({
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,
     GET_EXTERNAL_ACCOUNTS_DONE: getExternalAccountsDone,
     GET_EXTERNAL_LINKS_INIT: getExternalLinksInit,
-    GET_EXTERNAL_LINKS_DONE: getExternalLinksDone, 
+    GET_EXTERNAL_LINKS_DONE: getExternalLinksDone,
     GET_INFO_INIT: getInfoInit,
     GET_INFO_DONE: getInfoDone,
     GET_SKILLS_INIT: getSkillsInit,

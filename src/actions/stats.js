@@ -7,7 +7,7 @@
 import _ from 'lodash';
 
 import { createActions } from 'redux-actions';
-import * as Filter from '../utils/filter';
+import * as Filter from '../utils/challenges/filter';
 import { getService as getGroupService } from '../services/groups';
 
 /**
