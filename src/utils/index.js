@@ -6,14 +6,14 @@ import * as tc from './tc';
 import * as time from './time';
 import * as mock from './mock';
 import * as errors from './errors';
-import * as filter from './challenges/filter';
+import * as filter from './challenge/filter';
 
-const challenges = {
+const challenge = {
   filter,
 };
 
 export {
-  challenges,
+  challenge,
   logger,
   tc,
   time,

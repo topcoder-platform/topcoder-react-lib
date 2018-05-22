@@ -108,7 +108,7 @@ Object {
       "getTermsInit": [Function],
     },
   },
-  "challenges": Object {
+  "challenge": Object {
     "filter": Object {
       "addTrack": [Function],
       "combine": [Function],

@@ -1,5 +1,5 @@
 /**
- * @module "challenges.filter"
+ * @module "challenge.filter"
  *
  * @desc
  * Universal challenge filter. Must be used in all places where we need filter

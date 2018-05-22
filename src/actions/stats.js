@@ -1,5 +1,5 @@
 /**
- * @module "actions.smp"
+ * @module "actions.stats"
  * @desc Actions related to Topcoder statistics (at the moment, only community
  *  statistics).
  */
@@ -7,7 +7,7 @@
 import _ from 'lodash';
 
 import { createActions } from 'redux-actions';
-import * as Filter from '../utils/challenges/filter';
+import * as Filter from '../utils/challenge/filter';
 import { getService as getGroupService } from '../services/groups';
 
 /**
