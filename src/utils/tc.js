@@ -1,8 +1,8 @@
 /**
- * Collection of small Topcoder-related functions.
+ * @module tc
+ * @desc Collection of small Topcoder-related functions.
+ * @todo More TC-related utils should be moved here from Community-app.
  */
-
-import _ from 'lodash';
 
 /**
  * Codes of the Topcoder communities.
@@ -24,21 +24,6 @@ export const REVIEW_OPPORTUNITY_TYPES = {
   'Spec Review': 'Specification Review',
   'Iterative Review': 'Iterative Review',
 };
-
-/**
- * Given options object it extracts 'auth.tokenV2' and 'auth.tokenV3',
- * if they are present there.
- * @param {Object} options Options object. For convenience, it is allowed to
- *  call this function without "options" argument (will result in empty tokens).
- * @return {Object} It will contain two string fields: tokenV2 and tokenV3.
- *  These strings will be empty if corresponding tokens are absent.
- */
-export function getOptionTokens(options) {
-  return {
-    tokenV2: _.get(options, 'auth.tokenV2', ''),
-    tokenV3: _.get(options, 'auth.tokenV3', ''),
-  };
-}
 
 /**
  * Gets payload from a standard success response from TC API v3; or throws

@@ -1,5 +1,6 @@
 /**
- * Challenge spcific actions.
+ * @module "actions.challenge"
+ * @desc Actions related to Topcoder challenges APIs.
  */
 
 import _ from 'lodash';
@@ -8,24 +9,38 @@ import { getService as getChallengesService } from '../services/challenges';
 import { getApiV2 } from '../services/api';
 
 /**
- * Payload creator for CHALLENGE/FETCH_DETAILS_INIT action,
- * which marks that we are about to fetch details of the specified challenge.
- * If any challenge details for another challenge are currently being fetched,
- * they will be silently discarted.
- * @param {Number|String} challengeId
- * @return {String}
+ * @static
+ * @desc Creates an action that drops from Redux store all checkpoints loaded
+ *  before.
+ * @return {Action}
+ */
+function dropCheckpoints() {}
+
+/**
+ * @static
+ * @desc Creates an action that drops from Redux store all challenge results
+ *  loaded before.
+ * @return {Action}
+ */
+function dropResults() {}
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of challenge details loading.
+ * @param {Number|String} challengeId Challenge ID
+ * @return {Action}
  */
 function getDetailsInit(challengeId) {
   return _.toString(challengeId);
 }
 
 /**
- * Payload creator for CHALLENGE/FETCH_DETAILS_DONE action,
- * which fetch details of the specified challenge.
- * @param {Number|String} challengeId
- * @param {String} tokenV3
- * @param {String} tokenV2
- * @return {Promise}
+ * @static
+ * @desc Creates an action that loads challenge details.
+ * @param {Number|String} challengeId Challenge ID.
+ * @param {String} tokenV3 Topcoder v3 auth token.
+ * @param {String} tokenV2 Topcoder v2 auth token.
+ * @return {Action}
  */
 function getDetailsDone(challengeId, tokenV3, tokenV2) {
   const service = getChallengesService(tokenV3, tokenV2);
@@ -34,11 +49,10 @@ function getDetailsDone(challengeId, tokenV3, tokenV2) {
 }
 
 /**
- * Payload creator for the action that initializes loading of user's submissions
- * to the specified challenges. This action also cancels any previous unfinished
- * fetching of submissions.
- * @param {String} challengeId
- * @return {String}
+ * @static
+ * @desc Creates an action that signals beginning of user submissions loading.
+ * @param {String} challengeId Challenge ID.
+ * @return {Action}
  */
 function getSubmissionsInit(challengeId) {
   /* As a safeguard, we enforce challengeId to be string (in case somebody
@@ -47,10 +61,12 @@ function getSubmissionsInit(challengeId) {
 }
 
 /**
- * Payload creator for the action that actually pulls from API user's
- * submissions to the specified challenge.
- * @param {String} challengeId
- * @param {String} tokenV2
+ * @static
+ * @desc Creates an action that loads user's submissions to the specified
+ * challenge.
+ * @param {String} challengeId Challenge ID.
+ * @param {String} tokenV2  Topcoder auth token v2.
+ * @return {Action}
  */
 function getSubmissionsDone(challengeId, tokenV2) {
   return getApiV2(tokenV2)
@@ -67,10 +83,23 @@ function getSubmissionsDone(challengeId, tokenV2) {
 }
 
 /**
- * Registers user for the challenge.
- * @param {Object} auth Auth section of Redux state.
- * @param {String} challengeId
- * @return {Promise}
+ * @static
+ * @desc Creates an action that signals beginning of registration for a
+ * challenge.
+ * @return {Action}
+ */
+function registerInit() {
+}
+
+/**
+ * @static
+ * @desc Creates an action that registers user for a challenge.
+ * @param {Object} auth An object that holds auth tokens. You can directly pass
+ *  here the `auth` segment of Redux store.
+ * @param [auth.tokenV2]{String} Topcoder auth token v2.
+ * @param [auth.tokenV3]{String} Topcoder auth token v3.
+ * @param {String} challengeId Challenge ID.
+ * @return {Action}
  */
 function registerDone(auth, challengeId) {
   return getChallengesService(auth.tokenV3)
@@ -81,10 +110,21 @@ function registerDone(auth, challengeId) {
 }
 
 /**
- * Unregisters user for the challenge.
- * @param {Object} auth Auth section of Redux state.
- * @param {String} challengeId
- * @return {Promise}
+ * @static
+ * @desc Creates an action that signals beginning of user unregistration from a
+ *  challenge.
+ * @return {Action}
+ */
+function unregisterInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that unregisters user from a challenge.
+ * @param {Object} auth Object that holds Topcoder auth tokens.
+ * @param {String} [auth.tokenV2] v2 token.
+ * @param {String} [auth.tokenV3] v3 token.
+ * @param {String} challengeId Challenge ID.
+ * @return {Action}
  */
 function unregisterDone(auth, challengeId) {
   return getChallengesService(auth.tokenV3)
@@ -95,22 +135,25 @@ function unregisterDone(auth, challengeId) {
 }
 
 /**
- * Initiates loading of challenge results. Any loading of results initiated
- * before will be silently discarded.
- * @param {Number|String} challengeId
- * @return {String}
+ * @static
+ * @desc Creates an action that signals beginning of challenge results loading.
+ * @param {Number|String} challengeId Challenge ID
+ * @return {Action}
  */
 function loadResultsInit(challengeId) {
   return _.toString(challengeId);
 }
 
 /**
- * Loads challenge results. Challenge ID should match with the one previously
- * passed to loadResultsInit(..), otherwise results will be silently discarted.
- * @param {Object} auth
- * @param {Number|String} challengeId
- * @param {String} type
- * @return {Object}
+ * @static
+ * @desc Creates an action that loads challenge results.
+ * @param {Object} auth Object that holds Topcoder auth tokens.
+ * @param {String} [auth.tokenV2] v2 token.
+ * @param {String} [auth.tokenV3] v3 token.
+ * @param {Number|String} challengeId Challenge ID. Should match the one passed
+ *  in the previous {@link module:actions.challenge.loadResultsInit} call.
+ * @param {String} type Challenge type.
+ * @return {Action}
  */
 function loadResultsDone(auth, challengeId, type) {
   return getApiV2(auth.tokenV2)
@@ -122,6 +165,20 @@ function loadResultsDone(auth, challengeId, type) {
     }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of challenge checkpoints data
+ *  loading.
+ * @return {Action}
+ */
+function fetchCheckpointsInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that loads challenge checkpoints data.
+ * @param {String} tokenV2 Topcoder v2 auth token.
+ * @param {String} challengeId Challenge ID.
+ */
 function fetchCheckpointsDone(tokenV2, challengeId) {
   const endpoint = `/design/challenges/checkpoint/${challengeId}`;
   return getApiV2(tokenV2).fetch(endpoint)
@@ -149,32 +206,45 @@ function fetchCheckpointsDone(tokenV2, challengeId) {
 }
 
 /**
- * Toggles checkpoint feedback. If second argument is provided, it
- * will just open / close the checkpoint depending on its value being
- * true or false.
- * @param {Number} id
- * @param {Boolean} open
- * @return {Object}
+ * @static
+ * @desc Creates an action that Toggles checkpoint details panel in the Topcoder
+ *  Submission Management Page.
+ * @todo This is UI action relevant to a specific page in specific app. Must be
+ *  moved back to Community App.
+ * @param {Number} id Checkpoint ID.
+ * @param {Boolean} open Target state: `true` to expand, `false` to collapse the
+ *  details.
+ * @return {Action}
  */
 function toggleCheckpointFeedback(id, open) {
   return { id, open };
 }
 
 /**
- * Payload creator for the action that inits update of a challenge.
+ * @static
+ * @desc Creates an action that signals beginning of challenge details update.
+ * @todo No idea, why we have this action. This functionality should be covered
+ *  by {@link module:actions.challenge.getDetailsInit} and
+ *  {@link module:actions.challenge.getDetailsDone}. We need to refactor this.
  * @param {String} uuid UUID of the operation (the same should be passed into
- *  the corresponding UPDATE_CHALLENGE_DONE action).
- * @return {String} UUID.
+ *  the corresponding {@link module:actions.challenge.updateChallengeDone}).
+ * @return {Action}
  */
 function updateChallengeInit(uuid) {
   return uuid;
 }
 
 /**
- * Payload creator for the action that finalizes update of a challenge.
- * @param {String} uuid
- * @param {Object} challenge
- * @param {String} tokenV3
+ * @static
+ * @desc Creates an action that updates challenge details.
+ * @todo No idea, why we have this action. This functionality should be covered
+ *  by {@link module:actions.challenge.getDetailsInit} and
+ *  {@link module:actions.challenge.getDetailsDone}. We need to refactor this.
+ * @param {String} uuid Operation UUID. Should match the one passed into the
+ *  previous {@link module:actions.challenge.updateChallengeInit} call.
+ * @param {Object} challenge Challenge data.
+ * @param {String} tokenV3 Topcoder v3 auth token.
+ * @return {Action}
  */
 function updateChallengeDone(uuid, challenge, tokenV3) {
   return getChallengesService(tokenV3).updateChallenge(challenge)
@@ -183,9 +253,9 @@ function updateChallengeDone(uuid, challenge, tokenV3) {
 
 export default createActions({
   CHALLENGE: {
-    DROP_CHECKPOINTS: _.noop,
-    DROP_RESULTS: _.noop,
-    FETCH_CHECKPOINTS_INIT: _.noop,
+    DROP_CHECKPOINTS: dropCheckpoints,
+    DROP_RESULTS: dropResults,
+    FETCH_CHECKPOINTS_INIT: fetchCheckpointsInit,
     FETCH_CHECKPOINTS_DONE: fetchCheckpointsDone,
     GET_DETAILS_INIT: getDetailsInit,
     GET_DETAILS_DONE: getDetailsDone,
@@ -193,10 +263,10 @@ export default createActions({
     GET_SUBMISSIONS_DONE: getSubmissionsDone,
     LOAD_RESULTS_INIT: loadResultsInit,
     LOAD_RESULTS_DONE: loadResultsDone,
-    REGISTER_INIT: _.noop,
+    REGISTER_INIT: registerInit,
     REGISTER_DONE: registerDone,
     TOGGLE_CHECKPOINT_FEEDBACK: toggleCheckpointFeedback,
-    UNREGISTER_INIT: _.noop,
+    UNREGISTER_INIT: unregisterInit,
     UNREGISTER_DONE: unregisterDone,
     UPDATE_CHALLENGE_INIT: updateChallengeInit,
     UPDATE_CHALLENGE_DONE: updateChallengeDone,

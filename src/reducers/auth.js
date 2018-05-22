@@ -1,12 +1,21 @@
 /**
- * Reducer for state.auth.
+ * @module "reducers.auth"
+ * @desc Reducer for {@link module:actions.auth} actions.
+ *
+ * State segment managed by this reducer has the following structure:
+ * @param {Boolean} authenticating=true `true` if authentication is still in
+ *  progress; `false` if it has already completed or failed.
+ * @param {Object} profile=null Topcoder user profile.
+ * @param {String} tokenV2='' Topcoder v2 auth token.
+ * @param {String} tokenV3='' Topcoder v3 auth token.
+ * @param {Object} user=null Topcoder user object (user information stored in
+ *  v3 auth token).
  */
 
 import _ from 'lodash';
 import { decodeToken } from 'tc-accounts';
 import { redux } from 'topcoder-react-utils';
 import actions from '../actions/auth';
-import { getOptionTokens } from '../utils/tc';
 
 /**
  * Handles actions.auth.loadProfile action.
@@ -27,7 +36,7 @@ function onProfileLoaded(state, action) {
  * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Auth reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   return redux.handleActions({
     [actions.auth.loadProfile]: onProfileLoaded,
     [actions.auth.setTcTokenV2]: (state, action) => ({
@@ -39,37 +48,35 @@ function create(initialState, mergeReducers = {}) {
       tokenV3: payload,
       user: payload ? decodeToken(payload) : null,
     }),
-    ...mergeReducers,
+    'COMMUNITY_ACTIONS/TC_COMMUNITY/JOIN_DONE': (state, { payload }) => ({
+      ...state,
+      profile: {
+        ...state.profile,
+        groups: state.profile.groups.concat({ id: payload.groupId.toString() }),
+      },
+    }),
   }, _.defaults(initialState, {
     authenticating: true,
+    profile: null,
+    tokenV2: '',
+    tokenV3: '',
+    user: null,
   }));
 }
 
 /**
- * Factory which creates a new reducer with its initial state tailored to the
- * given options object, if specified (for server-side rendering). If options
- * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * auth.tokenV2: The V2 auth token
- *
- * auth.tokenV3: The V3 auth token
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * Creates a new reducer.
+ * @param {Object} options={} Optional. Options for customization of initial
+ *  state.
+ * @param {String} [options.auth.tokenV2=''] Optional. Topcoder v2 auth token.
+ * @param {String} [options.auth.tokenV3=''] Optional. Topcoder v3 auth token.
+ * @returns {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
 export function factory(options = {}) {
-  const tokens = getOptionTokens(options);
-
-  let state = options.initialState || {};
-  state = {
-    ...state,
-    ...tokens,
-    authenticating: true,
-    user: null,
+  const state = {
+    tokenV2: _.get(options.auth, 'tokenV2'),
+    tokenV3: _.get(options.auth, 'tokenV3'),
   };
 
   if (state.tokenV3) {
@@ -80,5 +87,9 @@ export function factory(options = {}) {
   return Promise.resolve(create(state, options.mergeReducers));
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

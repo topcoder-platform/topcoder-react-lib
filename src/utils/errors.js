@@ -1,3 +1,9 @@
+/**
+ * @module errors
+ * @desc Utility functions for the standard error handling.
+ * @todo They will be moved to `topcoder-react-utils` soon.
+ */
+
 import { isomorphy } from 'topcoder-react-utils';
 import actions from '../actions/errors';
 

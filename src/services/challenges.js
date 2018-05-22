@@ -1,6 +1,7 @@
 /**
- * This module provides a service for convenient manipulation with Topcoder
- * challenges via TC API.
+ * @module "services.challenges"
+ * @desc This module provides a service for convenient manipulation with
+ *  Topcoder challenges via TC API.
  */
 
 import _ from 'lodash';
@@ -18,8 +19,8 @@ export const ORDER_BY = {
 
 /**
  * Normalize name convention for subtrack
- * @param subTrack
- * @returns {*} new subtrack
+ * @param {String} subTrack Challenge `subTrack`.
+ * @returns {String} Normalized subtrack ID.
  */
 function normalizeNameConventionForSubtrack(subTrack) {
   switch (subTrack) {
@@ -88,6 +89,7 @@ function normalizeNameConventionForSubtrack(subTrack) {
  * NOTE: It is possible, that this normalization is not necessary after we
  * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
  * breaking anything.
+ * @todo Why this one is exported? It should be only used internally!
  * @param {Object} v3 Challenge object received from the /v3/challenges/{id}
  *  endpoint.
  * @param {Object} v3Filtered Challenge object received from the
@@ -223,6 +225,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
  * component. It is possible, that this normalization is not necessary after we
  * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
  * breaking anything.
+ * @todo Should be used only internally!
  * @param {Object} challenge Challenge object received from the backend.
  * @param {String} username Optional.
  */
@@ -275,9 +278,12 @@ async function checkError(res) {
   return jsonRes;
 }
 
-
+/**
+ * Challenge service.
+ */
 class ChallengesService {
   /**
+   * Creates a new ChallengeService instance.
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
    */
@@ -602,13 +608,13 @@ class ChallengesService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing challenges service.
  * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
- * @return {Challenges} Challenges service object
+ * @return {ChallengesService} Challenges service object
  */
-let lastInstance = null;
 export function getService(tokenV3, tokenV2) {
   if (!lastInstance || lastInstance.private.tokenV3 !== tokenV3
     || lastInstance.tokenV2 !== tokenV2) {

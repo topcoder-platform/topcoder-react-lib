@@ -1,12 +1,16 @@
 /**
- * Any actions related to the applications-wide error handling and messaging.
+ * @module "actions.errors"
+ * @desc Actions related to the standard application-wide error handling and
+ * messaging.
+ *
+ * Pending to be documented. You are not supposed to use them directly anyway.
+ *
+ * @todo This module does not belong to `topcoder-react-lib`, it will be moved
+ *  to `topcoder-react-utils` soon.
  */
 import _ from 'lodash';
 import { createActions } from 'redux-actions';
 
-/**
- * Export Actions for usage by Redux
- */
 export default createActions({
   ERRORS: {
     CLEAR_ERROR: _.noop,

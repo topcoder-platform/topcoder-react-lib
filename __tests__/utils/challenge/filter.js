@@ -1,4 +1,4 @@
-import { setText, setTags, setSubtracks, setStartDate } from '../../src/utils/filter';
+import { setText, setTags, setSubtracks, setStartDate } from '../../../src/utils/challenge/filter';
 
 describe('challenge filter', () => {
   let res;

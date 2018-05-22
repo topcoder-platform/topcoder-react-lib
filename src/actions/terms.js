@@ -1,5 +1,6 @@
 /**
- * Terms specific actions.
+ * @module "actions.terms"
+ * @desc Actions related to Topcoder terms of use.
  */
 
 import _ from 'lodash';
@@ -8,16 +9,27 @@ import { config } from 'topcoder-react-utils';
 import { getService } from '../services/terms';
 
 /**
- * Payload creator for TERMS/GET_TERMS_DONE action,
- * which fetch terms of the specified entity.
+ * @static
+ * @desc Creates an action that signals beginning of fetching terms data.
+ * @todo Figure out the exact meaning of the argument.
+ * @param {String} arg An argument. The exact meaning to be figured out.
+ * @return {Action}
+ */
+function getTermsInit(arg) {
+  return arg;
+}
+
+/**
+ * @static
+ * @desc Creates an action that fetches terms of the specified entity.
  * @param {Object}  entity       entity object
- * @param {String}  entity.type  entity type ['challenge'||'community']
- * @param {String}  entity.id    entity id
+ * @param {String}  [entity.type]  entity type: `challenge` or `community`
+ * @param {String}  [entity.id]    entity id
  * @param {Object}  tokens       object with tokenV2 and tokenV3 properties
- * @param {Boolean} mockAgreed   if true, then all terms will be mocked as agreed
- *                               this only makes effect if MOCK_TERMS_SERVICE is true
- *                               and the only purpose of this param is testing terms
- * @return {Promise}
+ * @param {Boolean} mockAgreed   if true, then all terms will be mocked as
+ *  agreed this only makes effect if MOCK_TERMS_SERVICE is `true` and the only
+ *  purpose of this param is testing terms
+ * @return {Action}
  */
 function getTermsDone(entity, tokens, mockAgreed) {
   const service = getService(tokens.tokenV2);
@@ -51,17 +63,23 @@ function getTermsDone(entity, tokens, mockAgreed) {
 }
 
 /**
- * Payload creator for TERMS/CHECK_STATUS_DONE
- * which will check if all terms of specified entity have been agreed,
+ * @static
+ * @desc Creates an action that signals beginning of terms status check
+ *  operation.
+ * @return {Action}
+ */
+function checkStatusInit() {}
+
+/**
+ * @static
+ * @desc Creates an action thatwill check if all terms of specified entity have been agreed,
  *
- * NOTE:
- * As in some reason backend does not saves immediately that DocuSign term has been agreed
+ * @todo As in some reason backend does not saves immediately that DocuSign term has been agreed
  * In case not all terms were agreed we try again after some delay.
  * Maximum quantity attempts and delay between attempts are configured in
  * MAX_ATTEMPTS and TIME_OUT
  *
- * TODO:
- * Looks like the bug described above was caused by server caching responses
+ * @todo: Looks like the bug described above was caused by server caching responses
  * at least for getTermDetails which is used by getCommunityTerms.
  * To fix it I've added nocache random value param in the terms service
  * for getTermDetails and it looks like works so we get results immediately.
@@ -73,11 +91,11 @@ function getTermsDone(entity, tokens, mockAgreed) {
  * has to simplified and don't make several attempts, only one.
  *
  * @param {Object} entity       entity object
- * @param {String} entity.type  entity type ['challenge'||'community']
- * @param {String} entity.id    entity id
+ * @param {String} [entity.type]  entity type `challenge` or `community`.
+ * @param {String} [entity.id]    entity id
  * @param {Object} tokens       object with tokenV2 and tokenV3 properties
  *
- * @return {Promise}           promise of request result
+ * @return {Acion}
  */
 function checkStatusDone(entity, tokens) {
   // timeout between checking status attempts
@@ -90,7 +108,7 @@ function checkStatusDone(entity, tokens) {
   // so that checkStatusDone resolves to all terms agreed when mocking
   const mockAgreed = config.MOCK_TERMS_SERVICE;
 
-  /**
+  /*
    * Promisified setTimeout
    * @param  {Number} timeout timeout in milliseconds
    * @return {Promise}         resolves after timeout
@@ -99,7 +117,7 @@ function checkStatusDone(entity, tokens) {
     setTimeout(resolve, timeout);
   }));
 
-  /**
+  /*
    * Makes attempt to check status
    * @param  {Number} maxAttempts maximum number of attempts to perform
    * @return {Promise}            resolves to the list of term objects
@@ -119,23 +137,23 @@ function checkStatusDone(entity, tokens) {
 }
 
 /**
- * Payload creator for TERMS/GET_TERM_DETAILS_INIT action,
- * which marks that we are about to fetch details of the specified term.
- * If any details for another term are currently being fetched,
+ * @static
+ * @desc Creates an action that marks that we are about to fetch details of the
+ *  specified term. If any details for another term are currently being fetched,
  * they will be silently discarded.
  * @param {Number|String} termId
- * @return {String}
+ * @return {Action}
  */
 function getTermDetailsInit(termId) {
   return _.toString(termId);
 }
 
 /**
- * Payload creator for TERMS/GET_TERM_DETAILS_DONE action,
- * which fetch details of the specified term.
+ * @static
+ * @desc Creates an action that fetches details of the specified term.
  * @param {Number|String} termId
  * @param {String} tokenV2
- * @return {Promise}
+ * @return {Action}
  */
 function getTermDetailsDone(termId, tokenV2) {
   const service = getService(tokenV2);
@@ -143,21 +161,22 @@ function getTermDetailsDone(termId, tokenV2) {
 }
 
 /**
- * Payload creator for TERMS/GET_DOCU_SIGN_URL_INIT
+ * @static
+ * @desc Creates an action that signals beginning of getting a DocuSign URL.
  * @param  {Number|String} templateId id of document template to sign
- * @return {String} string format of the id
+ * @return {Action}
  */
 function getDocuSignUrlInit(templateId) {
   return _.toString(templateId);
 }
 
 /**
- * Payload creator for TERMS/GET_DOCU_SIGN_URL_DONE
- * which generate the url of DoduSign term
+ * @static
+ * @desc Creates an action that generates the url of DoduSign term
  * @param  {Number|String} templateId id of document template to sign
  * @param  {String} returnUrl  callback url after finishing singing
  * @param  {String} tokenV2    auth token
- * @return {Promise}           promise of request result
+ * @return {Action}
  */
 function getDocuSignUrlDone(templateId, returnUrl, tokenV2) {
   const service = getService(tokenV2);
@@ -166,19 +185,21 @@ function getDocuSignUrlDone(templateId, returnUrl, tokenV2) {
 }
 
 /**
- * Payload creator for TERMS/AGREE_TERM_INIT
+ * @static
+ * @desc Creates an action that signals beginning of terms agreement operation.
  * @param  {Number|String} termId id of term
- * @return {String}        string format of the id
+ * @return {Action}
  */
 function agreeTermInit(termId) {
   return _.toString(termId);
 }
 
 /**
- * Payload creator for TERMS/AGREE_TERM_DONE
+ * @static
+ * @desc Creates an action that agrees to a term.
  * @param  {Number|String} termId id of term
  * @param  {String} tokenV2    auth token
- * @return {Promise}           promise of request result
+ * @return {Action}
  */
 function agreeTermDone(termId, tokenV2) {
   const service = getService(tokenV2);
@@ -187,7 +208,7 @@ function agreeTermDone(termId, tokenV2) {
 
 export default createActions({
   TERMS: {
-    GET_TERMS_INIT: _.identity,
+    GET_TERMS_INIT: getTermsInit,
     GET_TERMS_DONE: getTermsDone,
     GET_TERM_DETAILS_INIT: getTermDetailsInit,
     GET_TERM_DETAILS_DONE: getTermDetailsDone,
@@ -195,7 +216,7 @@ export default createActions({
     GET_DOCU_SIGN_URL_DONE: getDocuSignUrlDone,
     AGREE_TERM_INIT: agreeTermInit,
     AGREE_TERM_DONE: agreeTermDone,
-    CHECK_STATUS_INIT: _.noop,
+    CHECK_STATUS_INIT: checkStatusInit,
     CHECK_STATUS_DONE: checkStatusDone,
   },
 });

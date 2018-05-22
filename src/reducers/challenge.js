@@ -1,5 +1,9 @@
 /**
- * Reducer for state.challenge
+ * @module "reducers.challenge"
+ * @desc Reducer for {@link module:actions.challenge} actions.
+ *
+ * State segment managed by this reducer has the following strcuture:
+ * @todo Document the structure.
  */
 
 import _ from 'lodash';
@@ -11,7 +15,6 @@ import actions from '../actions/challenge';
 import smpActions from '../actions/smp';
 import logger from '../utils/logger';
 import { fireErrorMessage } from '../utils/errors';
-import { getOptionTokens } from '../utils/tc';
 
 import mySubmissionsManagement from './my-submissions-management';
 
@@ -264,10 +267,9 @@ function onUpdateChallengeDone(state, { error, payload }) {
 /**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Challenge reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   const a = actions.challenge;
   return handleActions({
     [a.dropCheckpoints]: state => ({ ...state, checkpoints: null }),
@@ -299,7 +301,6 @@ function create(initialState, mergeReducers = {}) {
     [a.fetchCheckpointsDone]: onFetchCheckpointsDone,
     [a.updateChallengeInit]: onUpdateChallengeInit,
     [a.updateChallengeDone]: onUpdateChallengeDone,
-    ...mergeReducers,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,
@@ -320,22 +321,15 @@ function create(initialState, mergeReducers = {}) {
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
  *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * mySubmissionsManagement: The submission management reducer
- *
- * auth.tokenV2: The V2 auth token
- *
- * auth.tokenV3: The V3 auth token
- *
- * challenge.challengeDetails.id: The challenge id
- *
- * challenge.challengeDetails.mySubmission: The flag indicates whether load my submission
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @param {Object} options={} Optional. Factory options.
+ * @param {String} [options.auth.tokenV2=''] Optional. Topcoder v2 auth token.
+ * @param {String} [options.auth.tokenV3=''] Optional. Topcoder v3 auth token.
+ * @param {String} [options.challenge.challengeDetails.id=''] Optional. ID of
+ *  the challenge to load details for.
+ * @param {Boolean} [options.challenge.challengeDetails.mySubmission=false]
+ *  Optional. The flag indicates whether load my submission.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
 export function factory(options = {}) {
   /* Server-side rendering of Submission Management Page. */
@@ -345,13 +339,14 @@ export function factory(options = {}) {
   /* TODO: For completely server-side rendering it is also necessary to load
    * terms, etc. */
 
-  const tokens = getOptionTokens(options);
+  const tokens = {
+    tokenV2: _.get(options.auth, 'tokenV2'),
+    tokenV3: _.get(options.auth, 'tokenV3'),
+  };
 
-  let state = options.initialState || {};
+  let state = {};
   const challengeId = _.get(options, 'challenge.challengeDetails.id');
   const mySubmission = _.get(options, 'challenge.challengeDetails.mySubmission');
-
-  const smpReducer = options.mySubmissionsManagement || mySubmissionsManagement;
 
   if (challengeId && !mySubmission) {
     return redux.resolveAction(actions.challenge.getDetailsDone(
@@ -379,8 +374,8 @@ export function factory(options = {}) {
       if (results) state = onLoadResultsDone(state, results);
       return state;
     }).then(res => redux.combineReducers(
-      create(res, options.mergeReducers),
-      { mySubmissionsManagement: smpReducer },
+      create(res),
+      { mySubmissionsManagement },
     ));
   }
 
@@ -404,17 +399,21 @@ export function factory(options = {}) {
       state = onGetDetailsDone(state, challenge);
       return onGetSubmissionsDone(state, submissions);
     }).then(res => redux.combineReducers(
-      create(res, options.mergeReducers),
-      { mySubmissionsManagement: smpReducer },
+      create(res),
+      { mySubmissionsManagement },
     ));
   }
 
   /* Otherwise this part of Redux state is initialized empty. */
   return Promise.resolve(redux.combineReducers(
-    create(state, options.mergeReducers),
-    { mySubmissionsManagement: smpReducer },
+    create(state),
+    { mySubmissionsManagement },
   ));
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default intial state.
+ */
 export default redux.combineReducers(create(), { mySubmissionsManagement });

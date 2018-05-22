@@ -1,6 +1,7 @@
 /**
- * Direct-related actions: projects, billing accounts, copilot, and other
- * similar stuff should be handled here, at least for now.
+ * @module "actions.direct"
+ * @desc Actions related to Direct API: access to projects, billing accounts,
+ * copilot operations, and other similar stuff is handled by them.
  */
 
 import _ from 'lodash';
@@ -8,48 +9,54 @@ import { createActions } from 'redux-actions';
 import { getService } from '../services/direct';
 
 /**
- * Payload creator (noop in fact) for the action that drops all Direct-related
- * data out of the Redux state; and cancels any pending loading requests.
+ * @static
+ * @desc Creates an action that drops out of Redux store all Direct-related
+ *  data, loaded by other actions from this module, and also cancels any pending
+ *  loading operations.
+ * @return {Action}
  */
 function dropAll() {
   return null;
 }
 
 /**
- * Payload creator for the action that inits loading of the specified project
- * details.
- * @param {Number} projectId
- * @return {Number}
+ * @static
+ * @desc Creates an action that signals beginning of project details loading.
+ * @param {Number} projectId Project ID.
+ * @return {Action}
  */
 function getProjectDetailsInit(projectId) {
   return projectId;
 }
 
 /**
- * Payload creator for the action that actually loads the details of
- * the specified project.
- * @param {Number} projectId
+ * @static
+ * @desc Creates an action that loads project details.
+ * @param {Number} projectId Project ID.
  * @param {String} tokenV3 Topcoder auth token v3.
- * @return {Promise} Resolves to the project details object.
+ * @return {Action}
  */
 function getProjectDetailsDone(projectId, tokenV3) {
   return getService(tokenV3).getProjectDetails(projectId);
 }
 
 /**
- * Payload creator for the action that inits the loading of project permissions.
- * @param {Number|String} projectId
- * @return {Number} projectId
+ * @static
+ * @desc Creates an action that signals beginning of project permissions
+ *  loading.
+ * @param {Number|String} projectId Project ID.
+ * @return {Action}
  */
 function getProjectPermissionsInit(projectId) {
   return _.toNumber(projectId);
 }
 
 /**
- * Payload creator for the actions that actually loads project permissions.
- * @param {Number|String} projectId
- * @param {String} tokenV3
- * @return {Promise}
+ * @static
+ * @desc Creates an action that loads project permissions.
+ * @param {Number|String} projectId Project ID.
+ * @param {String} tokenV3 Topcoder v3 auth token.
+ * @return {Action}
  */
 function getProjectPermissionsDone(projectId, tokenV3) {
   return getService(tokenV3).getProjectPermissions(projectId)
@@ -57,20 +64,22 @@ function getProjectPermissionsDone(projectId, tokenV3) {
 }
 
 /**
- * Payload creator for the action that inits the loading of projects related to
- * the user.
- * @param {String} tokenV3 Topcoder auth token v3.
- * @return {String} Topcoder auth token v3.
+ * @static
+ * @desc Creates an action that signals beginning of loading the projects
+ *  related with a user.
+ * @param {String} tokenV3 Topcoder v3 auth token of the user for who we load
+ *  the projects.
+ * @return {Action}
  */
 function getUserProjectsInit(tokenV3) {
   return tokenV3;
 }
 
 /**
- * Payload creator for the actio that actually pulls from API the projects
- * related to user.
+ * @static
+ * @desc Creates an action that loads projects related to a user.
  * @param {String} tokenV3 Topcoder auth token v3.
- * @return {Object} Pull result object + some meta-information.
+ * @return {Action}
  */
 async function getUserProjectsDone(tokenV3) {
   const projects = await getService(tokenV3).getUserProjects({

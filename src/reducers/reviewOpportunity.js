@@ -1,10 +1,11 @@
 /**
- * Reducer for state.reviewOpportunity
+ * @module "reducers.reviewOpportunity"
+ * @desc Reducer for state.reviewOpportunity
+ * @todo Document state structure.
  */
 
 import _ from 'lodash';
 import { redux } from 'topcoder-react-utils';
-import { getOptionTokens } from '../utils/tc';
 import actions from '../actions/reviewOpportunity';
 
 /**
@@ -55,10 +56,9 @@ function onGetDetailsDone(state, { payload, error }) {
 /**
  * Creates a new Review opportunity reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Review opportunity reducer.
  */
-function create(initialState, mergeReducers = {}) {
+function create(initialState) {
   const a = actions.reviewOpportunity;
   return redux.handleActions({
     [a.cancelApplicationsInit]: state => state,
@@ -67,7 +67,6 @@ function create(initialState, mergeReducers = {}) {
     [a.getDetailsDone]: onGetDetailsDone,
     [a.submitApplicationsInit]: state => state,
     [a.submitApplicationsDone]: state => state,
-    ...mergeReducers,
   }, _.defaults(initialState, {
     authError: false,
     details: null,
@@ -80,38 +79,38 @@ function create(initialState, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * auth.tokenV2: The V2 auth token
- *
- * auth.tokenV3: The V3 auth token
- *
- * reviewOpportunity.challenge.id: The challenge id
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @param {Object} options={} Optional. Options object for initial state.
+ * @param {String} [options.auth.tokenV2=''] The V2 auth token
+ * @param {String} [options.auth.tokenV3=''] The V3 auth token
+ * @param {String} [options.reviewOpportunity.challenge.id=''] The challenge id.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
 export function factory(options = {}) {
   const challengeId = _.get(options, 'reviewOpportunity.challenge.id');
 
   if (challengeId) {
-    const tokens = getOptionTokens(options);
+    const tokens = {
+      tokenV2: _.get(options.auth, 'tokenV2'),
+      tokenV3: _.get(options.auth, 'tokenV3'),
+    };
 
     const a = actions.reviewOpportunity;
     return redux.resolveAction(a.getDetailsDone(challengeId, tokens.tokenV3))
       .then(({ error, payload }) => {
-        const initialState = options.initialState || {};
+        const initialState = {};
         initialState.details = error ? null : payload;
         initialState.requiredTerms = error ? [] : buildRequiredTermsList(payload);
-        create(initialState, options.mergeReducers);
+        create(initialState);
       });
   }
 
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+  return Promise.resolve(create());
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default state.
+ */
 export default create();

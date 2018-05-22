@@ -1,6 +1,3 @@
-/**
- * Export actions.
- */
 import authActions from './auth';
 import smpActions from './smp';
 import statsActions from './stats';

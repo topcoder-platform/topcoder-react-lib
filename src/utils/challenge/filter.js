@@ -1,4 +1,7 @@
 /**
+ * @module "challenge.filter"
+ *
+ * @desc
  * Universal challenge filter. Must be used in all places where we need filter
  * or fetch challenges. This way we keep all related logic in the same place,
  * which simplifies maintenance and modifications of the code.
@@ -59,7 +62,7 @@
 
 import _ from 'lodash';
 import moment from 'moment';
-import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from './tc';
+import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
 
 /**
  * Here are many similiar filerBy..(challenge, state) functions. Each of them
