@@ -1,9 +1,13 @@
 /**
- * This module provides a service for retrieving Review Opportunities and
+ * @module "services.reviewOpportunities"
+ * @desc This module provides a service for retrieving Review Opportunities and
  * submitting applications.
  */
 import { getApiV3 } from './api';
 
+/**
+ * Service class.
+ */
 class ReviewOpportunitiesService {
   /**
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
@@ -73,12 +77,12 @@ class ReviewOpportunitiesService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing review opportunities service.
  * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {MembersService} Members service object
  */
-let lastInstance = null;
 export function getReviewOpportunitiesService(tokenV3) {
   if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
     lastInstance = new ReviewOpportunitiesService(tokenV3);

@@ -1,32 +1,40 @@
 /**
- * Stats actions.
+ * @module "actions.stats"
+ * @desc Actions related to Topcoder statistics (at the moment, only community
+ *  statistics).
  */
 
 import _ from 'lodash';
 
 import { createActions } from 'redux-actions';
-import * as Filter from '../utils/filter';
+import * as Filter from '../utils/challenge/filter';
 import { getService as getGroupService } from '../services/groups';
 
 /**
- * Payload creator for the action that inits the loading of community stats.
- * @param {Object} community
- * @param {String} uuid
- * @return {Object} Payload.
+ * @static
+ * @desc Creates an action that signals beginning of the loading community
+ *  stats.
+ * @param {Object} community Community meta-data object.
+ * @param {String} [community.communityId] Community ID.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
  */
 function getCommunityStatsInit(community, uuid) {
   return { community: community.communityId, uuid };
 }
 
 /**
- * Gets statistics related to the specified community. Data will be loaded into
- * stats.communities[communityId] path of the Redux state.
+ * @static
+ * @desc Create an action that gets statistics related to the specified
+ * community. Data will be loaded into `stats.communities[communityId]` path of
+ * the Redux store.
+ * @todo The action should be refactored, see comments in the code.
  * @param {Object} community details of the community.
- * @param {String} uuid
+ * @param {String} uuid Operation UUID
  * @param {Array} challenges challenges from challengeListing to filter and do statistics
  * @param {String} token V3 Topcoder auth token. It is necessary to get data
  *  related to private groups.
- * @return {Promise} Resolves to the loaded data.
+ * @return {Action}
  */
 /* TODO: This code should be moved to a dedicated service. */
 async function getCommunityStatsDone(community, uuid, challenges, token) {

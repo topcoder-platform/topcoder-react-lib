@@ -1,6 +1,7 @@
 /**
-* Utility functions for time/date related stuff
-*/
+ * @module time
+ * @desc Utility functions for time/date related stuff
+ */
 import moment from 'moment';
 import 'moment-duration-format';
 

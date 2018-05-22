@@ -1,5 +1,7 @@
 /**
- * Member tasks reducer.
+ * @module "reduces.member-tasks"
+ * @desc Member tasks reducer.
+ * @todo Document state segment structure.
  */
 /* global alert */
 
@@ -91,16 +93,14 @@ function onGetDone(state, { error, payload }) {
 /**
  * Creates a new Member tasks reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
- * @param {Object} mergeReducers Optional. Reducers to merge.
  * @return {Function} Member tasks reducer.
  */
-function create(initialState = {}, mergeReducers = {}) {
+function create(initialState = {}) {
   const a = actions.memberTasks;
   return redux.handleActions({
     [a.dropAll]: onDropAll,
     [a.getInit]: onGetInit,
     [a.getDone]: onGetDone,
-    ...mergeReducers,
   }, _.defaults(initialState, {
     /* It is set true when a request to load tasks loads less tasks than a full
      * task page size. It is reset to false each time the page number 0 starts
@@ -132,17 +132,16 @@ function create(initialState = {}, mergeReducers = {}) {
  * Factory which creates a new reducer with its initial state tailored to the
  * given options object, if specified (for server-side rendering). If options
  * object is not specified, it creates just the default reducer. Accepted options are:
- *
- * initialState: The initial state
- *
- * mergeReducers: The additional reducers to merge
- *
- * @param {Object} options Optional. Options object for initial state.
- * @return Promise which resolves to the new reducer.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
-export function factory(options = {}) {
-  return Promise.resolve(create(options.initialState, options.mergeReducers));
+export function factory() {
+  return Promise.resolve(create());
 }
 
-/* Reducer with the default initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

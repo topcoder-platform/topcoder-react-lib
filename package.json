@@ -28,7 +28,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "le_node": "^1.7.0",
@@ -40,8 +40,8 @@
     "react": "^16.3.1",
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",
-    "topcoder-react-utils": "^0.3.4",
-    "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev"
+    "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
+    "topcoder-react-utils": "^0.3.9"
   },
   "devDependencies": {
     "autoprefixer": "^8.2.0",
@@ -69,6 +69,8 @@
     "eslint-plugin-react": "^7.7.0",
     "extract-css-chunks-webpack-plugin": "^2.0.18",
     "jest": "^22.4.3",
+    "jsdoc-to-markdown": "^4.0.1",
+    "mkpath": "^1.0.0",
     "react-hot-loader": "^4.0.1",
     "react-test-renderer": "^16.3.1",
     "rimraf": "^2.6.2",

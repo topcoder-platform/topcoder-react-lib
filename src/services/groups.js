@@ -1,5 +1,6 @@
 /**
- * Service for communication with group-related part of Topcoder API.
+ * @module "services.groups"
+ * @desc Service for communication with group-related part of Topcoder API.
  *
  * NOTE: Through this file, and in related contexts, by loading a user group,
  * or user groups data, we refer to loading the information about descendant
@@ -167,6 +168,9 @@ function mergeGroup(groups, group) {
   /* eslint-enable no-param-reassign */
 }
 
+/**
+ * Service class.
+ */
 class GroupService {
   /**
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
@@ -279,13 +283,13 @@ class GroupService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing instance of challenge service, which works with
  * the specified auth token.
  * @param {String} tokenV3 Optional. Topcoder API v3 auth token.
  * @return {GroupService} Instance of the service.
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
     lastInstance = new GroupService(tokenV3);

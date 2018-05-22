@@ -1,16 +1,17 @@
 /**
- * Auth-related actions.
+ * @module "actions.auth"
+ * @desc Actions related to Topcoder authentication system.
  */
 
-import _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { decodeToken } from 'tc-accounts';
 import { getApiV3 } from '../services/api';
 
 /**
- * Loads profile of the authenticated user.
- * @param {String} userTokenV3 Topcoder auth token V3.
- * @return Promise which resolves to the loaded profile object.
+ * @static
+ * @desc Creates an action that loads Topcoder user profile from v3 API.
+ * @param {String} userTokenV3 v3 authentication token.
+ * @return {Action}
  */
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
@@ -26,16 +27,32 @@ function loadProfileDone(userTokenV3) {
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that sets Topcoder v2 authentication token.
+ * @param {String} tokenV2 Topcoder v2 authentication token.
+ * @return {Action}
+ */
+function setTcTokenV2(tokenV2) {
+  return tokenV2;
+}
+
+/**
+ * @static
+ * @desc Creates an action that decodes Topcoder v3 authentication token,
+ * to get user object, and then writes both the token and the user object into
+ * Redux store.
+ * @param {String} tokenV3 Topcoder v3 authentication token.
+ * @return {Action}
+ */
+function setTcTokenV3(tokenV3) {
+  return tokenV3;
+}
+
 export default createActions({
   AUTH: {
     LOAD_PROFILE: loadProfileDone,
-
-    /* Given TC auth token V2, this action writes it into state.auth.tokenV2. */
-    SET_TC_TOKEN_V2: _.identity,
-
-    /* Given TC auth token V3 this action:
-     *  - Decodes token and writes resulting user object into state.auth.user;
-     *  - Writes the token itself into state.auth.tokenV3. */
-    SET_TC_TOKEN_V3: _.identity,
+    SET_TC_TOKEN_V2: setTcTokenV2,
+    SET_TC_TOKEN_V3: setTcTokenV3,
   },
 });

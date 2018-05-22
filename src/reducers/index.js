@@ -1,20 +1,42 @@
 /**
  * Export reducers.
  */
-import * as auth from './auth';
-import * as stats from './stats';
-import * as terms from './terms';
-import * as direct from './direct';
-import * as groups from './groups';
-import * as errors from './errors';
-import * as challenge from './challenge';
-import * as profile from './profile';
-import * as members from './members';
-import * as memberTasks from './member-tasks';
-import * as reviewOpportunity from './reviewOpportunity';
-import * as mySubmissionsManagement from './my-submissions-management';
+import { redux } from 'topcoder-react-utils';
 
-export const reducers = {
+import auth, { factory as authFactory } from './auth';
+import stats, { factory as statsFactory } from './stats';
+import terms, { factory as termsFactory } from './terms';
+import direct, { factory as directFactory } from './direct';
+import groups, { factory as groupsFactory } from './groups';
+import errors, { factory as errorsFactory } from './errors';
+import challenge, { factory as challengeFactory } from './challenge';
+import profile, { factory as profileFactory } from './profile';
+import members, { factory as membersFactory } from './members';
+import memberTasks, { factory as memberTasksFactory } from './member-tasks';
+import reviewOpportunity, { factory as reviewOpportunityFactory }
+  from './reviewOpportunity';
+import mySubmissionsManagement, { factory as mySubmissionsManagementFactory }
+  from './my-submissions-management';
+
+
+export function factory(options) {
+  return redux.resolveReducers({
+    auth: authFactory(options),
+    stats: statsFactory(options),
+    terms: termsFactory(options),
+    direct: directFactory(options),
+    groups: groupsFactory(options),
+    errors: errorsFactory(options),
+    challenge: challengeFactory(options),
+    profile: profileFactory(options),
+    members: membersFactory(options),
+    memberTasks: memberTasksFactory(options),
+    reviewOpportunity: reviewOpportunityFactory(options),
+    mySubmissionsManagement: mySubmissionsManagementFactory(options),
+  });
+}
+
+export default ({
   auth,
   stats,
   terms,
@@ -27,6 +49,4 @@ export const reducers = {
   memberTasks,
   reviewOpportunity,
   mySubmissionsManagement,
-};
-
-export default undefined;
+});

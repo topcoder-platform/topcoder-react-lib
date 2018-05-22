@@ -1,4 +1,7 @@
 /**
+ * @module logger
+ *
+ * @desc
  * Isomorphic logger.
  *
  * At the server-side it outputs log messages to the console, and also sends
@@ -12,6 +15,9 @@
  * the proxy will forward them to the service only if LOG_ENTRIES_TOKEN is set).
  *
  * In all case, interface of the logger matches that of the standard JS console.
+ *
+ * @todo This module does not belong here, it should be moved to
+ * `topcoder-react-utils`.
  */
 /* eslint-disable global-require */
 /* eslint-disable no-console */

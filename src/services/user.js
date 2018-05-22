@@ -1,11 +1,16 @@
 /**
- * The User service provides functionality related to Topcoder user accounts.
+ * @module "services.user"
+ * @desc The User service provides functionality related to Topcoder user
+ *  accounts.
  */
 
 import { getApiResponsePayloadV3 } from '../utils/tc';
 import { getApiV2, getApiV3 } from './api';
 
-export default class User {
+/**
+ * Service class.
+ */
+class User {
   /**
    * Creates a new User service.
    * @param {String} tokenV3 Topcoder auth tokenV3.
@@ -57,13 +62,14 @@ export default class User {
   }
 }
 
+let lastInstance = null;
+
 /**
  * Returns a new or existing User service for the specified tokenV3.
  * @param {String} tokenV3 Optional. Topcoder auth token v3.
  * @param {String} tokenV2 Optional. TC auth token v2.
  * @return {Api} API v3 service object.
  */
-let lastInstance = null;
 export function getService(tokenV3, tokenV2) {
   if (!lastInstance
   || lastInstance.private.tokenV2 !== tokenV2
@@ -72,3 +78,10 @@ export function getService(tokenV3, tokenV2) {
   }
   return lastInstance;
 }
+
+/**
+ * @static
+ * @member default
+ * @desc Default export is {@link module:services.user~User} class.
+ */
+export default User;

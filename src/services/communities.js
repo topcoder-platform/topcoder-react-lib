@@ -1,12 +1,19 @@
 /**
- * Communities service.
+ * @module "services.communities"
+ * @desc Communities service.
  */
 import fetch from 'isomorphic-fetch';
 import qs from 'qs';
 import { config } from 'topcoder-react-utils';
 
-/* Client-side version of the service. */
+/**
+ * Client-side version of the service.
+ */
 class Communities {
+  /**
+   * Creates a new {@link module:services.communities~Communities} instance.
+   * @param {String} tokenV3
+   */
   constructor(tokenV3) {
     this.private = { tokenV3 };
   }
@@ -47,12 +54,13 @@ class Communities {
   }
 }
 
+let lastInstance = null;
+
 /**
  * Returns a new or existing communities service.
  * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {Communities} Communties service object
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || (tokenV3 !== lastInstance.private.tokenV3)) {
     lastInstance = new Communities(tokenV3);

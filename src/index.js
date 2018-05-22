@@ -1,8 +1,14 @@
 /**
  * Export the lib.
  */
+import reducers, { factory as reducerFactory } from './reducers';
+
+export { reducerFactory };
+
+export { reducers };
+
 export { actions } from './actions';
-export { reducers } from './reducers';
+
 export { services } from './services';
 
-export { logger, errors, tc, time, mock, filter } from './utils';
+export { challenge, logger, errors, tc, time, mock } from './utils';

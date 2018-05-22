@@ -1,20 +1,20 @@
 /**
- * The Direct service takes care about communication with Direct APIs: projects,
- * billing accounts, copilots, all these stuff should be added here, at least
- * for now.
+ * @module "services.direct"
+ * @desc The Direct service takes care about communication with Direct APIs:
+ *  projects, billing accounts, copilots, all these stuff should be added here,
+ *  at least for now.
  */
-/* NOTE: We don't want to export getService(..) as default because it will be
- * confusing: most of users would expect that the default export should be an
- * instance of the service class, or the class itself. */
-/* eslint-disable import/prefer-default-export */
 
 import qs from 'qs';
 
 import { getApiV3 } from './api';
 
+/**
+ * Direct service class.
+ */
 class Direct {
   /**
-   * Service constructor.
+   * Creates a new {@link module:services.direct~Direct} instance.
    * @param {String} tokenV3 Optional. Topcoder auth token v3. Though optional,
    *  most probably most, if not all, of the service functionality won't work
    *  for non-authenticated visitors.
@@ -70,15 +70,17 @@ class Direct {
   }
 }
 
+let lastInstance = null;
 /**
- * Returns a new or existing Direct service.
+ * Returns a new or existing {@link module:services.direct~Direct} service.
  * @param {String} tokenV3 Optional. Topcoder auth token v3.
  * @return {Direct} Direct service object.
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || lastInstance.private.tokenV3 !== tokenV3) {
     lastInstance = new Direct(tokenV3);
   }
   return lastInstance;
 }
+
+export default undefined;
