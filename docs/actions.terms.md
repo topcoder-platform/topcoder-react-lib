@@ -44,7 +44,7 @@ Creates an action that fetches terms of the specified entity.
 | [entity.type] | <code>String</code> | entity type: `challenge` or `community` |
 | [entity.id] | <code>String</code> | entity id |
 | tokens | <code>Object</code> | object with tokenV2 and tokenV3 properties |
-| mockAgreed | <code>Boolean</code> | if true, then all terms will be mocked as   agreed this only makes effect if MOCK_TERMS_SERVICE is `true` and the only  purpose of this param is testing terms |
+| mockAgreed | <code>Boolean</code> | if true, then all terms will be mocked as  agreed this only makes effect if MOCK_TERMS_SERVICE is `true` and the only  purpose of this param is testing terms |
 
 <a name="module_actions.terms.checkStatusInit"></a>
 

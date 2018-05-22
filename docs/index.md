@@ -49,7 +49,7 @@ actions and reducer; thus, this module.</p>
 <dd><p>Actions related to <em>My Submissions Management</em> page.</p>
 </dd>
 <dt>
-<a href="actions.smp.md">actions.smp</a></dt>
+<a href="actions.stats.md">actions.stats</a></dt>
 <dd><p>Actions related to Topcoder statistics (at the moment, only community
  statistics).</p>
 </dd>
@@ -188,7 +188,7 @@ Currently, we use it to save user-defined filters in the challenge search.</p>
  accounts.</p>
 </dd>
 <dt>
-<a href="challenges.filter.md">challenges.filter</a></dt>
+<a href="challenge.filter.md">challenge.filter</a></dt>
 <dd><p>Universal challenge filter. Must be used in all places where we need filter
 or fetch challenges. This way we keep all related logic in the same place,
 which simplifies maintenance and modifications of the code.</p>

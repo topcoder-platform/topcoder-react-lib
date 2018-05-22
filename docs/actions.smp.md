@@ -8,7 +8,6 @@ Actions related to *My Submissions Management* page.
     * [.deleteSubmissionInit()](#module_actions.smp.deleteSubmissionInit) ⇒ <code>Action</code>
     * [.deleteSubmissionDone(tokenV3, submissionId)](#module_actions.smp.deleteSubmissionDone) ⇒ <code>Action</code>
     * [.downloadSubmission()](#module_actions.smp.downloadSubmission) ⇒ <code>Action</code>
-    * [.getCommunityStatsInit(community, uuid)](#module_actions.smp.getCommunityStatsInit) ⇒ <code>Action</code>
 
 <a name="module_actions.smp.deleteSubmissionInit"></a>
 
@@ -40,18 +39,4 @@ authenticated by cookies, and can be done with a simple <a> link in
 the component. Soon we'll migrate to use the new TC API instead, and
 then we'll decide, whether we need operate downloads in JS, or can we
 just remove this action.
-
-<a name="module_actions.smp.getCommunityStatsInit"></a>
-
-### actions.smp.getCommunityStatsInit(community, uuid) ⇒ <code>Action</code>
-Creates an action that signals beginning of the loading community
- stats.
-
-**Kind**: static method of [<code>actions.smp</code>](#module_actions.smp)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| community | <code>Object</code> | Community meta-data object. |
-| [community.communityId] | <code>String</code> | Community ID. |
-| uuid | <code>String</code> | Operation UUID. |
 
