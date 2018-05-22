@@ -261,6 +261,71 @@ export function normalizeChallenge(challenge, username) {
 }
 
 /**
+ * Normalizes a marathon match challenge object received from the backend.
+ * NOTE: This function is copied from the existing code in the challenge listing
+ * component. It is possible, that this normalization is not necessary after we
+ * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
+ * breaking anything.
+ * @param {Object} challenge MM challenge object received from the backend.
+ * @param {String} username Optional.
+ * @return {Object} Normalized challenge.
+ */
+export function normalizeMarathonMatch(challenge, username) {
+  const startDate = _.get(challenge, 'rounds[0].codingStartAt') || challenge.startDate;
+  const endDate = _.get(challenge, 'rounds[0].codingEndAt') || challenge.endDate;
+  const endTimestamp = new Date(endDate).getTime();
+  const status = endTimestamp > Date.now() ? 'Open' : 'Close';
+  const allPhases = [{
+    actualStartTime: startDate,
+    challengeId: challenge.id,
+    phaseType: 'Registration',
+    phaseStatus: status,
+    scheduledEndTime: endDate,
+  }, {
+    actualStartTime: startDate,
+    challengeId: challenge.id,
+    phaseType: 'Submission',
+    phaseStatus: status,
+    scheduledEndTime: endDate,
+  }];
+  const groups = {};
+  if (challenge.groupIds) {
+    challenge.groupIds.forEach((id) => {
+      groups[id] = true;
+    });
+  }
+  _.defaults(challenge, {
+    challengeCommunity: 'Data',
+    challengeType: 'Marathon',
+    allPhases,
+    currentPhases: allPhases.filter(phase => phase.phaseStatus === 'Open'),
+    communities: new Set([COMPETITION_TRACKS.DATA_SCIENCE]),
+    currentPhaseName: endTimestamp > Date.now() ? 'Registration' : '',
+    groups,
+    numRegistrants: challenge.userIds ? challenge.userIds.length : 0,
+    numSubmissions: 0, // currently challenge doesn't return submission value
+    platforms: '',
+    prizes: [0],
+    registrationOpen: endTimestamp > Date.now() &&
+      (challenge.status !== 'PAST') ? 'Yes' : 'No',
+    registrationStartDate: challenge.startDate,
+    submissionEndDate: challenge.endDate,
+    submissionEndTimestamp: endTimestamp,
+    technologies: '',
+    totalPrize: 0,
+    track: 'DATA_SCIENCE',
+    status: endTimestamp > Date.now() ? 'ACTIVE' : 'COMPLETED',
+    subTrack: 'MARATHON_MATCH',
+    users: username ? { username: true } : {},
+  });
+  /* eslint-disable no-param-reassign */
+  challenge.endDate = endDate;
+  challenge.startDate = startDate;
+  if (challenge.status === 'PAST') challenge.status = 'COMPLETED';
+  /* eslint-enable no-param-reassign */
+}
+
+/**
  * Helper method that checks for HTTP error response and throws Error in this case.
  * @param {Object} res HTTP response object
  * @return {Object} API JSON response object
@@ -465,6 +530,20 @@ class ChallengesService {
     return this.private.getChallenges('/challenges/', filters, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
+        return res;
+      });
+  }
+
+  /**
+   * Gets marathon matches.
+   * @param {Object} filters Optional.
+   * @param {Object} params Optional.
+   * @return {Promise} Resolve to the api response.
+   */
+  getMarathonMatches(filters, params) {
+    return this.private.getChallenges('/marathonMatches/', filters, params)
+      .then((res) => {
+        res.challenges.forEach(item => normalizeMarathonMatch(item));
         return res;
       });
   }

@@ -9,6 +9,7 @@ This module provides a service for convenient manipulation with
     * _static_
         * [.normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username)](#module_services.challenges.normalizeChallengeDetails) ⇒ <code>Object</code>
         * [.normalizeChallenge(challenge, username)](#module_services.challenges.normalizeChallenge)
+        * [.normalizeMarathonMatch(challenge, username)](#module_services.challenges.normalizeMarathonMatch) ⇒ <code>Object</code>
         * [.getService(tokenV3, tokenV2)](#module_services.challenges.getService) ⇒ <code>ChallengesService</code>
     * _inner_
         * [~ChallengesService](#module_services.challenges..ChallengesService)
@@ -20,6 +21,7 @@ This module provides a service for convenient manipulation with
             * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
             * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
             * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
+            * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
             * [.getSrms(params)](#module_services.challenges..ChallengesService+getSrms) ⇒ <code>Promise</code>
             * [.getUserChallenges(username, filters, params)](#module_services.challenges..ChallengesService+getUserChallenges) ⇒ <code>Promise</code>
             * [.getUserSrms(handle, params)](#module_services.challenges..ChallengesService+getUserSrms) ⇒ <code>Promise</code>
@@ -73,6 +75,23 @@ breaking anything.
 | challenge | <code>Object</code> | Challenge object received from the backend. |
 | username | <code>String</code> | Optional. |
 
+<a name="module_services.challenges.normalizeMarathonMatch"></a>
+
+### services.challenges.normalizeMarathonMatch(challenge, username) ⇒ <code>Object</code>
+Normalizes a marathon match challenge object received from the backend.
+NOTE: This function is copied from the existing code in the challenge listing
+component. It is possible, that this normalization is not necessary after we
+have moved to Topcoder API v3, but it is kept for now to minimize a risk of
+breaking anything.
+
+**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)  
+**Returns**: <code>Object</code> - Normalized challenge.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| challenge | <code>Object</code> | MM challenge object received from the backend. |
+| username | <code>String</code> | Optional. |
+
 <a name="module_services.challenges.getService"></a>
 
 ### services.challenges.getService(tokenV3, tokenV2) ⇒ <code>ChallengesService</code>
@@ -102,6 +121,7 @@ Challenge service.
     * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
     * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
     * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
+    * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
     * [.getSrms(params)](#module_services.challenges..ChallengesService+getSrms) ⇒ <code>Promise</code>
     * [.getUserChallenges(username, filters, params)](#module_services.challenges..ChallengesService+getUserChallenges) ⇒ <code>Promise</code>
     * [.getUserSrms(handle, params)](#module_services.challenges..ChallengesService+getUserSrms) ⇒ <code>Promise</code>
@@ -202,6 +222,19 @@ Gets challenges.
 
 **Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
 **Returns**: <code>Promise</code> - Resolves to the api response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| filters | <code>Object</code> | Optional. |
+| params | <code>Object</code> | Optional. |
+
+<a name="module_services.challenges..ChallengesService+getMarathonMatches"></a>
+
+#### challengesService.getMarathonMatches(filters, params) ⇒ <code>Promise</code>
+Gets marathon matches.
+
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Returns**: <code>Promise</code> - Resolve to the api response.  
 
 | Param | Type | Description |
 | --- | --- | --- |
