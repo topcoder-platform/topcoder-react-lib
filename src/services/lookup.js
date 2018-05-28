@@ -1,5 +1,5 @@
 /**
- * @module "services.members"
+ * @module "services.lookup"
  * @desc  This module provides a service to get lookup data from Topcoder
  * via API V3.
  */
@@ -29,12 +29,12 @@ class LookupService {
   }
 }
 
+let lastInstance = null;
 /**
  * Returns a new or existing lookup service.
  * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {LookupService} Lookup service object
  */
-let lastInstance = null;
 export function getService(tokenV3) {
   if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
     lastInstance = new LookupService(tokenV3);

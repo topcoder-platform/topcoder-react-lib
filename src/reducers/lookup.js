@@ -3,7 +3,7 @@
  * @desc Reducer for {@link module:actions.lookup} actions.
  *
  * State segment managed by this reducer has the following structure:
- * @param {Array} approvedSkills=[] approved skill tags.
+ * @param {Array} approvedSkills='' approved skill tags.
  */
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
@@ -30,11 +30,11 @@ function onGetApprovedSkills(state, { payload, error }) {
 }
 
 /**
- * Creates lookup reducer with the specified intial state.
- * @param {Object} initialState Optional. If not given, the default state is assumed.
- * @return {Function} Reducer.
+ * Creates a new Lookup reducer with the specified initial state.
+ * @param {Object} initialState Optional. Initial state.
+ * @return {Function} Lookup reducer.
  */
-function create(initialState) {
+function create(initialState = {}) {
   const a = actions.lookup;
   return handleActions({
     [a.getApprovedSkills]: onGetApprovedSkills,
@@ -45,11 +45,16 @@ function create(initialState) {
 
 /**
  * Factory which creates a new reducer.
- * @return Promise which resolves to the new reducer.
+ * @return {Promise}
+ * @resolves {Function(state, action): state} New reducer.
  */
 export function factory() {
   return Promise.resolve(create());
 }
 
-/* Default reducer with empty initial state. */
+/**
+ * @static
+ * @member default
+ * @desc Reducer with default initial state.
+ */
 export default create();

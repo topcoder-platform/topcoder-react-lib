@@ -1,9 +1,9 @@
 /**
  * @module "actions.lookup"
- * @desc Actions related to lookup API: get skills tags.
+ * @desc Actions related to lookup data.
  */
-import { createActions } from 'redux-actions';
 
+import { createActions } from 'redux-actions';
 import { getService } from '../services/lookup';
 
 /**
