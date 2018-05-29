@@ -1,7 +1,6 @@
 __coverage__
 .build-info
 .sass-cache
-dist
 node_modules
 _auto_doc_
 .vscode
