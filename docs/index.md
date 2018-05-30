@@ -25,6 +25,10 @@ messaging.</p>
 <dd><p>Actions related to user groups.</p>
 </dd>
 <dt>
+<a href="actions.lookup.md">actions.lookup</a></dt>
+<dd><p>Actions related to lookup data.</p>
+</dd>
+<dt>
 <a href="actions.member-tasks.md">actions.member-tasks</a></dt>
 <dd><p>Actions for management of member tasks and payments. Under the hood it
 is very similar to the challenge listing management, as these tasks are in
@@ -94,6 +98,11 @@ not look really necessary at the moment, thus we do not provide an
 action to really cancel group loading.</p>
 </dd>
 <dt>
+<a href="reducers.lookup.md">reducers.lookup</a></dt>
+<dd><p>Reducer for <a href="#module_actions.lookup">actions.lookup</a> actions.</p>
+<p>State segment managed by this reducer has the following structure:</p>
+</dd>
+<dt>
 <a href="reduces.member-tasks.md">reduces.member-tasks</a></dt>
 <dd><p>Member tasks reducer.</p>
 </dd>
@@ -160,6 +169,11 @@ only the IDs of immediate child groups; actual child group objects from
 &quot;subGroups&quot; are recursively added to the top level of the group map.
 Also each group in the group map is timestamped to keep caching of
 the loaded data.</p>
+</dd>
+<dt>
+<a href="services.lookup.md">services.lookup</a></dt>
+<dd><p>This module provides a service to get lookup data from Topcoder
+via API V3.</p>
 </dd>
 <dt>
 <a href="services.members.md">services.members</a></dt>
