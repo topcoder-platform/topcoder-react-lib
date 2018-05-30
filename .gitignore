@@ -4,3 +4,4 @@ __coverage__
 dist
 node_modules
 _auto_doc_
+.vscode

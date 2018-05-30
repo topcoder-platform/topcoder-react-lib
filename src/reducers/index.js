@@ -12,6 +12,7 @@ import errors, { factory as errorsFactory } from './errors';
 import challenge, { factory as challengeFactory } from './challenge';
 import profile, { factory as profileFactory } from './profile';
 import members, { factory as membersFactory } from './members';
+import lookup, { factory as lookupFactory } from './lookup';
 import memberTasks, { factory as memberTasksFactory } from './member-tasks';
 import reviewOpportunity, { factory as reviewOpportunityFactory }
   from './reviewOpportunity';
@@ -29,12 +30,29 @@ export function factory(options) {
     errors: errorsFactory(options),
     challenge: challengeFactory(options),
     profile: profileFactory(options),
+    lookup: lookupFactory(options),
     members: membersFactory(options),
     memberTasks: memberTasksFactory(options),
     reviewOpportunity: reviewOpportunityFactory(options),
     mySubmissionsManagement: mySubmissionsManagementFactory(options),
   });
 }
+
+export const factories = {
+  authFactory,
+  statsFactory,
+  termsFactory,
+  directFactory,
+  groupsFactory,
+  errorsFactory,
+  challengeFactory,
+  profileFactory,
+  lookupFactory,
+  membersFactory,
+  memberTasksFactory,
+  reviewOpportunityFactory,
+  mySubmissionsManagementFactory,
+};
 
 export default ({
   auth,
@@ -45,6 +63,7 @@ export default ({
   errors,
   challenge,
   profile,
+  lookup,
   members,
   memberTasks,
   reviewOpportunity,
