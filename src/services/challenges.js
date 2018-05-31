@@ -181,13 +181,14 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
       /* Taking phases from v3_filtered, because dates are not correct in v3 */
       currentPhases: v3Filtered.currentPhases || [],
 
-      /* Taking winners from v3_filtered, because winners are returned empty in v3 */
-      winners: v3Filtered.winners || [],
-
       /* v3 returns incorrect value for numberOfSubmissions for some reason */
       numSubmissions: v3Filtered.numSubmissions,
       groups,
     });
+
+    /* Taking winners from v3_filtered, because winners are returned empty in v3 */
+    /* TODO: Enforced due to problems with /v3/challenge/{ID} endpoint */
+    challenge.winners = v3Filtered.winners || [];
   }
 
   // Fill missing data from v3_user
