@@ -28,7 +28,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.0.6",
+  "version": "0.0.7",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "le_node": "^1.7.0",
@@ -42,7 +42,7 @@
     "redux": "^3.6.0",
     "redux-actions": "^2.0.1",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
-    "topcoder-react-utils": "^0.3.11"
+    "topcoder-react-utils": "^0.3.12"
   },
   "devDependencies": {
     "autoprefixer": "^8.2.0",
