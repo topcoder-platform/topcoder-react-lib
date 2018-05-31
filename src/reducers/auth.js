@@ -73,7 +73,7 @@ function create(initialState) {
  * @returns {Promise}
  * @resolves {Function(state, action): state} New reducer.
  */
-export function factory(options = {}) {
+export async function factory(options = {}) {
   const state = {
     tokenV2: _.get(options.auth, 'tokenV2'),
     tokenV3: _.get(options.auth, 'tokenV3'),
@@ -81,10 +81,11 @@ export function factory(options = {}) {
 
   if (state.tokenV3) {
     state.user = decodeToken(state.tokenV3);
-    return redux.resolveAction(actions.auth.loadProfile(state.tokenV3))
-      .then(res => create(onProfileLoaded(state, res), options.mergeReducers));
+    let a = actions.auth.loadProfile(state.tokenV3);
+    a = await redux.resolveAction(a);
+    return create(onProfileLoaded(state, a));
   }
-  return Promise.resolve(create(state, options.mergeReducers));
+  return create(state);
 }
 
 /**
