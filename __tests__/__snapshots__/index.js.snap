@@ -295,7 +295,6 @@ Object {
       "Spec Review": "Specification Review",
     },
     "getApiResponsePayloadV3": [Function],
-    "looseEqual": [Function],
   },
   "time": Object {
     "default": undefined,
