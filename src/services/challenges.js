@@ -189,6 +189,10 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
     /* Taking winners from v3_filtered, because winners are returned empty in v3 */
     /* TODO: Enforced due to problems with /v3/challenge/{ID} endpoint */
     challenge.winners = v3Filtered.winners || [];
+    /* TODO: To compenstate the difference in structure of `submissions`
+     * in v3 and v3Filetered results (existing code needs v3Filtered version).
+     */
+    challenge.submissions = v3Filtered.submissions || [];
   }
 
   // Fill missing data from v3_user
