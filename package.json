@@ -28,7 +28,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "le_node": "^1.7.0",
@@ -42,10 +42,10 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
-    "topcoder-react-utils": "^0.4.2"
+    "topcoder-react-utils": "^0.4.3"
   },
   "devDependencies": {
-    "autoprefixer": "^8.5.2",
+    "autoprefixer": "^8.6.0",
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
@@ -71,7 +71,7 @@
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.8.2",
-    "extract-css-chunks-webpack-plugin": "^2.0.18",
+    "extract-css-chunks-webpack-plugin": "^2.0.19",
     "file-loader": "^1.1.11",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.1.0",
@@ -87,7 +87,7 @@
     "react-test-renderer": "^16.4.0",
     "resolve-url-loader": "^2.3.0",
     "rimraf": "^2.6.2",
-    "sass-loader": "^7.0.1",
+    "sass-loader": "^7.0.2",
     "style-loader": "^0.21.0",
     "stylelint": "^9.2.1",
     "stylelint-config-standard": "^18.2.0",
