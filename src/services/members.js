@@ -4,6 +4,7 @@
  * members via API V3.
  */
 
+import qs from 'qs';
 import { getApiResponsePayloadV3 } from '../utils/tc';
 import { getApiV3 } from './api';
 
@@ -81,6 +82,31 @@ class MembersService {
    */
   async getStats(handle) {
     const res = await this.private.api.get(`/members/${handle}/stats`);
+    return getApiResponsePayloadV3(res);
+  }
+
+  /**
+   * Gets member statistics history
+   * @param {String} handle
+   * @return {Promise} Resolves to the stats object.
+   */
+  async getStatsHistory(handle) {
+    const res = await this.private.api.get(`/members/${handle}/stats/history`);
+    return getApiResponsePayloadV3(res);
+  }
+
+  /**
+   * Gets member statistics distribution
+   * @param {String} handle
+   * @param {String} track
+   * @param {String} subTrack
+   * @return {Promise} Resolves to the stats object.
+   */
+  async getStatsDistribution(handle, track, subTrack) {
+    const res = await this.private.api.get(`/members/stats/distribution?filter=${encodeURIComponent(qs.stringify({
+      track,
+      subTrack,
+    }))}`);
     return getApiResponsePayloadV3(res);
   }
 
