@@ -26,6 +26,7 @@ State segment managed by this reducer has the following strcuture:
         * [~onUnregisterDone(state, action)](#module_reducers.challenge..onUnregisterDone) ⇒ <code>Object</code>
         * [~onUpdateChallengeInit(state, actions)](#module_reducers.challenge..onUpdateChallengeInit) ⇒ <code>Object</code>
         * [~onUpdateChallengeDone(state, actions)](#module_reducers.challenge..onUpdateChallengeDone) ⇒ <code>Object</code>
+        * [~onGetActiveChallengesCountDone(state, action)](#module_reducers.challenge..onGetActiveChallengesCountDone) ⇒ <code>Object</code>
         * [~create(initialState)](#module_reducers.challenge..create) ⇒ <code>function</code>
 
 <a name="module_reducers.challenge.default"></a>
@@ -191,6 +192,19 @@ Handles CHALLENGE/UPDATE_CHALLENGE_DONE.
 | --- | --- | --- |
 | state | <code>Object</code> | Old state. |
 | actions | <code>Object</code> | Action. |
+
+<a name="module_reducers.challenge..onGetActiveChallengesCountDone"></a>
+
+### reducers.challenge~onGetActiveChallengesCountDone(state, action) ⇒ <code>Object</code>
+Handles CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
+
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Returns**: <code>Object</code> - New state  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>Object</code> | Old state. |
+| action | <code>Object</code> | Action payload/error |
 
 <a name="module_reducers.challenge..create"></a>
 

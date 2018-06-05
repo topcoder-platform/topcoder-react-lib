@@ -8,20 +8,27 @@ import { getService } from '../services/lookup';
 
 /**
  * @static
- * @desc Gets approved skill tags.
+ * @desc Creates an action that signals beginning of getting all skill tags.
  * @return {Action}
  */
-function getApprovedSkills() {
-  const service = getService();
+function getSkillTagsInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets all skill tags.
+ * @return {Action}
+ */
+function getSkillTagsDone() {
   const params = {
     domain: 'SKILLS',
     status: 'APPROVED',
   };
-  return service.getTags(params);
+  return getService().getTags(params);
 }
 
 export default createActions({
   LOOKUP: {
-    GET_APPROVED_SKILLS: getApprovedSkills,
+    GET_SKILL_TAGS_INIT: getSkillTagsInit,
+    GET_SKILL_TAGS_DONE: getSkillTagsDone,
   },
 });

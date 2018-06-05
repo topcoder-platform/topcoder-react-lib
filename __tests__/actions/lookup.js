@@ -1,3 +1,5 @@
+import { redux } from 'topcoder-react-utils';
+
 import * as LookupService from 'services/lookup';
 import actions from 'actions/lookup';
 
@@ -14,17 +16,16 @@ const mockLookupService = {
 };
 LookupService.getService = jest.fn().mockReturnValue(mockLookupService);
 
+test('Module exports', () => expect(actions).toMatchSnapshot());
 
-describe('lookup.getApprovedSkills', () => {
-  const a = actions.lookup.getApprovedSkills();
+test('lookup.getSkillTagsInit', async () => {
+  const actionResult = actions.lookup.getSkillTagsInit();
+  expect(actionResult).toMatchSnapshot();
+});
 
-  test('has expected type', () => {
-    expect(a.type).toEqual('LOOKUP/GET_APPROVED_SKILLS');
-  });
-
-  test('Approved skills should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual([tag]);
-      expect(mockLookupService.getTags).toBeCalled();
-    }));
+test('lookup.getSkillTagsDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.lookup.getSkillTagsDone());
+  expect(actionResult).toMatchSnapshot();
+  expect(mockLookupService.getTags).toBeCalled();
 });

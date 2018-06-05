@@ -106,20 +106,6 @@ function onGetStatsDone(state, { payload, error }) {
 }
 
 /**
- * Handles PROFILE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
- * @param {Object} state
- * @param {Object} action Payload will be JSON from api call
- * @return {Object} New state
- */
-function onGetActiveChallengesCountDone(state, { payload, error }) {
-  if (error) {
-    return { ...state, loadingError: true };
-  }
-
-  return ({ ...state, activeChallengesCount: payload, loadingError: false });
-}
-
-/**
  * Handles PROFILE/GET_LINKED_ACCOUNTS_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
@@ -461,8 +447,6 @@ function create(initialState) {
     [a.getStatsDone]: onGetStatsDone,
     [a.getLinkedAccountsInit]: state => state,
     [a.getLinkedAccountsDone]: onGetLinkedAccountsDone,
-    [a.getActiveChallengesCountInit]: state => state,
-    [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
     [a.uploadPhotoInit]: state => ({ ...state, uploadingPhoto: true }),
     [a.uploadPhotoDone]: onUploadPhotoDone,
     [a.deletePhotoInit]: state => ({ ...state, deletingPhoto: true }),

@@ -181,13 +181,18 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
       /* Taking phases from v3_filtered, because dates are not correct in v3 */
       currentPhases: v3Filtered.currentPhases || [],
 
-      /* Taking winners from v3_filtered, because winners are returned empty in v3 */
-      winners: v3Filtered.winners || [],
-
       /* v3 returns incorrect value for numberOfSubmissions for some reason */
       numSubmissions: v3Filtered.numSubmissions,
       groups,
     });
+
+    /* Taking winners from v3_filtered, because winners are returned empty in v3 */
+    /* TODO: Enforced due to problems with /v3/challenge/{ID} endpoint */
+    challenge.winners = v3Filtered.winners || [];
+    /* TODO: To compenstate the difference in structure of `submissions`
+     * in v3 and v3Filetered results (existing code needs v3Filtered version).
+     */
+    challenge.submissions = v3Filtered.submissions || [];
   }
 
   // Fill missing data from v3_user
@@ -621,6 +626,22 @@ class ChallengesService {
   getUserMarathonMatches(username, filters, params) {
     const endpoint = `/members/${username.toLowerCase()}/mms/`;
     return this.private.getChallenges(endpoint, filters, params);
+  }
+
+  /**
+   * Gets count of user's active challenges.
+   * @param {String} handle Topcoder user handle.
+   * @return {Action} Resolves to the api response.
+   */
+  getActiveChallengesCount(handle) {
+    const filter = { status: 'ACTIVE' };
+    const params = { limit: 1, offset: 0 };
+
+    const calls = [];
+    calls.push(this.getUserChallenges(handle, filter, params));
+    calls.push(this.getUserMarathonMatches(handle, filter, params));
+
+    return Promise.all(calls).then(([uch, umm]) => uch.totalCount + umm.totalCount);
   }
 
   /**

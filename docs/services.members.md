@@ -17,6 +17,8 @@ members via API V3.
             * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
             * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
             * [.getStats(handle)](#module_services.members..MembersService+getStats) ⇒ <code>Promise</code>
+            * [.getStatsHistory(handle)](#module_services.members..MembersService+getStatsHistory) ⇒ <code>Promise</code>
+            * [.getStatsDistribution(handle, track, subTrack)](#module_services.members..MembersService+getStatsDistribution) ⇒ <code>Promise</code>
             * [.getMemberSuggestions(keyword)](#module_services.members..MembersService+getMemberSuggestions) ⇒ <code>Promise</code>
             * [.addWebLink(userHandle, webLink)](#module_services.members..MembersService+addWebLink) ⇒ <code>Promise</code>
             * [.deleteWebLink(userHandle, webLinkHandle)](#module_services.members..MembersService+deleteWebLink) ⇒ <code>Promise</code>
@@ -54,6 +56,8 @@ Service class.
     * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
     * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
     * [.getStats(handle)](#module_services.members..MembersService+getStats) ⇒ <code>Promise</code>
+    * [.getStatsHistory(handle)](#module_services.members..MembersService+getStatsHistory) ⇒ <code>Promise</code>
+    * [.getStatsDistribution(handle, track, subTrack)](#module_services.members..MembersService+getStatsDistribution) ⇒ <code>Promise</code>
     * [.getMemberSuggestions(keyword)](#module_services.members..MembersService+getMemberSuggestions) ⇒ <code>Promise</code>
     * [.addWebLink(userHandle, webLink)](#module_services.members..MembersService+addWebLink) ⇒ <code>Promise</code>
     * [.deleteWebLink(userHandle, webLinkHandle)](#module_services.members..MembersService+deleteWebLink) ⇒ <code>Promise</code>
@@ -145,6 +149,32 @@ Gets member statistics.
 | Param | Type |
 | --- | --- |
 | handle | <code>String</code> | 
+
+<a name="module_services.members..MembersService+getStatsHistory"></a>
+
+#### membersService.getStatsHistory(handle) ⇒ <code>Promise</code>
+Gets member statistics history
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
+**Returns**: <code>Promise</code> - Resolves to the stats object.  
+
+| Param | Type |
+| --- | --- |
+| handle | <code>String</code> | 
+
+<a name="module_services.members..MembersService+getStatsDistribution"></a>
+
+#### membersService.getStatsDistribution(handle, track, subTrack) ⇒ <code>Promise</code>
+Gets member statistics distribution
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
+**Returns**: <code>Promise</code> - Resolves to the stats object.  
+
+| Param | Type |
+| --- | --- |
+| handle | <code>String</code> | 
+| track | <code>String</code> | 
+| subTrack | <code>String</code> | 
 
 <a name="module_services.members..MembersService+getMemberSuggestions"></a>
 

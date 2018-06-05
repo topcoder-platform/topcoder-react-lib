@@ -3,7 +3,7 @@
  * @desc Reducer for {@link module:actions.lookup} actions.
  *
  * State segment managed by this reducer has the following structure:
- * @param {Array} approvedSkills='' approved skill tags.
+ * @param {Array} skillTags='' skill tags.
  */
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
@@ -11,21 +11,21 @@ import logger from '../utils/logger';
 import actions from '../actions/lookup';
 
 /**
- * Handles LOOKUP/GET_APPROVED_SKILLS action.
+ * Handles LOOKUP/GET_SKILL_TAGS_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
  * @return {Object} New state
  */
-function onGetApprovedSkills(state, { payload, error }) {
+function onGetSkillTagsDone(state, { payload, error }) {
   if (error) {
-    logger.error('Failed to get approved skill tags', payload);
-    return { ...state, loadingApprovedSkillsError: true };
+    logger.error('Failed to get skill tags', payload);
+    return { ...state, loadingSkillTagsError: true };
   }
 
   return ({
     ...state,
-    loadingApprovedSkillsError: false,
-    approvedSkills: payload,
+    loadingSkillTagsError: false,
+    skillTags: payload,
   });
 }
 
@@ -37,9 +37,10 @@ function onGetApprovedSkills(state, { payload, error }) {
 function create(initialState = {}) {
   const a = actions.lookup;
   return handleActions({
-    [a.getApprovedSkills]: onGetApprovedSkills,
+    [a.getSkillTagsInit]: state => state,
+    [a.getSkillTagsDone]: onGetSkillTagsDone,
   }, _.defaults(initialState, {
-    approvedSkills: [],
+    skillTags: [],
   }));
 }
 

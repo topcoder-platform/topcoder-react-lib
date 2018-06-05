@@ -18,7 +18,6 @@ Reducer for Profile API data
         * [~onGetInfoDone(state, action)](#module_reducers.profile..onGetInfoDone) ⇒ <code>Object</code>
         * [~onGetSkillsDone(state, action)](#module_reducers.profile..onGetSkillsDone) ⇒ <code>Object</code>
         * [~onGetStatsDone(state, action)](#module_reducers.profile..onGetStatsDone) ⇒ <code>Object</code>
-        * [~onGetActiveChallengesCountDone(state, action)](#module_reducers.profile..onGetActiveChallengesCountDone) ⇒ <code>Object</code>
         * [~onGetLinkedAccountsDone(state, action)](#module_reducers.profile..onGetLinkedAccountsDone) ⇒ <code>Object</code>
         * [~onGetCredentialDone(state, action)](#module_reducers.profile..onGetCredentialDone) ⇒ <code>Object</code>
         * [~onGetEmailPreferencesDone(state, action)](#module_reducers.profile..onGetEmailPreferencesDone) ⇒ <code>Object</code>
@@ -113,19 +112,6 @@ Handles PROFILE/GET_SKILLS_DONE action.
 
 ### reducers.profile~onGetStatsDone(state, action) ⇒ <code>Object</code>
 Handles PROFILE/GET_STATS_DONE action.
-
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
-
-<a name="module_reducers.profile..onGetActiveChallengesCountDone"></a>
-
-### reducers.profile~onGetActiveChallengesCountDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
 
 **Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
 **Returns**: <code>Object</code> - New state  

@@ -265,6 +265,22 @@ function onUpdateChallengeDone(state, { error, payload }) {
 }
 
 /**
+ * Handles CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
+ * @param {Object} state Old state.
+ * @param {Object} action Action payload/error
+ * @return {Object} New state
+ */
+function onGetActiveChallengesCountDone(state, { payload, error }) {
+  if (error) {
+    fireErrorMessage('Failed to get active challenges count!', '');
+    logger.error('Failed to get active challenges count', payload);
+    return state;
+  }
+
+  return ({ ...state, activeChallengesCount: payload });
+}
+
+/**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Challenge reducer.
@@ -301,6 +317,8 @@ function create(initialState) {
     [a.fetchCheckpointsDone]: onFetchCheckpointsDone,
     [a.updateChallengeInit]: onUpdateChallengeInit,
     [a.updateChallengeDone]: onUpdateChallengeDone,
+    [a.getActiveChallengesCountInit]: state => state,
+    [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,

@@ -1,9 +1,9 @@
 /**
  * Export the lib.
  */
-import reducers, { factories as reducerFactories, factory as reducerFactory } from './reducers';
+import reducers, { factory as reducerFactory } from './reducers';
 
-export { reducerFactories, reducerFactory };
+export { reducerFactory };
 
 export { reducers };
 
