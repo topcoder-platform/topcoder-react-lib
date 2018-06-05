@@ -1,0 +1,892 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Default reducer Creates expected intial state 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "12345",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles deleteSubmissionDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [],
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles fetchSubmissionsDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles fetchSubmissionsDoneError as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles fetchSubmissionsInit as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "12345",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Default reducer Handles getActiveChallengesCountDone as expected 1`] = `
+Object {
+  "activeChallengesCount": 5,
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Creates expected intial state 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "12345",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles deleteSubmissionDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [],
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles fetchSubmissionsDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles fetchSubmissionsDoneError as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles fetchSubmissionsInit as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "12345",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory with server-side rendering Handles getActiveChallengesCountDone as expected 1`] = `
+Object {
+  "activeChallengesCount": 5,
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Creates expected intial state 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "12345",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles deleteSubmissionDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [],
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles fetchSubmissionsDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles fetchSubmissionsDoneError as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles fetchSubmissionsInit as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "12345",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without http request Handles getActiveChallengesCountDone as expected 1`] = `
+Object {
+  "activeChallengesCount": 5,
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Creates expected intial state 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": null,
+  "fetchChallengeFailure": false,
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "12345",
+  "loadingResultsForChallengeId": "",
+  "mySubmissions": Object {},
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles deleteSubmissionDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [],
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles fetchSubmissionsDone as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "12345",
+    "v2": Array [
+      Object {
+        "submissionId": "1",
+      },
+    ],
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles fetchSubmissionsDoneError as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles fetchSubmissionsInit as expected 1`] = `
+Object {
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "12345",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {},
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;
+
+exports[`Factory without server-side rendering Handles getActiveChallengesCountDone as expected 1`] = `
+Object {
+  "activeChallengesCount": 5,
+  "checkpoints": null,
+  "details": Object {
+    "id": 12345,
+    "tag": "v3-normalized-details",
+  },
+  "fetchChallengeFailure": "Unknown error",
+  "loadingCheckpoints": false,
+  "loadingDetailsForChallengeId": "",
+  "loadingResultsForChallengeId": "",
+  "loadingSubmissionsForChallengeId": "",
+  "mySubmissions": Object {
+    "challengeId": "",
+    "v2": null,
+  },
+  "mySubmissionsManagement": Object {
+    "deletingSubmission": false,
+  },
+  "registering": false,
+  "results": null,
+  "resultsLoadedForChallengeId": "",
+  "unregistering": false,
+  "updatingChallengeUuid": "",
+}
+`;

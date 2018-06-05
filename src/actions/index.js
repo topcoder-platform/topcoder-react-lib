@@ -10,6 +10,7 @@ import profileActions from './profile';
 import memberActions from './members';
 import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
+import lookupActions from './lookup';
 
 export const actions = {
   auth: authActions.auth,
@@ -24,6 +25,7 @@ export const actions = {
   members: memberActions.members,
   memberTasks: memberTaskActions.memberTasks,
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,
+  lookup: lookupActions.lookup,
 };
 
 export default undefined;

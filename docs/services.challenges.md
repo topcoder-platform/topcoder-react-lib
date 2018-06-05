@@ -28,6 +28,7 @@ This module provides a service for convenient manipulation with
             * [.register(challengeId)](#module_services.challenges..ChallengesService+register) ⇒ <code>Promise</code>
             * [.unregister(challengeId)](#module_services.challenges..ChallengesService+unregister) ⇒ <code>Promise</code>
             * [.getUserMarathonMatches(username, filters, params)](#module_services.challenges..ChallengesService+getUserMarathonMatches) ⇒ <code>Promise</code>
+            * [.getActiveChallengesCount(handle)](#module_services.challenges..ChallengesService+getActiveChallengesCount) ⇒ <code>Action</code>
             * [.submit(body, challengeId, track)](#module_services.challenges..ChallengesService+submit) ⇒ <code>Promise</code>
             * [.updateChallenge(challenge, tokenV3)](#module_services.challenges..ChallengesService+updateChallenge) ⇒ <code>Promise</code>
         * [~normalizeNameConventionForSubtrack(subTrack)](#module_services.challenges..normalizeNameConventionForSubtrack) ⇒ <code>String</code>
@@ -128,6 +129,7 @@ Challenge service.
     * [.register(challengeId)](#module_services.challenges..ChallengesService+register) ⇒ <code>Promise</code>
     * [.unregister(challengeId)](#module_services.challenges..ChallengesService+unregister) ⇒ <code>Promise</code>
     * [.getUserMarathonMatches(username, filters, params)](#module_services.challenges..ChallengesService+getUserMarathonMatches) ⇒ <code>Promise</code>
+    * [.getActiveChallengesCount(handle)](#module_services.challenges..ChallengesService+getActiveChallengesCount) ⇒ <code>Action</code>
     * [.submit(body, challengeId, track)](#module_services.challenges..ChallengesService+submit) ⇒ <code>Promise</code>
     * [.updateChallenge(challenge, tokenV3)](#module_services.challenges..ChallengesService+updateChallenge) ⇒ <code>Promise</code>
 
@@ -313,6 +315,18 @@ Gets marathon matches of the specified user.
 | username | <code>String</code> | User whose challenges we want to fetch. |
 | filters | <code>Object</code> | Optional. |
 | params | <code>Number</code> | Optional. |
+
+<a name="module_services.challenges..ChallengesService+getActiveChallengesCount"></a>
+
+#### challengesService.getActiveChallengesCount(handle) ⇒ <code>Action</code>
+Gets count of user's active challenges.
+
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Returns**: <code>Action</code> - Resolves to the api response.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
 
 <a name="module_services.challenges..ChallengesService+submit"></a>
 

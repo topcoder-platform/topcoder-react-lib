@@ -329,6 +329,16 @@ class ChallengesService {
     return this.private.apiV2.post(endpoint)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
+
+  /**
+   * Gets count of user's active challenges.
+   * @param {String} handle Topcoder user handle.
+   * @return {Action} Resolves to the api response.
+   */
+  getActiveChallengesCount(handle) {
+    _.noop(this, handle);
+    return Promise.resolve(10);
+  }
 }
 
 /**

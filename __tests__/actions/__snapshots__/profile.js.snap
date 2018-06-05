@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Module exports 1`] = `
+Object {
+  "profile": Object {
+    "addSkillDone": [Function],
+    "addSkillInit": [Function],
+    "addWebLinkDone": [Function],
+    "addWebLinkInit": [Function],
+    "deletePhotoDone": [Function],
+    "deletePhotoInit": [Function],
+    "deleteWebLinkDone": [Function],
+    "deleteWebLinkInit": [Function],
+    "getAchievementsDone": [Function],
+    "getAchievementsInit": [Function],
+    "getCredentialDone": [Function],
+    "getCredentialInit": [Function],
+    "getEmailPreferencesDone": [Function],
+    "getEmailPreferencesInit": [Function],
+    "getExternalAccountsDone": [Function],
+    "getExternalAccountsInit": [Function],
+    "getExternalLinksDone": [Function],
+    "getExternalLinksInit": [Function],
+    "getInfoDone": [Function],
+    "getInfoInit": [Function],
+    "getLinkedAccountsDone": [Function],
+    "getLinkedAccountsInit": [Function],
+    "getSkillsDone": [Function],
+    "getSkillsInit": [Function],
+    "getStatsDone": [Function],
+    "getStatsInit": [Function],
+    "hideSkillDone": [Function],
+    "hideSkillInit": [Function],
+    "linkExternalAccountDone": [Function],
+    "linkExternalAccountInit": [Function],
+    "loadProfile": [Function],
+    "saveEmailPreferencesDone": [Function],
+    "saveEmailPreferencesInit": [Function],
+    "unlinkExternalAccountDone": [Function],
+    "unlinkExternalAccountInit": [Function],
+    "updatePasswordDone": [Function],
+    "updatePasswordInit": [Function],
+    "updateProfileDone": [Function],
+    "updateProfileInit": [Function],
+    "uploadPhotoDone": [Function],
+    "uploadPhotoInit": [Function],
+  },
+}
+`;
+
+exports[`profile.addSkillDone 1`] = `
+Object {
+  "payload": Object {
+    "handle": "tcscoder",
+    "skill": Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+    "skills": Array [
+      Object {
+        "tagId": 123,
+        "tagName": "Node.js",
+      },
+    ],
+  },
+  "type": "PROFILE/ADD_SKILL_DONE",
+}
+`;
+
+exports[`profile.addWebLinkDone 1`] = `
+Object {
+  "payload": Object {
+    "data": "https://www.google.com",
+    "handle": "tcscoder",
+  },
+  "type": "PROFILE/ADD_WEB_LINK_DONE",
+}
+`;
+
+exports[`profile.deleteWebLinkDone 1`] = `
+Object {
+  "payload": Object {
+    "data": "https://www.google.com",
+    "handle": "tcscoder",
+  },
+  "type": "PROFILE/DELETE_WEB_LINK_DONE",
+}
+`;
+
+exports[`profile.getCredentialDone 1`] = `
+Object {
+  "payload": Object {
+    "credential": Object {
+      "hasPassword": true,
+    },
+  },
+  "type": "PROFILE/GET_CREDENTIAL_DONE",
+}
+`;
+
+exports[`profile.getEmailPreferencesDone 1`] = `
+Object {
+  "payload": Object {
+    "subscriptions": Object {
+      "TOPCODER_NL_DATA": true,
+    },
+  },
+  "type": "PROFILE/GET_EMAIL_PREFERENCES_DONE",
+}
+`;
+
+exports[`profile.getLinkedAccountsDone 1`] = `
+Object {
+  "payload": Object {
+    "profiles": Array [
+      Object {
+        "providerType": "github",
+        "social": true,
+        "userId": "623633",
+      },
+    ],
+  },
+  "type": "PROFILE/GET_LINKED_ACCOUNTS_DONE",
+}
+`;
+
+exports[`profile.hideSkillDone 1`] = `
+Object {
+  "payload": Object {
+    "handle": "tcscoder",
+    "skill": Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+    "skills": Array [],
+  },
+  "type": "PROFILE/HIDE_SKILL_DONE",
+}
+`;
+
+exports[`profile.linkExternalAccountDone 1`] = `
+Object {
+  "payload": Object {
+    "data": Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+    "handle": "tcscoder",
+  },
+  "type": "PROFILE/LINK_EXTERNAL_ACCOUNT_DONE",
+}
+`;
+
+exports[`profile.saveEmailPreferencesDone 1`] = `
+Object {
+  "payload": Object {
+    "data": Object {
+      "subscriptions": Object {
+        "TOPCODER_NL_DATA": true,
+      },
+    },
+    "handle": "tcscoder",
+  },
+  "type": "PROFILE/SAVE_EMAIL_PREFERENCES_DONE",
+}
+`;
+
+exports[`profile.unlinkExternalAccountDone 1`] = `
+Object {
+  "payload": Object {
+    "handle": "tcscoder",
+    "providerType": "github",
+  },
+  "type": "PROFILE/UNLINK_EXTERNAL_ACCOUNT_DONE",
+}
+`;
+
+exports[`profile.updatePasswordDone 1`] = `
+Object {
+  "payload": Object {
+    "data": Object {
+      "update": true,
+    },
+    "handle": "tcscoder",
+  },
+  "type": "PROFILE/UPDATE_PASSWORD_DONE",
+}
+`;
+
+exports[`profile.updateProfileDone 1`] = `
+Object {
+  "payload": Object {
+    "handle": "tcscoder",
+    "userId": 12345,
+  },
+  "type": "PROFILE/UPDATE_PROFILE_DONE",
+}
+`;
+
+exports[`profile.uploadPhotoDone 1`] = `
+Object {
+  "payload": Object {
+    "handle": "tcscoder",
+    "photoURL": "url-of-photo",
+  },
+  "type": "PROFILE/UPLOAD_PHOTO_DONE",
+}
+`;

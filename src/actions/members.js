@@ -106,7 +106,8 @@ async function getStatsDone(handle, uuid, tokenV3) {
 }
 
 /**
- * Payload creator for the action that inits the loading of member active challenges.
+ * @static
+ * @desc Payload creator for the action that inits the loading of member active challenges.
  * @param {String} handle
  * @param {String} uuid
  * @returns {Object} Payload
@@ -116,7 +117,8 @@ async function getActiveChallengesInit(handle, uuid) {
 }
 
 /**
- * Payload creator for the action that loads the member active challenges.
+ * @static
+ * @desc Payload creator for the action that loads the member active challenges.
  * @param {String} handle
  * @param {String} uuid
  * @param {String} tokenV3
