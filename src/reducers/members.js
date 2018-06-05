@@ -163,6 +163,126 @@ function onGetStatsDone(state, { error, payload }) {
 }
 
 /**
+ * Inits the loading of member stats history.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetStatsHistoryInit(state, action) {
+  const { handle, uuid } = action.payload;
+  let res = state[handle];
+  res = res ? _.clone(res) : {};
+  res.statsHistory = { loadingUuid: uuid };
+  return {
+    ...state,
+    [handle]: res,
+  };
+}
+
+/**
+ * Finalizes the loading of member stats history.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetStatsHistoryDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member statsHistory', payload);
+    fireErrorMessage('Failed to get member statsHistory', '');
+    return state;
+  }
+
+  const { data, handle, uuid } = payload;
+  if (uuid !== _.get(state[handle], 'statsHistory.loadingUuid')) return state;
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      statsHistory: { data, timestamp: Date.now() },
+    },
+  };
+}
+
+/**
+ * Inits the loading of member stats distribution.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetStatsDistributionInit(state, action) {
+  const { handle, uuid } = action.payload;
+  let res = state[handle];
+  res = res ? _.clone(res) : {};
+  res.statsDistribution = { loadingUuid: uuid };
+  return {
+    ...state,
+    [handle]: res,
+  };
+}
+
+/**
+ * Finalizes the loading of member stats distribution.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetStatsDistributionDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member statsDistribution', payload);
+    fireErrorMessage('Failed to get member statsDistribution', '');
+    return state;
+  }
+
+  const { data, handle, uuid } = payload;
+  if (uuid !== _.get(state[handle], 'statsDistribution.loadingUuid')) return state;
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      statsDistribution: { data, timestamp: Date.now() },
+    },
+  };
+}
+
+/**
+ * Inits the loading of member active challenges.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetActiveChallengesInit(state, action) {
+  const { handle } = action.payload;
+  return {
+    ...state,
+    [handle]: { ...state[handle], activeChallengesCount: null },
+  };
+}
+
+/**
+ * Finalizes the loading of member active challenges.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetActiveChallengesDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member active challenges', payload);
+    fireErrorMessage('Failed to get member active challenges', '');
+    return state;
+  }
+
+  const { handle, challenges } = payload;
+
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      activeChallengesCount: challenges.length,
+    },
+  };
+}
+
+/**
  * Creates a new Members reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Members reducer.
@@ -178,6 +298,12 @@ function create(initialState = {}) {
     [a.getFinancesDone]: onGetFinancesDone,
     [a.getStatsInit]: onGetStatsInit,
     [a.getStatsDone]: onGetStatsDone,
+    [a.getStatsHistoryInit]: onGetStatsHistoryInit,
+    [a.getStatsHistoryDone]: onGetStatsHistoryDone,
+    [a.getStatsDistributionInit]: onGetStatsDistributionInit,
+    [a.getStatsDistributionDone]: onGetStatsDistributionDone,
+    [a.getActiveChallengesInit]: onGetActiveChallengesInit,
+    [a.getActiveChallengesDone]: onGetActiveChallengesDone,
   }, initialState);
 }
 

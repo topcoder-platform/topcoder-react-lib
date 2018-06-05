@@ -21,6 +21,12 @@ Reducer for the Redux store segment that holds members data.
         * [~onGetFinancesDone(state, action)](#module_reducers.members..onGetFinancesDone) ⇒ <code>Object</code>
         * [~onGetStatsInit(state, action)](#module_reducers.members..onGetStatsInit) ⇒ <code>Object</code>
         * [~onGetStatsDone(state, action)](#module_reducers.members..onGetStatsDone) ⇒ <code>Object</code>
+        * [~onGetStatsHistoryInit(state, action)](#module_reducers.members..onGetStatsHistoryInit) ⇒ <code>Object</code>
+        * [~onGetStatsHistoryDone(state, action)](#module_reducers.members..onGetStatsHistoryDone) ⇒ <code>Object</code>
+        * [~onGetStatsDistributionInit(state, action)](#module_reducers.members..onGetStatsDistributionInit) ⇒ <code>Object</code>
+        * [~onGetStatsDistributionDone(state, action)](#module_reducers.members..onGetStatsDistributionDone) ⇒ <code>Object</code>
+        * [~onGetActiveChallengesInit(state, action)](#module_reducers.members..onGetActiveChallengesInit) ⇒ <code>Object</code>
+        * [~onGetActiveChallengesDone(state, action)](#module_reducers.members..onGetActiveChallengesDone) ⇒ <code>Object</code>
         * [~create(initialState)](#module_reducers.members..create) ⇒ <code>function</code>
 
 <a name="module_reducers.members.default"></a>
@@ -132,6 +138,84 @@ Inits the loading of member stats.
 
 ### reducers.members~onGetStatsDone(state, action) ⇒ <code>Object</code>
 Finalizes the loading of member stats.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetStatsHistoryInit"></a>
+
+### reducers.members~onGetStatsHistoryInit(state, action) ⇒ <code>Object</code>
+Inits the loading of member stats history.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetStatsHistoryDone"></a>
+
+### reducers.members~onGetStatsHistoryDone(state, action) ⇒ <code>Object</code>
+Finalizes the loading of member stats history.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetStatsDistributionInit"></a>
+
+### reducers.members~onGetStatsDistributionInit(state, action) ⇒ <code>Object</code>
+Inits the loading of member stats distribution.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetStatsDistributionDone"></a>
+
+### reducers.members~onGetStatsDistributionDone(state, action) ⇒ <code>Object</code>
+Finalizes the loading of member stats distribution.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetActiveChallengesInit"></a>
+
+### reducers.members~onGetActiveChallengesInit(state, action) ⇒ <code>Object</code>
+Inits the loading of member active challenges.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| action | <code>Object</code> | 
+
+<a name="module_reducers.members..onGetActiveChallengesDone"></a>
+
+### reducers.members~onGetActiveChallengesDone(state, action) ⇒ <code>Object</code>
+Finalizes the loading of member active challenges.
 
 **Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
 **Returns**: <code>Object</code> - New state.  
