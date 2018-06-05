@@ -13,7 +13,6 @@ const mockActions = {
     loadProfile: mockAction('LOAD_PROFILE', handle),
     getInfoDone: mockAction('GET_INFO_DONE', { handle }),
     getExternalLinksDone: mockAction('GET_EXTERNAL_LINKS_DONE', [externalLink]),
-    getActiveChallengesCountDone: mockAction('GET_ACTIVE_CHALLENGES_COUNT_DONE', 5),
     getLinkedAccountsDone: mockAction('GET_LINKED_ACCOUNTS_DONE', { profiles: [linkedAccount] }),
     getCredentialDone: mockAction('GET_CREDENTIAL_DONE', { credential: { hasPassword: true } }),
     getEmailPreferencesDone: mockAction('GET_EMAIL_PREFERENCES_DONE', { subscriptions: { TOPCODER_NL_DATA: true } }),
@@ -47,218 +46,158 @@ const reducers = require('reducers/profile');
 
 let reducer;
 
-function testReducer(istate) {
+function testReducer() {
   let state;
 
   test('Initial state', () => {
     state = reducer(undefined, {});
-    expect(state).toEqual(istate);
+    expect(state).toMatchSnapshot();
   });
 
   test('Load profile', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.loadProfile());
-    expect(state).toEqual({ ...prevState, profileForHandle: handle });
+    expect(state).toMatchSnapshot();
   });
 
   test('Get member info', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.getInfoDone());
-    expect(state).toEqual({ ...prevState, info: { handle } });
+    expect(state).toMatchSnapshot();
   });
 
   test('Get external links', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.getExternalLinksDone());
-    expect(state).toEqual({ ...prevState, externalLinks: [externalLink] });
-  });
-
-  test('Get active challenges count', () => {
-    const prevState = state;
-    state = reducer(state, mockActions.profile.getActiveChallengesCountDone());
-    expect(state).toEqual({ ...prevState, activeChallengesCount: 5 });
+    expect(state).toMatchSnapshot();
   });
 
   test('Get linked account', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.getLinkedAccountsDone());
-    expect(state).toEqual({ ...prevState, linkedAccounts: [linkedAccount] });
+    expect(state).toMatchSnapshot();
   });
 
   test('Get credential', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.getCredentialDone());
-    expect(state).toEqual({ ...prevState, credential: { hasPassword: true } });
+    expect(state).toMatchSnapshot();
   });
 
   test('Get email preferences', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.getEmailPreferencesDone());
-    expect(state).toEqual({ ...prevState, emailPreferences: { TOPCODER_NL_DATA: true } });
+    expect(state).toMatchSnapshot();
   });
 
   test('Upload photo init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.uploadPhotoInit());
-    expect(state).toEqual({ ...prevState, uploadingPhoto: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Upload photo done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.uploadPhotoDone());
-    expect(state).toEqual({ ...prevState, info: { handle, photoURL }, uploadingPhoto: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Delete photo init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.deletePhotoInit());
-    expect(state).toEqual({ ...prevState, deletingPhoto: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Delete photo done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.deletePhotoDone());
-    expect(state).toEqual({ ...prevState, info: { handle, photoURL: null }, deletingPhoto: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Update profile init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.updateProfileInit());
-    expect(state).toEqual({ ...prevState, updatingProfile: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Update profile done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.updateProfileDone());
-    expect(state).toEqual({ ...prevState, info: { handle, photoURL: null, description: 'bio desc' }, updatingProfile: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Add skill init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.addSkillInit());
-    expect(state).toEqual({ ...prevState, addingSkill: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Add skill done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.addSkillDone());
-    expect(state).toEqual({ ...prevState, skills: [skill], addingSkill: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Hide skill init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.hideSkillInit());
-    expect(state).toEqual({ ...prevState, hidingSkill: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Hide skill done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.hideSkillDone());
-    expect(state).toEqual({ ...prevState, skills: [], hidingSkill: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Add web link init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.addWebLinkInit());
-    expect(state).toEqual({ ...prevState, addingWebLink: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Add web link done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.addWebLinkDone());
-    expect(state).toEqual({
-      ...prevState,
-      externalLinks: [externalLink, webLink],
-      addingWebLink: false,
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Delete web link init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.deleteWebLinkInit());
-    expect(state).toEqual({ ...prevState, deletingWebLink: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Delete web link done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.deleteWebLinkDone());
-    expect(state).toEqual({ ...prevState, externalLinks: [externalLink], deletingWebLink: false });
+    expect(state).toMatchSnapshot();
   });
 
   test('Link external account init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.linkExternalAccountInit());
-    expect(state).toEqual({ ...prevState, linkingExternalAccount: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Link external account done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.linkExternalAccountDone());
-    expect(state).toEqual({
-      ...prevState,
-      linkedAccounts: [linkedAccount, linkedAccount2],
-      linkingExternalAccount: false,
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Unlink external account init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.unlinkExternalAccountInit());
-    expect(state).toEqual({ ...prevState, unlinkingExternalAccount: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Unlink external account done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.unlinkExternalAccountDone());
-    expect(state).toEqual({
-      ...prevState,
-      linkedAccounts: [linkedAccount],
-      unlinkingExternalAccount: false,
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Save email preferences init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.saveEmailPreferencesInit());
-    expect(state).toEqual({ ...prevState, savingEmailPreferences: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Save email preferences done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.saveEmailPreferencesDone());
-    expect(state).toEqual({
-      ...prevState,
-      emailPreferences: { TOPCODER_NL_DATA: true },
-      savingEmailPreferences: false,
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Update password init', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.updatePasswordInit());
-    expect(state).toEqual({ ...prevState, updatingPassword: true });
+    expect(state).toMatchSnapshot();
   });
 
   test('Update password done', () => {
-    const prevState = state;
     state = reducer(state, mockActions.profile.updatePasswordDone());
-    expect(state).toEqual({ ...prevState, updatingPassword: false });
+    expect(state).toMatchSnapshot();
   });
 }
 
-const defaultState = {
-  achievements: null,
-  copilot: false,
-  country: '',
-  info: null,
-  loadingError: false,
-  skills: null,
-  stats: null,
-};
-
 describe('Default reducer', () => {
   reducer = reducers.default;
-  testReducer(defaultState);
+  testReducer();
 });
 
 describe('Factory without server side rendering', () => {
@@ -269,6 +208,6 @@ describe('Factory without server side rendering', () => {
     });
   });
 
-  testReducer(defaultState);
+  testReducer();
 });
 

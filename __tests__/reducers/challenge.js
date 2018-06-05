@@ -25,6 +25,7 @@ const mockChallengeActions = {
       { challengeId: '12345' },
       'Unknown error',
     ),
+    getActiveChallengesCountDone: mockAction('CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE', 5),
   },
   DETAIL_TABS: {
     DETAILS: 'details',
@@ -52,188 +53,58 @@ const reducers = require('../../src/reducers/challenge');
 
 beforeEach(() => jest.clearAllMocks());
 
-const defaultState = {
-  details: null,
-  checkpoints: null,
-  loadingCheckpoints: false,
-  loadingDetailsForChallengeId: '',
-  loadingResultsForChallengeId: '',
-  mySubmissions: {},
-  mySubmissionsManagement: {},
-  registering: false,
-  results: null,
-  resultsLoadedForChallengeId: '',
-  unregistering: false,
-  updatingChallengeUuid: '',
-};
-
 let reducer;
-function testReducer(istate) {
+function testReducer() {
   let state;
 
   test('Creates expected intial state', () => {
     state = reducer(undefined, {});
-    expect(state).toEqual(istate);
-    state = _.clone(defaultState);
+    expect(state).toMatchSnapshot();
+    // state = _.clone(defaultState);
   });
 
   test('Handles CHALLENGE/GET_DETAILS_INIT as expected', () => {
     state = reducer(state, mockChallengeActions.challenge.getDetailsInit(12345));
-    expect(state).toEqual({
-      mySubmissions: {},
-      mySubmissionsManagement: {},
-      loadingCheckpoints: false,
-      loadingDetailsForChallengeId: '12345',
-      loadingResultsForChallengeId: '',
-      fetchChallengeFailure: false,
-      details: null,
-      checkpoints: null,
-      registering: false,
-      results: null,
-      resultsLoadedForChallengeId: '',
-      unregistering: false,
-      updatingChallengeUuid: '',
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Handles CHALLENGE/GET_DETAILS_DONE as expected', (done) => {
     redux.resolveAction(mockChallengeActions.challenge.getDetailsDone()).then((action) => {
       state = reducer(state, action);
-      expect(state).toEqual({
-        fetchChallengeFailure: false,
-        mySubmissions: {},
-        mySubmissionsManagement: {},
-        loadingCheckpoints: false,
-        loadingDetailsForChallengeId: '',
-        details: {
-          id: 12345,
-          tag: 'v3-normalized-details',
-        },
-        checkpoints: null,
-        loadingResultsForChallengeId: '',
-        registering: false,
-        results: null,
-        resultsLoadedForChallengeId: '',
-        unregistering: false,
-        updatingChallengeUuid: '',
-      });
+      expect(state).toMatchSnapshot();
     }).then(done).catch(done);
   });
 
   test('Handles CHALLENGE/GET_DETAILS_DONE with error as expected', () => {
     state = reducer(state, mockChallengeActions.challenge.getDetailsDoneError());
-    expect(state).toEqual({
-      fetchChallengeFailure: 'Unknown error',
-      mySubmissions: {},
-      mySubmissionsManagement: {},
-      loadingCheckpoints: false,
-      loadingDetailsForChallengeId: '',
-      details: {
-        id: 12345,
-        tag: 'v3-normalized-details',
-      },
-      checkpoints: null,
-      loadingResultsForChallengeId: '',
-      registering: false,
-      results: null,
-      resultsLoadedForChallengeId: '',
-      unregistering: false,
-      updatingChallengeUuid: '',
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Handles fetchSubmissionsInit as expected', () => {
     state = reducer(state, mockChallengeActions.challenge.getSubmissionsInit());
-    expect(state).toEqual({
-      fetchChallengeFailure: 'Unknown error',
-      loadingSubmissionsForChallengeId: '12345',
-      mySubmissions: { challengeId: '', v2: null },
-      mySubmissionsManagement: {},
-      loadingDetailsForChallengeId: '',
-      details: {
-        id: 12345,
-        tag: 'v3-normalized-details',
-      },
-      checkpoints: null,
-      loadingCheckpoints: false,
-      loadingResultsForChallengeId: '',
-      registering: false,
-      results: null,
-      resultsLoadedForChallengeId: '',
-      unregistering: false,
-      updatingChallengeUuid: '',
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Handles fetchSubmissionsDone as expected', (done) => {
     redux.resolveAction(mockChallengeActions.challenge.getSubmissionsDone()).then((action) => {
       state = reducer(state, action);
-      expect(state).toEqual({
-        fetchChallengeFailure: 'Unknown error',
-        loadingSubmissionsForChallengeId: '',
-        mySubmissions: { challengeId: '12345', v2: [{ submissionId: '1' }] },
-        mySubmissionsManagement: {},
-        loadingDetailsForChallengeId: '',
-        details: {
-          id: 12345,
-          tag: 'v3-normalized-details',
-        },
-        checkpoints: null,
-        loadingCheckpoints: false,
-        loadingResultsForChallengeId: '',
-        registering: false,
-        results: null,
-        resultsLoadedForChallengeId: '',
-        unregistering: false,
-        updatingChallengeUuid: '',
-      });
+      expect(state).toMatchSnapshot();
     }).then(done).catch(done);
   });
 
   test('Handles deleteSubmissionDone as expected', () => {
     state = reducer(state, mockSmpActions.smp.deleteSubmissionDone());
-    expect(state).toEqual({
-      fetchChallengeFailure: 'Unknown error',
-      loadingSubmissionsForChallengeId: '',
-      mySubmissions: { challengeId: '12345', v2: [] },
-      mySubmissionsManagement: { deletingSubmission: false },
-      loadingDetailsForChallengeId: '',
-      details: {
-        id: 12345,
-        tag: 'v3-normalized-details',
-      },
-      checkpoints: null,
-      loadingCheckpoints: false,
-      loadingResultsForChallengeId: '',
-      registering: false,
-      results: null,
-      resultsLoadedForChallengeId: '',
-      unregistering: false,
-      updatingChallengeUuid: '',
-    });
+    expect(state).toMatchSnapshot();
   });
 
   test('Handles fetchSubmissionsDoneError as expected', () => {
     state = reducer(state, mockChallengeActions.challenge.getSubmissionsDoneError());
-    expect(state).toEqual({
-      fetchChallengeFailure: 'Unknown error',
-      loadingSubmissionsForChallengeId: '',
-      mySubmissions: { challengeId: '', v2: null },
-      mySubmissionsManagement: { deletingSubmission: false },
-      loadingDetailsForChallengeId: '',
-      details: {
-        id: 12345,
-        tag: 'v3-normalized-details',
-      },
-      checkpoints: null,
-      loadingCheckpoints: false,
-      loadingResultsForChallengeId: '',
-      registering: false,
-      results: null,
-      resultsLoadedForChallengeId: '',
-      unregistering: false,
-      updatingChallengeUuid: '',
-    });
+    expect(state).toMatchSnapshot();
+  });
+
+  test('Handles getActiveChallengesCountDone as expected', () => {
+    state = reducer(state, mockChallengeActions.challenge.getActiveChallengesCountDone());
+    expect(state).toMatchSnapshot();
   });
 }
 
@@ -242,7 +113,7 @@ describe('Default reducer', () => {
     reducer = reducers.default;
   });
 
-  testReducer(defaultState);
+  testReducer();
 });
 
 jest.clearAllMocks();
@@ -256,7 +127,7 @@ describe('Factory without http request', () => {
     });
   });
 
-  testReducer(defaultState);
+  testReducer();
 });
 
 describe('Factory with server-side rendering', () => {
@@ -278,25 +149,7 @@ describe('Factory with server-side rendering', () => {
     });
   });
 
-  testReducer({
-    details: {
-      id: 12345,
-      tag: 'v3-normalized-details',
-    },
-    checkpoints: null,
-    loadingCheckpoints: false,
-    loadingDetailsForChallengeId: '',
-    loadingResultsForChallengeId: '',
-    loadingSubmissionsForChallengeId: '',
-    fetchChallengeFailure: false,
-    mySubmissions: { challengeId: '12345', v2: [{ submissionId: '1' }] },
-    mySubmissionsManagement: {},
-    registering: false,
-    results: null,
-    resultsLoadedForChallengeId: '',
-    unregistering: false,
-    updatingChallengeUuid: '',
-  });
+  testReducer();
 });
 
 describe('Factory without server-side rendering', () => {
@@ -309,5 +162,5 @@ describe('Factory without server-side rendering', () => {
     });
   });
 
-  testReducer(defaultState);
+  testReducer();
 });

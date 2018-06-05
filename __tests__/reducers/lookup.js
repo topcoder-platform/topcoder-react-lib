@@ -1,5 +1,4 @@
 import { mockAction } from 'utils/mock';
-import { redux } from 'topcoder-react-utils';
 
 const tag = {
   domain: 'SKILLS',
@@ -10,8 +9,9 @@ const tag = {
 
 const mockActions = {
   lookup: {
-    getApprovedSkills: mockAction('LOOKUP/GET_APPROVED_SKILLS', Promise.resolve([tag])),
-    getApprovedSkillsError: mockAction('LOOKUP/GET_APPROVED_SKILLS', null, 'Unknown error'),
+    getSkillTagsInit: mockAction('LOOKUP/GET_SKILL_TAGS_INIT'),
+    getSkillTagsDone: mockAction('LOOKUP/GET_SKILL_TAGS_DONE', [tag]),
+    getSkillTagsDoneError: mockAction('LOOKUP/GET_SKILL_TAGS_DONE', null, 'Unknown error'),
   },
 };
 jest.setMock(require.resolve('actions/lookup'), mockActions);
@@ -20,32 +20,29 @@ const reducers = require('reducers/lookup');
 
 let reducer;
 
-function testReducer(istate) {
+function testReducer() {
+  let state;
+
   test('Initial state', () => {
-    const state = reducer(undefined, {});
-    expect(state).toEqual(istate);
+    state = reducer(undefined, {});
+    expect(state).toMatchSnapshot();
   });
 
-  test('Load approved skills', () =>
-    redux.resolveAction(mockActions.lookup.getApprovedSkills()).then((action) => {
-      const state = reducer({}, action);
-      expect(state).toEqual({
-        approvedSkills: [tag],
-        loadingApprovedSkillsError: false,
-      });
-    }));
+  test('Get skill tags', () => {
+    state = reducer(state, mockActions.lookup.getSkillTagsInit());
+    state = reducer(state, mockActions.lookup.getSkillTagsDone());
+    expect(state).toMatchSnapshot();
+  });
 
-  test('Load approved skills error', () => {
-    const state = reducer({}, mockActions.lookup.getApprovedSkillsError());
-    expect(state).toEqual({
-      loadingApprovedSkillsError: true,
-    });
+  test('Get skill tags error', () => {
+    state = reducer(state, mockActions.lookup.getSkillTagsDoneError());
+    expect(state).toMatchSnapshot();
   });
 }
 
 describe('Default reducer', () => {
   reducer = reducers.default;
-  testReducer({ approvedSkills: [] });
+  testReducer();
 });
 
 describe('Factory without server side rendering', () => {
@@ -55,5 +52,5 @@ describe('Factory without server side rendering', () => {
       done();
     });
   });
-  testReducer({ approvedSkills: [] });
+  testReducer();
 });

@@ -3,9 +3,20 @@
 ## actions.lookup
 Actions related to lookup data.
 
-<a name="module_actions.lookup.getApprovedSkills"></a>
 
-### actions.lookup.getApprovedSkills() ⇒ <code>Action</code>
-Gets approved skill tags.
+* [actions.lookup](#module_actions.lookup)
+    * [.getSkillTagsInit()](#module_actions.lookup.getSkillTagsInit) ⇒ <code>Action</code>
+    * [.getSkillTagsDone()](#module_actions.lookup.getSkillTagsDone) ⇒ <code>Action</code>
+
+<a name="module_actions.lookup.getSkillTagsInit"></a>
+
+### actions.lookup.getSkillTagsInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of getting all skill tags.
+
+**Kind**: static method of [<code>actions.lookup</code>](#module_actions.lookup)  
+<a name="module_actions.lookup.getSkillTagsDone"></a>
+
+### actions.lookup.getSkillTagsDone() ⇒ <code>Action</code>
+Creates an action that gets all skill tags.
 
 **Kind**: static method of [<code>actions.lookup</code>](#module_actions.lookup)  

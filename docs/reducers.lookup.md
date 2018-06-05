@@ -8,7 +8,7 @@ State segment managed by this reducer has the following structure:
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| approvedSkills | <code>Array</code> | <code>&#x27;&#x27;</code> | approved skill tags. |
+| skillTags | <code>Array</code> | <code>&#x27;&#x27;</code> | skill tags. |
 
 
 * [reducers.lookup](#module_reducers.lookup)
@@ -16,7 +16,7 @@ State segment managed by this reducer has the following structure:
         * [.default](#module_reducers.lookup.default)
         * [.factory()](#module_reducers.lookup.factory) ⇒ <code>Promise</code>
     * _inner_
-        * [~onGetApprovedSkills(state, action)](#module_reducers.lookup..onGetApprovedSkills) ⇒ <code>Object</code>
+        * [~onGetSkillTagsDone(state, action)](#module_reducers.lookup..onGetSkillTagsDone) ⇒ <code>Object</code>
         * [~create(initialState)](#module_reducers.lookup..create) ⇒ <code>function</code>
 
 <a name="module_reducers.lookup.default"></a>
@@ -32,10 +32,10 @@ Factory which creates a new reducer.
 
 **Kind**: static method of [<code>reducers.lookup</code>](#module_reducers.lookup)  
 **Resolves**: <code>Function(state, action): state</code> New reducer.  
-<a name="module_reducers.lookup..onGetApprovedSkills"></a>
+<a name="module_reducers.lookup..onGetSkillTagsDone"></a>
 
-### reducers.lookup~onGetApprovedSkills(state, action) ⇒ <code>Object</code>
-Handles LOOKUP/GET_APPROVED_SKILLS action.
+### reducers.lookup~onGetSkillTagsDone(state, action) ⇒ <code>Object</code>
+Handles LOOKUP/GET_SKILL_TAGS_DONE action.
 
 **Kind**: inner method of [<code>reducers.lookup</code>](#module_reducers.lookup)  
 **Returns**: <code>Object</code> - New state  

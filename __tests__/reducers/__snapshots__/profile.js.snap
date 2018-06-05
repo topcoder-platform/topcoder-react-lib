@@ -1,0 +1,2257 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Default reducer Add skill done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [
+    Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+  ],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Add skill init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": true,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Add web link done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+    Object {
+      "URL": "http://www.google.com",
+      "key": "2222",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Add web link init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": true,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Delete photo done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Delete photo init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": true,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": "http://url",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Delete web link done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Delete web link init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": true,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+    Object {
+      "URL": "http://www.google.com",
+      "key": "2222",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Get credential 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Get email preferences 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Get external links 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Get linked account 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Get member info 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Hide skill done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Hide skill init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": true,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [
+    Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+  ],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Initial state 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": null,
+  "loadingError": false,
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Link external account done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+    Object {
+      "providerType": "stackoverlow",
+      "social": true,
+      "userId": "343523",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Link external account init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": true,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Load profile 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": null,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Default reducer Save email preferences done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Save email preferences init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": true,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Unlink external account done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Unlink external account init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+    Object {
+      "providerType": "stackoverlow",
+      "social": true,
+      "userId": "343523",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": true,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Update password done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingPassword": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Update password init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingPassword": true,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Update profile done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Update profile init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": true,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Upload photo done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": "http://url",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Default reducer Upload photo init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": true,
+}
+`;
+
+exports[`Factory without server side rendering Add skill done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [
+    Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+  ],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Add skill init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": true,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Add web link done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+    Object {
+      "URL": "http://www.google.com",
+      "key": "2222",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Add web link init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": true,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Delete photo done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Delete photo init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": true,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": "http://url",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Delete web link done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Delete web link init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": true,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+    Object {
+      "URL": "http://www.google.com",
+      "key": "2222",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Get credential 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Get email preferences 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Get external links 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Get linked account 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Get member info 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Hide skill done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Hide skill init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": true,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [
+    Object {
+      "tagId": 123,
+      "tagName": "Node.js",
+    },
+  ],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Initial state 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": null,
+  "loadingError": false,
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Link external account done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+    Object {
+      "providerType": "stackoverlow",
+      "social": true,
+      "userId": "343523",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Link external account init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": true,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Load profile 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "info": null,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+}
+`;
+
+exports[`Factory without server side rendering Save email preferences done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Save email preferences init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": true,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Unlink external account done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Unlink external account init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+    Object {
+      "providerType": "stackoverlow",
+      "social": true,
+      "userId": "343523",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": true,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Update password done 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingPassword": false,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Update password init 1`] = `
+Object {
+  "achievements": null,
+  "addingSkill": false,
+  "addingWebLink": false,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "deletingWebLink": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "hidingSkill": false,
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "linkingExternalAccount": false,
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "savingEmailPreferences": false,
+  "skills": Array [],
+  "stats": null,
+  "unlinkingExternalAccount": false,
+  "updatingPassword": true,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Update profile done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "description": "bio desc",
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": false,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Update profile init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "deletingPhoto": false,
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": null,
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "updatingProfile": true,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Upload photo done 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+    "photoURL": "http://url",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": false,
+}
+`;
+
+exports[`Factory without server side rendering Upload photo init 1`] = `
+Object {
+  "achievements": null,
+  "copilot": false,
+  "country": "",
+  "credential": Object {
+    "hasPassword": true,
+  },
+  "emailPreferences": Object {
+    "TOPCODER_NL_DATA": true,
+  },
+  "externalLinks": Array [
+    Object {
+      "URL": "http://www.github.com",
+      "key": "1111",
+      "providerType": "weblink",
+    },
+  ],
+  "info": Object {
+    "handle": "tcscoder",
+  },
+  "linkedAccounts": Array [
+    Object {
+      "providerType": "github",
+      "social": true,
+      "userId": "623633",
+    },
+  ],
+  "loadingError": false,
+  "profileForHandle": "tcscoder",
+  "skills": null,
+  "stats": null,
+  "uploadingPhoto": true,
+}
+`;

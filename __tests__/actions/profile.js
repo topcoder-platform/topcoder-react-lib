@@ -1,4 +1,5 @@
-import * as ChallengesService from 'services/challenges';
+import { redux } from 'topcoder-react-utils';
+
 import * as MembersService from 'services/members';
 import * as UserService from 'services/user';
 
@@ -16,12 +17,6 @@ const linkedAccounts = [{
 }];
 
 // Mock services
-const mockChanllengesService = {
-  getUserChallenges: jest.fn().mockReturnValue(Promise.resolve({ totalCount: 3 })),
-  getUserMarathonMatches: jest.fn().mockReturnValue(Promise.resolve({ totalCount: 5 })),
-};
-ChallengesService.getService = jest.fn().mockReturnValue(mockChanllengesService);
-
 const mockMembersService = {
   getPresignedUrl: jest.fn().mockReturnValue(Promise.resolve()),
   uploadFileToS3: jest.fn().mockReturnValue(Promise.resolve()),
@@ -47,206 +42,98 @@ const mockUserService = {
 };
 UserService.getService = jest.fn().mockReturnValue(mockUserService);
 
+test('Module exports', () => expect(actions).toMatchSnapshot());
 
-describe('profile.getActiveChallengesCountDone', () => {
-  const a = actions.profile.getActiveChallengesCountDone(handle, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/GET_ACTIVE_CHALLENGES_COUNT_DONE');
-  });
-
-  test('Sum of challenges and marathon matches should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toBe(8);
-      expect(mockChanllengesService.getUserChallenges).toBeCalled();
-      expect(mockChanllengesService.getUserMarathonMatches).toBeCalled();
-    }));
+test('profile.uploadPhotoDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.uploadPhotoDone(handle, tokenV3));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.getPresignedUrl).toBeCalled();
+  expect(mockMembersService.uploadFileToS3).toBeCalled();
+  expect(mockMembersService.updateMemberPhoto).toBeCalled();
 });
 
-describe('profile.uploadPhotoDone', () => {
-  const a = actions.profile.uploadPhotoDone(handle, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/UPLOAD_PHOTO_DONE');
-  });
-
-  test('Photo URL should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({
-        handle,
-        photoURL: 'url-of-photo',
-      });
-      expect(mockMembersService.getPresignedUrl).toBeCalled();
-      expect(mockMembersService.uploadFileToS3).toBeCalled();
-      expect(mockMembersService.updateMemberPhoto).toBeCalled();
-    }));
+test('profile.updateProfileDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.updateProfileDone(profile, tokenV3));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.updateMemberProfile).toBeCalled();
 });
 
-describe('profile.updateProfileDone', () => {
-  const a = actions.profile.updateProfileDone(profile, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/UPDATE_PROFILE_DONE');
-  });
-
-  test('Profile should be updated', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual(profile);
-      expect(mockMembersService.updateMemberProfile).toBeCalled();
-    }));
+test('profile.addSkillDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.addSkillDone(handle, tokenV3, skill));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.addSkill).toBeCalled();
 });
 
-describe('profile.addSkillDone', () => {
-  const a = actions.profile.addSkillDone(handle, tokenV3, skill);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/ADD_SKILL_DONE');
-  });
-
-  test('Skill should be added', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ skills: [skill], handle, skill });
-      expect(mockMembersService.addSkill).toBeCalled();
-    }));
+test('profile.hideSkillDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.hideSkillDone(handle, tokenV3, skill));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.hideSkill).toBeCalled();
 });
 
-describe('profile.hideSkillDone', () => {
-  const a = actions.profile.hideSkillDone(handle, tokenV3, skill);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/HIDE_SKILL_DONE');
-  });
-
-  test('Skill should be removed', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ skills: [], handle, skill });
-      expect(mockMembersService.hideSkill).toBeCalled();
-    }));
+test('profile.addWebLinkDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.addWebLinkDone(handle, tokenV3, weblink));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.addWebLink).toBeCalled();
 });
 
-describe('profile.addWebLinkDone', () => {
-  const a = actions.profile.addWebLinkDone(handle, tokenV3, weblink);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/ADD_WEB_LINK_DONE');
-  });
-
-  test('Web link should be added', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ data: weblink, handle });
-      expect(mockMembersService.addWebLink).toBeCalled();
-    }));
+test('profile.deleteWebLinkDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.deleteWebLinkDone(handle, tokenV3, weblink));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockMembersService.deleteWebLink).toBeCalled();
 });
 
-describe('profile.deleteWebLinkDone', () => {
-  const a = actions.profile.deleteWebLinkDone(handle, tokenV3, weblink);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/DELETE_WEB_LINK_DONE');
-  });
-
-  test('Web link should be deleted', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ data: weblink, handle });
-      expect(mockMembersService.deleteWebLink).toBeCalled();
-    }));
+test('profile.linkExternalAccountDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.linkExternalAccountDone(profile, tokenV3, 'github'));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.linkExternalAccount).toBeCalled();
 });
 
-describe('profile.linkExternalAccountDone', () => {
-  const a = actions.profile.linkExternalAccountDone(profile, tokenV3, 'github');
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/LINK_EXTERNAL_ACCOUNT_DONE');
-  });
-
-  test('External account should be linked', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ data: linkedAccounts[0], handle });
-      expect(mockUserService.linkExternalAccount).toBeCalled();
-    }));
+test('profile.unlinkExternalAccountDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.unlinkExternalAccountDone(profile, tokenV3, 'github'));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.unlinkExternalAccount).toBeCalled();
 });
 
-describe('profile.unlinkExternalAccountDone', () => {
-  const a = actions.profile.unlinkExternalAccountDone(profile, tokenV3, 'github');
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/UNLINK_EXTERNAL_ACCOUNT_DONE');
-  });
-
-  test('External account should be unlinked', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ handle, providerType: 'github' });
-      expect(mockUserService.unlinkExternalAccount).toBeCalled();
-    }));
+test('profile.getLinkedAccountsDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.getLinkedAccountsDone(profile, tokenV3));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.getLinkedAccounts).toBeCalled();
 });
 
-describe('profile.getLinkedAccountsDone', () => {
-  const a = actions.profile.getLinkedAccountsDone(profile, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/GET_LINKED_ACCOUNTS_DONE');
-  });
-
-  test('Linked account should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ profiles: linkedAccounts });
-      expect(mockUserService.getLinkedAccounts).toBeCalled();
-    }));
+test('profile.getCredentialDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.getCredentialDone(profile, tokenV3));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.getCredential).toBeCalled();
 });
 
-describe('profile.getCredentialDone', () => {
-  const a = actions.profile.getCredentialDone(profile, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/GET_CREDENTIAL_DONE');
-  });
-
-  test('Credential should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ credential: { hasPassword: true } });
-      expect(mockUserService.getCredential).toBeCalled();
-    }));
+test('profile.getEmailPreferencesDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.getEmailPreferencesDone(profile, tokenV3));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.getEmailPreferences).toBeCalled();
 });
 
-describe('profile.getEmailPreferencesDone', () => {
-  const a = actions.profile.getEmailPreferencesDone(profile, tokenV3);
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/GET_EMAIL_PREFERENCES_DONE');
-  });
-
-  test('Email preferences should be returned', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ subscriptions: { TOPCODER_NL_DATA: true } });
-      expect(mockUserService.getEmailPreferences).toBeCalled();
-    }));
+test('profile.saveEmailPreferencesDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.saveEmailPreferencesDone(profile, tokenV3, {}));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.saveEmailPreferences).toBeCalled();
 });
 
-describe('profile.saveEmailPreferencesDone', () => {
-  const a = actions.profile.saveEmailPreferencesDone(profile, tokenV3, {});
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/SAVE_EMAIL_PREFERENCES_DONE');
-  });
-
-  test('Email preferences should be updated', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ handle, data: { subscriptions: { TOPCODER_NL_DATA: true } } });
-      expect(mockUserService.saveEmailPreferences).toBeCalled();
-    }));
-});
-
-describe('profile.updatePasswordDone', () => {
-  const a = actions.profile.updatePasswordDone(profile, tokenV3, 'newPassword', 'oldPassword');
-
-  test('has expected type', () => {
-    expect(a.type).toBe('PROFILE/UPDATE_PASSWORD_DONE');
-  });
-
-  test('User password should be updated', () =>
-    a.payload.then((res) => {
-      expect(res).toEqual({ handle, data: { update: true } });
-      expect(mockUserService.updatePassword).toBeCalled();
-    }));
+test('profile.updatePasswordDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.profile.updatePasswordDone(profile, tokenV3, 'newPassword', 'oldPassword'));
+  expect(actionResult).toMatchSnapshot();
+  expect(mockUserService.updatePassword).toBeCalled();
 });
 

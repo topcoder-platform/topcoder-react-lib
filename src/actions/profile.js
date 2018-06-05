@@ -8,7 +8,6 @@ import { createActions } from 'redux-actions';
 
 import { getService as getUserService } from '../services/user';
 import { getService as getMembersService } from '../services/members';
-import { getService as getChallengesService } from '../services/challenges';
 
 /**
  * @static
@@ -126,34 +125,6 @@ function getStatsInit() {}
  */
 function getStatsDone(handle) {
   return getMembersService().getStats(handle);
-}
-
-/**
- * @static
- * @desc Creates an action that signals beginning of getting count of user's active challenges.
- * @return {Action}
- */
-function getActiveChallengesCountInit() {}
-
-/**
- * @static
- * @desc Creates an action that gets count of user's active challenges from the backend.
- * @param {String} handle Topcoder user handle.
- * @param {String} tokenV3 Optional. Topcoder auth token v3. Without token only
- *  public challenges will be counted. With the token provided, the action will
- *  also count private challenges related to this user.
- * @return {Action}
- */
-function getActiveChallengesCountDone(handle, tokenV3) {
-  const service = getChallengesService(tokenV3);
-  const filter = { status: 'ACTIVE' };
-  const params = { limit: 1, offset: 0 };
-
-  const calls = [];
-  calls.push(service.getUserChallenges(handle, filter, params));
-  calls.push(service.getUserMarathonMatches(handle, filter, params));
-
-  return Promise.all(calls).then(([uch, umm]) => uch.totalCount + umm.totalCount);
 }
 
 /**
@@ -456,8 +427,6 @@ export default createActions({
     GET_SKILLS_DONE: getSkillsDone,
     GET_STATS_INIT: getStatsInit,
     GET_STATS_DONE: getStatsDone,
-    GET_ACTIVE_CHALLENGES_COUNT_INIT: getActiveChallengesCountInit,
-    GET_ACTIVE_CHALLENGES_COUNT_DONE: getActiveChallengesCountDone,
     GET_LINKED_ACCOUNTS_INIT: getLinkedAccountsInit,
     GET_LINKED_ACCOUNTS_DONE: getLinkedAccountsDone,
     GET_EMAIL_PREFERENCES_INIT: getEmailPreferencesInit,

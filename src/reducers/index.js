@@ -38,22 +38,6 @@ export function factory(options) {
   });
 }
 
-export const factories = {
-  authFactory,
-  statsFactory,
-  termsFactory,
-  directFactory,
-  groupsFactory,
-  errorsFactory,
-  challengeFactory,
-  profileFactory,
-  lookupFactory,
-  membersFactory,
-  memberTasksFactory,
-  reviewOpportunityFactory,
-  mySubmissionsManagementFactory,
-};
-
 export default ({
   auth,
   stats,

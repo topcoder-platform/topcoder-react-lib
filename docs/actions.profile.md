@@ -23,8 +23,6 @@ Actions for interactions with profile details API.
     * [.getSkillsDone(handle)](#module_actions.profile.getSkillsDone) ⇒ <code>Action</code>
     * [.getStatsInit()](#module_actions.profile.getStatsInit) ⇒ <code>Action</code>
     * [.getStatsDone(handle)](#module_actions.profile.getStatsDone) ⇒ <code>Action</code>
-    * [.getActiveChallengesCountInit()](#module_actions.profile.getActiveChallengesCountInit) ⇒ <code>Action</code>
-    * [.getActiveChallengesCountDone(handle, tokenV3)](#module_actions.profile.getActiveChallengesCountDone) ⇒ <code>Action</code>
     * [.getLinkedAccountsInit()](#module_actions.profile.getLinkedAccountsInit) ⇒ <code>Action</code>
     * [.getLinkedAccountsDone(profile, tokenV3)](#module_actions.profile.getLinkedAccountsDone) ⇒ <code>Action</code>
     * [.getCredentialInit()](#module_actions.profile.getCredentialInit) ⇒ <code>Action</code>
@@ -195,24 +193,6 @@ Creates an action that loads member's stats.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | Member handle. |
-
-<a name="module_actions.profile.getActiveChallengesCountInit"></a>
-
-### actions.profile.getActiveChallengesCountInit() ⇒ <code>Action</code>
-Creates an action that signals beginning of getting count of user's active challenges.
-
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
-<a name="module_actions.profile.getActiveChallengesCountDone"></a>
-
-### actions.profile.getActiveChallengesCountDone(handle, tokenV3) ⇒ <code>Action</code>
-Creates an action that gets count of user's active challenges from the backend.
-
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| handle | <code>String</code> | Topcoder user handle. |
-| tokenV3 | <code>String</code> | Optional. Topcoder auth token v3. Without token only  public challenges will be counted. With the token provided, the action will  also count private challenges related to this user. |
 
 <a name="module_actions.profile.getLinkedAccountsInit"></a>
 

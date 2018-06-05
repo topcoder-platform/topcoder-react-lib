@@ -624,6 +624,22 @@ class ChallengesService {
   }
 
   /**
+   * Gets count of user's active challenges.
+   * @param {String} handle Topcoder user handle.
+   * @return {Action} Resolves to the api response.
+   */
+  getActiveChallengesCount(handle) {
+    const filter = { status: 'ACTIVE' };
+    const params = { limit: 1, offset: 0 };
+
+    const calls = [];
+    calls.push(this.getUserChallenges(handle, filter, params));
+    calls.push(this.getUserMarathonMatches(handle, filter, params));
+
+    return Promise.all(calls).then(([uch, umm]) => uch.totalCount + umm.totalCount);
+  }
+
+  /**
    * Submits a challenge submission.  Uses APIV2 for Development submission
    * and APIV3 for Design submisisons.
    * @param {Object} body
