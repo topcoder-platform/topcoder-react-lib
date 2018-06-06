@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Default reducer Get skill tags 1`] = `
+Object {
+  "loadingSkillTagsError": false,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Default reducer Get skill tags error 1`] = `
+Object {
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Default reducer Initial state 1`] = `
+Object {
+  "skillTags": Array [],
+}
+`;
+
+exports[`Factory without server side rendering Get skill tags 1`] = `
+Object {
+  "loadingSkillTagsError": false,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Factory without server side rendering Get skill tags error 1`] = `
+Object {
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Factory without server side rendering Initial state 1`] = `
+Object {
+  "skillTags": Array [],
+}
+`;

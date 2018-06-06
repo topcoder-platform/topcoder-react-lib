@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Module exports 1`] = `
+Object {
+  "lookup": Object {
+    "getSkillTagsDone": [Function],
+    "getSkillTagsInit": [Function],
+  },
+}
+`;
+
+exports[`lookup.getSkillTagsDone 1`] = `
+Object {
+  "payload": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+  "type": "LOOKUP/GET_SKILL_TAGS_DONE",
+}
+`;
+
+exports[`lookup.getSkillTagsInit 1`] = `
+Object {
+  "type": "LOOKUP/GET_SKILL_TAGS_INIT",
+}
+`;

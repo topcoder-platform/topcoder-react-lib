@@ -22,6 +22,8 @@ Actions related to Topcoder challenges APIs.
     * [.toggleCheckpointFeedback(id, open)](#module_actions.challenge.toggleCheckpointFeedback) ⇒ <code>Action</code>
     * [.updateChallengeInit(uuid)](#module_actions.challenge.updateChallengeInit) ⇒ <code>Action</code>
     * [.updateChallengeDone(uuid, challenge, tokenV3)](#module_actions.challenge.updateChallengeDone) ⇒ <code>Action</code>
+    * [.getActiveChallengesCountInit()](#module_actions.challenge.getActiveChallengesCountInit) ⇒ <code>Action</code>
+    * [.getActiveChallengesCountDone(handle, tokenV3)](#module_actions.challenge.getActiveChallengesCountDone) ⇒ <code>Action</code>
 
 <a name="module_actions.challenge.dropCheckpoints"></a>
 
@@ -225,4 +227,22 @@ Creates an action that updates challenge details.
 | uuid | <code>String</code> | Operation UUID. Should match the one passed into the  previous [updateChallengeInit](#module_actions.challenge.updateChallengeInit) call. |
 | challenge | <code>Object</code> | Challenge data. |
 | tokenV3 | <code>String</code> | Topcoder v3 auth token. |
+
+<a name="module_actions.challenge.getActiveChallengesCountInit"></a>
+
+### actions.challenge.getActiveChallengesCountInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of getting count of user's active challenges.
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+<a name="module_actions.challenge.getActiveChallengesCountDone"></a>
+
+### actions.challenge.getActiveChallengesCountDone(handle, tokenV3) ⇒ <code>Action</code>
+Creates an action that gets count of user's active challenges from the backend.
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Optional. Topcoder auth token v3. Without token only  public challenges will be counted. With the token provided, the action will  also count private challenges related to this user. |
 

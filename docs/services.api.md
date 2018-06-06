@@ -19,6 +19,8 @@ This module provides a service for conventient access to Topcoder APIs.
             * [.postJson(endpoint, json)](#module_services.api..Api+postJson) ⇒ <code>Promise</code>
             * [.put(endpoint, body)](#module_services.api..Api+put) ⇒ <code>Promise</code>
             * [.putJson(endpoint, json)](#module_services.api..Api+putJson) ⇒ <code>Promise</code>
+            * [.patch(endpoint, body)](#module_services.api..Api+patch) ⇒ <code>Promise</code>
+            * [.patchJson(endpoint, json)](#module_services.api..Api+patchJson) ⇒ <code>Promise</code>
             * [.upload(endpoint, body, callback)](#module_services.api..Api+upload) ⇒ <code>Promise</code>
 
 <a name="module_services.api.default"></a>
@@ -70,6 +72,8 @@ thing we need to be different is the base URL and auth token to use.
     * [.postJson(endpoint, json)](#module_services.api..Api+postJson) ⇒ <code>Promise</code>
     * [.put(endpoint, body)](#module_services.api..Api+put) ⇒ <code>Promise</code>
     * [.putJson(endpoint, json)](#module_services.api..Api+putJson) ⇒ <code>Promise</code>
+    * [.patch(endpoint, body)](#module_services.api..Api+patch) ⇒ <code>Promise</code>
+    * [.patchJson(endpoint, json)](#module_services.api..Api+patchJson) ⇒ <code>Promise</code>
     * [.upload(endpoint, body, callback)](#module_services.api..Api+upload) ⇒ <code>Promise</code>
 
 <a name="new_module_services.api..Api_new"></a>
@@ -174,6 +178,30 @@ Sends PUT request to the specified endpoint.
 
 #### api.putJson(endpoint, json) ⇒ <code>Promise</code>
 Sends PUT request to the specified endpoint.
+
+**Kind**: instance method of [<code>Api</code>](#module_services.api..Api)  
+
+| Param | Type |
+| --- | --- |
+| endpoint | <code>String</code> | 
+| json | <code>JSON</code> | 
+
+<a name="module_services.api..Api+patch"></a>
+
+#### api.patch(endpoint, body) ⇒ <code>Promise</code>
+Sends PATCH request to the specified endpoint.
+
+**Kind**: instance method of [<code>Api</code>](#module_services.api..Api)  
+
+| Param | Type |
+| --- | --- |
+| endpoint | <code>String</code> | 
+| body | <code>Blob</code> \| <code>BufferSource</code> \| <code>FormData</code> \| <code>String</code> | 
+
+<a name="module_services.api..Api+patchJson"></a>
+
+#### api.patchJson(endpoint, json) ⇒ <code>Promise</code>
+Sends PATCH request to the specified endpoint.
 
 **Kind**: instance method of [<code>Api</code>](#module_services.api..Api)  
 
