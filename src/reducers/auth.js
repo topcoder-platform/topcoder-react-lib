@@ -16,6 +16,7 @@ import _ from 'lodash';
 import { decodeToken } from 'tc-accounts';
 import { redux } from 'topcoder-react-utils';
 import actions from '../actions/auth';
+import profileActions from '../actions/profile';
 
 /**
  * Handles actions.auth.loadProfile action.
@@ -55,6 +56,51 @@ function create(initialState) {
         groups: state.profile.groups.concat({ id: payload.groupId.toString() }),
       },
     }),
+    [profileActions.profile.uploadPhotoDone]: (state, { payload, error }) => {
+      if (error) {
+        return state;
+      }
+      if (!state.profile || state.profile.handle !== payload.handle) {
+        return state;
+      }
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          photoURL: payload.photoURL,
+        },
+      };
+    },
+    [profileActions.profile.deletePhotoDone]: (state, { payload, error }) => {
+      if (error) {
+        return state;
+      }
+      if (!state.profile || state.profile.handle !== payload.handle) {
+        return state;
+      }
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          photoURL: null,
+        },
+      };
+    },
+    [profileActions.profile.updateProfileDone]: (state, { payload, error }) => {
+      if (error) {
+        return state;
+      }
+      if (!state.profile || state.profile.handle !== payload.handle) {
+        return state;
+      }
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...payload,
+        },
+      };
+    },
   }, _.defaults(initialState, {
     authenticating: true,
     profile: null,

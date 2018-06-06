@@ -251,6 +251,26 @@ function updateChallengeDone(uuid, challenge, tokenV3) {
     .then(res => ({ uuid, res }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of getting count of user's active challenges.
+ * @return {Action}
+ */
+function getActiveChallengesCountInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets count of user's active challenges from the backend.
+ * @param {String} handle Topcoder user handle.
+ * @param {String} tokenV3 Optional. Topcoder auth token v3. Without token only
+ *  public challenges will be counted. With the token provided, the action will
+ *  also count private challenges related to this user.
+ * @return {Action}
+ */
+function getActiveChallengesCountDone(handle, tokenV3) {
+  return getChallengesService(tokenV3).getActiveChallengesCount(handle);
+}
+
 export default createActions({
   CHALLENGE: {
     DROP_CHECKPOINTS: dropCheckpoints,
@@ -270,5 +290,7 @@ export default createActions({
     UNREGISTER_DONE: unregisterDone,
     UPDATE_CHALLENGE_INIT: updateChallengeInit,
     UPDATE_CHALLENGE_DONE: updateChallengeDone,
+    GET_ACTIVE_CHALLENGES_COUNT_INIT: getActiveChallengesCountInit,
+    GET_ACTIVE_CHALLENGES_COUNT_DONE: getActiveChallengesCountDone,
   },
 });

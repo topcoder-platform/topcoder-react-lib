@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`challenge.getActiveChallengesCountDone 1`] = `
+Object {
+  "payload": 10,
+  "type": "CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE",
+}
+`;
+
+exports[`challenge.getActiveChallengesCountInit 1`] = `
+Object {
+  "type": "CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_INIT",
+}
+`;

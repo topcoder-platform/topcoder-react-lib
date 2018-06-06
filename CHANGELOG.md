@@ -1,5 +1,8 @@
 # Topcoder React Lib
 
+### v0.2.0
+Adds functionality necessary for the new *Profile Settings* page.
+
 ### v0.1.0
 Update of dependencies.
 

@@ -1,3 +1,4 @@
+import { redux } from 'topcoder-react-utils';
 import { actions } from '../../src';
 
 jest.mock('../../src/services/challenges');
@@ -73,4 +74,15 @@ describe('challenge.fetchSubmissionsDone', () => {
       challengeId: '12345',
       submissions: 'DUMMY DATA',
     })));
+});
+
+test('challenge.getActiveChallengesCountInit', () => {
+  const actionResult = actions.challenge.getActiveChallengesCountInit();
+  expect(actionResult).toMatchSnapshot();
+});
+
+test('challenge.getActiveChallengesCountDone', async () => {
+  const actionResult =
+    await redux.resolveAction(actions.challenge.getActiveChallengesCountDone('handle', 'tokenV3'));
+  expect(actionResult).toMatchSnapshot();
 });
