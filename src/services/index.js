@@ -13,6 +13,7 @@ import * as reviewOpportunities from './reviewOpportunities';
 import * as userSetting from './user-settings';
 import * as user from './user';
 import * as lookup from './lookup';
+import * as userTraits from './user-traits';
 
 export const services = {
   api,
@@ -27,6 +28,7 @@ export const services = {
   userSetting,
   reviewOpportunities,
   lookup,
+  userTraits,
 };
 
 export default undefined;
