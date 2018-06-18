@@ -22,6 +22,7 @@
   },
   "scripts": {
     "build": "npm run clean && ./node_modules/.bin/webpack --env=production --progress --profile --colors --display-optimization-bailout",
+    "dev": "npm run clean && ./node_modules/.bin/webpack --env=production --progress --profile --colors --watch --display-optimization-bailout",
     "clean": "rimraf dist",
     "jest": "jest --no-cache --maxWorkers=4 --config config/jest/default.js",
     "lint": "npm run lint:js",
@@ -43,6 +44,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
+    "to-capital-case": "^1.0.0",
     "topcoder-react-utils": "^0.4.3"
   },
   "devDependencies": {
