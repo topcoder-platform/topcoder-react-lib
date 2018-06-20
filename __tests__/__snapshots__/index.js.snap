@@ -126,6 +126,12 @@ Object {
       "submitApplicationsDone": [Function],
       "submitApplicationsInit": [Function],
     },
+    "settings": Object {
+      "addUserTrait": [Function],
+      "deleteUserTrait": [Function],
+      "getAllUserTraits": [Function],
+      "updateUserTrait": [Function],
+    },
     "smp": Object {
       "deleteSubmissionDone": [Function],
       "deleteSubmissionInit": [Function],
@@ -146,6 +152,16 @@ Object {
       "getTermDetailsInit": [Function],
       "getTermsDone": [Function],
       "getTermsInit": [Function],
+    },
+    "ui": Object {
+      "settings": Object {
+        "profile": Object {
+          "toggleTab": [Function],
+        },
+        "tools": Object {
+          "toggleTab": [Function],
+        },
+      },
     },
   },
   "challenge": Object {
@@ -184,6 +200,7 @@ Object {
     "countReset": [Function],
     "debug": [Function],
     "dir": [Function],
+    "dirxml": [Function],
     "error": [Function],
     "group": [Function],
     "groupCollapsed": [Function],
@@ -212,8 +229,10 @@ Object {
     "mySubmissionsManagement": [Function],
     "profile": [Function],
     "reviewOpportunity": [Function],
+    "settings": [Function],
     "stats": [Function],
     "terms": [Function],
+    "ui": [Function],
   },
   "services": Object {
     "api": Object {
@@ -273,6 +292,10 @@ Object {
     "userSetting": Object {
       "default": [Function],
       "getUserSettingsService": [Function],
+    },
+    "userTraits": Object {
+      "default": undefined,
+      "getService": [Function],
     },
   },
   "tc": Object {

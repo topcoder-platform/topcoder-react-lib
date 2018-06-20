@@ -18,6 +18,10 @@ import reviewOpportunity, { factory as reviewOpportunityFactory }
   from './reviewOpportunity';
 import mySubmissionsManagement, { factory as mySubmissionsManagementFactory }
   from './my-submissions-management';
+import ui, { factory as uiFactory }
+  from './ui';
+import settings, { factory as settingsFactory }
+  from './settings';
 
 
 export function factory(options) {
@@ -35,6 +39,8 @@ export function factory(options) {
     memberTasks: memberTasksFactory(options),
     reviewOpportunity: reviewOpportunityFactory(options),
     mySubmissionsManagement: mySubmissionsManagementFactory(options),
+    ui: uiFactory(options),
+    settings: settingsFactory(options),
   });
 }
 
@@ -52,4 +58,6 @@ export default ({
   memberTasks,
   reviewOpportunity,
   mySubmissionsManagement,
+  ui,
+  settings,
 });
