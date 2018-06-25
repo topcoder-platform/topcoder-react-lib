@@ -283,6 +283,148 @@ function onGetActiveChallengesDone(state, { error, payload }) {
 }
 
 /**
+ * Inits the loading of member subtrack challenges.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetSubtrackChallengesInit(state, { payload }) {
+  const { handle, uuid } = payload;
+  return {
+    ...state,
+    [handle]: { ...state[handle], loadingSubTrackChallengesUUID: uuid },
+  };
+}
+
+/**
+ * Finalizes the loading of member subtrack challenges.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetSubtrackChallengesDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member subtrack challenges', payload);
+    fireErrorMessage('Failed to get member subtrack challenges', '');
+    return state;
+  }
+
+  const {
+    uuid,
+    challenges,
+    refresh,
+    handle,
+  } = payload;
+  if (uuid !== state[handle].loadingSubTrackChallengesUUID) return state;
+
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      subtrackChallenges: (state[handle].subtrackChallenges && !refresh) ?
+        [...state[handle].subtrackChallenges, ...challenges] : challenges,
+      // if current query returns 0 item, mark it completed
+      subtrackChallengesHasMore: challenges && challenges.length > 0,
+      loadingSubTrackChallengesUUID: '',
+    },
+  };
+}
+
+/**
+ * Inits the loading of member SRMs.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserSRMInit(state, { payload }) {
+  const { handle, uuid } = payload;
+  return {
+    ...state,
+    [handle]: { ...state[handle], loadingSRMUUID: uuid },
+  };
+}
+
+/**
+ * Finalizes the loading of member SRMs.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserSRMDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member SRMs', payload);
+    fireErrorMessage('Failed to get member SRMs', '');
+    return state;
+  }
+
+  const {
+    uuid,
+    srms,
+    refresh,
+    handle,
+  } = payload;
+  if (uuid !== state[handle].loadingSRMUUID) return state;
+
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      userSRMs: (state[handle].userSRMs && !refresh) ? [...state[handle].userSRMs, ...srms] : srms,
+      userSRMHasMore: srms && srms.length > 0, // if current query returns 0 item, mark it completed
+      loadingSRMUUID: '',
+    },
+  };
+}
+
+/**
+ * Inits the loading of member marathons.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserMarathonInit(state, { payload }) {
+  const { handle, uuid } = payload;
+  return {
+    ...state,
+    [handle]: { ...state[handle], loadingMarathonUUID: uuid },
+  };
+}
+
+/**
+ * Finalizes the loading of member marathons.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserMarathonDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member marathons', payload);
+    fireErrorMessage('Failed to get member marathons', '');
+    return state;
+  }
+
+  const {
+    uuid,
+    marathons,
+    refresh,
+    handle,
+  } = payload;
+  if (uuid !== state[handle].loadingMarathonUUID) return state;
+
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      userMarathons: (state[handle].userMarathons && !refresh) ?
+        [...state[handle].userMarathons, ...marathons.challenges] : marathons.challenges,
+      // if current query returns 0 item, mark it completed
+      userMarathonHasMore: marathons && marathons.challenges && marathons.challenges.length > 0,
+      loadingMarathonUUID: '',
+    },
+  };
+}
+
+/**
  * Creates a new Members reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Members reducer.
@@ -304,6 +446,12 @@ function create(initialState = {}) {
     [a.getStatsDistributionDone]: onGetStatsDistributionDone,
     [a.getActiveChallengesInit]: onGetActiveChallengesInit,
     [a.getActiveChallengesDone]: onGetActiveChallengesDone,
+    [a.getSubtrackChallengesInit]: onGetSubtrackChallengesInit,
+    [a.getSubtrackChallengesDone]: onGetSubtrackChallengesDone,
+    [a.getUserSrmInit]: onGetUserSRMInit,
+    [a.getUserSrmDone]: onGetUserSRMDone,
+    [a.getUserMarathonInit]: onGetUserMarathonInit,
+    [a.getUserMarathonDone]: onGetUserMarathonDone,
   }, initialState);
 }
 
