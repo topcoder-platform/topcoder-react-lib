@@ -44,4 +44,3 @@ export function getService(tokenV3) {
 
 /* Using default export would be confusing in this case. */
 export default undefined;
-

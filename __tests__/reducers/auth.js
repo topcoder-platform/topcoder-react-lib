@@ -35,15 +35,14 @@ function testReducer(istate) {
     expect(state).toEqual(istate);
   });
 
-  test('Load profile', () =>
-    redux.resolveAction(mockActions.auth.loadProfile()).then((action) => {
-      const state = reducer({ dummy }, action);
-      expect(state).toEqual({
-        authenticating: false,
-        dummy,
-        profile: 'Profile',
-      });
-    }));
+  test('Load profile', () => redux.resolveAction(mockActions.auth.loadProfile()).then((action) => {
+    const state = reducer({ dummy }, action);
+    expect(state).toEqual({
+      authenticating: false,
+      dummy,
+      profile: 'Profile',
+    });
+  }));
 
   test('Set TC Token V2', () => {
     const state = reducer({ dummy }, mockActions.auth.setTcTokenV2());
@@ -73,38 +72,35 @@ function testReducer(istate) {
     mockActions.auth.setTcTokenV3 = mockAction('SET_TC_TOKEN_V3', 'Token V3');
   });
 
-  test('Upload photo', () =>
-    redux.resolveAction(mockActions.profile.uploadPhotoDone()).then((action) => {
-      const state = reducer({ profile: { handle } }, action);
-      expect(state).toEqual({
-        profile: {
-          handle,
-          photoURL,
-        },
-      });
-    }));
+  test('Upload photo', () => redux.resolveAction(mockActions.profile.uploadPhotoDone()).then((action) => {
+    const state = reducer({ profile: { handle } }, action);
+    expect(state).toEqual({
+      profile: {
+        handle,
+        photoURL,
+      },
+    });
+  }));
 
-  test('Delete photo', () =>
-    redux.resolveAction(mockActions.profile.deletePhotoDone()).then((action) => {
-      const state = reducer({ profile: { handle, photoURL } }, action);
-      expect(state).toEqual({
-        profile: {
-          handle,
-          photoURL: null,
-        },
-      });
-    }));
+  test('Delete photo', () => redux.resolveAction(mockActions.profile.deletePhotoDone()).then((action) => {
+    const state = reducer({ profile: { handle, photoURL } }, action);
+    expect(state).toEqual({
+      profile: {
+        handle,
+        photoURL: null,
+      },
+    });
+  }));
 
-  test('Update profile', () =>
-    redux.resolveAction(mockActions.profile.updateProfileDone()).then((action) => {
-      const state = reducer({ profile: { handle, photoURL } }, action);
-      expect(state).toEqual({
-        profile: {
-          handle,
-          photoURL: 'http://newurl',
-        },
-      });
-    }));
+  test('Update profile', () => redux.resolveAction(mockActions.profile.updateProfileDone()).then((action) => {
+    const state = reducer({ profile: { handle, photoURL } }, action);
+    expect(state).toEqual({
+      profile: {
+        handle,
+        photoURL: 'http://newurl',
+      },
+    });
+  }));
 }
 
 describe('Default reducer', () => {

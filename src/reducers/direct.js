@@ -11,8 +11,7 @@ import actions from '../actions/direct';
 import logger from '../utils/logger';
 import { fireErrorMessage } from '../utils/errors';
 
-const ERROR_MSG_GET_USER_PROJECTS_WITHOUT_AUTH_TOKEN
-  = 'Cannot get user projects without auth token';
+const ERROR_MSG_GET_USER_PROJECTS_WITHOUT_AUTH_TOKEN = 'Cannot get user projects without auth token';
 
 /**
  * Drops out all data and cancels any ongoing data loading related to this
@@ -201,4 +200,3 @@ export function factory() {
  * @desc Reducer with default initial state.
  */
 export default create();
-

@@ -36,10 +36,17 @@ function create(initialState) {
       ...state,
       icons: initialErrorIconState,
     }),
-    [a.setErrorIcon]: (state, { payload: { id, title, message } }) =>
-      ({ ...state, icons: { ...state.icons, [id]: [...state.icons[id], { title, message }] } }),
-    [a.clearErrorIcon]: (state, { payload: { id } }) =>
-      ({ ...state, icons: { ...state.icons, [id]: [] } }),
+    [a.setErrorIcon]: (state, { payload: { id, title, message } }) => ({
+      ...state,
+      icons: {
+        ...state.icons,
+        [id]: [...state.icons[id], { title, message }],
+      },
+    }),
+    [a.clearErrorIcon]: (state, { payload: { id } }) => ({
+      ...state,
+      icons: { ...state.icons, [id]: [] },
+    }),
   }, _.defaults(initialState, { alerts: [], icons: initialErrorIconState }));
 }
 
