@@ -14,8 +14,7 @@ const DAY_MS = 24 * HOUR_MS;
  * @return {Promise}
  */
 export async function delay(time) {
-  return new Promise(resolve =>
-    setTimeout(() => resolve(), time));
+  return new Promise(resolve => setTimeout(() => resolve(), time));
 }
 
 /**

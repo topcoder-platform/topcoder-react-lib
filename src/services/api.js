@@ -4,7 +4,7 @@
  */
 
 import _ from 'lodash';
-import 'isomorphic-fetch'; /* global fetch */
+import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';

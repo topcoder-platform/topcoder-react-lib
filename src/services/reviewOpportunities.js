@@ -30,9 +30,9 @@ class ReviewOpportunitiesService {
     return this.private.api.get(endpoint)
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`Error Code: ${res.status}`))))
       .then(res => (
-        res.result.status === 200 ?
-          res.result.content :
-          Promise.reject(res.result.content)
+        res.result.status === 200
+          ? res.result.content
+          : Promise.reject(res.result.content)
       ));
   }
 
@@ -46,9 +46,9 @@ class ReviewOpportunitiesService {
     return this.private.api.get(endpoint)
       .then(res => res.json())
       .then(res => (
-        res.result.status === 200 ?
-          res.result.content :
-          Promise.reject(res.result)
+        res.result.status === 200
+          ? res.result.content
+          : Promise.reject(res.result)
       ));
   }
 

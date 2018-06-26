@@ -1,19 +1,13 @@
-import { config } from 'topcoder-react-utils';
-import { getApiV2, getApiV3 } from '../../src/services/api';
+jest.useFakeTimers();
+jest.mock(
+  'isomorphic-fetch',
+  () => jest.fn((url, ops) => Promise.resolve({ url, ops })),
+);
 
-let originalFetch;
-
-beforeAll(() => {
-  originalFetch = global.fetch;
-});
-
-afterAll(() => {
-  global.fetch = originalFetch;
-});
+const { config } = require('topcoder-react-utils');
+const { getApiV2, getApiV3 } = require('../../src/services/api');
 
 describe('Test api', () => {
-  global.fetch = (url, ops) => Promise.resolve({ url, ops });
-
   const ENDPOINT = '/ENDPOINT';
   const MOCK_OPS = { OPTIONS: 'OPTIONS' };
 
@@ -40,30 +34,43 @@ describe('Test api', () => {
   }
 
   function testApi(api, base, token) {
-    return api.fetch(ENDPOINT, MOCK_OPS)
-      .then((res) => {
-        testRes(res, base, token, undefined, undefined, true);
-        return api.delete(ENDPOINT);
-      })
+    const request = api.fetch(ENDPOINT, MOCK_OPS);
+    jest.runAllTimers();
+    return request.then((res) => {
+      testRes(res, base, token, undefined, undefined, true);
+      const req = api.delete(ENDPOINT);
+      jest.runAllTimers();
+      return req;
+    })
       .then((res) => {
         testRes(res, base, token, 'DELETE');
-        return api.get(ENDPOINT);
+        const req = api.get(ENDPOINT);
+        jest.runAllTimers();
+        return req;
       })
       .then((res) => {
         testRes(res, base, token);
-        return api.post(ENDPOINT, 'BODY');
+        const req = api.post(ENDPOINT, 'BODY');
+        jest.runAllTimers();
+        return req;
       })
       .then((res) => {
         testRes(res, base, token, 'POST', 'BODY');
-        return api.postJson(ENDPOINT, { BODY: 'BODY' });
+        const req = api.postJson(ENDPOINT, { BODY: 'BODY' });
+        jest.runAllTimers();
+        return req;
       })
       .then((res) => {
         testRes(res, base, token, 'POST', JSON.stringify({ BODY: 'BODY' }));
-        return api.put(ENDPOINT, 'BODY');
+        const req = api.put(ENDPOINT, 'BODY');
+        jest.runAllTimers();
+        return req;
       })
       .then((res) => {
         testRes(res, base, token, 'PUT', 'BODY');
-        return api.putJson(ENDPOINT, { BODY: 'BODY' });
+        const req = api.putJson(ENDPOINT, { BODY: 'BODY' });
+        jest.runAllTimers();
+        return req;
       })
       .then((res) => {
         testRes(res, base, token, 'PUT', JSON.stringify({ BODY: 'BODY' }));
