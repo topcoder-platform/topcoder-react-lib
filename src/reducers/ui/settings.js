@@ -18,10 +18,10 @@ const TABS = {
     COMMUNITY: 'community',
   },
   TOOLS: {
-    DEVICES: 'device',
+    DEVICES: 'devices',
     SOFTWARE: 'software',
-    PROVIDERS: 'service provider',
-    SUBSCRIPTIONS: 'subscription',
+    PROVIDERS: 'service providers',
+    SUBSCRIPTIONS: 'subscriptions',
   },
 };
 
