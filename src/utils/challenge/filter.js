@@ -89,14 +89,12 @@ function filterByRegistrationOpen(challenge, state) {
     if (challenge.subTrack === 'MARATHON_MATCH') {
       return challenge.status !== 'PAST';
     }
-    const registrationPhase = challenge.allPhases.find(item =>
-      item.phaseType === 'Registration');
+    const registrationPhase = challenge.allPhases.find(item => item.phaseType === 'Registration');
     if (!registrationPhase || registrationPhase.phaseStatus !== 'Open') {
       return false;
     }
     if (challenge.track === 'DESIGN') {
-      const checkpointPhase = challenge.allPhases.find(item =>
-        item.phaseType === 'Checkpoint Submission');
+      const checkpointPhase = challenge.allPhases.find(item => item.phaseType === 'Checkpoint Submission');
       return !checkpointPhase || checkpointPhase.phaseStatus !== 'Closed';
     }
     return true;
@@ -137,8 +135,7 @@ function filterBySubtracks(challenge, state) {
    * it probably does not work in all cases. It should be double-checked,
    * why challenge subtracks in challenge objects are different from those
    * return from the API as the list of possible subtracks. */
-  const filterSubtracks = state.subtracks.map(item =>
-    item.toLowerCase().replace(/[_ ]/g, ''));
+  const filterSubtracks = state.subtracks.map(item => item.toLowerCase().replace(/[_ ]/g, ''));
   const challengeSubtrack = challenge.subTrack.toLowerCase().replace(/[_ ]/g, '');
   return filterSubtracks.includes(challengeSubtrack);
 }
@@ -152,9 +149,8 @@ function filterByTags(challenge, state) {
 
 function filterByText(challenge, state) {
   if (!state.text) return true;
-  const str =
-    `${challenge.name} ${challenge.platforms} ${challenge.technologies}`
-      .toLowerCase();
+  const str = `${challenge.name} ${challenge.platforms} ${challenge.technologies}`
+    .toLowerCase();
   return str.includes(state.text.toLowerCase());
 }
 

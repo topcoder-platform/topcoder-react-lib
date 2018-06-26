@@ -1,8 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`challenge.fetchChallengeInit 1`] = `
+Object {
+  "payload": "12345",
+  "type": "CHALLENGE/GET_DETAILS_INIT",
+}
+`;
+
+exports[`challenge.fetchSubmissionsDone 1`] = `
+Object {
+  "payload": Promise {},
+  "type": "CHALLENGE/GET_SUBMISSIONS_DONE",
+}
+`;
+
+exports[`challenge.fetchSubmissionsInit 1`] = `
+Object {
+  "payload": "12345",
+  "type": "CHALLENGE/GET_SUBMISSIONS_INIT",
+}
+`;
+
 exports[`challenge.getActiveChallengesCountDone 1`] = `
 Object {
-  "payload": 10,
+  "payload": Promise {},
   "type": "CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE",
 }
 `;
@@ -10,5 +31,12 @@ Object {
 exports[`challenge.getActiveChallengesCountInit 1`] = `
 Object {
   "type": "CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_INIT",
+}
+`;
+
+exports[`challenge.getDetailsDone 1`] = `
+Object {
+  "payload": Promise {},
+  "type": "CHALLENGE/GET_DETAILS_DONE",
 }
 `;

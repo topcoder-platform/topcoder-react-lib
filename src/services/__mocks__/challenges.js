@@ -163,8 +163,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
  * @return {Object} Normalized challenge.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d =>
-    d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -235,9 +234,8 @@ class ChallengesService {
   async getChallengeDetails(challengeId) {
     const challengeV3 = sampleApiV3ResponseSingle;
 
-    const challengeV3Filtered =
-      await this.private.getChallenges('/challenges/', { id: challengeId })
-        .then(res => res.challenges[0]);
+    const challengeV3Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
+      .then(res => res.challenges[0]);
 
     const challengeV2 = sampleApiV2ResponseSingle;
     const challenge = normalizeChallengeDetails(
@@ -272,9 +270,9 @@ class ChallengesService {
     return this.private.api.get('/technologies')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
-        res.result.status === 200 ?
-          res.result.content :
-          new Error(res.result.content)
+        res.result.status === 200
+          ? res.result.content
+          : new Error(res.result.content)
       ));
   }
 

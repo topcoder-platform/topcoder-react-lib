@@ -1,7 +1,6 @@
 const webpackMerge = require('webpack-merge'); // eslint-disable-line import/no-extraneous-dependencies
 
-const configFactory
-  = require('topcoder-react-utils/config/webpack/lib-development');
+const configFactory = require('topcoder-react-utils/config/webpack/lib-development');
 const path = require('path');
 const defaultConfig = require('./default');
 

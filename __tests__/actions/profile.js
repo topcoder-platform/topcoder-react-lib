@@ -45,8 +45,7 @@ UserService.getService = jest.fn().mockReturnValue(mockUserService);
 test('Module exports', () => expect(actions).toMatchSnapshot());
 
 test('profile.uploadPhotoDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.uploadPhotoDone(handle, tokenV3));
+  const actionResult = await redux.resolveAction(actions.profile.uploadPhotoDone(handle, tokenV3));
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.getPresignedUrl).toBeCalled();
   expect(mockMembersService.uploadFileToS3).toBeCalled();
@@ -54,86 +53,97 @@ test('profile.uploadPhotoDone', async () => {
 });
 
 test('profile.updateProfileDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.updateProfileDone(profile, tokenV3));
+  const actionResult = await redux.resolveAction(
+    actions.profile.updateProfileDone(profile, tokenV3),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.updateMemberProfile).toBeCalled();
 });
 
 test('profile.addSkillDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.addSkillDone(handle, tokenV3, skill));
+  const actionResult = await redux.resolveAction(
+    actions.profile.addSkillDone(handle, tokenV3, skill),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.addSkill).toBeCalled();
 });
 
 test('profile.hideSkillDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.hideSkillDone(handle, tokenV3, skill));
+  const actionResult = await redux.resolveAction(
+    actions.profile.hideSkillDone(handle, tokenV3, skill),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.hideSkill).toBeCalled();
 });
 
 test('profile.addWebLinkDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.addWebLinkDone(handle, tokenV3, weblink));
+  const actionResult = await redux.resolveAction(
+    actions.profile.addWebLinkDone(handle, tokenV3, weblink),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.addWebLink).toBeCalled();
 });
 
 test('profile.deleteWebLinkDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.deleteWebLinkDone(handle, tokenV3, weblink));
+  const actionResult = await redux.resolveAction(
+    actions.profile.deleteWebLinkDone(handle, tokenV3, weblink),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockMembersService.deleteWebLink).toBeCalled();
 });
 
 test('profile.linkExternalAccountDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.linkExternalAccountDone(profile, tokenV3, 'github'));
+  const actionResult = await redux.resolveAction(
+    actions.profile.linkExternalAccountDone(profile, tokenV3, 'github'),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.linkExternalAccount).toBeCalled();
 });
 
 test('profile.unlinkExternalAccountDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.unlinkExternalAccountDone(profile, tokenV3, 'github'));
+  const actionResult = await redux.resolveAction(
+    actions.profile.unlinkExternalAccountDone(profile, tokenV3, 'github'),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.unlinkExternalAccount).toBeCalled();
 });
 
 test('profile.getLinkedAccountsDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.getLinkedAccountsDone(profile, tokenV3));
+  const actionResult = await redux.resolveAction(
+    actions.profile.getLinkedAccountsDone(profile, tokenV3),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.getLinkedAccounts).toBeCalled();
 });
 
 test('profile.getCredentialDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.getCredentialDone(profile, tokenV3));
+  const actionResult = await redux.resolveAction(
+    actions.profile.getCredentialDone(profile, tokenV3),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.getCredential).toBeCalled();
 });
 
 test('profile.getEmailPreferencesDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.getEmailPreferencesDone(profile, tokenV3));
+  const actionResult = await redux.resolveAction(
+    actions.profile.getEmailPreferencesDone(profile, tokenV3),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.getEmailPreferences).toBeCalled();
 });
 
 test('profile.saveEmailPreferencesDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.saveEmailPreferencesDone(profile, tokenV3, {}));
+  const actionResult = await redux.resolveAction(
+    actions.profile.saveEmailPreferencesDone(profile, tokenV3, {}),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.saveEmailPreferences).toBeCalled();
 });
 
 test('profile.updatePasswordDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.profile.updatePasswordDone(profile, tokenV3, 'newPassword', 'oldPassword'));
+  const actionResult = await redux.resolveAction(
+    actions.profile.updatePasswordDone(profile, tokenV3, 'newPassword', 'oldPassword'),
+  );
   expect(actionResult).toMatchSnapshot();
   expect(mockUserService.updatePassword).toBeCalled();
 });
-

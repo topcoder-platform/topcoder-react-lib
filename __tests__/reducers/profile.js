@@ -210,4 +210,3 @@ describe('Factory without server side rendering', () => {
 
   testReducer();
 });
-

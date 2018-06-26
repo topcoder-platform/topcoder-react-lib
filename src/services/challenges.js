@@ -235,8 +235,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d =>
-    d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -311,8 +310,8 @@ export function normalizeMarathonMatch(challenge, username) {
     numSubmissions: 0, // currently challenge doesn't return submission value
     platforms: '',
     prizes: [0],
-    registrationOpen: endTimestamp > Date.now() &&
-      (challenge.status !== 'PAST') ? 'Yes' : 'No',
+    registrationOpen: endTimestamp > Date.now()
+      && (challenge.status !== 'PAST') ? 'Yes' : 'No',
     registrationStartDate: challenge.startDate,
     submissionEndDate: challenge.endDate,
     submissionEndTimestamp: endTimestamp,
@@ -477,9 +476,8 @@ class ChallengesService {
     const challengeV3 = await this.private.api.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res.content);
 
-    const challengeV3Filtered =
-      await this.private.getChallenges('/challenges/', { id: challengeId })
-        .then(res => res.challenges[0]);
+    const challengeV3Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
+      .then(res => res.challenges[0]);
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
     const challengeV3User = username && await this.getUserChallenges(username, { id: challengeId })
@@ -505,9 +503,9 @@ class ChallengesService {
     return this.private.api.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
-        res.result.status === 200 ?
-          res.result.content :
-          new Error(res.result.content)
+        res.result.status === 200
+          ? res.result.content
+          : new Error(res.result.content)
       ));
   }
 
@@ -519,9 +517,9 @@ class ChallengesService {
     return this.private.api.get('/technologies')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
-        res.result.status === 200 ?
-          res.result.content :
-          new Error(res.result.content)
+        res.result.status === 200
+          ? res.result.content
+          : new Error(res.result.content)
       ));
   }
 

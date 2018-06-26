@@ -24,8 +24,7 @@ test('lookup.getSkillTagsInit', async () => {
 });
 
 test('lookup.getSkillTagsDone', async () => {
-  const actionResult =
-    await redux.resolveAction(actions.lookup.getSkillTagsDone());
+  const actionResult = await redux.resolveAction(actions.lookup.getSkillTagsDone());
   expect(actionResult).toMatchSnapshot();
   expect(mockLookupService.getTags).toBeCalled();
 });
