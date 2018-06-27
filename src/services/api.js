@@ -265,3 +265,20 @@ export function getApiV3(token) {
   }
   return lastApiV3;
 }
+
+/*
+ * Topcoder API v4.
+ */
+
+let lastApiV4 = null;
+/**
+ * Returns a new or existing Api object for Topcoder API v4
+ * @param {String} token Optional. Auth token for Topcoder API v4. (Uses same Token as v3)
+ * @return {Api} API v3 service object.
+ */
+export function getApiV4(token) {
+  if (!lastApiV4 || lastApiV4.private.token !== token) {
+    lastApiV4 = new Api(config.API.V4, token);
+  }
+  return lastApiV4;
+}
