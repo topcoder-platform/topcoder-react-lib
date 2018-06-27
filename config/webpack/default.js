@@ -2,6 +2,7 @@ module.exports = {
   // Don't include the dependencies to keep built bundle small,
   // they will be provided by the app using this lib
   externals: [
+    'auth0-js',
     'qs',
     'lodash',
     'le_node',
@@ -13,6 +14,7 @@ module.exports = {
     'redux-actions',
     'isomorphic-fetch',
     'tc-accounts',
+    'to-capital-case',
     'topcoder-react-utils',
   ],
 };
