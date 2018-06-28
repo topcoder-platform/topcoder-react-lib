@@ -2,9 +2,20 @@
  * @module "services.communities"
  * @desc Communities service.
  */
+import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import qs from 'qs';
 import { config } from 'topcoder-react-utils';
+
+/**
+ * Returns Community App URL, or throws an error if URL cannot be found in
+ * config.
+ */
+function getCommunityAppUrl() {
+  const url = _.get(config, 'URL.COMMUNITY_APP');
+  if (!url) throw new Error('No URL.COMMUNITY_APP param found in config');
+  return url;
+}
 
 /**
  * Client-side version of the service.
@@ -24,16 +35,16 @@ class Communities {
    * @return {Promise} Resolves to the array of community data objects. Each of
    *  the objects indludes only the most important data on the community.
    */
-  getList(userGroupIds) {
-    let url = `/community-app-assets/api/tc-communities?${qs.stringify({ groups: userGroupIds })}`;
-    if (config.URL && config.URL.COMMUNITY_APP) {
-      url = `${config.URL.COMMUNITY_APP}url`;
-    }
-    return fetch(url, {
+  async getList(userGroupIds) {
+    let url = getCommunityAppUrl();
+    url += '/community-app-assets/api/tc-communities?';
+    url += qs.stringify({ groups: userGroupIds });
+    const res = await fetch(url, {
       headers: {
         authorization: this.private.tokenV3,
       },
-    }).then(res => res.json());
+    });
+    return res.json();
   }
 
   /**
@@ -41,16 +52,15 @@ class Communities {
    * @param {String} communityId
    * @return {Promise} Resolves to the community metadata.
    */
-  getMetadata(communityId) {
-    let url = `/community-app-assets/api/tc-communities/${communityId}/meta`;
-    if (config.URL && config.URL.COMMUNITY_APP) {
-      url = `${config.URL.COMMUNITY_APP}url`;
-    }
-    return fetch(url, {
+  async getMetadata(communityId) {
+    let url = getCommunityAppUrl();
+    url += `/community-app-assets/api/tc-communities/${communityId}/meta`;
+    const res = await fetch(url, {
       headers: {
         authorization: this.private.tokenV3,
       },
-    }).then(res => res.json());
+    });
+    return res.json();
   }
 }
 
