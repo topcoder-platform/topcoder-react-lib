@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.3.4",
+  "version": "0.3.5",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "isomorphic-fetch": "^2.2.1",
@@ -43,11 +43,11 @@
     "qs": "^6.5.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "redux": "^4.0.0",
+    "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
     "to-capital-case": "^1.0.0",
-    "topcoder-react-utils": "^0.6.4"
+    "topcoder-react-utils": "^0.6.5"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.3",
