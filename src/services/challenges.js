@@ -20,24 +20,23 @@ export const ORDER_BY = {
 /**
  * Normalizes a regular challenge details object received from the backend APIs.
  * NOTE: It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
+ * have moved to Topcoder API v4, but it is kept for now to minimize a risk of
  * breaking anything.
  * @todo Why this one is exported? It should be only used internally!
  * @param {Object} v4 Challenge object received from the /v4/challenges/{id}
  *  endpoint.
  * @param {Object} v4Filtered Challenge object received from the
  *  /v4/challenges?filter=id={id} endpoint.
- * @param {Object} v3User Challenge object received from the
- *  /v3//members/{username}/challenges?filter=id={id} endpoint.
- * If action was fired for authenticated visitor, v3_user will contain
+ * @param {Object} v4User Challenge object received from the
+ *  /v4/members/{username}/challenges?filter=id={id} endpoint.
+ * If action was fired for authenticated visitor, v4_user will contain
  * details fetched specifically for the user (thus may include additional
- * data comparing to the standard API v3 response for the challenge details,
- * stored in v3_filtered).
- * @param {Object} v2 Challenge object received from the /v2/{type}/challenges/{id} endpoint.
+ * data comparing to the standard API v4 response for the challenge details,
+ * stored in v4_filtered).
  * @param {String} username Optional.
  * @return {Object} Normalized challenge object.
  */
-export function normalizeChallengeDetails(v4, v4Filtered, v3User, username) {
+export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
   // Normalize exising data to make it consistent with the rest of the code
   const challenge = {
     ...v4,
@@ -91,6 +90,7 @@ export function normalizeChallengeDetails(v4, v4Filtered, v3User, username) {
     registrants: v4.registrants || [],
   };
 
+  /* It's unclear if these normalization steps are still required for V4 */
   // Fill missing data from v3_filtered
   if (v4Filtered) {
     const groups = {};
@@ -101,7 +101,6 @@ export function normalizeChallengeDetails(v4, v4Filtered, v3User, username) {
     }
 
     // Normalize name convention for subtrack
-    // const newsubTrack = normalizeNameConventionForSubtrack(v4Filtered.subTrack);
     _.defaults(challenge, {
       componentId: v4Filtered.componentId,
       contestId: v4Filtered.contestId,
@@ -131,9 +130,9 @@ export function normalizeChallengeDetails(v4, v4Filtered, v3User, username) {
   }
 
   // Fill missing data from v3_user
-  if (v3User) {
+  if (v4User) {
     _.defaults(challenge, {
-      userDetails: v3User.userDetails,
+      userDetails: v4User.userDetails,
     });
   }
 
@@ -231,27 +230,23 @@ class ChallengesService {
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
-     * @param {String} endpoint API V3 endpoint, where the request will be send.
+     * @param {String} endpoint API V4 endpoint, where the request will be send.
      * @param {Object} filters Optional. A map of filters to pass as `filter`
      *  query parameter (this function takes care to stringify it properly).
      * @param {Object} params Optional. A map of any other parameters beside
      *  `filter`.
-     * @param {Boolean} useV4 Optional.  Whether a call to v4 API should be used.
      */
     const getChallenges = async (
       endpoint,
       filters = {},
       params = {},
-      useV4 = false,
     ) => {
       const query = {
         filter: qs.stringify(filters, { encode: false }),
         ...params,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
-      const res = useV4
-        ? await this.private.apiV4.get(url).then(checkError)
-        : await this.private.api.get(url).then(checkError);
+      const res = await this.private.apiV4.get(url).then(checkError);
       return {
         challenges: res.content || [],
         totalCount: res.metadata.totalCount,
@@ -352,17 +347,17 @@ class ChallengesService {
     const challengeV4 = await this.private.apiV4.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res.content);
 
-    const challengeV4Filtered = await this.private.getChallenges('/challenges/', { id: challengeId }, {}, true)
+    const challengeV4Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeV3User = username && await this.getUserChallenges(username, { id: challengeId })
-      .then(res => res.challenges[0]);
+    const challengeV4User = username && await this.getUserChallenges(username, { id: challengeId })
+      .then(res => res.challenges[0]).catch(() => null);
 
     const challenge = normalizeChallengeDetails(
       challengeV4,
       challengeV4Filtered,
-      challengeV3User,
+      challengeV4User,
       username,
     );
 
@@ -406,7 +401,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getChallenges(filters, params) {
-    return this.private.getChallenges('/challenges/', filters, params, true)
+    return this.private.getChallenges('/challenges/', filters, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
@@ -459,7 +454,7 @@ class ChallengesService {
    */
   async register(challengeId) {
     const endpoint = `/challenges/${challengeId}/register`;
-    const res = await this.private.api.postJson(endpoint);
+    const res = await this.private.apiV4.postJson(endpoint);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -471,7 +466,7 @@ class ChallengesService {
    */
   async unregister(challengeId) {
     const endpoint = `/challenges/${challengeId}/unregister`;
-    const res = await this.private.api.post(endpoint);
+    const res = await this.private.apiV4.post(endpoint);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }

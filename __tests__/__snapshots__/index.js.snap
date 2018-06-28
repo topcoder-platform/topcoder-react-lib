@@ -238,6 +238,7 @@ Object {
       "default": [Function],
       "getApiV2": [Function],
       "getApiV3": [Function],
+      "getApiV4": [Function],
     },
     "billing": Object {
       "default": [Function],
@@ -251,7 +252,6 @@ Object {
       "getService": [Function],
       "normalizeChallenge": [Function],
       "normalizeChallengeDetails": [Function],
-      "normalizeMarathonMatch": [Function],
     },
     "communities": Object {
       "default": undefined,
