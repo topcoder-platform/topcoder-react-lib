@@ -110,7 +110,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
     ...v3,
 
     id: v3.challengeId,
-    reliabilityBonus: v3Filtered.reliabilityBonus || 0,
+    reliabilityBonus: _.get(v3Filtered, 'reliabilityBonus', 0),
     status: (v3.currentStatus || '').toUpperCase(),
 
     name: v3.challengeName,
