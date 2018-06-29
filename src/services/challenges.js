@@ -42,7 +42,7 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     ...v4,
 
     id: v4.challengeId,
-    reliabilityBonus: v4Filtered.reliabilityBonus || 0,
+    reliabilityBonus: _.get(v4Filtered, 'reliabilityBonus', 0),
     status: (v4.currentStatus || '').toUpperCase(),
 
     name: v4.challengeName || v4.challengeTitle,
