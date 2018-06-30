@@ -45,6 +45,8 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     reliabilityBonus: _.get(v4Filtered, 'reliabilityBonus', 0),
     status: (v4.currentStatus || '').toUpperCase(),
 
+    allPhases: [],
+    currentPhases: [],
     name: v4.challengeName || v4.challengeTitle,
     projectId: Number(v4.projectId),
     forumId: Number(v4.forumId),
@@ -68,20 +70,14 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     technologies: v4.technologies || v4.technology || [],
     platforms: v4.platforms || [],
     prizes: v4.prize || v4.prizes || [],
-    events: v4.event ? [
-      {
-        eventName: v4.event.eventShortDesc,
-        eventId: v4.event.id,
-        description: v4.event.eventDescription,
-      }] : [],
-    mainEvent: v4.event ? {
-      eventName: v4.event.eventShortDesc,
-      eventId: v4.event.id,
-      description: v4.event.eventDescription,
-    } : {},
+    events: _.map(v4.event, e => ({
+      eventName: e.eventShortDesc,
+      eventId: e.id,
+      description: e.eventDescription,
+    })),
     terms: v4.terms,
     submissions: v4.submissions,
-    track: v4.subTrack === 'DEVELOP_MARATHON_MATCH' ? 'DATA_SCIENCE' : v4.track,
+    track: _.toUpper(v4.challengeCommunity),
     subTrack: v4.subTrack === 'DEVELOP_MARATHON_MATCH' ? 'MARATHON_MATCH' : v4.subTrack,
     checkpoints: v4.checkpoints,
     documents: v4.documents || [],
@@ -90,8 +86,15 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     registrants: v4.registrants || [],
   };
 
+  if (challenge.technologies.includes('Data Science') || challenge.subTrack === 'MARATHON_MATCH') {
+    challenge.track = 'DATA_SCIENCE';
+  }
+
+  // It's not clear if this will be the main event, will need to be investigated
+  challenge.mainEvent = challenge.events[0] || {};
+
   /* It's unclear if these normalization steps are still required for V4 */
-  // Fill missing data from v3_filtered
+  // Fill missing data from v4_filtered
   if (v4Filtered) {
     const groups = {};
     if (v4Filtered.groupIds) {
@@ -100,12 +103,10 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
       });
     }
 
-    // Normalize name convention for subtrack
-    _.defaults(challenge, {
+    _.merge(challenge, {
       componentId: v4Filtered.componentId,
       contestId: v4Filtered.contestId,
 
-      track: v4Filtered.track,
       submissionEndDate: v4Filtered.submissionEndDate, // Dates are not correct in v3
       submissionEndTimestamp: v4Filtered.submissionEndDate, // Dates are not correct in v3
 
