@@ -29,6 +29,7 @@
     "jest": "jest --no-cache --maxWorkers=4 --config config/jest/default.js",
     "lint": "npm run lint:js",
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
+    "prepack": "npm run build",
     "test": "npm run lint && npm run jest"
   },
   "version": "0.3.7",
