@@ -9,11 +9,13 @@ module.exports = {
     'moment-timezone',
     'moment-duration-format',
     'react',
+    'react-dom',
     'redux',
     'redux-actions',
     'isomorphic-fetch',
     'tc-accounts',
     'to-capital-case',
     'topcoder-react-utils',
+    'topcoder-react-ui-kit',
   ],
 };
