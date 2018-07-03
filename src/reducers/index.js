@@ -11,6 +11,8 @@ import groups, { factory as groupsFactory } from './groups';
 import errors, { factory as errorsFactory } from './errors';
 import challenge, { factory as challengeFactory } from './challenge';
 import profile, { factory as profileFactory } from './profile';
+import basicInfo, { factory as basicInfoFactory } from './basicInfo';
+import language, { factory as languageFactory } from './language';
 import members, { factory as membersFactory } from './members';
 import lookup, { factory as lookupFactory } from './lookup';
 import memberTasks, { factory as memberTasksFactory } from './member-tasks';
@@ -30,6 +32,8 @@ export function factory(options) {
     errors: errorsFactory(options),
     challenge: challengeFactory(options),
     profile: profileFactory(options),
+    basicInfo: basicInfoFactory(options),
+    language: languageFactory(options),
     lookup: lookupFactory(options),
     members: membersFactory(options),
     memberTasks: memberTasksFactory(options),
@@ -47,6 +51,8 @@ export default ({
   errors,
   challenge,
   profile,
+  basicInfo,
+  language,
   lookup,
   members,
   memberTasks,

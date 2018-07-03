@@ -101,7 +101,43 @@ class Api {
         throw e;
       });
   }
+  async fetchTraits(endpoint, options = {}) {
+    const {
+      base,
+      token,
+    } = this.private;
+    const headers = options.headers ? _.clone(options.headers) : {};
+    if (token) headers.Authorization = `Bearer ${token}`;
 
+    switch (headers['Content-Type']) {
+      case null:
+        delete headers['Content-Type'];
+        break;
+      case undefined:
+        headers['Content-Type'] = 'application/json';
+        break;
+      default:
+    }
+    console.log("Headers", headers);
+    console.log("Endpoint", endpoint);
+    /* Throttling of API calls should not happen at server in production. */
+    if (API_THROTTLING && (isomorphy.isClientSide() || isomorphy.isDevBuild())) {
+      const now = Date.now();
+      lastApiCallTimestamp += MIN_API_CALL_DELAY;
+      if (lastApiCallTimestamp > now) {
+        await delay(lastApiCallTimestamp - now);
+      } else lastApiCallTimestamp = now;
+    }
+
+    return fetch(`${endpoint}`, {
+      ...options,
+      headers,
+    })
+      .catch((e) => {
+        setErrorIcon(ERROR_ICON_TYPES.NETWORK, `${endpoint}`, e.message);
+        throw e;
+      });
+  }
   /**
    * Sends DELETE request to the specified endpoint.
    * @param {String} endpoint
@@ -123,7 +159,9 @@ class Api {
   get(endpoint) {
     return this.fetch(endpoint);
   }
-
+  getTraits(endpoint) {
+    return this.fetchTraits(endpoint);
+  }
   /**
    * Sends POST request to the specified endpoint.
    * @param {String} endpoint
@@ -154,12 +192,19 @@ class Api {
    * @return {Promise}
    */
   put(endpoint, body) {
+    console.log("Body put", body);
     return this.fetch(endpoint, {
       body,
       method: 'PUT',
     });
   }
-
+  putTraits(endpoint, body) {
+    console.log("Body", body);
+    return this.fetchTraits(endpoint, {
+      body,
+      method: 'PUT',
+    });
+  }
   /**
    * Sends PUT request to the specified endpoint.
    * @param {String} endpoint
@@ -167,9 +212,13 @@ class Api {
    * @return {Promise}
    */
   putJson(endpoint, json) {
+    
     return this.put(endpoint, JSON.stringify(json));
   }
-
+  putJsonTraits(endpoint, json) {
+    console.log("Json", json);
+    return this.putTraits(endpoint, JSON.stringify(json));
+  }
   /**
    * Sends PATCH request to the specified endpoint.
    * @param {String} endpoint

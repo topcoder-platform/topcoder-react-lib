@@ -7,6 +7,8 @@ import groupActions from './groups';
 import errorActions from './errors';
 import challengeActions from './challenge';
 import profileActions from './profile';
+import basicInfoActions from './basicInfo';
+import languageActions from './language';
 import memberActions from './members';
 import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
@@ -22,6 +24,8 @@ export const actions = {
   groups: groupActions.groups,
   errors: errorActions.errors,
   profile: profileActions.profile,
+  basicInfo: basicInfoActions.basicInfo,
+  language: languageActions.language,
   members: memberActions.members,
   memberTasks: memberTaskActions.memberTasks,
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,

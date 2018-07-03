@@ -19,7 +19,7 @@ function onGetAchievementsDone(state, { payload, error }) {
   if (error) {
     return { ...state, loadingError: true };
   }
-
+console.log("GETACHIEVEMENTS", state);
   return ({
     ...state,
     achievements: payload.Achievements,
