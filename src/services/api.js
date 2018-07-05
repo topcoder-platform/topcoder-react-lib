@@ -101,7 +101,7 @@ class Api {
         throw e;
       });
   }
-  async fetchTraits(endpoint, options = {}) {
+  async fetchLocal(endpoint, options = {}) {
     const {
       base,
       token,
@@ -159,9 +159,6 @@ class Api {
   get(endpoint) {
     return this.fetch(endpoint);
   }
-  getTraits(endpoint) {
-    return this.fetchTraits(endpoint);
-  }
   /**
    * Sends POST request to the specified endpoint.
    * @param {String} endpoint
@@ -198,9 +195,9 @@ class Api {
       method: 'PUT',
     });
   }
-  putTraits(endpoint, body) {
+  putLocal(endpoint, body) {
     console.log("Body", body);
-    return this.fetchTraits(endpoint, {
+    return this.fetchLocal(endpoint, {
       body,
       method: 'PUT',
     });
@@ -215,9 +212,9 @@ class Api {
     
     return this.put(endpoint, JSON.stringify(json));
   }
-  putJsonTraits(endpoint, json) {
+  putJsonLocal(endpoint, json) {
     console.log("Json", json);
-    return this.putTraits(endpoint, JSON.stringify(json));
+    return this.putLocal(endpoint, JSON.stringify(json));
   }
   /**
    * Sends PATCH request to the specified endpoint.

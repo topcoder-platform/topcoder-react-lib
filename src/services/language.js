@@ -39,11 +39,11 @@ class LanguageService {
              if (res.status !== 200) throw new Error(res.content);
              return res.json();
   }
-//   async updateBasicInfo(basicInfo) {
-//     console.log("Updated basic info/basic info services: ", basicInfo);
-//     const res = await this.private.api.putJsonTraits(`http://local.topcoder-dev.com/v3/members/${basicInfo.traits.data[0].handle}/traits`, { param: [basicInfo] });
-//     return getApiResponsePayloadV3(res);
-//   }
+  async updateLanguage(language, handle) {
+    console.log("Updated language services: ", language, " with handle ", handle );
+    const res = await this.private.api.putJsonLocal(`http://local.topcoder-dev.com/v3/members/${handle}/traits`, { param: [language] });
+    return getApiResponsePayloadV3(res);
+  }
   fetch(endpoint, options = {}) {
 
     console.log("endpoint ===>>>> " + endpoint);

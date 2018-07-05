@@ -41,7 +41,7 @@ class BasicInfoService {
   }
   async updateBasicInfo(basicInfo) {
     console.log("Updated basic info/basic info services: ", basicInfo);
-    const res = await this.private.api.putJsonTraits(`http://local.topcoder-dev.com/v3/members/${basicInfo.traits.data[0].handle}/traits`, { param: [basicInfo] });
+    const res = await this.private.api.putJsonLocal(`http://local.topcoder-dev.com/v3/members/${basicInfo.traits.data[0].handle}/traits`, { param: [basicInfo] });
     return getApiResponsePayloadV3(res);
   }
   fetch(endpoint, options = {}) {

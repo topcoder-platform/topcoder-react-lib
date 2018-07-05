@@ -23,17 +23,17 @@ function getLanguageDone(handle, tokenV3) {
   
   function updateLanguageInit() {}
 
-// function updateBasicInfoDone(basicInfo) {
-//   console.log("Updated basic info/basic info actions: ", basicInfo);
-//   const token= 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJhZG1pbmlzdHJhdG9yIl0sImlzcyI6Imh0dHBzOi8vYXBpLnRvcGNvZGVyLWRldi5jb20iLCJoYW5kbGUiOiJoZWZmYW4iLCJleHAiOjE3NjYyODkyNDYsInVzZXJJZCI6IjEzMjQ1NiIsImlhdCI6MTQ1MDkyOTI0NiwiZW1haWwiOm51bGwsImp0aSI6IjEzNjljNjAwLWUwYTEtNDUyNS1hN2M3LTU2YmU3ZDgxM2Y1MSJ9.hp5peSoj-fh3KFkskvBpfUFIcJNtsv4zIMFV-D8F3JA';
-//   const service= getBasicInfoService(token);
-//   return service.updateBasicInfo(basicInfo);
-//   }
+function updateLanguageDone(language, handle) {
+  // console.log("Updated basic info/basic info actions: ", basicInfo);
+  const token= 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJhZG1pbmlzdHJhdG9yIl0sImlzcyI6Imh0dHBzOi8vYXBpLnRvcGNvZGVyLWRldi5jb20iLCJoYW5kbGUiOiJoZWZmYW4iLCJleHAiOjE3NjYyODkyNDYsInVzZXJJZCI6IjEzMjQ1NiIsImlhdCI6MTQ1MDkyOTI0NiwiZW1haWwiOm51bGwsImp0aSI6IjEzNjljNjAwLWUwYTEtNDUyNS1hN2M3LTU2YmU3ZDgxM2Y1MSJ9.hp5peSoj-fh3KFkskvBpfUFIcJNtsv4zIMFV-D8F3JA';
+  const service= getLanguageService(token);
+  return service.updateLanguage(language, handle);
+  }
   export default createActions({
     LANGUAGE: {
       GET_LANGUAGE_INIT: getLanguageInit,
       GET_LANGUAGE_DONE: getLanguageDone,
-    //   UPDATE_BASIC_INFO_INIT: updateBasicInfoInit,
-    //   UPDATE_BASIC_INFO_DONE: updateBasicInfoDone
+      UPDATE_LANGUAGE_INIT: updateLanguageInit,
+      UPDATE_LANGUAGE_DONE: updateLanguageDone
     }
   });
