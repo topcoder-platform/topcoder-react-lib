@@ -206,6 +206,7 @@ Object {
     "countReset": [Function],
     "debug": [Function],
     "dir": [Function],
+    "dirxml": [Function],
     "error": [Function],
     "group": [Function],
     "groupCollapsed": [Function],

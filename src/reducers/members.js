@@ -321,8 +321,9 @@ function onGetSubtrackChallengesDone(state, { error, payload }) {
     ...state,
     [handle]: {
       ...state[handle],
-      subtrackChallenges: (state[handle].subtrackChallenges && !refresh) ?
-        [...state[handle].subtrackChallenges, ...challenges] : challenges,
+      subtrackChallenges: (state[handle].subtrackChallenges && !refresh)
+        ? [...state[handle].subtrackChallenges, ...challenges]
+        : challenges,
       // if current query returns 0 item, mark it completed
       subtrackChallengesHasMore: challenges && challenges.length > 0,
       loadingSubTrackChallengesUUID: '',
@@ -415,8 +416,9 @@ function onGetUserMarathonDone(state, { error, payload }) {
     ...state,
     [handle]: {
       ...state[handle],
-      userMarathons: (state[handle].userMarathons && !refresh) ?
-        [...state[handle].userMarathons, ...marathons.challenges] : marathons.challenges,
+      userMarathons: (state[handle].userMarathons && !refresh)
+        ? [...state[handle].userMarathons, ...marathons.challenges]
+        : marathons.challenges,
       // if current query returns 0 item, mark it completed
       userMarathonHasMore: marathons && marathons.challenges && marathons.challenges.length > 0,
       loadingMarathonUUID: '',
