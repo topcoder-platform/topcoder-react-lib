@@ -3,6 +3,7 @@
  * @desc Actions related to members data.
  */
 
+import qs from 'qs';
 import { createActions } from 'redux-actions';
 import { getService } from '../services/members';
 import { getService as getUserService } from '../services/user';
@@ -200,6 +201,144 @@ async function getStatsDistributionDone(handle, track, subTrack, uuid, tokenV3) 
   return { data, handle, uuid };
 }
 
+/**
+ * @static
+ * @desc Create an action that signals beginning of subtrack challenges loading.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getSubtrackChallengesInit(handle, uuid) {
+  return { handle, uuid };
+}
+
+/**
+ * @static
+ * @desc Create an action that loads the member subtrack challenges.
+ * @param {String} uuid Operation UUID.
+ * @param {String} handle Member handle.
+ * @param {String} tokenV3 v3 auth token.
+ * @param {String} track Main track name.
+ * @param {String} subTrack Subtrack name.
+ * @param {Number} start page.
+ * @param {Number} page size.
+ * @param {Boolean} whether to refresh.
+ * @return {Action}
+ */
+async function getSubtrackChallengesDone(
+  uuid, handle, tokenV3, track, subTrack, pageNum, pageSize,
+  refresh,
+) {
+  const filter = {
+    status: 'completed',
+    hasUserSubmittedForReview: 'true',
+    track,
+    subTrack,
+  };
+
+  const params = {};
+  params.orderBy = 'submissionEndDate desc';
+  params.limit = pageSize;
+  params.offset = pageNum * pageSize;
+
+  const service = getChallengesService(tokenV3);
+  return service.getUserChallenges(handle, filter, params)
+    .then(res => ({
+      uuid,
+      challenges: res.challenges,
+      refresh,
+      handle,
+    }));
+}
+
+/**
+ * @static
+ * @desc Create an action that signals beginning of member SRM loading.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserSRMInit(handle, uuid) {
+  return { handle, uuid };
+}
+
+/**
+ * @static
+ * @desc Create an action that loads the member SRM.
+ * @param {String} uuid Operation UUID.
+ * @param {String} handle Member handle.
+ * @param {String} tokenV3 v3 auth token.
+ * @param {Number} start page.
+ * @param {Number} page size.
+ * @param {Boolean} whether to refresh.
+ * @return {Action}
+ */
+async function getUserSRMDone(
+  uuid, handle, tokenV3, pageNum, pageSize,
+  refresh,
+) {
+  const filter = {
+    status: 'past',
+    isRatedForSRM: 'true',
+  };
+
+  const params = {
+    filter: qs.stringify(filter, { encode: false }),
+    limit: pageSize,
+    offset: pageNum * pageSize,
+  };
+
+  const service = getChallengesService(tokenV3);
+  return service.getUserSrms(handle, params).then(res => ({
+    uuid,
+    srms: res,
+    refresh,
+    handle,
+  }));
+}
+
+/**
+ * @static
+ * @desc Create an action that signals beginning of member marathon loading.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserMarathonInit(handle, uuid) {
+  return { handle, uuid };
+}
+
+/**
+ * @static
+ * @desc Create an action that loads the member marathon.
+ * @param {String} uuid Operation UUID.
+ * @param {String} handle Member handle.
+ * @param {String} tokenV3 v3 auth token.
+ * @param {Number} start page.
+ * @param {Number} page size.
+ * @param {Boolean} whether to refresh.
+ * @return {Action}
+ */
+async function getUserMarathonDone(
+  uuid, handle, tokenV3, pageNum, pageSize,
+  refresh,
+) {
+  const filter = { status: 'PAST', isRatedForMM: 'true' };
+  const params = {};
+  params.orderBy = 'endDate desc';
+  params.limit = pageSize;
+  params.offset = pageNum * pageSize;
+
+  const service = getChallengesService(tokenV3);
+  return service.getUserMarathonMatches(handle, filter, params)
+    .then(res => ({
+      uuid,
+      marathons: res,
+      refresh,
+      handle,
+    }));
+}
+
 export default createActions({
   MEMBERS: {
     DROP: drop,
@@ -216,5 +355,11 @@ export default createActions({
     GET_STATS_DISTRIBUTION_DONE: getStatsDistributionDone,
     GET_ACTIVE_CHALLENGES_INIT: getActiveChallengesInit,
     GET_ACTIVE_CHALLENGES_DONE: getActiveChallengesDone,
+    GET_SUBTRACK_CHALLENGES_INIT: getSubtrackChallengesInit,
+    GET_SUBTRACK_CHALLENGES_DONE: getSubtrackChallengesDone,
+    GET_USER_SRM_INIT: getUserSRMInit,
+    GET_USER_SRM_DONE: getUserSRMDone,
+    GET_USER_MARATHON_INIT: getUserMarathonInit,
+    GET_USER_MARATHON_DONE: getUserMarathonDone,
   },
 });
