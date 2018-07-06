@@ -9,6 +9,7 @@ import challengeActions from './challenge';
 import profileActions from './profile';
 import basicInfoActions from './basicInfo';
 import languageActions from './language';
+import educationActions from './education';
 import memberActions from './members';
 import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
@@ -26,6 +27,7 @@ export const actions = {
   profile: profileActions.profile,
   basicInfo: basicInfoActions.basicInfo,
   language: languageActions.language,
+  education: educationActions.education,
   members: memberActions.members,
   memberTasks: memberTaskActions.memberTasks,
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,

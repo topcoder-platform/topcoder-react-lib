@@ -5,7 +5,7 @@
  */
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
-import actions from '../actions/language';
+import actions from '../actions/education';
 import logger from '../utils/logger';
 import { fireErrorMessage } from '../utils/errors';
 
@@ -17,23 +17,23 @@ import { fireErrorMessage } from '../utils/errors';
  * @param {Object} action Payload will be JSON from api call
  * @return {Object} New state
  */
-function onGetLanguageDone(state, { payload, error }) {
+function onGetEducationDone(state, { payload, error }) {
   console.log("payload", payload);
   if (error) {
     return { ...state };
   }
-  console.log("Language", payload.result.content[0]);
+  console.log("Education", payload.result.content[0]);
   return ({
-    ...state, language: payload.result.content[0]
+    ...state, education: payload.result.content[0]
   });
 }
 
-function onUpdateLanguageDone(state, { payload, error }) {
-  const newState = { ...state, updatingLanguage: false };
+function onUpdateEducationDone(state, { payload, error }) {
+  const newState = { ...state, updatingEducation: false };
 
   if (error) {
-    logger.error('Failed to update user language', payload);
-    fireErrorMessage('ERROR: Failed to update user language!');
+    logger.error('Failed to update user education', payload);
+    fireErrorMessage('ERROR: Failed to update user education!');
     return newState;
   }
 // console.log("{Payload Update basic info/ basic info reducers: ", payload);
@@ -43,8 +43,8 @@ function onUpdateLanguageDone(state, { payload, error }) {
 //   console.log("{New State Update basic info/ basic info reducers: ", newState);
   return {
     ...newState,
-    language: {
-      ...newState.language,
+    education: {
+      ...newState.education,
       ...payload,
     },
   };
@@ -56,13 +56,14 @@ function onUpdateLanguageDone(state, { payload, error }) {
  * @return {Function} Profile reducer.
  */
 function create(initialState) {
-  const a = actions.language;
+  console.log("Entered create of edu reducer");
+  const a = actions.education;
   return handleActions({
-    [a.getLanguageInit]: state => state,
-    [a.getLanguageDone]: onGetLanguageDone,
-    [a.updateLanguageInit]: state => ({ ...state, updatingLanguage: true }),
-    [a.updateLanguageDone]: onUpdateLanguageDone,
-  }, _.defaults(initialState, {language: null}));
+    [a.getEducationInit]: state => state,
+    [a.getEducationDone]: onGetEducationDone,
+    [a.updateEducationInit]: state => ({ ...state, updatingEducation: true }),
+    [a.updateEducationDone]: onUpdateEducationDone,
+  }, _.defaults(initialState, {education: null}));
 }
 
 /**
