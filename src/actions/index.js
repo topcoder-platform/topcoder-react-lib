@@ -10,6 +10,8 @@ import profileActions from './profile';
 import basicInfoActions from './basicInfo';
 import languageActions from './language';
 import educationActions from './education';
+import devicesActions from './devices';
+import softwareActions from './software';
 import memberActions from './members';
 import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
@@ -26,8 +28,10 @@ export const actions = {
   errors: errorActions.errors,
   profile: profileActions.profile,
   basicInfo: basicInfoActions.basicInfo,
+  software: softwareActions.software,
   language: languageActions.language,
   education: educationActions.education,
+  devices: devicesActions.devices,
   members: memberActions.members,
   memberTasks: memberTaskActions.memberTasks,
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,

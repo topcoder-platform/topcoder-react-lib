@@ -14,6 +14,8 @@ import profile, { factory as profileFactory } from './profile';
 import basicInfo, { factory as basicInfoFactory } from './basicInfo';
 import education, { factory as educationFactory } from './education';
 import language, { factory as languageFactory } from './language';
+import software, { factory as softwareFactory } from './software';
+import devices, { factory as devicesFactory } from './devices';
 import members, { factory as membersFactory } from './members';
 import lookup, { factory as lookupFactory } from './lookup';
 import memberTasks, { factory as memberTasksFactory } from './member-tasks';
@@ -36,6 +38,8 @@ export function factory(options) {
     basicInfo: basicInfoFactory(options),
     language: languageFactory(options),
     education: educationFactory(options),
+    devices: devicesFactory(options),
+    software: softwareFactory(options),
     lookup: lookupFactory(options),
     members: membersFactory(options),
     memberTasks: memberTasksFactory(options),
@@ -56,6 +60,8 @@ export default ({
   basicInfo,
   language,
   education,
+  devices,
+  software,
   lookup,
   members,
   memberTasks,
