@@ -4,6 +4,7 @@
  */
 
 import _ from 'lodash';
+import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
 import { getService as getChallengesService } from '../services/challenges';
 import { getApiV2 } from '../services/api';
@@ -106,7 +107,13 @@ function registerDone(auth, challengeId) {
     .register(challengeId)
     /* As a part of registration flow we silently update challenge details,
      * reusing for this purpose the corresponding action handler. */
-    .then(() => getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2));
+    // Uses a delay to allow API time to update
+    .then(() => new Promise(
+      resolve => setTimeout(
+        () => resolve(getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2)),
+        config.CHALLENGE_DETAILS_REFRESH_DELAY,
+      ),
+    ));
 }
 
 /**
@@ -131,7 +138,13 @@ function unregisterDone(auth, challengeId) {
     .unregister(challengeId)
     /* As a part of unregistration flow we silently update challenge details,
      * reusing for this purpose the corresponding action handler. */
-    .then(() => getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2));
+    // Uses a delay to allow API time to update
+    .then(() => new Promise(
+      resolve => setTimeout(
+        () => resolve(getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2)),
+        config.CHALLENGE_DETAILS_REFRESH_DELAY,
+      ),
+    ));
 }
 
 /**
