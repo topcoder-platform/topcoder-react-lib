@@ -161,6 +161,9 @@ Object {
     },
     "ui": Object {
       "settings": Object {
+        "account": Object {
+          "toggleTab": [Function],
+        },
         "profile": Object {
           "toggleTab": [Function],
         },

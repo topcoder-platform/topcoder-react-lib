@@ -292,7 +292,6 @@ function onAddWebLinkDone(state, { payload, error }) {
 
   if (error) {
     logger.error('Failed to add web link', payload);
-    fireErrorMessage('ERROR: Failed to add web link!');
     return newState;
   }
 
@@ -342,7 +341,6 @@ function onLinkExternalAccountDone(state, { payload, error }) {
 
   if (error) {
     logger.error('Failed to link external account', payload);
-    fireErrorMessage('ERROR: Failed to link external account!');
     return newState;
   }
 

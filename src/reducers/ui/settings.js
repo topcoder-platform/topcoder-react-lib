@@ -23,6 +23,10 @@ const TABS = {
     PROVIDERS: 'service providers',
     SUBSCRIPTIONS: 'subscriptions',
   },
+  ACCOUNT: {
+    MYACCOUNT: 'my account',
+    LINKEDACCOUNT: 'linked account',
+  },
 };
 
 const initState = {
@@ -39,9 +43,11 @@ function create(defaultState = initState) {
   return handleActions({
     [a.profile.toggleTab]: (state, { payload }) => ({ ...state, currentProfileTab: payload }),
     [a.tools.toggleTab]: (state, { payload }) => ({ ...state, currentToolsTab: payload }),
+    [a.account.toggleTab]: (state, { payload }) => ({ ...state, currentAccountTab: payload }),
   }, _.defaults(defaultState, {
     currentProfileTab: TABS.PROFILE.BASIC,
     currentToolsTab: TABS.TOOLS.DEVICES,
+    currentAccountTab: TABS.ACCOUNT.MYACCOUNT,
   }));
 }
 

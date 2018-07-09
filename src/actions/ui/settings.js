@@ -13,5 +13,8 @@ export default createActions({
     TOOLS: {
       TOGGLE_TAB: _.identity,
     },
+    ACCOUNT: {
+      TOGGLE_TAB: _.identity,
+    },
   },
 });
