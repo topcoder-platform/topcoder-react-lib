@@ -74,6 +74,12 @@ Object {
       "getStatsHistoryDone": [Function],
       "getStatsHistoryInit": [Function],
       "getStatsInit": [Function],
+      "getSubtrackChallengesDone": [Function],
+      "getSubtrackChallengesInit": [Function],
+      "getUserMarathonDone": [Function],
+      "getUserMarathonInit": [Function],
+      "getUserSrmDone": [Function],
+      "getUserSrmInit": [Function],
     },
     "profile": Object {
       "addSkillDone": [Function],
@@ -153,16 +159,6 @@ Object {
       "getTermsDone": [Function],
       "getTermsInit": [Function],
     },
-    "ui": Object {
-      "settings": Object {
-        "profile": Object {
-          "toggleTab": [Function],
-        },
-        "tools": Object {
-          "toggleTab": [Function],
-        },
-      },
-    },
   },
   "challenge": Object {
     "filter": Object {
@@ -231,7 +227,6 @@ Object {
     "settings": [Function],
     "stats": [Function],
     "terms": [Function],
-    "ui": [Function],
   },
   "services": Object {
     "api": Object {

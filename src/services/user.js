@@ -10,14 +10,22 @@ import { getApiResponsePayloadV3 } from '../utils/tc';
 import { getApiV2, getApiV3 } from './api';
 
 let auth0;
-if (isomorphy.isClientSide()) {
-  const Auth0 = require('auth0-js'); /* eslint-disable-line global-require */
-  auth0 = new Auth0({
-    domain: config.AUTH0.DOMAIN,
-    clientID: config.AUTH0.CLIENT_ID,
-    callbackOnLocationHash: true,
-    sso: false,
-  });
+
+/**
+ * Returns a new, or cached auth0 instance.
+ * @return {Object} Auth0 object.
+ */
+function getAuth0() {
+  if (!auth0 && isomorphy.isClientSide()) {
+    const Auth0 = require('auth0-js'); /* eslint-disable-line global-require */
+    auth0 = new Auth0({
+      domain: config.AUTH0.DOMAIN,
+      clientID: config.AUTH0.CLIENT_ID,
+      callbackOnLocationHash: true,
+      sso: false,
+    });
+  }
+  return auth0;
 }
 
 /**
@@ -258,7 +266,7 @@ class User {
    */
   async linkExternalAccount(userId, provider, callbackUrl) {
     return new Promise((resolve, reject) => {
-      auth0.signin(
+      getAuth0().signin(
         {
           popup: true,
           connection: provider,

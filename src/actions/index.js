@@ -11,7 +11,6 @@ import memberActions from './members';
 import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
 import lookupActions from './lookup';
-import uiActions from './ui';
 import settingsActions from './settings';
 
 export const actions = {
@@ -28,7 +27,6 @@ export const actions = {
   memberTasks: memberTaskActions.memberTasks,
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,
   lookup: lookupActions.lookup,
-  ui: uiActions.ui,
   settings: settingsActions.settings,
 };
 
