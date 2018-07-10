@@ -159,19 +159,6 @@ Object {
       "getTermsDone": [Function],
       "getTermsInit": [Function],
     },
-    "ui": Object {
-      "settings": Object {
-        "account": Object {
-          "toggleTab": [Function],
-        },
-        "profile": Object {
-          "toggleTab": [Function],
-        },
-        "tools": Object {
-          "toggleTab": [Function],
-        },
-      },
-    },
   },
   "challenge": Object {
     "filter": Object {
@@ -240,7 +227,6 @@ Object {
     "settings": [Function],
     "stats": [Function],
     "terms": [Function],
-    "ui": [Function],
   },
   "services": Object {
     "api": Object {
