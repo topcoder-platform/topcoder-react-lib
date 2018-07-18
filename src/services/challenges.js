@@ -86,7 +86,17 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     registrants: v4.registrants || [],
   };
 
-  if (challenge.technologies.includes('Data Science') || challenge.subTrack === 'MARATHON_MATCH') {
+  // v4 Winners have different field names, needs to be normalized to match v4 filtered and v3
+  challenge.winners = _.map(
+    v4.winners,
+    (winner, index) => ({
+      ...winner,
+      handle: winner.submitter,
+      placement: winner.rank || index + 1, // Legacy MMs do not have a rank but are sorted by points
+    }),
+  );
+
+  if (challenge.subTrack === 'MARATHON_MATCH') {
     challenge.track = 'DATA_SCIENCE';
   }
 
@@ -120,14 +130,6 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
       numSubmissions: v4Filtered.numSubmissions,
       groups,
     });
-
-    /* Taking winners from v3_filtered, because winners are returned empty in v3 */
-    /* TODO: Enforced due to problems with /v3/challenge/{ID} endpoint */
-    challenge.winners = v4Filtered.winners || [];
-    /* TODO: To compenstate the difference in structure of `submissions`
-     * in v3 and v3Filetered results (existing code needs v4Filtered version).
-     */
-    challenge.submissions = v4Filtered.submissions || [];
   }
 
   // Fill missing data from v3_user
@@ -177,14 +179,6 @@ export function normalizeChallenge(challenge, username) {
       groups[id] = true;
     });
   }
-
-  _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
-    groups,
-    registrationOpen,
-    submissionEndTimestamp: challenge.submissionEndDate,
-    users: username ? { [username]: true } : {},
-  });
   /* eslint-disable no-param-reassign */
   if (!challenge.prizes) challenge.prizes = challenge.prize || [];
   if (!challenge.totalPrize) {
@@ -198,6 +192,14 @@ export function normalizeChallenge(challenge, username) {
     challenge.subTrack = 'MARATHON_MATCH';
   }
   /* eslint-enable no-param-reassign */
+
+  _.defaults(challenge, {
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+    groups,
+    registrationOpen,
+    submissionEndTimestamp: challenge.submissionEndDate,
+    users: username ? { [username]: true } : {},
+  });
 }
 
 /**
