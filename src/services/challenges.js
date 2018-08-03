@@ -221,6 +221,9 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
         .localeCompare(b.submissionDate || ''));
   }
 
+  if (!challenge.allPhases) challenge.allPhases = [];
+  if (!challenge.track) challenge.track = '';
+
   return challenge;
 }
 
