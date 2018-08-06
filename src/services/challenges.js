@@ -450,6 +450,7 @@ class ChallengesService {
         assignees: [assignee],
         billingAccountId: accountId,
         confidentialityType: 'public',
+        detailedRequirements: description,
         milestoneId: 1,
         name: title,
         prizes: payment ? [payment] : [],
