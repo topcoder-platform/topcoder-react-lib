@@ -11,6 +11,7 @@ Actions for interactions with profile details API.
 
 * [actions.profile](#module_actions.profile)
     * [.loadProfile(handle)](#module_actions.profile.loadProfile) ⇒ <code>Action</code>
+    * [.clearProfile()](#module_actions.profile.clearProfile) ⇒ <code>Action</code>
     * [.getAchievementsInit()](#module_actions.profile.getAchievementsInit) ⇒ <code>Action</code>
     * [.getAchievementsDone(handle)](#module_actions.profile.getAchievementsDone) ⇒ <code>Action</code>
     * [.getExternalAccountsInit()](#module_actions.profile.getExternalAccountsInit) ⇒ <code>Action</code>
@@ -66,6 +67,17 @@ Creates and action that loads user profile.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | User handle. |
+
+<a name="module_actions.profile.clearProfile"></a>
+
+### actions.profile.clearProfile() ⇒ <code>Action</code>
+Creates and action that clear user profile.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Todo**
+
+- [ ] This action does not follow the pattern with init/done pairs of
+ actions. Should be improved.
 
 <a name="module_actions.profile.getAchievementsInit"></a>
 

@@ -5,7 +5,7 @@
  *  should be refactored to avoid redundancy.
  */
 import { createActions } from 'redux-actions';
-
+import _ from 'lodash';
 import { getService as getUserService } from '../services/user';
 import { getService as getMembersService } from '../services/members';
 
@@ -415,6 +415,7 @@ function updatePasswordDone(profile, tokenV3, newPassword, oldPassword) {
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
+    CLEAR_PROFILE: _.noop,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,

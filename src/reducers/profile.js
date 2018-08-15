@@ -432,6 +432,9 @@ function onUpdatePasswordDone(state, { payload, error }) {
 function create(initialState) {
   const a = actions.profile;
   return handleActions({
+    [a.clearProfile]: state => ({
+      ...state, achievements: null, country: '', info: null, skills: null, stats: null,
+    }),
     [a.loadProfile]: (state, action) => ({ ...state, profileForHandle: action.payload }),
     [a.getAchievementsInit]: state => state,
     [a.getAchievementsDone]: onGetAchievementsDone,
