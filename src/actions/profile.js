@@ -5,7 +5,7 @@
  *  should be refactored to avoid redundancy.
  */
 import { createActions } from 'redux-actions';
-
+import _ from 'lodash';
 import { getService as getUserService } from '../services/user';
 import { getService as getMembersService } from '../services/members';
 
@@ -20,14 +20,6 @@ import { getService as getMembersService } from '../services/members';
 function loadProfile(handle) {
   return handle;
 }
-
-/**
- * @static
- * @desc Creates and action that clear user profile.
- * @todo This action does not follow the pattern with init/done pairs of
- *  actions. Should be improved.
- */
-function clearProfile() {}
 
 /**
  * @static
@@ -423,7 +415,7 @@ function updatePasswordDone(profile, tokenV3, newPassword, oldPassword) {
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
-    CLEAR_PROFILE: clearProfile,
+    CLEAR_PROFILE: _.noop,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,
