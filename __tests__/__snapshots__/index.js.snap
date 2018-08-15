@@ -86,6 +86,7 @@ Object {
       "addSkillInit": [Function],
       "addWebLinkDone": [Function],
       "addWebLinkInit": [Function],
+      "clearProfile": [Function],
       "deletePhotoDone": [Function],
       "deletePhotoInit": [Function],
       "deleteWebLinkDone": [Function],

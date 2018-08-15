@@ -23,6 +23,14 @@ function loadProfile(handle) {
 
 /**
  * @static
+ * @desc Creates and action that clear user profile.
+ * @todo This action does not follow the pattern with init/done pairs of
+ *  actions. Should be improved.
+ */
+function clearProfile() {}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of user achievements loading.
  * @todo This duplicates similar action in {@link actions.members.md}!
  * @return {Action}
@@ -415,6 +423,7 @@ function updatePasswordDone(profile, tokenV3, newPassword, oldPassword) {
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
+    CLEAR_PROFILE: clearProfile,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,
