@@ -158,6 +158,9 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
         .localeCompare(b.submissionDate || ''));
   }
 
+  if (!challenge.allPhases) challenge.allPhases = [];
+  if (!challenge.track) challenge.track = '';
+
   return challenge;
 }
 
@@ -321,6 +324,7 @@ class ChallengesService {
         assignees: [assignee],
         billingAccountId: accountId,
         confidentialityType: 'public',
+        detailedRequirements: description,
         milestoneId: 1,
         name: title,
         prizes: payment ? [payment] : [],

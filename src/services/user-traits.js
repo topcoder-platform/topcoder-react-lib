@@ -49,8 +49,8 @@ class UserTraitsService {
         },
       }],
     };
-    // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
-    const res = await this.private.api.postJson(`/members/${handle.toLowerCase()}/traits`, body);
+
+    const res = await this.private.api.postJson(`/members/${handle}/traits`, body);
     return getApiResponsePayloadV3(res);
   }
 
@@ -71,8 +71,8 @@ class UserTraitsService {
         },
       }],
     };
-    // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
-    const res = await this.private.api.putJson(`/members/${handle.toLowerCase()}/traits`, body);
+
+    const res = await this.private.api.putJson(`/members/${handle}/traits`, body);
     return getApiResponsePayloadV3(res);
   }
 
@@ -83,8 +83,7 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async deleteUserTrait(handle, traitId) {
-    // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
-    const res = await this.private.api.delete(`/members/${handle.toLowerCase()}/traits?traitIds=${traitId}`);
+    const res = await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
     return getApiResponsePayloadV3(res);
   }
 }

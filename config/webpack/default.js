@@ -16,6 +16,5 @@ module.exports = {
     'tc-accounts',
     'to-capital-case',
     'topcoder-react-utils',
-    'topcoder-react-ui-kit',
   ],
 };
