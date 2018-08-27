@@ -435,6 +435,10 @@ class ChallengesService {
    * @param {String} description
    * @param {String} assignee
    * @param {Number} payment
+   * @param {String} submissionGuidelines
+   * @param {Number} copilotId
+   * @param {Number} copilotFee
+   * @param {?} technologies
    * @return {Promise} Resolves to the created challenge object (payment task).
    */
   async createTask(
@@ -446,16 +450,9 @@ class ChallengesService {
     payment,
     submissionGuidelines,
     copilotId,
-    copilotPaymentAmount,
+    copilotFee,
     technologies,
   ) {
-    const copilotPayload = copilotId === 0
-      ? {}
-      : {
-        copilotId,
-        copilotFee: copilotPaymentAmount,
-      };
-
     const payload = {
       param: {
         assignees: [assignee],
@@ -472,9 +469,14 @@ class ChallengesService {
         reviewType: 'INTERNAL',
         subTrack: 'FIRST_2_FINISH',
         task: true,
-        ...copilotPayload,
       },
     };
+    if (copilotId) {
+      _.assign(payload.param, {
+        copilotId,
+        copilotFee,
+      });
+    }
     let res = await this.private.api.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
