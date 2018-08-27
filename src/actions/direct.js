@@ -81,10 +81,9 @@ function getUserProjectsInit(tokenV3) {
  * @param {String} tokenV3 Topcoder auth token v3.
  * @return {Action}
  */
-async function getUserProjectsDone(tokenV3) {
-  const projects = await getService(tokenV3).getUserProjects({
-    hasActiveBillingAccount: true,
-  });
+async function getUserProjectsDone(tokenV3, billAc) {
+  const param = billAc ? { hasActiveBillingAccount: true } : {};
+  const projects = await getService(tokenV3).getUserProjects({ ...param });
   return { tokenV3, projects };
 }
 

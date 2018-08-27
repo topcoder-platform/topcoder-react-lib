@@ -444,21 +444,35 @@ class ChallengesService {
     description,
     assignee,
     payment,
+    submissionGuidelines,
+    copilotId,
+    copilotPaymentAmount,
+    technologies,
   ) {
+    const copilotPayload = copilotId === 0
+      ? {}
+      : {
+        copilotId,
+        copilotFee: copilotPaymentAmount,
+      };
+
     const payload = {
       param: {
         assignees: [assignee],
         billingAccountId: accountId,
         confidentialityType: 'public',
         detailedRequirements: description,
+        submissionGuidelines,
         milestoneId: 1,
         name: title,
+        technologies,
         prizes: payment ? [payment] : [],
         projectId,
         registrationStartsAt: moment().toISOString(),
         reviewType: 'INTERNAL',
         subTrack: 'FIRST_2_FINISH',
         task: true,
+        ...copilotPayload,
       },
     };
     let res = await this.private.api.postJson('/challenges', payload);
