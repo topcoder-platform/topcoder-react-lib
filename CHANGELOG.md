@@ -1,5 +1,9 @@
 # Topcoder React Lib
 
+### v0.6.0
+A few changes related to fetch of projests visitble to users, and creation of
+new challenges. Minor release to guard against any side-effects.
+
 ### v0.3.0
 Updated to use latest **topcoder-react-utils**. A bunch of dependencies have
 been updated in result, something can be broken.
