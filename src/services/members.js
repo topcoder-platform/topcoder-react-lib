@@ -154,6 +154,17 @@ class MembersService {
   }
 
   /**
+   * Deletes avatar for member.
+   * @param {String} userHandle The user handle
+   * @param {String} webLinkHandle The external web link handle
+   * @return {Promise} Resolves to the api response content
+   */
+  async deletePhoto(profile) {
+    const res = await this.private.api.delete(`/members/${profile.handle}/photo`);
+    return getApiResponsePayloadV3(res);
+  }
+
+  /**
    * Adds user skill.
    * @param {String} handle Topcoder user handle
    * @param {Number} skillTagId Skill tag id

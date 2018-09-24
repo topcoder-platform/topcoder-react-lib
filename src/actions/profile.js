@@ -27,7 +27,7 @@ function loadProfile(handle) {
  * @todo This duplicates similar action in {@link actions.members.md}!
  * @return {Action}
  */
-function getAchievementsInit() {}
+function getAchievementsInit() { }
 
 /**
  * @static
@@ -45,7 +45,7 @@ function getAchievementsDone(handle) {
  * @todo To be documented.
  * @return {Action}
  */
-function getExternalAccountsInit() {}
+function getExternalAccountsInit() { }
 
 /**
  * @static
@@ -62,7 +62,7 @@ function getExternalAccountsDone(handle) {
  * @todo Figure out what does this action do.
  * @return {Action}
  */
-function getExternalLinksInit() {}
+function getExternalLinksInit() { }
 
 /**
  * @static
@@ -79,7 +79,7 @@ function getExternalLinksDone(handle) {
  * @todo Figure out the purpose of this action.
  * @return {Action}
  */
-function getInfoInit() {}
+function getInfoInit() { }
 
 /**
  * @static
@@ -97,7 +97,7 @@ function getInfoDone(handle) {
  *  skills info.
  * @return {Action}
  */
-function getSkillsInit() {}
+function getSkillsInit() { }
 
 /**
  * @static
@@ -115,7 +115,7 @@ function getSkillsDone(handle) {
  * @todo This is similar to {@link actions.members.md#module_actions.members.getStatsInit}!
  * @return {Action}
  */
-function getStatsInit() {}
+function getStatsInit() { }
 
 /**
  * @static
@@ -132,7 +132,7 @@ function getStatsDone(handle) {
  * @desc Creates an action that signals beginning of getting linked accounts.
  * @return {Action}
  */
-function getLinkedAccountsInit() {}
+function getLinkedAccountsInit() { }
 
 /**
  * @static
@@ -152,7 +152,7 @@ function getLinkedAccountsDone(profile, tokenV3) {
  * @desc Creates an action that signals beginning of getting credential.
  * @return {Action}
  */
-function getCredentialInit() {}
+function getCredentialInit() { }
 
 /**
  * @static
@@ -172,7 +172,7 @@ function getCredentialDone(profile, tokenV3) {
  * @desc Creates an action that signals beginning of getting email preferences.
  * @return {Action}
  */
-function getEmailPreferencesInit() {}
+function getEmailPreferencesInit() { }
 
 /**
  * @static
@@ -192,7 +192,7 @@ function getEmailPreferencesDone(profile, tokenV3) {
  * @desc Creates an action that signals beginning of uploading user's photo.
  * @return {Action}
  */
-function uploadPhotoInit() {}
+function uploadPhotoInit() { }
 
 /**
  * @static
@@ -215,14 +215,14 @@ function uploadPhotoDone(handle, tokenV3, file) {
  * @desc Creates an action that signals beginning of deleting user's photo.
  * @return {Action}
  */
-function deletePhotoInit() {}
+function deletePhotoInit() { }
 
 /**
  * @static
  * @desc Creates an action that signals beginning of updating user's profile.
  * @return {Action}
  */
-function updateProfileInit() {}
+function updateProfileInit() { }
 
 /**
  * @static
@@ -241,7 +241,7 @@ function updateProfileDone(profile, tokenV3) {
  * @desc Creates an action that signals beginning of adding user's skill.
  * @return {Action}
  */
-function addSkillInit() {}
+function addSkillInit() { }
 
 /**
  * @static
@@ -262,7 +262,7 @@ function addSkillDone(handle, tokenV3, skill) {
  * @desc Creates an action that signals beginning of hiding user's skill.
  * @return {Action}
  */
-function hideSkillInit() {}
+function hideSkillInit() { }
 
 /**
  * @static
@@ -283,7 +283,7 @@ function hideSkillDone(handle, tokenV3, skill) {
  * @desc Creates an action that signals beginning of adding user's web link.
  * @return {Action}
  */
-function addWebLinkInit() {}
+function addWebLinkInit() { }
 
 /**
  * @static
@@ -323,10 +323,22 @@ function deleteWebLinkDone(handle, tokenV3, webLink) {
 
 /**
  * @static
+ * @desc Creates an action that deletes user's avatar.
+ * @param {String} Topcoder profile.
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @return {Action}
+ */
+function deletePhotoDone(profile, tokenV3) {
+  const service = getMembersService(tokenV3);
+  return service.deletePhoto(profile).then(res => ({ data: res, handle }));
+}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of linking external account.
  * @return {Action}
  */
-function linkExternalAccountInit() {}
+function linkExternalAccountInit() { }
 
 /**
  * @static
@@ -372,7 +384,7 @@ function unlinkExternalAccountDone(profile, tokenV3, providerType) {
  * @desc Creates an action that signals beginning of saving email preferences.
  * @return {Action}
  */
-function saveEmailPreferencesInit() {}
+function saveEmailPreferencesInit() { }
 
 /**
  * @static
@@ -394,7 +406,7 @@ function saveEmailPreferencesDone(profile, tokenV3, preferences) {
  * @desc Creates an action that signals beginning of updating user password.
  * @return {Action}
  */
-function updatePasswordInit() {}
+function updatePasswordInit() { }
 
 /**
  * @static
@@ -437,7 +449,7 @@ export default createActions({
     UPLOAD_PHOTO_INIT: uploadPhotoInit,
     UPLOAD_PHOTO_DONE: uploadPhotoDone,
     DELETE_PHOTO_INIT: deletePhotoInit,
-    DELETE_PHOTO_DONE: updateProfileDone,
+    DELETE_PHOTO_DONE: deletePhotoDone,
     UPDATE_PROFILE_INIT: updateProfileInit,
     UPDATE_PROFILE_DONE: updateProfileDone,
     ADD_SKILL_INIT: addSkillInit,
