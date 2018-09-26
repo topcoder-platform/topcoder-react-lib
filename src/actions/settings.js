@@ -4,6 +4,7 @@
  */
 
 import { createActions } from 'redux-actions';
+import _ from 'lodash';
 import { getService } from '../services/user-traits';
 
 /**
@@ -66,5 +67,6 @@ export default createActions({
     ADD_USER_TRAIT: addUserTrait,
     DELETE_USER_TRAIT: deleteUserTrait,
     UPDATE_USER_TRAIT: updateUserTrait,
+    MODIFY_USER_TRAIT_INIT: _.noop,
   },
 });

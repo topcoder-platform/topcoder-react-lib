@@ -30,6 +30,18 @@ function onGetAllUserTraits(state, { error, payload }) {
 }
 
 /**
+ * Handles SETTINGS/MODIFY_USER_TRAIT_INIT action.
+ * @param {Object} state *
+ * @return {Object} New state.
+ */
+function onModifyUserTraitInit(state) {
+  return {
+    ...state,
+    traitRequestCount: state.traitRequestCount + 1,
+  };
+}
+
+/**
  * Handles SETTINGS/ADD_USER_TRAIT action.
  * @param {Object} state
  * @param {Object} action
@@ -39,12 +51,16 @@ function onAddUserTrait(state, { error, payload }) {
   if (error) {
     logger.error('Failed to add user trait', payload);
     fireErrorMessage('Failed to add user trait', '');
-    return state;
+    return {
+      ...state,
+      traitRequestCount: state.traitRequestCount - 1,
+    };
   }
   const newData = payload.result[0];
   return {
     ...state,
     userTraits: [...state.userTraits, newData],
+    traitRequestCount: state.traitRequestCount - 1,
   };
 }
 
@@ -58,7 +74,10 @@ function onUpdateUserTrait(state, { error, payload }) {
   if (error) {
     logger.error('Failed to update user trait', payload);
     fireErrorMessage('Failed to update user trait', '');
-    return state;
+    return {
+      ...state,
+      traitRequestCount: state.traitRequestCount - 1,
+    };
   }
   const newData = payload.result[0];
   const newUserTraits = state.userTraits.filter(trait => trait.traitId !== payload.traitId);
@@ -67,6 +86,7 @@ function onUpdateUserTrait(state, { error, payload }) {
   return {
     ...state,
     userTraits: newUserTraits,
+    traitRequestCount: state.traitRequestCount - 1,
   };
 }
 
@@ -80,12 +100,16 @@ function onDeleteUserTrait(state, { error, payload }) {
   if (error) {
     logger.error('Failed to delete user trait', payload);
     fireErrorMessage('Failed to delete user trait', '');
-    return state;
+    return {
+      ...state,
+      traitRequestCount: state.traitRequestCount - 1,
+    };
   }
   const newUserTraits = state.userTraits.filter(trait => trait.traitId !== payload.traitId);
   return {
     ...state,
     userTraits: newUserTraits,
+    traitRequestCount: state.traitRequestCount - 1,
   };
 }
 
@@ -96,11 +120,13 @@ function onDeleteUserTrait(state, { error, payload }) {
  * @return {Function} userTraits reducer.
  */
 function create(initialState = {
+  traitRequestCount: 0,
   userTraits: [],
 }) {
   const a = actions.settings;
   return handleActions({
     [a.getAllUserTraits]: onGetAllUserTraits,
+    [a.modifyUserTraitInit]: onModifyUserTraitInit,
     [a.addUserTrait]: onAddUserTrait,
     [a.deleteUserTrait]: onDeleteUserTrait,
     [a.updateUserTrait]: onUpdateUserTrait,
