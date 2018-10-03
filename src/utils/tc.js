@@ -37,3 +37,27 @@ export async function getApiResponsePayloadV3(res) {
   if (!x.success) throw new Error(x.content);
   return x.content;
 }
+
+
+/**
+ * Gets payload from a standard success response from TC API v4; or throws
+ * an error in case of a failure response.
+ * @param {Object} res
+ * @return {Promise} Resolves to the payload.
+ */
+export async function getApiResponsePayloadV4(res) {
+  const resJson = await res.json();
+  if (Array.isArray(resJson)) {
+    return {
+      res: resJson,
+      error: false,
+    };
+  }
+
+  const x = resJson.result;
+  return {
+    res: x.content,
+    error: !x.success,
+    status: x.status,
+  };
+}

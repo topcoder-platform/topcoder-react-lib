@@ -20,6 +20,8 @@ import mySubmissionsManagement, { factory as mySubmissionsManagementFactory }
   from './my-submissions-management';
 import settings, { factory as settingsFactory }
   from './settings';
+import looker, { factory as lookerFactory }
+  from './looker';
 
 
 export function factory(options) {
@@ -38,6 +40,7 @@ export function factory(options) {
     reviewOpportunity: reviewOpportunityFactory(options),
     mySubmissionsManagement: mySubmissionsManagementFactory(options),
     settings: settingsFactory(options),
+    looker: lookerFactory(options),
   });
 }
 
@@ -56,4 +59,5 @@ export default ({
   reviewOpportunity,
   mySubmissionsManagement,
   settings,
+  looker,
 });
