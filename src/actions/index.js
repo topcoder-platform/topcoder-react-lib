@@ -12,6 +12,7 @@ import memberTaskActions from './member-tasks';
 import reviewOpportunityActions from './reviewOpportunity';
 import lookupActions from './lookup';
 import settingsActions from './settings';
+import lookerActions from './looker';
 
 export const actions = {
   auth: authActions.auth,
@@ -28,6 +29,7 @@ export const actions = {
   reviewOpportunity: reviewOpportunityActions.reviewOpportunity,
   lookup: lookupActions.lookup,
   settings: settingsActions.settings,
+  looker: lookerActions.looker,
 };
 
 export default undefined;
