@@ -9,6 +9,8 @@ import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 
+config.API.V4 = 'https://api.topcoder.com/v4';
+
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the
  * client side, and at server-side, in dev mode (which is meant to be used for
@@ -266,15 +268,11 @@ export function getApiV3(token) {
   return lastApiV3;
 }
 
-/*
- * Topcoder API v4.
- */
-
 let lastApiV4 = null;
 /**
- * Returns a new or existing Api object for Topcoder API v4
- * @param {String} token Optional. Auth token for Topcoder API v4. (Uses same Token as v3)
- * @return {Api} API v3 service object.
+ * Returns a new or existing Api object for Topcoder API V4
+ * @param {String} token Optional. Auth token for Topcoder API V4.
+ * @return {Api} API V4 service object.
  */
 export function getApiV4(token) {
   if (!lastApiV4 || lastApiV4.private.token !== token) {

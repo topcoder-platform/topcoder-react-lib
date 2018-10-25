@@ -78,7 +78,7 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     terms: v4.terms,
     submissions: v4.submissions,
     track: _.toUpper(v4.challengeCommunity),
-    subTrack: v4.subTrack === 'DEVELOP_MARATHON_MATCH' ? 'MARATHON_MATCH' : v4.subTrack,
+    subTrack: v4.subTrack,
     checkpoints: v4.checkpoints,
     documents: v4.documents || [],
     numRegistrants: v4.numberOfRegistrants,
@@ -191,8 +191,7 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.platforms) challenge.platforms = [];
 
   if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
-    challenge.track = 'DATA_SCIENCE';
-    challenge.subTrack = 'MARATHON_MATCH';
+    challenge.track = 'DEVELOP';
   }
   /* eslint-enable no-param-reassign */
 
@@ -309,6 +308,10 @@ class ChallengesService {
    * @param {String} description
    * @param {String} assignee
    * @param {Number} payment
+   * @param {String} submissionGuidelines
+   * @param {Number} copilotId
+   * @param {Number} copilotFee
+   * @param {?} technologies
    * @return {Promise} Resolves to the created challenge object (payment task).
    */
   async createTask(
@@ -318,6 +321,10 @@ class ChallengesService {
     description,
     assignee,
     payment,
+    submissionGuidelines,
+    copilotId,
+    copilotFee,
+    technologies,
   ) {
     const payload = {
       param: {
@@ -325,8 +332,10 @@ class ChallengesService {
         billingAccountId: accountId,
         confidentialityType: 'public',
         detailedRequirements: description,
+        submissionGuidelines,
         milestoneId: 1,
         name: title,
+        technologies,
         prizes: payment ? [payment] : [],
         projectId,
         registrationStartsAt: moment().toISOString(),
@@ -335,6 +344,12 @@ class ChallengesService {
         task: true,
       },
     };
+    if (copilotId) {
+      _.assign(payload.param, {
+        copilotId,
+        copilotFee,
+      });
+    }
     let res = await this.private.api.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
