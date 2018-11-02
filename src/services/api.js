@@ -84,6 +84,7 @@ class Api {
         break;
       default:
     }
+    headers['X-Client-Id'] = 'CommunityApp';
 
     /* Throttling of API calls should not happen at server in production. */
     if (API_THROTTLING && (isomorphy.isClientSide() || isomorphy.isDevBuild())) {
