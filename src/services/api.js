@@ -9,7 +9,7 @@ import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 
-config.API.V4 = 'https://api.topcoder.com/v4';
+//config.API.V4 = 'https://api.topcoder.com/v4';
 
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the
