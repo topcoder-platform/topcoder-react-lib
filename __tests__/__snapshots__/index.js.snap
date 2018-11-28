@@ -253,7 +253,6 @@ Object {
       "getService": [Function],
       "normalizeChallenge": [Function],
       "normalizeChallengeDetails": [Function],
-      "normalizeMarathonMatch": [Function],
     },
     "communities": Object {
       "default": undefined,
