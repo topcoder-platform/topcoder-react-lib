@@ -31,13 +31,9 @@
         "depth": 3
       }
     ],
-    "no-unused-vars": "off",
-    "no-undef": "off",
-    "react/jsx-no-undef": [
-      false
-    ],
-    "react/require-default-props": [
-      false
-    ]
+    "no-unused-vars": 0,
+    "no-undef": 0,
+    "react/jsx-no-undef": 0,
+    "react/require-default-props": 0
   }
 }
