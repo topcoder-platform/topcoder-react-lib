@@ -8,6 +8,7 @@ import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
+import logger from '../utils/logger';
 
 // config.API.V4 = 'https://api.topcoder.com/v4';
 
@@ -99,6 +100,7 @@ class Api {
       headers,
     })
       .catch((e) => {
+        logger.error(`Error fetching: ${endpoint}`, `Auth: ${headers.Authorization}`);
         setErrorIcon(ERROR_ICON_TYPES.NETWORK, `${base}${endpoint}`, e.message);
         throw e;
       });
