@@ -95,6 +95,7 @@ class Api {
       } else lastApiCallTimestamp = now;
     }
 
+    logger.log(`Fetching: ${endpoint}`, `Auth: ${headers.Authorization}`);
     return fetch(`${base}${endpoint}`, {
       ...options,
       headers,
