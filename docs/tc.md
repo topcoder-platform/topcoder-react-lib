@@ -10,7 +10,7 @@ Collection of small Topcoder-related functions.
 
 * [tc](#module_tc)
     * [.REVIEW_OPPORTUNITY_TYPES](#module_tc.REVIEW_OPPORTUNITY_TYPES)
-    * [.getApiResponsePayloadV3(res)](#module_tc.getApiResponsePayloadV3) ⇒ <code>Promise</code>
+    * [.getApiResponsePayload(res)](#module_tc.getApiResponsePayload) ⇒ <code>Promise</code>
 
 <a name="module_tc.REVIEW_OPPORTUNITY_TYPES"></a>
 
@@ -18,10 +18,10 @@ Collection of small Topcoder-related functions.
 Review Opportunity types
 
 **Kind**: static constant of [<code>tc</code>](#module_tc)  
-<a name="module_tc.getApiResponsePayloadV3"></a>
+<a name="module_tc.getApiResponsePayload"></a>
 
-### tc.getApiResponsePayloadV3(res) ⇒ <code>Promise</code>
-Gets payload from a standard success response from TC API v3; or throws
+### tc.getApiResponsePayload(res) ⇒ <code>Promise</code>
+Gets payload from a standard success response from TC API; or throws
 an error in case of a failure response.
 
 **Kind**: static method of [<code>tc</code>](#module_tc)  

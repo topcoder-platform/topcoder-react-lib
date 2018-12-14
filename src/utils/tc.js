@@ -26,12 +26,12 @@ export const REVIEW_OPPORTUNITY_TYPES = {
 };
 
 /**
- * Gets payload from a standard success response from TC API v3; or throws
+ * Gets payload from a standard success response from TC API; or throws
  * an error in case of a failure response.
  * @param {Object} res
  * @return {Promise} Resolves to the payload.
  */
-export async function getApiResponsePayloadV3(res) {
+export async function getApiResponsePayload(res) {
   if (!res.ok) throw new Error(res.statusText);
   const x = (await res.json()).result;
   if (!x.success) throw new Error(x.content);
@@ -40,12 +40,12 @@ export async function getApiResponsePayloadV3(res) {
 
 
 /**
- * Gets payload from a standard success response from TC API v4; or throws
+ * Gets payload from a standard success response from TC LOOKER API; or throws
  * an error in case of a failure response.
  * @param {Object} res
  * @return {Promise} Resolves to the payload.
  */
-export async function getApiResponsePayloadV4(res) {
+export async function getLookerApiResponsePayload(res) {
   const resJson = await res.json();
   if (Array.isArray(resJson)) {
     return {

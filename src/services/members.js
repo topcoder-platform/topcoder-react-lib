@@ -8,7 +8,7 @@
 import _ from 'lodash';
 import qs from 'qs';
 import logger from '../utils/logger';
-import { getApiResponsePayloadV3 } from '../utils/tc';
+import { getApiResponsePayload } from '../utils/tc';
 import { getApiV3 } from './api';
 
 /**
@@ -32,7 +32,7 @@ class MembersService {
    */
   async getMemberFinances(handle) {
     const res = await this.private.api.get(`/members/${handle}/financial`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -45,7 +45,7 @@ class MembersService {
    */
   async getMemberInfo(handle) {
     const res = await this.private.api.get(`/members/${handle}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -55,7 +55,7 @@ class MembersService {
    */
   async getExternalAccounts(handle) {
     const res = await this.private.api.get(`/members/${handle}/externalAccounts`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -65,7 +65,7 @@ class MembersService {
    */
   async getExternalLinks(handle) {
     const res = await this.private.api.get(`/members/${handle}/externalLinks`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -75,7 +75,7 @@ class MembersService {
    */
   async getSkills(handle) {
     const res = await this.private.api.get(`/members/${handle}/skills`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -85,7 +85,7 @@ class MembersService {
    */
   async getStats(handle) {
     const res = await this.private.api.get(`/members/${handle}/stats`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -95,7 +95,7 @@ class MembersService {
    */
   async getStatsHistory(handle) {
     const res = await this.private.api.get(`/members/${handle}/stats/history`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -110,7 +110,7 @@ class MembersService {
       track,
       subTrack,
     }))}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -123,7 +123,7 @@ class MembersService {
    */
   async getMemberSuggestions(keyword) {
     const res = await this.private.api.get(`/members/_suggest/${keyword}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -134,7 +134,7 @@ class MembersService {
    */
   async addWebLink(userHandle, webLink) {
     const res = await this.private.api.postJson(`/members/${userHandle}/externalLinks`, { param: { url: webLink } });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -150,7 +150,7 @@ class MembersService {
       },
     };
     const res = await this.private.api.delete(`/members/${userHandle}/externalLinks/${webLinkHandle}`, JSON.stringify(body));
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -170,7 +170,7 @@ class MembersService {
       },
     };
     const res = await this.private.api.patchJson(`/members/${handle}/skills`, body);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -193,7 +193,7 @@ class MembersService {
       body: JSON.stringify(body),
       method: 'PATCH',
     });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -203,7 +203,7 @@ class MembersService {
    */
   async updateMemberProfile(profile) {
     const res = await this.private.api.putJson(`/members/${profile.handle}`, { param: profile });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -214,7 +214,7 @@ class MembersService {
    */
   async getPresignedUrl(userHandle, file) {
     const res = await this.private.api.postJson(`/members/${userHandle}/photoUploadUrl`, { param: { contentType: file.type } });
-    const payload = await getApiResponsePayloadV3(res);
+    const payload = await getApiResponsePayload(res);
 
     return {
       preSignedURL: payload.preSignedURL,
@@ -231,7 +231,7 @@ class MembersService {
    */
   async updateMemberPhoto(S3Response) {
     const res = await this.private.api.putJson(`/members/${S3Response.userHandle}/photo`, { param: S3Response.body });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
