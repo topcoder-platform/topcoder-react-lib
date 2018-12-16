@@ -1,5 +1,11 @@
 # Topcoder React Lib
 
+### v0.7.3
+- Added `getTcM2mToken()` function to API service, to facilitate handling of
+  TC M2M token;
+- Added `reduceGroupIds(..)` function to Groups service, to easily extract all
+  IDs from a group tree.
+
 ### v0.6.0
 A few changes related to fetch of projests visitble to users, and creation of
 new challenges. Minor release to guard against any side-effects.

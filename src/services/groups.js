@@ -21,7 +21,6 @@ import { config } from 'topcoder-react-utils';
 import logger from '../utils/logger';
 import { getApiV3 } from './api';
 
-
 /* The value of USER_GROUP_MAXAGE constant converted to [ms]. */
 const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000;
 
@@ -166,6 +165,22 @@ function mergeGroup(groups, group) {
   delete group.subGroups;
   groups[group.id] = group;
   /* eslint-enable no-param-reassign */
+}
+
+/**
+ * Given a group tree, reduces it to the array of all group IDs encountered in
+ * the tree.
+ * @param {Object} group
+ * @return {String[]} Array of IDs.
+ */
+export function reduceGroupIds({ id, subGroups }) {
+  let res = [id];
+  if (subGroups) {
+    subGroups.forEach((g) => {
+      res = res.concat(reduceGroupIds(g));
+    });
+  }
+  return res;
 }
 
 /**

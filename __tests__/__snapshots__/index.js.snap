@@ -240,6 +240,7 @@ Object {
       "getApiV2": [Function],
       "getApiV3": [Function],
       "getApiV4": [Function],
+      "getTcM2mToken": [Function],
     },
     "billing": Object {
       "default": [Function],
@@ -268,6 +269,7 @@ Object {
       "checkUserGroups": [Function],
       "default": undefined,
       "getService": [Function],
+      "reduceGroupIds": [Function],
     },
     "lookup": Object {
       "default": undefined,
