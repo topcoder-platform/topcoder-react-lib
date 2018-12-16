@@ -7,7 +7,11 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
-import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
+import {
+  fireErrorMessage,
+  setErrorIcon,
+  ERROR_ICON_TYPES,
+} from '../utils/errors';
 
 // config.API.V4 = 'https://api.topcoder.com/v4';
 
@@ -280,3 +284,41 @@ export function getApiV4(token) {
   }
   return lastApiV4;
 }
+
+/**
+ * Gets a valid TC M2M token, either requesting one from TC Auth0 API, or
+ * serving one from internal cache.
+ *
+ * @return {Promise} Resolves to a token, valid at least next
+ *  getTcM2mToken.MIN_LIFETIME milliseconds.
+ *
+ * @throw if called outside of the server.s
+ */
+export async function getTcM2mToken() {
+  if (!isomorphy.isServerSide()) {
+    throw new Error('getTcM2mToken() called outside the server');
+  }
+  const now = Date.now();
+  const { cached } = getTcM2mToken;
+  const { TC_M2M } = config.SECRET;
+  if (!cached || cached.expires < now + getTcM2mToken.MIN_LIFETIME) {
+    let res = await fetch(`https://${config.AUTH0.DOMAIN}/oauth/token`, {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: TC_M2M.CLIENT_ID,
+        client_secret: TC_M2M.CLIENT_SECRET,
+        audience: TC_M2M.AUDIENCE,
+        grant_type: TC_M2M.GRANT_TYPE,
+      }),
+      method: 'POST',
+    });
+    res = await res.json();
+    getTcM2mToken.cached = {
+      expires: now + 1000 * res.expires_in, // [ms]
+      token: res.access_token,
+    };
+  }
+  return getTcM2mToken.cached.token;
+}
+
+getTcM2mToken.MIN_LIFETIME = 30 * 1000; // [ms]
