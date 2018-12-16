@@ -302,15 +302,17 @@ export async function getTcM2mToken() {
   const { cached } = getTcM2mToken;
   const { TC_M2M } = config.SECRET;
   if (!cached || cached.expires < now + getTcM2mToken.MIN_LIFETIME) {
-    const res = await fetch(`https://${config.AUTH0.DOMAIN}/oauth/token`, {
-      body: {
+    let res = await fetch(`https://${config.AUTH0.DOMAIN}/oauth/token`, {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         client_id: TC_M2M.CLIENT_ID,
         client_secret: TC_M2M.CLIENT_SECRET,
         audience: TC_M2M.AUDIENCE,
         grant_type: TC_M2M.GRANT_TYPE,
-      },
+      }),
       method: 'POST',
     });
+    res = await res.json();
     getTcM2mToken.cached = {
       expires: now + 1000 * res.expires_in, // [ms]
       token: res.access_token,

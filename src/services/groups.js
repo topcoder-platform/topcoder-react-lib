@@ -191,8 +191,15 @@ class GroupService {
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    */
   constructor(tokenV3) {
+    const now = Date.now();
     this.private = {
       api: getApiV3(tokenV3),
+      cache: {
+        groupTreeIds: {
+          lastCleanUp: now,
+          data: {},
+        },
+      },
       tokenV3,
     };
   }
@@ -270,6 +277,48 @@ class GroupService {
   }
 
   /**
+   * Given a root group ID, returns an ID array that contains the root group ID,
+   * and IDs of all descendant groups in the group (sub-)tree rooted at the
+   * specified group.
+   *
+   * Results are cached inside the class instance to minimize the load on TC
+   * Group API. To take advantage of that, be sure to keep and reuse the same
+   * class instance.
+   *
+   * The reason to have such strange method and pay an extra attention to its
+   * optimization for smaller API load is that it is essential for authorization
+   * checks.
+   *
+   * @param {String} rootGroupId
+   * @param {Number} maxage Optional. Max age [ms] of records served from the
+   *  cache. Defaults to 5 minutes.
+   * @return {Promise} Resolves to ID array.
+   */
+  async getGroupTreeIds(rootGroupId, maxage = 5 * 60 * 1000) {
+    const now = Date.now();
+    const cache = this.private.cache.groupTreeIds;
+
+    /* Clean-up: removes stale records from the cache. */
+    const CLEAN_UP_INTERVAL = 24 * 60 * 60 * 1000; // 1 day in ms.
+    if (now - cache.lastCleanUp > CLEAN_UP_INTERVAL) {
+      _.forOwn(cache, ({ timestamp }, key) => {
+        if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key];
+      });
+      cache.lastCleanUp = now;
+    }
+
+    /* If result is found in cache, and is fresh enough, return it. */
+    const cached = cache[rootGroupId];
+    if (cached && now - cached.timestamp < maxage) return _.clone(cached.data);
+
+    /* Otherwise, fetch result from the API, write it to the cache, and
+     * finally return that. */
+    const res = reduceGroupIds(await this.getGroup(rootGroupId));
+    cache[rootGroupId] = { data: res, timestamp: now };
+    return _.clone(res);
+  }
+
+  /**
    * Gets group members.
    * @param {String} groupId
    * @return {Promise} On sucess resolves to the array of member objects,
@@ -295,6 +344,14 @@ class GroupService {
     res = (await res.json()).result;
     if (!res.success) throw new Error(res.content);
     return Number(res.content);
+  }
+
+  /**
+   * Returns TC Auth Token V3 used by the service instance.
+   * @return {String} Token.
+   */
+  getTokenV3() {
+    return this.private.tokenV3;
   }
 }
 
