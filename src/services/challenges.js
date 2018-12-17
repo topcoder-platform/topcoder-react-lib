@@ -11,7 +11,7 @@ import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApiV2, getApiV4 } from './api';
+import { getApi } from './api';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -259,8 +259,8 @@ class ChallengesService {
     };
 
     this.private = {
-      api: getApiV4(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V4', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,
       tokenV3,

@@ -5,7 +5,7 @@ jest.mock(
 );
 
 const { config } = require('topcoder-react-utils');
-const { getApiV2, getApiV3 } = require('../../src/services/api');
+const { getApi } = require('../../src/services/api');
 
 describe('Test api', () => {
   const ENDPOINT = '/ENDPOINT';
@@ -79,43 +79,43 @@ describe('Test api', () => {
 
   let api;
   test('API v2 service works without auth token', () => {
-    api = getApiV2();
+    api = getApi('V2');
     return testApi(api, config.API.V2);
   });
 
   test('API v2 service works with auth token', () => {
-    api = getApiV2('TOKEN');
+    api = getApi('V2', 'TOKEN');
     return testApi(api, config.API.V2, 'TOKEN');
   });
 
   test(
     'API v2 service from the previous call is re-used, if token is the same',
-    () => expect(getApiV2('TOKEN')).toBe(api),
+    () => expect(getApi('V2', 'TOKEN')).toBe(api),
   );
 
   test('New API v2 service is created if token is new', () => {
-    const api2 = getApiV2('TOKEN2');
+    const api2 = getApi('V2', 'TOKEN2');
     expect(api2).not.toBe(api);
     return testApi(api2, config.API.V2, 'TOKEN2');
   });
 
   test('API v3 service works without auth token', () => {
-    api = getApiV3();
+    api = getApi('V3');
     return testApi(api, config.API.V3);
   });
 
   test('API v3 service works with auth token', () => {
-    api = getApiV3('TOKEN');
+    api = getApi('V3', 'TOKEN');
     return testApi(api, config.API.V3, 'TOKEN');
   });
 
   test(
     'API v3 service from the previous call is re-used, if token is the same',
-    () => expect(getApiV3('TOKEN')).toBe(api),
+    () => expect(getApi('V3', 'TOKEN')).toBe(api),
   );
 
   test('New API v3 service is created if token is new', () => {
-    const api2 = getApiV3('TOKEN2');
+    const api2 = getApi('V3', 'TOKEN2');
     expect(api2).not.toBe(api);
     return testApi(api2, config.API.V3, 'TOKEN2');
   });

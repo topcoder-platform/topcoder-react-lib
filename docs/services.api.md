@@ -7,8 +7,7 @@ This module provides a service for conventient access to Topcoder APIs.
 * [services.api](#module_services.api)
     * _static_
         * [.default](#module_services.api.default)
-        * [.getApiV2(token)](#module_services.api.getApiV2) ⇒ <code>Api</code>
-        * [.getApiV3(token)](#module_services.api.getApiV3) ⇒ <code>Api</code>
+        * [.getApi(version, token)](#module_services.api.getApi) ⇒ <code>Api</code>
     * _inner_
         * [~Api](#module_services.api..Api)
             * [new Api(base, token)](#new_module_services.api..Api_new)
@@ -30,29 +29,18 @@ The default export from the module is
  [Api](#module_services.api..Api) class.
 
 **Kind**: static property of [<code>services.api</code>](#module_services.api)  
-<a name="module_services.api.getApiV2"></a>
+<a name="module_services.api.getApi"></a>
 
-### services.api.getApiV2(token) ⇒ <code>Api</code>
-Returns a new or existing Api object for Topcoder API v2.
-
-**Kind**: static method of [<code>services.api</code>](#module_services.api)  
-**Returns**: <code>Api</code> - API v2 service object.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| token | <code>String</code> | Optional. Auth token for Topcoder API v2. |
-
-<a name="module_services.api.getApiV3"></a>
-
-### services.api.getApiV3(token) ⇒ <code>Api</code>
-Returns a new or existing Api object for Topcoder API v3
+### services.api.getApi(version, token) ⇒ <code>Api</code>
+Returns a new or existing Api object for Topcoder API.
 
 **Kind**: static method of [<code>services.api</code>](#module_services.api)  
-**Returns**: <code>Api</code> - API v3 service object.  
+**Returns**: <code>Api</code> - API service object.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| token | <code>String</code> | Optional. Auth token for Topcoder API v3. |
+| Param   | Type | Description |
+| ------- | --- | --- |
+| version | <code>String</code> | The API version. |
+| token   | <code>String</code> | Optional. Auth token for Topcoder API. |
 
 <a name="module_services.api..Api"></a>
 

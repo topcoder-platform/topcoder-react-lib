@@ -5,7 +5,7 @@
  */
 import toCapitalCase from 'to-capital-case';
 import { getApiResponsePayload } from '../utils/tc';
-import { getApiV3 } from './api';
+import { getApi } from './api';
 
 /**
  * Service class.
@@ -16,7 +16,7 @@ class UserTraitsService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }

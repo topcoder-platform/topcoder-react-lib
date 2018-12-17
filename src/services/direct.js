@@ -7,7 +7,7 @@
 
 import qs from 'qs';
 
-import { getApiV3 } from './api';
+import { getApi } from './api';
 
 /**
  * Direct service class.
@@ -21,7 +21,7 @@ class Direct {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }

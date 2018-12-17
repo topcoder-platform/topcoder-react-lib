@@ -4,7 +4,7 @@
  * via API V4.
  */
 import { getLookerApiResponsePayload } from '../utils/tc';
-import { getApiV4 } from './api';
+import { getApi } from './api';
 
 /**
  * Service class.
@@ -15,7 +15,7 @@ class LookerService {
    */
   constructor(tokenV4) {
     this.private = {
-      api: getApiV4(tokenV4),
+      api: getApi('V4', tokenV4),
       tokenV4,
     };
   }

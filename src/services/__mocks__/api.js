@@ -104,35 +104,23 @@ export default class Api {
 }
 
 /**
- * Topcoder API v2.
+ * Topcoder API.
  */
 
+const lastApi = {};
+
 /**
- * Returns a new or existing Api object for Topcoder API v2.
- * @param {String} token Optional. Auth token for Topcoder API v2.
- * @return {Api} API v2 service object.
+ * Returns a new or existing Api object for Topcoder API.
+ * @param {String} version The API version.
+ * @param {String} token Optional. Auth token for Topcoder API.
+ * @return {Api} API service object.
  */
-let lastApiV2 = null;
-export function getApiV2(token) {
-  if (!lastApiV2 || lastApiV2.private.token !== token) {
-    lastApiV2 = new Api(config.API.V2, token);
+export function getApi(version, token) {
+  version = version.toUpperCase(); //eslint-disable-line
+  if (!version || !config.API[version]) throw new Error(`Invalid API version: ${version}`);
+
+  if (!lastApi[version] || lastApi[version].private.token !== token) {
+    lastApi[version] = new Api(config.API[version], token);
   }
-  return lastApiV2;
-}
-
-/**
- * Topcoder API v3.
- */
-
-/**
- * Returns a new or existing Api object for Topcoder API v3
- * @param {String} token Optional. Auth token for Topcoder API v3.
- * @return {Api} API v3 service object.
- */
-let lastApiV3 = null;
-export function getApiV3(token) {
-  if (!lastApiV3 || lastApiV3.private.token !== token) {
-    lastApiV3 = new Api(config.API.V3, token);
-  }
-  return lastApiV3;
+  return lastApi[version];
 }
