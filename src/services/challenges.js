@@ -255,6 +255,7 @@ class ChallengesService {
       return {
         challenges: res.content || [],
         totalCount: res.metadata.totalCount,
+        meta: res.metadata,
       };
     };
 
