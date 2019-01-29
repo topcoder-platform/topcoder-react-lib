@@ -4,7 +4,7 @@
  * via API V3.
  */
 import qs from 'qs';
-import { getApiResponsePayloadV3 } from '../utils/tc';
+import { getApiResponsePayload } from '../utils/tc';
 import { getApiV3 } from './api';
 
 class LookupService {
@@ -25,7 +25,7 @@ class LookupService {
    */
   async getTags(params) {
     const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 }
 
