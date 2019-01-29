@@ -143,7 +143,6 @@ async function getActiveChallengesDone(handle, uuid, tokenV3) {
   }
   const calls = [
     getAll(params => service.getUserChallenges(handle, filter, params)),
-    getAll(params => service.getUserMarathonMatches(handle, filter, params)),
   ];
 
   const [challenges] = await Promise.all(calls);

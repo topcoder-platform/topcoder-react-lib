@@ -191,7 +191,7 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.platforms) challenge.platforms = [];
 
   if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
-    challenge.track = 'DEVELOP';
+    challenge.track = 'DATA_SCIENCE';
   }
   /* eslint-enable no-param-reassign */
 
@@ -255,6 +255,7 @@ class ChallengesService {
       return {
         challenges: res.content || [],
         totalCount: res.metadata.totalCount,
+        meta: res.metadata,
       };
     };
 
