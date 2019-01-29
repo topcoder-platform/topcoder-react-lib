@@ -10,8 +10,8 @@ import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
-import { COMPETITION_TRACKS, getApiResponsePayloadV3 } from '../utils/tc';
-import { getApiV2, getApiV3, getApiV4 } from './api';
+import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
+import { getApiV2, getApiV4 } from './api';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -86,7 +86,7 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     registrants: v4.registrants || [],
   };
 
-  // v4 Winners have different field names, needs to be normalized to match v4 filtered and v3
+  // v4 Winners have different field names, needs to be normalized to match v4 filtered and v4
   challenge.winners = _.map(
     v4.winners,
     (winner, index) => ({
@@ -117,22 +117,22 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
       componentId: v4Filtered.componentId,
       contestId: v4Filtered.contestId,
 
-      submissionEndDate: v4Filtered.submissionEndDate, // Dates are not correct in v3
-      submissionEndTimestamp: v4Filtered.submissionEndDate, // Dates are not correct in v3
+      submissionEndDate: v4Filtered.submissionEndDate, // Dates are not correct in v4
+      submissionEndTimestamp: v4Filtered.submissionEndDate, // Dates are not correct in v4
 
-      /* Taking phases from v3_filtered, because dates are not correct in v3 */
+      /* Taking phases from v4_filtered, because dates are not correct in v4 */
       allPhases: v4Filtered.allPhases || [],
 
-      /* Taking phases from v3_filtered, because dates are not correct in v3 */
+      /* Taking phases from v4_filtered, because dates are not correct in v4 */
       currentPhases: v4Filtered.currentPhases || [],
 
-      /* v3 returns incorrect value for numberOfSubmissions for some reason */
+      /* v4 returns incorrect value for numberOfSubmissions for some reason */
       numSubmissions: v4Filtered.numSubmissions,
       groups,
     });
   }
 
-  // Fill missing data from v3_user
+  // Fill missing data from v4_user
   if (v4User) {
     _.defaults(challenge, {
       userDetails: v4User.userDetails,
@@ -168,7 +168,7 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
  * component. It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
+ * have moved to Topcoder API v4, but it is kept for now to minimize a risk of
  * breaking anything.
  * @todo Should be used only internally!
  * @param {Object} challenge Challenge object received from the backend.
@@ -251,7 +251,7 @@ class ChallengesService {
         ...params,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
-      const res = await this.private.apiV4.get(url).then(checkError);
+      const res = await this.private.api.get(url).then(checkError);
       return {
         challenges: res.content || [],
         totalCount: res.metadata.totalCount,
@@ -262,7 +262,6 @@ class ChallengesService {
     this.private = {
       api: getApiV4(tokenV3),
       apiV2: getApiV2(tokenV2),
-      apiV4: getApiV4(tokenV3),
       getChallenges,
       tokenV2,
       tokenV3,
@@ -360,14 +359,14 @@ class ChallengesService {
 
   /**
    * Gets challenge details from Topcoder API v4.
-   * NOTE: This function also uses API v2 and other v3 endpoints for now, due
+   * NOTE: This function also uses API v2 and other v4 endpoints for now, due
    * to some information is missing or
-   * incorrect in the main v3 endpoint. This may change in the future.
+   * incorrect in the main v4 endpoint. This may change in the future.
    * @param {Number|String} challengeId
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challengeV4 = await this.private.apiV4.get(`/challenges/${challengeId}`)
+    const challengeV4 = await this.private.api.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res.content);
 
     const challengeV4Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
@@ -438,7 +437,7 @@ class ChallengesService {
    */
   async getSrms(params) {
     const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -467,7 +466,7 @@ class ChallengesService {
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -477,7 +476,7 @@ class ChallengesService {
    */
   async register(challengeId) {
     const endpoint = `/challenges/${challengeId}/register`;
-    const res = await this.private.apiV4.postJson(endpoint);
+    const res = await this.private.api.postJson(endpoint);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -489,7 +488,7 @@ class ChallengesService {
    */
   async unregister(challengeId) {
     const endpoint = `/challenges/${challengeId}/unregister`;
-    const res = await this.private.apiV4.post(endpoint);
+    const res = await this.private.api.post(endpoint);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }

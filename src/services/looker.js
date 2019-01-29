@@ -3,7 +3,7 @@
  * @desc  This module provides a service to get look data json
  * via API V4.
  */
-import { getApiResponsePayloadV4 } from '../utils/tc';
+import { getLookerApiResponsePayload } from '../utils/tc';
 import { getApiV4 } from './api';
 
 /**
@@ -27,7 +27,7 @@ class LookerService {
    */
   async getLooker(lookerId) {
     const res = await this.private.api.get(`/looks/${lookerId}/run/json`);
-    return getApiResponsePayloadV4(res);
+    return getLookerApiResponsePayload(res);
   }
 }
 
