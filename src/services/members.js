@@ -202,7 +202,12 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async updateMemberProfile(profile) {
-    const res = await this.private.api.putJson(`/members/${profile.handle}`, { param: profile });
+    const changeEmail = !!(_.get(profile, 'successUrl') || _.get(profile, 'failUrl'));
+    let url = `/members/${profile.handle}`;
+    if (changeEmail) {
+      url = `${url}?successUrl=${_.get(profile, 'successUrl')}&failUrl=${_.get(profile, 'failUrl')}`;
+    }
+    const res = await this.private.api.putJson(url, { param: _.omit(profile, ['successUrl', 'failUrl']) });
     return getApiResponsePayload(res);
   }
 
