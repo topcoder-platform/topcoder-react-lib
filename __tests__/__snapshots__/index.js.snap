@@ -237,6 +237,7 @@ Object {
   "services": Object {
     "api": Object {
       "default": [Function],
+      "getApi": [Function],
       "getApiV2": [Function],
       "getApiV3": [Function],
       "getApiV4": [Function],

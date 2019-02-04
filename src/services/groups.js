@@ -19,7 +19,7 @@
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import logger from '../utils/logger';
-import { getApiV3 } from './api';
+import { getApi } from './api';
 
 /* The value of USER_GROUP_MAXAGE constant converted to [ms]. */
 const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000;
@@ -193,7 +193,7 @@ class GroupService {
   constructor(tokenV3) {
     const now = Date.now();
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       cache: {
         groupTreeIds: {
           lastCleanUp: now,

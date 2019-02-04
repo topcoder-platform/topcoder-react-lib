@@ -11,7 +11,7 @@ import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApiV2, getApiV4 } from './api';
+import { getApi } from './api';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -19,76 +19,73 @@ export const ORDER_BY = {
 
 /**
  * Normalizes a regular challenge details object received from the backend APIs.
- * NOTE: It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v4, but it is kept for now to minimize a risk of
- * breaking anything.
  * @todo Why this one is exported? It should be only used internally!
- * @param {Object} v4 Challenge object received from the /v4/challenges/{id}
+ * @param {Object} challenge Challenge object received from the /challenges/{id}
  *  endpoint.
- * @param {Object} v4Filtered Challenge object received from the
- *  /v4/challenges?filter=id={id} endpoint.
- * @param {Object} v4User Challenge object received from the
- *  /v4/members/{username}/challenges?filter=id={id} endpoint.
- * If action was fired for authenticated visitor, v4_user will contain
+ * @param {Object} filtered Challenge object received from the
+ *  /challenges?filter=id={id} endpoint.
+ * @param {Object} user Challenge object received from the
+ *  /members/{username}/challenges?filter=id={id} endpoint.
+ * If action was fired for authenticated visitor, `user` will contain
  * details fetched specifically for the user (thus may include additional
- * data comparing to the standard API v4 response for the challenge details,
- * stored in v4_filtered).
+ * data comparing to the standard API response for the challenge details,
+ * stored in `filtered`).
  * @param {String} username Optional.
  * @return {Object} Normalized challenge object.
  */
-export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
+export function normalizeChallengeDetails(challenge, filtered, user, username) {
   // Normalize exising data to make it consistent with the rest of the code
-  const challenge = {
-    ...v4,
+  const finalChallenge = {
+    ...challenge,
 
-    id: v4.challengeId,
-    reliabilityBonus: _.get(v4Filtered, 'reliabilityBonus', 0),
-    status: (v4.currentStatus || '').toUpperCase(),
+    id: challenge.challengeId,
+    reliabilityBonus: _.get(filtered, 'reliabilityBonus', 0),
+    status: (challenge.currentStatus || '').toUpperCase(),
 
     allPhases: [],
     currentPhases: [],
-    name: v4.challengeName || v4.challengeTitle,
-    projectId: Number(v4.projectId),
-    forumId: Number(v4.forumId),
-    introduction: v4.introduction || '',
-    detailedRequirements: v4.detailedRequirements === 'null' ? '' : v4.detailedRequirements,
-    finalSubmissionGuidelines: v4.finalSubmissionGuidelines === 'null' ? '' : v4.finalSubmissionGuidelines,
-    screeningScorecardId: Number(v4.screeningScorecardId),
-    reviewScorecardId: Number(v4.reviewScorecardId),
-    numberOfCheckpointsPrizes: v4.numberOfCheckpointsPrizes,
-    topCheckPointPrize: v4.topCheckPointPrize,
-    submissionsViewable: v4.submissionsViewable || 'false',
-    reviewType: v4.reviewType,
-    allowStockArt: v4.allowStockArt === 'true',
-    fileTypes: v4.filetypes || [],
-    environment: v4.environment,
-    codeRepo: v4.codeRepo,
-    forumLink: v4.forumLink,
-    submissionLimit: Number(v4.submissionLimit) || 0,
-    drPoints: v4.digitalRunPoints,
-    directUrl: v4.directUrl,
-    technologies: v4.technologies || v4.technology || [],
-    platforms: v4.platforms || [],
-    prizes: v4.prize || v4.prizes || [],
-    events: _.map(v4.event, e => ({
+    name: challenge.challengeName || challenge.challengeTitle,
+    projectId: Number(challenge.projectId),
+    forumId: Number(challenge.forumId),
+    introduction: challenge.introduction || '',
+    detailedRequirements: challenge.detailedRequirements === 'null' ? '' : challenge.detailedRequirements,
+    finalSubmissionGuidelines: challenge.finalSubmissionGuidelines === 'null' ? '' : challenge.finalSubmissionGuidelines,
+    screeningScorecardId: Number(challenge.screeningScorecardId),
+    reviewScorecardId: Number(challenge.reviewScorecardId),
+    numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
+    topCheckPointPrize: challenge.topCheckPointPrize,
+    submissionsViewable: challenge.submissionsViewable || 'false',
+    reviewType: challenge.reviewType,
+    allowStockArt: challenge.allowStockArt === 'true',
+    fileTypes: challenge.filetypes || [],
+    environment: challenge.environment,
+    codeRepo: challenge.codeRepo,
+    forumLink: challenge.forumLink,
+    submissionLimit: Number(challenge.submissionLimit) || 0,
+    drPoints: challenge.digitalRunPoints,
+    directUrl: challenge.directUrl,
+    technologies: challenge.technologies || challenge.technology || [],
+    platforms: challenge.platforms || [],
+    prizes: challenge.prize || challenge.prizes || [],
+    events: _.map(challenge.event, e => ({
       eventName: e.eventShortDesc,
       eventId: e.id,
       description: e.eventDescription,
     })),
-    terms: v4.terms,
-    submissions: v4.submissions,
-    track: _.toUpper(v4.challengeCommunity),
-    subTrack: v4.subTrack,
-    checkpoints: v4.checkpoints,
-    documents: v4.documents || [],
-    numRegistrants: v4.numberOfRegistrants,
-    numberOfCheckpointSubmissions: v4.numberOfCheckpointSubmissions,
-    registrants: v4.registrants || [],
+    terms: challenge.terms,
+    submissions: challenge.submissions,
+    track: _.toUpper(challenge.challengeCommunity),
+    subTrack: challenge.subTrack,
+    checkpoints: challenge.checkpoints,
+    documents: challenge.documents || [],
+    numRegistrants: challenge.numberOfRegistrants,
+    numberOfCheckpointSubmissions: challenge.numberOfCheckpointSubmissions,
+    registrants: challenge.registrants || [],
   };
 
-  // v4 Winners have different field names, needs to be normalized to match v4 filtered and v4
-  challenge.winners = _.map(
-    v4.winners,
+  // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
+  finalChallenge.winners = _.map(
+    challenge.winners,
     (winner, index) => ({
       ...winner,
       handle: winner.submitter,
@@ -96,79 +93,79 @@ export function normalizeChallengeDetails(v4, v4Filtered, v4User, username) {
     }),
   );
 
-  if (challenge.subTrack === 'MARATHON_MATCH') {
-    challenge.track = 'DATA_SCIENCE';
+  if (finalChallenge.subTrack === 'MARATHON_MATCH') {
+    finalChallenge.track = 'DATA_SCIENCE';
   }
 
   // It's not clear if this will be the main event, will need to be investigated
-  challenge.mainEvent = challenge.events[0] || {};
+  finalChallenge.mainEvent = finalChallenge.events[0] || {};
 
-  /* It's unclear if these normalization steps are still required for V4 */
-  // Fill missing data from v4_filtered
-  if (v4Filtered) {
+  /* It's unclear if these normalization steps are still required for `challenge` */
+  // Fill missing data from filtered
+  if (filtered) {
     const groups = {};
-    if (v4Filtered.groupIds) {
-      v4Filtered.groupIds.forEach((id) => {
+    if (filtered.groupIds) {
+      filtered.groupIds.forEach((id) => {
         groups[id] = true;
       });
     }
 
-    _.merge(challenge, {
-      componentId: v4Filtered.componentId,
-      contestId: v4Filtered.contestId,
+    _.merge(finalChallenge, {
+      componentId: filtered.componentId,
+      contestId: filtered.contestId,
 
-      submissionEndDate: v4Filtered.submissionEndDate, // Dates are not correct in v4
-      submissionEndTimestamp: v4Filtered.submissionEndDate, // Dates are not correct in v4
+      submissionEndDate: filtered.submissionEndDate, // Dates are not correct in `challenge`
+      submissionEndTimestamp: filtered.submissionEndDate, // Dates are not correct in `challenge`
 
-      /* Taking phases from v4_filtered, because dates are not correct in v4 */
-      allPhases: v4Filtered.allPhases || [],
+      /* Taking phases from filtered, because dates are not correct in `challenge` */
+      allPhases: filtered.allPhases || [],
 
-      /* Taking phases from v4_filtered, because dates are not correct in v4 */
-      currentPhases: v4Filtered.currentPhases || [],
+      /* Taking phases from filtered, because dates are not correct in `challenge` */
+      currentPhases: filtered.currentPhases || [],
 
-      /* v4 returns incorrect value for numberOfSubmissions for some reason */
-      numSubmissions: v4Filtered.numSubmissions,
+      /* `challenge` has incorrect value for numberOfSubmissions for some reason */
+      numSubmissions: filtered.numSubmissions,
       groups,
     });
   }
 
-  // Fill missing data from v4_user
-  if (v4User) {
-    _.defaults(challenge, {
-      userDetails: v4User.userDetails,
+  // Fill missing data from user
+  if (user) {
+    _.defaults(finalChallenge, {
+      userDetails: user.userDetails,
     });
   }
 
   // Fill some derived data
   const registrationOpen = _.some(
-    challenge.allPhases,
+    finalChallenge.allPhases,
     phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
   ) ? 'Yes' : 'No';
-  _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+  _.defaults(finalChallenge, {
+    communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
     registrationOpen,
     users: username ? { [username]: true } : {},
   });
 
   // A hot fix to show submissions for on-going challenges
-  if (!challenge.submissions || !challenge.submissions.length) {
-    challenge.submissions = challenge.registrants
+  if (!finalChallenge.submissions || !finalChallenge.submissions.length) {
+    finalChallenge.submissions = finalChallenge.registrants
       .filter(r => r.submissionDate || '')
       .sort((a, b) => (a.submissionDate || '')
         .localeCompare(b.submissionDate || ''));
   }
 
-  if (!challenge.allPhases) challenge.allPhases = [];
-  if (!challenge.track) challenge.track = '';
+  if (!finalChallenge.allPhases) finalChallenge.allPhases = [];
+  if (!finalChallenge.track) finalChallenge.track = '';
 
-  return challenge;
+  return finalChallenge;
 }
 
 /**
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
  * component. It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v4, but it is kept for now to minimize a risk of
+ * have moved to Topcoder API, but it is kept for now to minimize a risk of
  * breaking anything.
  * @todo Should be used only internally!
  * @param {Object} challenge Challenge object received from the backend.
@@ -235,7 +232,7 @@ class ChallengesService {
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
-     * @param {String} endpoint API V4 endpoint, where the request will be send.
+     * @param {String} endpoint API endpoint, where the request will be send.
      * @param {Object} filters Optional. A map of filters to pass as `filter`
      *  query parameter (this function takes care to stringify it properly).
      * @param {Object} params Optional. A map of any other parameters beside
@@ -260,8 +257,8 @@ class ChallengesService {
     };
 
     this.private = {
-      api: getApiV4(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V4', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,
       tokenV3,
@@ -358,34 +355,34 @@ class ChallengesService {
   }
 
   /**
-   * Gets challenge details from Topcoder API v4.
-   * NOTE: This function also uses API v2 and other v4 endpoints for now, due
+   * Gets challenge details from Topcoder API.
+   * NOTE: This function also uses API v2 and other endpoints for now, due
    * to some information is missing or
-   * incorrect in the main v4 endpoint. This may change in the future.
+   * incorrect in the main endpoint. This may change in the future.
    * @param {Number|String} challengeId
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challengeV4 = await this.private.api.get(`/challenges/${challengeId}`)
+    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res.content);
 
-    const challengeV4Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
+    const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeV4User = username && await this.getUserChallenges(username, { id: challengeId })
+    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
       .then(res => res.challenges[0]).catch(() => null);
 
-    const challenge = normalizeChallengeDetails(
-      challengeV4,
-      challengeV4Filtered,
-      challengeV4User,
+    const finalChallenge = normalizeChallengeDetails(
+      challenge,
+      challengeFiltered,
+      challengeUser,
       username,
     );
 
-    challenge.fetchedWithAuth = Boolean(this.private.api.private.token);
+    finalChallenge.fetchedWithAuth = Boolean(this.private.api.private.token);
 
-    return challenge;
+    return finalChallenge;
   }
 
   /**
