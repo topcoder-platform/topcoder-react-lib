@@ -236,51 +236,34 @@ class Api {
 export default Api;
 
 /*
- * Topcoder API v2.
+ * Topcoder API
  */
+const lastApiInstances = {};
 
-let lastApiV2 = null;
 /**
- * Returns a new or existing Api object for Topcoder API v2.
- * @param {String} token Optional. Auth token for Topcoder API v2.
- * @return {Api} API v2 service object.
+ * Returns a new or existing Api object for Topcoder API.
+ * @param {String} version The API version.
+ * @param {String} token Optional. Auth token for Topcoder API.
+ * @return {Api} API service object.
  */
-export function getApiV2(token) {
-  if (!lastApiV2 || lastApiV2.private.token !== token) {
-    lastApiV2 = new Api(config.API.V2, token);
+export function getApi(version, token) {
+  if (!version || !config.API[version]) {
+    throw new Error(`${version} is not a valid API version`);
   }
-  return lastApiV2;
+  if (!lastApiInstances[version] || lastApiInstances[version].private.token !== token) {
+    lastApiInstances[version] = new Api(config.API[version], token);
+  }
+  return lastApiInstances[version];
 }
 
-/*
- * Topcoder API v3.
- */
-
-let lastApiV3 = null;
 /**
- * Returns a new or existing Api object for Topcoder API v3
- * @param {String} token Optional. Auth token for Topcoder API v3.
- * @return {Api} API v3 service object.
+ * Keep the old API factories for backwards compatibility
+ * DO NOT USE THEM FOR NEW IMPLEMENTATIONS.
+ * USE THE getApi(version, token) FACTORY.
  */
-export function getApiV3(token) {
-  if (!lastApiV3 || lastApiV3.private.token !== token) {
-    lastApiV3 = new Api(config.API.V3, token);
-  }
-  return lastApiV3;
-}
-
-let lastApiV4 = null;
-/**
- * Returns a new or existing Api object for Topcoder API V4
- * @param {String} token Optional. Auth token for Topcoder API V4.
- * @return {Api} API V4 service object.
- */
-export function getApiV4(token) {
-  if (!lastApiV4 || lastApiV4.private.token !== token) {
-    lastApiV4 = new Api(config.API.V4, token);
-  }
-  return lastApiV4;
-}
+export const getApiV2 = token => getApi('V2', token);
+export const getApiV3 = token => getApi('V3', token);
+export const getApiV4 = token => getApi('V4', token);
 
 /**
  * Gets a valid TC M2M token, either requesting one from TC Auth0 API, or
