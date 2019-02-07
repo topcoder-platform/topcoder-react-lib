@@ -17,7 +17,7 @@
 
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
-import { getApiV3 } from './api';
+import { getApi } from './api';
 import logger from '../../utils/logger';
 
 /* The value of USER_GROUP_MAXAGE constant converted to [ms]. */
@@ -172,7 +172,7 @@ class GroupService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }

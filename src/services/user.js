@@ -7,7 +7,7 @@ import { config, isomorphy } from 'topcoder-react-utils';
 
 import logger from '../utils/logger';
 import { getApiResponsePayload } from '../utils/tc';
-import { getApiV2, getApiV3 } from './api';
+import { getApi } from './api';
 
 let auth0;
 
@@ -112,8 +112,8 @@ class User {
    */
   constructor(tokenV3, tokenV2) {
     this.private = {
-      api: getApiV3(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V3', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       tokenV2,
       tokenV3,
     };

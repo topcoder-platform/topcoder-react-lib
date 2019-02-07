@@ -2,7 +2,7 @@
  * @module "services.billing"
  * @desc Access to Topcoder billing accounts.
  */
-import { getApiV3 } from './api';
+import { getApi } from './api';
 
 /**
  * @static
@@ -21,7 +21,7 @@ class Billing {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }

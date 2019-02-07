@@ -5,7 +5,7 @@
  */
 import qs from 'qs';
 import { getApiResponsePayload } from '../utils/tc';
-import { getApiV3 } from './api';
+import { getApi } from './api';
 
 class LookupService {
   /**
@@ -13,7 +13,7 @@ class LookupService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }

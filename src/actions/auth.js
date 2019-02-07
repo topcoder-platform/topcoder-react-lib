@@ -5,7 +5,7 @@
 
 import { createActions } from 'redux-actions';
 import { decodeToken } from 'tc-accounts';
-import { getApiV3 } from '../services/api';
+import { getApi } from '../services/api';
 
 /**
  * @static
@@ -16,7 +16,7 @@ import { getApiV3 } from '../services/api';
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
-  const api = getApiV3(userTokenV3);
+  const api = getApi('V3', userTokenV3);
   return Promise.all([
     api.get(`/members/${user.handle}`)
       .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
