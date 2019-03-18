@@ -338,6 +338,31 @@ async function getUserMarathonDone(
     }));
 }
 
+/**
+ * @static
+ * @desc Create an action that signals beginning of member's countries.
+ * @return {Action}
+ */
+async function getCountriesInit() {
+  return {};
+}
+
+/**
+ * @static
+ * @desc Create an action that loads all countries.
+ * @return {Action}
+ */
+async function getCountriesDone() {
+  /*
+  Assumption: data is an object with keys equal to country names and vals 
+  corresponding country codes
+  */
+  const data = await getService(tokenV3).getCountries(); 
+  return Object.entries(data).map(C => {
+    return {key: "country", name: C[1]};
+  });
+}
+
 export default createActions({
   MEMBERS: {
     DROP: drop,

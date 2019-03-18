@@ -279,6 +279,16 @@ class MembersService {
       xhr.send(presignedUrlResponse.file);
     });
   }
+
+  /**
+   * Get all countries
+   * @param {Object}
+   * @return {Promise} Resolves to the api response content
+   */
+  async getCountries() {
+    const res = await this.private.api.fetch('/members/lookup/countries');
+    return getApiResponsePayload(res);
+  }
 }
 
 let lastInstance = null;
