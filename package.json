@@ -46,6 +46,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
+    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
     "to-capital-case": "^1.0.0",
     "topcoder-react-utils": "^0.7.5"
   },
