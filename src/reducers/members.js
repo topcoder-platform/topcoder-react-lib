@@ -424,6 +424,38 @@ function onGetUserMarathonDone(state, { error, payload }) {
       loadingMarathonUUID: '',
     },
   };
+
+/**
+ * Inits the loading of member countries.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserCountriesInit(state, { payload }) {
+  return {
+    ...state,
+    countries: {},
+  };
+}
+
+/**
+ * Gets all countries
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserCountriesDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get member countries', payload);
+    fireErrorMessage('Failed to get member countries', '');
+    return {...state, loadingCountriesError: true};
+  }
+
+  return ({
+    ...state,
+    loadingCountriesError: false,
+    countries: payload,
+  })
 }
 
 /**
@@ -454,6 +486,8 @@ function create(initialState = {}) {
     [a.getUserSrmDone]: onGetUserSRMDone,
     [a.getUserMarathonInit]: onGetUserMarathonInit,
     [a.getUserMarathonDone]: onGetUserMarathonDone,
+    [a.getUserCountriesInit]: onGetUserCountriesInit,
+    [a.getUserCountriesDone]: onGetUserCountriesDone,
   }, initialState);
 }
 
