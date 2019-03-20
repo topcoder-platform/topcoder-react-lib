@@ -27,6 +27,16 @@ class LookupService {
     const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
+
+  /**
+   * Gets countries.
+   * @param {Object} params Parameters
+   * @return {Promise} Resolves to the countries.
+   */
+  async getCountries() {
+    const res = await this.private.api.get('/members/lookup/countries');
+    return getApiResponsePayload(res);
+  }
 }
 
 let lastInstance = null;

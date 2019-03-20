@@ -26,9 +26,27 @@ function getSkillTagsDone() {
   return getService().getTags(params);
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of getting all countries.
+ * @return {Action}
+ */
+function getCountriesInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets all countries.
+ * @return {Action}
+ */
+function getCountriesDone() {
+  return getService().getCountries();
+}
+
 export default createActions({
   LOOKUP: {
     GET_SKILL_TAGS_INIT: getSkillTagsInit,
     GET_SKILL_TAGS_DONE: getSkillTagsDone,
+    GET_COUNTRIES_INIT: getCountriesInit,
+    GET_COUNTRIES_DONE: getCountriesDone,
   },
 });
