@@ -420,6 +420,7 @@ function onUpdatePasswordDone(state, { payload, error }) {
 
   if (error) {
     logger.error('Failed to update password', payload);
+    fireErrorMessage('The old password is invalid');
   }
   return newState;
 }
