@@ -453,6 +453,18 @@ class ChallengesService {
       });
   }
 
+  /**
+   * Gets marathon matches of the specified user.
+   * @param {String} username User whose challenges we want to fetch.
+   * @param {Object} filters Optional.
+   * @param {Number} params Optional.
+   * @return {Promise} Resolves to the api response.
+   */
+  getUserMarathonMatches(username, filters, params) {
+    const endpoint = `/members/${username.toLowerCase()}/mms/`;
+    return this.private.getChallenges(endpoint, filters, params);
+  }
+
 
   /**
    * Gets SRM matches related to the user.
