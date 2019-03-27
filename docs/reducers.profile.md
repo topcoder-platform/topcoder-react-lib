@@ -1,317 +1,491 @@
-<a name="module_reducers.profile"></a>
+<a name="module_actions.profile"></a>
 
-## reducers.profile
-Reducer for Profile API data
+## actions.profile
+Actions for interactions with profile details API.
 
 **Todo**
 
-- [ ] Document reducer state structure.
+- [ ] Some of them repeat actions in [actions.members.md](actions.members.md). The code
+ should be refactored to avoid redundancy.
 
 
-* [reducers.profile](#module_reducers.profile)
-    * _static_
-        * [.factory()](#module_reducers.profile.factory) ⇒ <code>Promise</code>
-    * _inner_
-        * [~onGetAchievementsDone(state, action)](#module_reducers.profile..onGetAchievementsDone) ⇒ <code>Object</code>
-        * [~onGetExternalAccountsDone(state, action)](#module_reducers.profile..onGetExternalAccountsDone) ⇒ <code>Object</code>
-        * [~onGetExternalLinksDone(state, action)](#module_reducers.profile..onGetExternalLinksDone) ⇒ <code>Object</code>
-        * [~onGetInfoDone(state, action)](#module_reducers.profile..onGetInfoDone) ⇒ <code>Object</code>
-        * [~onGetSkillsDone(state, action)](#module_reducers.profile..onGetSkillsDone) ⇒ <code>Object</code>
-        * [~onGetStatsDone(state, action)](#module_reducers.profile..onGetStatsDone) ⇒ <code>Object</code>
-        * [~onGetLinkedAccountsDone(state, action)](#module_reducers.profile..onGetLinkedAccountsDone) ⇒ <code>Object</code>
-        * [~onGetCredentialDone(state, action)](#module_reducers.profile..onGetCredentialDone) ⇒ <code>Object</code>
-        * [~onGetEmailPreferencesDone(state, action)](#module_reducers.profile..onGetEmailPreferencesDone) ⇒ <code>Object</code>
-        * [~onUploadPhotoDone(state, action)](#module_reducers.profile..onUploadPhotoDone) ⇒ <code>Object</code>
-        * [~onDeletePhotoDone(state, action)](#module_reducers.profile..onDeletePhotoDone) ⇒ <code>Object</code>
-        * [~onUpdateProfileDone(state, action)](#module_reducers.profile..onUpdateProfileDone) ⇒ <code>Object</code>
-        * [~onAddSkillDone(state, action)](#module_reducers.profile..onAddSkillDone) ⇒ <code>Object</code>
-        * [~onHideSkillDone(state, action)](#module_reducers.profile..onHideSkillDone) ⇒ <code>Object</code>
-        * [~onAddWebLinkDone(state, action)](#module_reducers.profile..onAddWebLinkDone) ⇒ <code>Object</code>
-        * [~onDeleteWebLinkDone(state, action)](#module_reducers.profile..onDeleteWebLinkDone) ⇒ <code>Object</code>
-        * [~onLinkExternalAccountDone(state, action)](#module_reducers.profile..onLinkExternalAccountDone) ⇒ <code>Object</code>
-        * [~onUnlinkExternalAccountDone(state, action)](#module_reducers.profile..onUnlinkExternalAccountDone) ⇒ <code>Object</code>
-        * [~onSaveEmailPreferencesDone(state, action)](#module_reducers.profile..onSaveEmailPreferencesDone) ⇒ <code>Object</code>
-        * [~onUpdatePasswordDone(state, action)](#module_reducers.profile..onUpdatePasswordDone) ⇒ <code>Object</code>
-        * [~create(initialState)](#module_reducers.profile..create) ⇒ <code>function</code>
+* [actions.profile](#module_actions.profile)
+    * [.loadProfile(handle)](#module_actions.profile.loadProfile) ⇒ <code>Action</code>
+    * [.clearProfile()](#module_actions.profile.clearProfile) ⇒ <code>Action</code>
+    * [.getAchievementsInit()](#module_actions.profile.getAchievementsInit) ⇒ <code>Action</code>
+    * [.getAchievementsDone(handle)](#module_actions.profile.getAchievementsDone) ⇒ <code>Action</code>
+    * [.getExternalAccountsInit()](#module_actions.profile.getExternalAccountsInit) ⇒ <code>Action</code>
+    * [.getExternalAccountsDone(handle)](#module_actions.profile.getExternalAccountsDone) ⇒ <code>Action</code>
+    * [.getExternalLinksInit()](#module_actions.profile.getExternalLinksInit) ⇒ <code>Action</code>
+    * [.getExternalLinksDone(handle)](#module_actions.profile.getExternalLinksDone) ⇒ <code>Action</code>
+    * [.getInfoInit()](#module_actions.profile.getInfoInit) ⇒ <code>Action</code>
+    * [.getInfoDone(handle)](#module_actions.profile.getInfoDone) ⇒ <code>Action</code>
+    * [.getSkillsInit()](#module_actions.profile.getSkillsInit) ⇒ <code>Action</code>
+    * [.getSkillsDone(handle)](#module_actions.profile.getSkillsDone) ⇒ <code>Action</code>
+    * [.getStatsInit()](#module_actions.profile.getStatsInit) ⇒ <code>Action</code>
+    * [.getStatsDone(handle)](#module_actions.profile.getStatsDone) ⇒ <code>Action</code>
+    * [.getLinkedAccountsInit()](#module_actions.profile.getLinkedAccountsInit) ⇒ <code>Action</code>
+    * [.getLinkedAccountsDone(profile, tokenV3)](#module_actions.profile.getLinkedAccountsDone) ⇒ <code>Action</code>
+    * [.getCredentialInit()](#module_actions.profile.getCredentialInit) ⇒ <code>Action</code>
+    * [.getCredentialDone(profile, tokenV3)](#module_actions.profile.getCredentialDone) ⇒ <code>Action</code>
+    * [.getEmailPreferencesInit()](#module_actions.profile.getEmailPreferencesInit) ⇒ <code>Action</code>
+    * [.getEmailPreferencesDone(profile, tokenV3)](#module_actions.profile.getEmailPreferencesDone) ⇒ <code>Action</code>
+    * [.uploadPhotoInit()](#module_actions.profile.uploadPhotoInit) ⇒ <code>Action</code>
+    * [.uploadPhotoDone(handle, tokenV3, file)](#module_actions.profile.uploadPhotoDone) ⇒ <code>Action</code>
+    * [.deletePhotoInit()](#module_actions.profile.deletePhotoInit) ⇒ <code>Action</code>
+    * [.updateProfileInit()](#module_actions.profile.updateProfileInit) ⇒ <code>Action</code>
+    * [.updateProfileDone(profile, tokenV3)](#module_actions.profile.updateProfileDone) ⇒ <code>Action</code>
+    * [.addSkillInit()](#module_actions.profile.addSkillInit) ⇒ <code>Action</code>
+    * [.addSkillDone(handle, tokenV3, skill)](#module_actions.profile.addSkillDone) ⇒ <code>Action</code>
+    * [.hideSkillInit()](#module_actions.profile.hideSkillInit) ⇒ <code>Action</code>
+    * [.hideSkillDone(handle, tokenV3, skill)](#module_actions.profile.hideSkillDone) ⇒ <code>Action</code>
+    * [.addWebLinkInit()](#module_actions.profile.addWebLinkInit) ⇒ <code>Action</code>
+    * [.addWebLinkDone(handle, tokenV3, webLink)](#module_actions.profile.addWebLinkDone) ⇒ <code>Action</code>
+    * [.deleteWebLinkInit(key)](#module_actions.profile.deleteWebLinkInit) ⇒ <code>Action</code>
+    * [.deleteWebLinkDone(handle, tokenV3, webLink)](#module_actions.profile.deleteWebLinkDone) ⇒ <code>Action</code>
+    * [.linkExternalAccountInit()](#module_actions.profile.linkExternalAccountInit) ⇒ <code>Action</code>
+    * [.linkExternalAccountDone(profile, tokenV3, providerType, callbackUrl)](#module_actions.profile.linkExternalAccountDone) ⇒ <code>Action</code>
+    * [.unlinkExternalAccountInit(providerType)](#module_actions.profile.unlinkExternalAccountInit) ⇒ <code>Action</code>
+    * [.unlinkExternalAccountDone(profile, tokenV3, providerType)](#module_actions.profile.unlinkExternalAccountDone) ⇒ <code>Action</code>
+    * [.saveEmailPreferencesInit()](#module_actions.profile.saveEmailPreferencesInit) ⇒ <code>Action</code>
+    * [.saveEmailPreferencesDone(profile, tokenV3, preferences)](#module_actions.profile.saveEmailPreferencesDone) ⇒ <code>Action</code>
+    * [.updatePasswordInit()](#module_actions.profile.updatePasswordInit) ⇒ <code>Action</code>
+    * [.updatePasswordDone(profile, tokenV3, newPassword, oldPassword)](#module_actions.profile.updatePasswordDone) ⇒ <code>Action</code>
+    * [.verifyMemberNewEmailInit()](#module_actions.profile.verifyMemberNewEmailInit) ⇒ <code>Action</code>
+    * [.verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken)](#module_actions.profile.verifyMemberNewEmailDone) ⇒ <code>Action</code>
 
-<a name="module_reducers.profile.factory"></a>
+<a name="module_actions.profile.loadProfile"></a>
 
-### reducers.profile.factory() ⇒ <code>Promise</code>
-Factory which creates a new reducer with its initial state tailored to the
-given options object, if specified (for server-side rendering). If options
-object is not specified, it creates just the default reducer. Accepted options are:
+### actions.profile.loadProfile(handle) ⇒ <code>Action</code>
+Creates and action that loads user profile.
 
-**Kind**: static method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Resolves**: <code>Function(state, action): state</code> New reducer.  
-<a name="module_reducers.profile..onGetAchievementsDone"></a>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-### reducers.profile~onGetAchievementsDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_ACHIEVEMENTS_DONE action.
+- [ ] This action does not follow the pattern with init/done pairs of
+ actions. Should be improved.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | User handle. |
 
-<a name="module_reducers.profile..onGetExternalAccountsDone"></a>
+<a name="module_actions.profile.clearProfile"></a>
 
-### reducers.profile~onGetExternalAccountsDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_EXTERNAL_ACCOUNTS_DONE action.
+### actions.profile.clearProfile() ⇒ <code>Action</code>
+Creates and action that clear user profile.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+- [ ] This action does not follow the pattern with init/done pairs of
+ actions. Should be improved.
 
-<a name="module_reducers.profile..onGetExternalLinksDone"></a>
+<a name="module_actions.profile.getAchievementsInit"></a>
 
-### reducers.profile~onGetExternalLinksDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_EXTERNAL_LINKS_DONE action.
+### actions.profile.getAchievementsInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of user achievements loading.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+- [ ] This duplicates similar action in [actions.members.md](actions.members.md)!
 
-<a name="module_reducers.profile..onGetInfoDone"></a>
+<a name="module_actions.profile.getAchievementsDone"></a>
 
-### reducers.profile~onGetInfoDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_INFO_DONE action.
+### actions.profile.getAchievementsDone(handle) ⇒ <code>Action</code>
+Creates an action that loads user achievements.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
+
+- [ ] This duplicates similar action in [actions.members.md](actions.members.md)!
+
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | User handle. |
 
-<a name="module_reducers.profile..onGetSkillsDone"></a>
+<a name="module_actions.profile.getExternalAccountsInit"></a>
 
-### reducers.profile~onGetSkillsDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_SKILLS_DONE action.
+### actions.profile.getExternalAccountsInit() ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+- [ ] To be documented.
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+<a name="module_actions.profile.getExternalAccountsDone"></a>
 
-<a name="module_reducers.profile..onGetStatsDone"></a>
+### actions.profile.getExternalAccountsDone(handle) ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-### reducers.profile~onGetStatsDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_STATS_DONE action.
+- [ ] To be documented.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | User handle. |
 
-<a name="module_reducers.profile..onGetLinkedAccountsDone"></a>
+<a name="module_actions.profile.getExternalLinksInit"></a>
 
-### reducers.profile~onGetLinkedAccountsDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_LINKED_ACCOUNTS_DONE action.
+### actions.profile.getExternalLinksInit() ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+- [ ] Figure out what does this action do.
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+<a name="module_actions.profile.getExternalLinksDone"></a>
 
-<a name="module_reducers.profile..onGetCredentialDone"></a>
+### actions.profile.getExternalLinksDone(handle) ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-### reducers.profile~onGetCredentialDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_CREDENTIAL_DONE action.
+- [ ] Figure out the purpose of this action
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | User handle. |
 
-<a name="module_reducers.profile..onGetEmailPreferencesDone"></a>
+<a name="module_actions.profile.getInfoInit"></a>
 
-### reducers.profile~onGetEmailPreferencesDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/GET_EMAIL_PREFERENCES_DONE action.
+### actions.profile.getInfoInit() ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+- [ ] Figure out the purpose of this action.
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+<a name="module_actions.profile.getInfoDone"></a>
 
-<a name="module_reducers.profile..onUploadPhotoDone"></a>
+### actions.profile.getInfoDone(handle) ⇒ <code>Action</code>
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-### reducers.profile~onUploadPhotoDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/UPLOAD_PHOTO_DONE action.
+- [ ] Figure out the purpose of this action.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | User handle. |
 
-<a name="module_reducers.profile..onDeletePhotoDone"></a>
+<a name="module_actions.profile.getSkillsInit"></a>
 
-### reducers.profile~onDeletePhotoDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/DELETE_PHOTO_DONE action.
+### actions.profile.getSkillsInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of loading the member's
+ skills info.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.getSkillsDone"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+### actions.profile.getSkillsDone(handle) ⇒ <code>Action</code>
+Creates an action that loads member's skills info.
 
-<a name="module_reducers.profile..onUpdateProfileDone"></a>
-
-### reducers.profile~onUpdateProfileDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/UPDATE_PROFILE_DONE action.
-
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | Member handle. |
 
-<a name="module_reducers.profile..onAddSkillDone"></a>
+<a name="module_actions.profile.getStatsInit"></a>
 
-### reducers.profile~onAddSkillDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/ADD_SKILL_DONE action.
+### actions.profile.getStatsInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of loading member's stats.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+**Todo**
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+- [ ] This is similar to [actions.members.md#module_actions.members.getStatsInit](actions.members.md#module_actions.members.getStatsInit)!
 
-<a name="module_reducers.profile..onHideSkillDone"></a>
+<a name="module_actions.profile.getStatsDone"></a>
 
-### reducers.profile~onHideSkillDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/HIDE_SKILL_DONE action.
+### actions.profile.getStatsDone(handle) ⇒ <code>Action</code>
+Creates an action that loads member's stats.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| handle | <code>String</code> | Member handle. |
 
-<a name="module_reducers.profile..onAddWebLinkDone"></a>
+<a name="module_actions.profile.getLinkedAccountsInit"></a>
 
-### reducers.profile~onAddWebLinkDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/ADD_WEB_LINK_DONE action.
+### actions.profile.getLinkedAccountsInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of getting linked accounts.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.getLinkedAccountsDone"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+### actions.profile.getLinkedAccountsDone(profile, tokenV3) ⇒ <code>Action</code>
+Creates an action that gets linked accounts.
 
-<a name="module_reducers.profile..onDeleteWebLinkDone"></a>
-
-### reducers.profile~onDeleteWebLinkDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/DELETE_WEB_LINK_DONE action.
-
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
 
-<a name="module_reducers.profile..onLinkExternalAccountDone"></a>
+<a name="module_actions.profile.getCredentialInit"></a>
 
-### reducers.profile~onLinkExternalAccountDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/LINK_EXTERNAL_ACCOUNT_DONE action.
+### actions.profile.getCredentialInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of getting credential.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.getCredentialDone"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+### actions.profile.getCredentialDone(profile, tokenV3) ⇒ <code>Action</code>
+Creates an action that gets credential.
 
-<a name="module_reducers.profile..onUnlinkExternalAccountDone"></a>
-
-### reducers.profile~onUnlinkExternalAccountDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/UNLINK_EXTERNAL_ACCOUNT_DONE action.
-
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
 
-<a name="module_reducers.profile..onSaveEmailPreferencesDone"></a>
+<a name="module_actions.profile.getEmailPreferencesInit"></a>
 
-### reducers.profile~onSaveEmailPreferencesDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/SAVE_EMAIL_PREFERENCES_DONE action.
+### actions.profile.getEmailPreferencesInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of getting email preferences.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.getEmailPreferencesDone"></a>
 
-| Param | Type | Description |
-| --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+### actions.profile.getEmailPreferencesDone(profile, tokenV3) ⇒ <code>Action</code>
+Creates an action that gets email preferences.
 
-<a name="module_reducers.profile..onUpdatePasswordDone"></a>
-
-### reducers.profile~onUpdatePasswordDone(state, action) ⇒ <code>Object</code>
-Handles PROFILE/UPDATE_PASSWORD_DONE action.
-
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>Object</code> - New state  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| state | <code>Object</code> |  |
-| action | <code>Object</code> | Payload will be JSON from api call |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
 
-<a name="module_reducers.profile..create"></a>
+<a name="module_actions.profile.uploadPhotoInit"></a>
 
-### reducers.profile~create(initialState) ⇒ <code>function</code>
-Creates a new Profile reducer with the specified initial state.
+### actions.profile.uploadPhotoInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of uploading user's photo.
 
-**Kind**: inner method of [<code>reducers.profile</code>](#module_reducers.profile)  
-**Returns**: <code>function</code> - Profile reducer.  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.uploadPhotoDone"></a>
+
+### actions.profile.uploadPhotoDone(handle, tokenV3, file) ⇒ <code>Action</code>
+Creates an action that uploads user's photo.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| initialState | <code>Object</code> | Optional. Initial state. |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| file | <code>String</code> | The photo file. |
 
+<a name="module_actions.profile.deletePhotoInit"></a>
+
+### actions.profile.deletePhotoInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of deleting user's photo.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.updateProfileInit"></a>
+
+### actions.profile.updateProfileInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of updating user's profile.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.updateProfileDone"></a>
+
+### actions.profile.updateProfileDone(profile, tokenV3) ⇒ <code>Action</code>
+Creates an action that updates user's profile.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| profile | <code>String</code> | Topcoder user profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+
+<a name="module_actions.profile.addSkillInit"></a>
+
+### actions.profile.addSkillInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of adding user's skill.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.addSkillDone"></a>
+
+### actions.profile.addSkillDone(handle, tokenV3, skill) ⇒ <code>Action</code>
+Creates an action that adds user's skill.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| skill | <code>Object</code> | Skill to add. |
+
+<a name="module_actions.profile.hideSkillInit"></a>
+
+### actions.profile.hideSkillInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of hiding user's skill.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.hideSkillDone"></a>
+
+### actions.profile.hideSkillDone(handle, tokenV3, skill) ⇒ <code>Action</code>
+Creates an action that hides user's skill.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| skill | <code>Object</code> | Skill to hide. |
+
+<a name="module_actions.profile.addWebLinkInit"></a>
+
+### actions.profile.addWebLinkInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of adding user's web link.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.addWebLinkDone"></a>
+
+### actions.profile.addWebLinkDone(handle, tokenV3, webLink) ⇒ <code>Action</code>
+Creates an action that adds user's web link.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| webLink | <code>String</code> | Web link to add. |
+
+<a name="module_actions.profile.deleteWebLinkInit"></a>
+
+### actions.profile.deleteWebLinkInit(key) ⇒ <code>Action</code>
+Creates an action that signals beginning of deleting user's web link.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| key | <code>Object</code> | Web link key to delete. |
+
+<a name="module_actions.profile.deleteWebLinkDone"></a>
+
+### actions.profile.deleteWebLinkDone(handle, tokenV3, webLink) ⇒ <code>Action</code>
+Creates an action that deletes user's web link.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder user handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| webLink | <code>String</code> | Web link to delete. |
+
+<a name="module_actions.profile.linkExternalAccountInit"></a>
+
+### actions.profile.linkExternalAccountInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of linking external account.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.linkExternalAccountDone"></a>
+
+### actions.profile.linkExternalAccountDone(profile, tokenV3, providerType, callbackUrl) ⇒ <code>Action</code>
+Creates an action that links external account.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| profile | <code>Object</code> | Topcoder member handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| providerType | <code>String</code> | The external account service provider |
+| callbackUrl | <code>String</code> | Optional. The callback url |
+
+<a name="module_actions.profile.unlinkExternalAccountInit"></a>
+
+### actions.profile.unlinkExternalAccountInit(providerType) ⇒ <code>Action</code>
+Creates an action that signals beginning of unlinking external account.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| providerType | <code>Object</code> | External account provider type to delete. |
+
+<a name="module_actions.profile.unlinkExternalAccountDone"></a>
+
+### actions.profile.unlinkExternalAccountDone(profile, tokenV3, providerType) ⇒ <code>Action</code>
+Creates an action that unlinks external account.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| providerType | <code>String</code> | The external account service provider |
+
+<a name="module_actions.profile.saveEmailPreferencesInit"></a>
+
+### actions.profile.saveEmailPreferencesInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of saving email preferences.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.saveEmailPreferencesDone"></a>
+
+### actions.profile.saveEmailPreferencesDone(profile, tokenV3, preferences) ⇒ <code>Action</code>
+Creates an action that saves email preferences.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| preferences | <code>Object</code> | The email preferences |
+
+<a name="module_actions.profile.updatePasswordInit"></a>
+
+### actions.profile.updatePasswordInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of updating user password.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.updatePasswordDone"></a>
+
+### actions.profile.updatePasswordDone(profile, tokenV3, newPassword, oldPassword) ⇒ <code>Action</code>
+Creates an action that updates user password.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| profile | <code>Object</code> | Topcoder member profile. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| newPassword | <code>String</code> | The new password |
+| oldPassword | <code>String</code> | The old password |
+
+
+
+### actions.profile.verifyMemberNewEmailInit() ⇒ <code>Action</code>
+Creates an action that signals beginning of verify member new email.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.verifyMemberNewEmailInit"></a>
+
+
+### actions.profile.verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken) ⇒ <code>Action</code>
+Creates an action that verify member new email.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+<a name="module_actions.profile.verifyMemberNewEmailDone"></a>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder member handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| emailVerifyToken | <code>String</code> | The verify token of new email |

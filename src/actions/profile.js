@@ -412,6 +412,28 @@ function updatePasswordDone(profile, tokenV3, newPassword, oldPassword) {
     .then(res => ({ data: res, handle: profile.handle }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of verify member new email.
+ * @return {Action}
+ */
+function verifyMemberNewEmailInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that verify member new email.
+ *
+ * @param {Object} handle Topcoder member handle.
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @param {String} emailVerifyToken The verify token of new email.
+ * @return {Action}
+ */
+function verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken) {
+  const service = getMembersService(tokenV3);
+  return service.verifyMemberNewEmail(handle, emailVerifyToken)
+    .then(res => ({ data: res }));
+}
+
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
@@ -456,5 +478,7 @@ export default createActions({
     SAVE_EMAIL_PREFERENCES_DONE: saveEmailPreferencesDone,
     UPDATE_PASSWORD_INIT: updatePasswordInit,
     UPDATE_PASSWORD_DONE: updatePasswordDone,
+    VERIFY_MEMBER_NEW_EMAIL_INIT: verifyMemberNewEmailInit,
+    VERIFY_MEMBER_NEW_EMAIL_DONE: verifyMemberNewEmailDone,
   },
 });
