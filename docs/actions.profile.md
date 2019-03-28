@@ -51,13 +51,15 @@ Actions for interactions with profile details API.
     * [.saveEmailPreferencesDone(profile, tokenV3, preferences)](#module_actions.profile.saveEmailPreferencesDone) ⇒ <code>Action</code>
     * [.updatePasswordInit()](#module_actions.profile.updatePasswordInit) ⇒ <code>Action</code>
     * [.updatePasswordDone(profile, tokenV3, newPassword, oldPassword)](#module_actions.profile.updatePasswordDone) ⇒ <code>Action</code>
+    * [.verifyMemberNewEmailInit()](#module_actions.profile.verifyMemberNewEmailInit) ⇒ <code>Action</code>
+    * [.verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken)](#module_actions.profile.verifyMemberNewEmailDone) ⇒ <code>Action</code>
 
 <a name="module_actions.profile.loadProfile"></a>
 
 ### actions.profile.loadProfile(handle) ⇒ <code>Action</code>
 Creates and action that loads user profile.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] This action does not follow the pattern with init/done pairs of
@@ -73,7 +75,7 @@ Creates and action that loads user profile.
 ### actions.profile.clearProfile() ⇒ <code>Action</code>
 Creates and action that clear user profile.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] This action does not follow the pattern with init/done pairs of
@@ -84,7 +86,7 @@ Creates and action that clear user profile.
 ### actions.profile.getAchievementsInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of user achievements loading.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] This duplicates similar action in [actions.members.md](actions.members.md)!
@@ -94,7 +96,7 @@ Creates an action that signals beginning of user achievements loading.
 ### actions.profile.getAchievementsDone(handle) ⇒ <code>Action</code>
 Creates an action that loads user achievements.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] This duplicates similar action in [actions.members.md](actions.members.md)!
@@ -107,7 +109,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getExternalAccountsInit"></a>
 
 ### actions.profile.getExternalAccountsInit() ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] To be documented.
@@ -115,7 +117,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getExternalAccountsDone"></a>
 
 ### actions.profile.getExternalAccountsDone(handle) ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] To be documented.
@@ -128,7 +130,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getExternalLinksInit"></a>
 
 ### actions.profile.getExternalLinksInit() ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] Figure out what does this action do.
@@ -136,7 +138,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getExternalLinksDone"></a>
 
 ### actions.profile.getExternalLinksDone(handle) ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] Figure out the purpose of this action
@@ -149,7 +151,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getInfoInit"></a>
 
 ### actions.profile.getInfoInit() ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] Figure out the purpose of this action.
@@ -157,7 +159,7 @@ Creates an action that loads user achievements.
 <a name="module_actions.profile.getInfoDone"></a>
 
 ### actions.profile.getInfoDone(handle) ⇒ <code>Action</code>
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] Figure out the purpose of this action.
@@ -173,13 +175,13 @@ Creates an action that loads user achievements.
 Creates an action that signals beginning of loading the member's
  skills info.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.getSkillsDone"></a>
 
 ### actions.profile.getSkillsDone(handle) ⇒ <code>Action</code>
 Creates an action that loads member's skills info.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -190,7 +192,7 @@ Creates an action that loads member's skills info.
 ### actions.profile.getStatsInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of loading member's stats.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
 
 - [ ] This is similar to [actions.members.md#module_actions.members.getStatsInit](actions.members.md#module_actions.members.getStatsInit)!
@@ -200,7 +202,7 @@ Creates an action that signals beginning of loading member's stats.
 ### actions.profile.getStatsDone(handle) ⇒ <code>Action</code>
 Creates an action that loads member's stats.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -211,13 +213,13 @@ Creates an action that loads member's stats.
 ### actions.profile.getLinkedAccountsInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of getting linked accounts.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.getLinkedAccountsDone"></a>
 
 ### actions.profile.getLinkedAccountsDone(profile, tokenV3) ⇒ <code>Action</code>
 Creates an action that gets linked accounts.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -229,13 +231,13 @@ Creates an action that gets linked accounts.
 ### actions.profile.getCredentialInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of getting credential.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.getCredentialDone"></a>
 
 ### actions.profile.getCredentialDone(profile, tokenV3) ⇒ <code>Action</code>
 Creates an action that gets credential.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -247,13 +249,13 @@ Creates an action that gets credential.
 ### actions.profile.getEmailPreferencesInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of getting email preferences.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.getEmailPreferencesDone"></a>
 
 ### actions.profile.getEmailPreferencesDone(profile, tokenV3) ⇒ <code>Action</code>
 Creates an action that gets email preferences.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -265,13 +267,13 @@ Creates an action that gets email preferences.
 ### actions.profile.uploadPhotoInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of uploading user's photo.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.uploadPhotoDone"></a>
 
 ### actions.profile.uploadPhotoDone(handle, tokenV3, file) ⇒ <code>Action</code>
 Creates an action that uploads user's photo.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -284,19 +286,19 @@ Creates an action that uploads user's photo.
 ### actions.profile.deletePhotoInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of deleting user's photo.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.updateProfileInit"></a>
 
 ### actions.profile.updateProfileInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of updating user's profile.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.updateProfileDone"></a>
 
 ### actions.profile.updateProfileDone(profile, tokenV3) ⇒ <code>Action</code>
 Creates an action that updates user's profile.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -308,13 +310,13 @@ Creates an action that updates user's profile.
 ### actions.profile.addSkillInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of adding user's skill.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.addSkillDone"></a>
 
 ### actions.profile.addSkillDone(handle, tokenV3, skill) ⇒ <code>Action</code>
 Creates an action that adds user's skill.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -327,13 +329,13 @@ Creates an action that adds user's skill.
 ### actions.profile.hideSkillInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of hiding user's skill.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.hideSkillDone"></a>
 
 ### actions.profile.hideSkillDone(handle, tokenV3, skill) ⇒ <code>Action</code>
 Creates an action that hides user's skill.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -346,13 +348,13 @@ Creates an action that hides user's skill.
 ### actions.profile.addWebLinkInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of adding user's web link.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.addWebLinkDone"></a>
 
 ### actions.profile.addWebLinkDone(handle, tokenV3, webLink) ⇒ <code>Action</code>
 Creates an action that adds user's web link.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -365,7 +367,7 @@ Creates an action that adds user's web link.
 ### actions.profile.deleteWebLinkInit(key) ⇒ <code>Action</code>
 Creates an action that signals beginning of deleting user's web link.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -376,7 +378,7 @@ Creates an action that signals beginning of deleting user's web link.
 ### actions.profile.deleteWebLinkDone(handle, tokenV3, webLink) ⇒ <code>Action</code>
 Creates an action that deletes user's web link.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -389,13 +391,13 @@ Creates an action that deletes user's web link.
 ### actions.profile.linkExternalAccountInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of linking external account.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.linkExternalAccountDone"></a>
 
 ### actions.profile.linkExternalAccountDone(profile, tokenV3, providerType, callbackUrl) ⇒ <code>Action</code>
 Creates an action that links external account.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -409,7 +411,7 @@ Creates an action that links external account.
 ### actions.profile.unlinkExternalAccountInit(providerType) ⇒ <code>Action</code>
 Creates an action that signals beginning of unlinking external account.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -420,7 +422,7 @@ Creates an action that signals beginning of unlinking external account.
 ### actions.profile.unlinkExternalAccountDone(profile, tokenV3, providerType) ⇒ <code>Action</code>
 Creates an action that unlinks external account.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -433,13 +435,13 @@ Creates an action that unlinks external account.
 ### actions.profile.saveEmailPreferencesInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of saving email preferences.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.saveEmailPreferencesDone"></a>
 
 ### actions.profile.saveEmailPreferencesDone(profile, tokenV3, preferences) ⇒ <code>Action</code>
 Creates an action that saves email preferences.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -452,13 +454,13 @@ Creates an action that saves email preferences.
 ### actions.profile.updatePasswordInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of updating user password.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 <a name="module_actions.profile.updatePasswordDone"></a>
 
 ### actions.profile.updatePasswordDone(profile, tokenV3, newPassword, oldPassword) ⇒ <code>Action</code>
 Creates an action that updates user password.
 
-**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)  
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -467,3 +469,26 @@ Creates an action that updates user password.
 | newPassword | <code>String</code> | The new password |
 | oldPassword | <code>String</code> | The old password |
 
+
+
+### actions.profile.verifyMemberNewEmailInit() ⇒ <code>Action</code>
+
+Creates an action that signals beginning of verify member new email.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+<a name="module_actions.profile.verifyMemberNewEmailInit"></a>
+
+
+### actions.profile.verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken) ⇒ <code>Action</code>
+Creates an action that verify member new email.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
+
+<a name="module_actions.profile.verifyMemberNewEmailDone"></a>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Topcoder member handle. |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |
+| emailVerifyToken | <code>String</code> | The verify token of new email |

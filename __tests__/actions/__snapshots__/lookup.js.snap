@@ -3,9 +3,29 @@
 exports[`Module exports 1`] = `
 Object {
   "lookup": Object {
+    "getCountriesDone": [Function],
+    "getCountriesInit": [Function],
     "getSkillTagsDone": [Function],
     "getSkillTagsInit": [Function],
   },
+}
+`;
+
+exports[`lookup.getCountriesDone 1`] = `
+Object {
+  "payload": Array [
+    Object {
+      "country": "Afghanistan",
+      "countryCode": "AFG",
+    },
+  ],
+  "type": "LOOKUP/GET_COUNTRIES_DONE",
+}
+`;
+
+exports[`lookup.getCountriesInit 1`] = `
+Object {
+  "type": "LOOKUP/GET_COUNTRIES_INIT",
 }
 `;
 

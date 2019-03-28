@@ -202,12 +202,8 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async updateMemberProfile(profile) {
-    const changeEmail = !!(_.get(profile, 'successUrl') || _.get(profile, 'failUrl'));
-    let url = `/members/${profile.handle}`;
-    if (changeEmail) {
-      url = `${url}?successUrl=${_.get(profile, 'successUrl')}&failUrl=${_.get(profile, 'failUrl')}`;
-    }
-    const res = await this.private.api.putJson(url, { param: _.omit(profile, ['successUrl', 'failUrl']) });
+    const url = profile.verifyUrl ? `/members/${profile.handle}?verifyUrl=${profile.verifyUrl}` : `/members/${profile.handle}`;
+    const res = await this.private.api.putJson(url, { param: profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile });
     return getApiResponsePayload(res);
   }
 
@@ -278,6 +274,17 @@ class MembersService {
 
       xhr.send(presignedUrlResponse.file);
     });
+  }
+
+  /**
+   * Verify member new email
+   * @param {String} handle handle Topcoder user handle
+   * @param {String} emailVerifyToken The verify token of new email
+   * @returns {Promise} Resolves to the api response content
+   */
+  async verifyMemberNewEmail(handle, emailVerifyToken) {
+    const res = await this.private.api.get(`/members/${handle}/verify?token=${emailVerifyToken}`);
+    return getApiResponsePayload(res);
   }
 }
 

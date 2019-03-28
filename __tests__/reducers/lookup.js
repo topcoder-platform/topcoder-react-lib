@@ -7,11 +7,19 @@ const tag = {
   status: 'APPROVED',
 };
 
+const country = {
+  country: 'Afghanistan',
+  countryCode: 'AFG',
+};
+
 const mockActions = {
   lookup: {
     getSkillTagsInit: mockAction('LOOKUP/GET_SKILL_TAGS_INIT'),
     getSkillTagsDone: mockAction('LOOKUP/GET_SKILL_TAGS_DONE', [tag]),
     getSkillTagsDoneError: mockAction('LOOKUP/GET_SKILL_TAGS_DONE', null, 'Unknown error'),
+    getCountriesInit: mockAction('LOOKUP/GET_COUNTRIES_INIT'),
+    getCountriesDone: mockAction('LOOKUP/GET_COUNTRIES_DONE', [country]),
+    getCountriesDoneError: mockAction('LOOKUP/GET_COUNTRIES_DONE', null, 'Unknown error'),
   },
 };
 jest.setMock(require.resolve('actions/lookup'), mockActions);
@@ -36,6 +44,17 @@ function testReducer() {
 
   test('Get skill tags error', () => {
     state = reducer(state, mockActions.lookup.getSkillTagsDoneError());
+    expect(state).toMatchSnapshot();
+  });
+
+  test('Get countries', () => {
+    state = reducer(state, mockActions.lookup.getCountriesInit());
+    state = reducer(state, mockActions.lookup.getCountriesDone());
+    expect(state).toMatchSnapshot();
+  });
+
+  test('Get countries error', () => {
+    state = reducer(state, mockActions.lookup.getCountriesDoneError());
     expect(state).toMatchSnapshot();
   });
 }
