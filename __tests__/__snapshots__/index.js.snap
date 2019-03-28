@@ -129,6 +129,8 @@ Object {
       "updateProfileInit": [Function],
       "uploadPhotoDone": [Function],
       "uploadPhotoInit": [Function],
+      "verifyMemberNewEmailDone": [Function],
+      "verifyMemberNewEmailInit": [Function],
     },
     "reviewOpportunity": Object {
       "cancelApplicationsDone": [Function],

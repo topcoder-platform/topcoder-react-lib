@@ -215,11 +215,17 @@ function onUpdateProfileDone(state, { payload, error }) {
   if (error) {
     logger.error('Failed to update user profile', payload);
     fireErrorMessage('ERROR: Failed to update user profile!');
-    return newState;
+    return {
+      ...newState,
+      updateProfileSuccess: false,
+    };
   }
 
   if (!newState.info || newState.info.handle !== payload.handle) {
-    return newState;
+    return {
+      ...newState,
+      updateProfileSuccess: true,
+    };
   }
 
   return {
@@ -228,6 +234,7 @@ function onUpdateProfileDone(state, { payload, error }) {
       ...newState.info,
       ...payload,
     },
+    updateProfileSuccess: true,
   };
 }
 
@@ -426,6 +433,29 @@ function onUpdatePasswordDone(state, { payload, error }) {
 }
 
 /**
+ * Handles PROFILE/VERIFY_MEMBER_NEW_EMAIL_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onVerifyMemberNewEmailDone(state, { payload, error }) {
+  const newState = { ...state, verifyingEmail: false };
+
+  if (error) {
+    logger.error('Failed to verify member new email', payload);
+    return {
+      ...newState,
+      verifyError: true,
+    };
+  }
+
+  return {
+    ...newState,
+    verifyError: false,
+  };
+}
+
+/**
  * Creates a new Profile reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Profile reducer.
@@ -477,6 +507,8 @@ function create(initialState) {
     [a.saveEmailPreferencesDone]: onSaveEmailPreferencesDone,
     [a.updatePasswordInit]: state => ({ ...state, updatingPassword: true }),
     [a.updatePasswordDone]: onUpdatePasswordDone,
+    [a.verifyMemberNewEmailInit]: state => ({ ...state, verifyingEmail: true }),
+    [a.verifyMemberNewEmailDone]: onVerifyMemberNewEmailDone,
   }, _.defaults(initialState, {
     achievements: null,
     copilot: false,
@@ -485,6 +517,8 @@ function create(initialState) {
     loadingError: false,
     skills: null,
     stats: null,
+    verifyError: null,
+    updateProfileSuccess: null,
   }));
 }
 
