@@ -10,228 +10,162 @@ import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
-import { COMPETITION_TRACKS, getApiResponsePayloadV3 } from '../utils/tc';
-import { getApiV2, getApiV3 } from './api';
+import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
+import { getApi } from './api';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
 };
 
 /**
- * Normalize name convention for subtrack
- * @param {String} subTrack Challenge `subTrack`.
- * @returns {String} Normalized subtrack ID.
- */
-function normalizeNameConventionForSubtrack(subTrack) {
-  switch (subTrack) {
-    case 'Copilot Posting':
-      return 'COPILOT_POSTING';
-    case 'Web Design':
-      return 'WEB_DESIGNS';
-    case 'Logo Design':
-      return 'LOGO_DESIGN';
-    case 'Banners/Icons':
-      return 'BANNERS_OR_ICONS';
-    case 'Application Front-End Design':
-      return 'APPLICATION_FRONT_END_DESIGN';
-    case 'Widget or Mobile Screen Design':
-      return 'WIDGET_OR_MOBILE_SCREEN_DESIGN';
-    case 'Front-End Flash':
-      return 'FRONT_END_FLASH';
-    case 'Print/Presentation':
-      return 'PRINT_OR_PRESENTATION';
-    case 'Wireframes':
-      return 'WIREFRAMES';
-    case 'Idea Generation':
-      return 'IDEA_GENERATION';
-    case 'Studio Other':
-      return 'STUDIO_OTHER';
-    case 'Conceptualization':
-      return 'CONCEPTUALIZATION';
-    case 'Specification':
-      return 'SPECIFICATION';
-    case 'Architecture':
-      return 'ARCHITECTURE';
-    case 'Design':
-      return 'DESIGN';
-    case 'Development':
-      return 'DEVELOPMENT';
-    case 'RIA Build Competition':
-      return 'RIA_BUILD_COMPETITION';
-    case 'UI Prototype Competition':
-      return 'UI_PROTOTYPE_COMPETITION';
-    case 'Assembly Competition':
-      return 'ASSEMBLY_COMPETITION';
-    case 'Test Suites':
-      return 'TEST_SUITES';
-    case 'Test Scenarios':
-      return 'TEST_SCENARIOS';
-    case 'Content Creation':
-      return 'CONTENT_CREATION';
-    case 'Bug Hunt':
-      return 'BUG_HUNT';
-    case 'Design First2Finish':
-      return 'DESIGN_FIRST_2_FINISH';
-    case 'Code':
-      return 'CODE';
-    case 'First2Finish':
-      return 'FIRST_2_FINISH';
-    case 'Marathon Match':
-    case 'DEVELOP_MARATHON_MATCH':
-      return 'MARATHON_MATCH';
-    default:
-      return subTrack;
-  }
-}
-
-/**
  * Normalizes a regular challenge details object received from the backend APIs.
- * NOTE: It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
- * breaking anything.
  * @todo Why this one is exported? It should be only used internally!
- * @param {Object} v3 Challenge object received from the /v3/challenges/{id}
+ * @param {Object} challenge Challenge object received from the /challenges/{id}
  *  endpoint.
- * @param {Object} v3Filtered Challenge object received from the
- *  /v3/challenges?filter=id={id} endpoint.
- * @param {Object} v3User Challenge object received from the
- *  /v3//members/{username}/challenges?filter=id={id} endpoint.
- * If action was fired for authenticated visitor, v3_user will contain
+ * @param {Object} filtered Challenge object received from the
+ *  /challenges?filter=id={id} endpoint.
+ * @param {Object} user Challenge object received from the
+ *  /members/{username}/challenges?filter=id={id} endpoint.
+ * If action was fired for authenticated visitor, `user` will contain
  * details fetched specifically for the user (thus may include additional
- * data comparing to the standard API v3 response for the challenge details,
- * stored in v3_filtered).
- * @param {Object} v2 Challenge object received from the /v2/{type}/challenges/{id} endpoint.
+ * data comparing to the standard API response for the challenge details,
+ * stored in `filtered`).
  * @param {String} username Optional.
  * @return {Object} Normalized challenge object.
  */
-export function normalizeChallengeDetails(v3, v3Filtered, v3User, username) {
+export function normalizeChallengeDetails(challenge, filtered, user, username) {
   // Normalize exising data to make it consistent with the rest of the code
-  const challenge = {
-    ...v3,
+  const finalChallenge = {
+    ...challenge,
 
-    id: v3.challengeId,
-    reliabilityBonus: _.get(v3Filtered, 'reliabilityBonus', 0),
-    status: (v3.currentStatus || '').toUpperCase(),
+    id: challenge.challengeId,
+    reliabilityBonus: _.get(filtered, 'reliabilityBonus', 0),
+    status: (challenge.currentStatus || '').toUpperCase(),
 
-    name: v3.challengeName,
-    projectId: Number(v3.projectId),
-    forumId: Number(v3.forumId),
-    introduction: v3.introduction || '',
-    detailedRequirements: v3.detailedRequirements,
-    finalSubmissionGuidelines: v3.finalSubmissionGuidelines,
-    screeningScorecardId: Number(v3.screeningScorecardId),
-    reviewScorecardId: Number(v3.reviewScorecardId),
-    numberOfCheckpointsPrizes: v3.numberOfCheckpointsPrizes,
-    topCheckPointPrize: v3.topCheckPointPrize,
-    submissionsViewable: v3.submissionsViewable || 'false',
-    reviewType: v3.reviewType,
-    allowStockArt: v3.allowStockArt === 'true',
-    fileTypes: v3.filetypes || [],
-    environment: v3.environment,
-    codeRepo: v3.codeRepo,
-    forumLink: v3.forumLink,
-    submissionLimit: Number(v3.submissionLimit) || 0,
-    drPoints: v3.digitalRunPoints,
-    directUrl: v3.directUrl,
-    technologies: _.isArray(v3.technology) ? v3.technology.join(', ') : '',
-    platforms: _.isArray(v3.platforms) ? v3.platforms.join(', ') : '',
-    prizes: v3.prize || [],
-    events: v3.event ? [
-      {
-        eventName: v3.event.eventShortDesc,
-        eventId: v3.event.id,
-        description: v3.event.eventDescription,
-      }] : [],
-    mainEvent: v3.event ? {
-      eventName: v3.event.eventShortDesc,
-      eventId: v3.event.id,
-      description: v3.event.eventDescription,
-    } : {},
-    terms: v3.terms,
-    submissions: v3.submissions,
-    checkpoints: v3.checkpoints,
-    documents: v3.documents || [],
-    numRegistrants: v3.numberOfRegistrants,
-    numberOfCheckpointSubmissions: v3.numberOfCheckpointSubmissions,
+    allPhases: [],
+    currentPhases: [],
+    name: challenge.challengeName || challenge.challengeTitle,
+    projectId: Number(challenge.projectId),
+    forumId: Number(challenge.forumId),
+    introduction: challenge.introduction || '',
+    detailedRequirements: challenge.detailedRequirements === 'null' ? '' : challenge.detailedRequirements,
+    finalSubmissionGuidelines: challenge.finalSubmissionGuidelines === 'null' ? '' : challenge.finalSubmissionGuidelines,
+    screeningScorecardId: Number(challenge.screeningScorecardId),
+    reviewScorecardId: Number(challenge.reviewScorecardId),
+    numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
+    topCheckPointPrize: challenge.topCheckPointPrize,
+    submissionsViewable: challenge.submissionsViewable || 'false',
+    reviewType: challenge.reviewType,
+    allowStockArt: challenge.allowStockArt === 'true',
+    fileTypes: challenge.filetypes || [],
+    environment: challenge.environment,
+    codeRepo: challenge.codeRepo,
+    forumLink: challenge.forumLink,
+    submissionLimit: Number(challenge.submissionLimit) || 0,
+    drPoints: challenge.digitalRunPoints,
+    directUrl: challenge.directUrl,
+    technologies: challenge.technologies || challenge.technology || [],
+    platforms: challenge.platforms || [],
+    prizes: challenge.prize || challenge.prizes || [],
+    events: _.map(challenge.event, e => ({
+      eventName: e.eventShortDesc,
+      eventId: e.id,
+      description: e.eventDescription,
+    })),
+    terms: challenge.terms,
+    submissions: challenge.submissions,
+    track: _.toUpper(challenge.challengeCommunity),
+    subTrack: challenge.subTrack,
+    checkpoints: challenge.checkpoints,
+    documents: challenge.documents || [],
+    numRegistrants: challenge.numberOfRegistrants,
+    numberOfCheckpointSubmissions: challenge.numberOfCheckpointSubmissions,
+    registrants: challenge.registrants || [],
   };
 
-  // Fill missing data from v3_filtered
-  if (v3Filtered) {
+  // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
+  finalChallenge.winners = _.map(
+    challenge.winners,
+    (winner, index) => ({
+      ...winner,
+      handle: winner.submitter,
+      placement: winner.rank || index + 1, // Legacy MMs do not have a rank but are sorted by points
+    }),
+  );
+
+  if (finalChallenge.subTrack === 'MARATHON_MATCH') {
+    finalChallenge.track = 'DATA_SCIENCE';
+  }
+
+  // It's not clear if this will be the main event, will need to be investigated
+  finalChallenge.mainEvent = finalChallenge.events[0] || {};
+
+  /* It's unclear if these normalization steps are still required for `challenge` */
+  // Fill missing data from filtered
+  if (filtered) {
     const groups = {};
-    if (v3Filtered.groupIds) {
-      v3Filtered.groupIds.forEach((id) => {
+    if (filtered.groupIds) {
+      filtered.groupIds.forEach((id) => {
         groups[id] = true;
       });
     }
 
-    // Normalize name convention for subtrack
-    const newsubTrack = normalizeNameConventionForSubtrack(v3Filtered.subTrack);
-    _.defaults(challenge, {
-      componentId: v3Filtered.componentId,
-      contestId: v3Filtered.contestId,
+    _.merge(finalChallenge, {
+      componentId: filtered.componentId,
+      contestId: filtered.contestId,
 
-      track: newsubTrack === 'MARATHON_MATCH' ? 'DATA_SCIENCE' : v3Filtered.track,
-      subTrack: newsubTrack,
-      submissionEndDate: v3Filtered.submissionEndDate, // Dates are not correct in v3
-      submissionEndTimestamp: v3Filtered.submissionEndDate, // Dates are not correct in v3
+      submissionEndDate: filtered.submissionEndDate, // Dates are not correct in `challenge`
+      submissionEndTimestamp: filtered.submissionEndDate, // Dates are not correct in `challenge`
 
-      /* Taking phases from v3_filtered, because dates are not correct in v3 */
-      allPhases: v3Filtered.allPhases || [],
+      /* Taking phases from filtered, because dates are not correct in `challenge` */
+      allPhases: filtered.allPhases || [],
 
-      /* Taking phases from v3_filtered, because dates are not correct in v3 */
-      currentPhases: v3Filtered.currentPhases || [],
+      /* Taking phases from filtered, because dates are not correct in `challenge` */
+      currentPhases: filtered.currentPhases || [],
 
-      /* v3 returns incorrect value for numberOfSubmissions for some reason */
-      numSubmissions: v3Filtered.numSubmissions,
+      /* `challenge` has incorrect value for numberOfSubmissions for some reason */
+      numSubmissions: filtered.numSubmissions,
       groups,
     });
-
-    /* Taking winners from v3_filtered, because winners are returned empty in v3 */
-    /* TODO: Enforced due to problems with /v3/challenge/{ID} endpoint */
-    challenge.winners = v3Filtered.winners || [];
-    /* TODO: To compenstate the difference in structure of `submissions`
-     * in v3 and v3Filetered results (existing code needs v3Filtered version).
-     */
-    challenge.submissions = v3Filtered.submissions || [];
   }
 
-  // Fill missing data from v3_user
-  if (v3User) {
-    _.defaults(challenge, {
-      userDetails: v3User.userDetails,
+  // Fill missing data from user
+  if (user) {
+    _.defaults(finalChallenge, {
+      userDetails: user.userDetails,
     });
   }
 
   // Fill some derived data
   const registrationOpen = _.some(
-    challenge.allPhases,
+    finalChallenge.allPhases,
     phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
   ) ? 'Yes' : 'No';
-  _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+  _.defaults(finalChallenge, {
+    communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
     registrationOpen,
     users: username ? { [username]: true } : {},
   });
 
   // A hot fix to show submissions for on-going challenges
-  if (!challenge.submissions || !challenge.submissions.length) {
-    challenge.submissions = v3.registrants
+  if (!finalChallenge.submissions || !finalChallenge.submissions.length) {
+    finalChallenge.submissions = finalChallenge.registrants
       .filter(r => r.submissionDate || '')
       .sort((a, b) => (a.submissionDate || '')
         .localeCompare(b.submissionDate || ''));
   }
 
-  if (!challenge.allPhases) challenge.allPhases = [];
-  if (!challenge.track) challenge.track = '';
+  if (!finalChallenge.allPhases) finalChallenge.allPhases = [];
+  if (!finalChallenge.track) finalChallenge.track = '';
 
-  return challenge;
+  return finalChallenge;
 }
 
 /**
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
  * component. It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
+ * have moved to Topcoder API, but it is kept for now to minimize a risk of
  * breaking anything.
  * @todo Should be used only internally!
  * @param {Object} challenge Challenge object received from the backend.
@@ -245,91 +179,26 @@ export function normalizeChallenge(challenge, username) {
       groups[id] = true;
     });
   }
-
-  // Normalize name convention for subtrack
-  const newsubTrack = normalizeNameConventionForSubtrack(challenge.subTrack);
-  _.set(challenge, 'subTrack', newsubTrack);
-  _.set(challenge, 'track', newsubTrack === 'MARATHON_MATCH' ? 'DATA_SCIENCE' : challenge.track);
-  _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
-    groups,
-    platforms: '',
-    registrationOpen,
-    submissionEndTimestamp: challenge.submissionEndDate,
-    users: username ? { [username]: true } : {},
-  });
   /* eslint-disable no-param-reassign */
   if (!challenge.prizes) challenge.prizes = challenge.prize || [];
   if (!challenge.totalPrize) {
     challenge.totalPrize = challenge.prizes.reduce((sum, x) => sum + x, 0);
   }
-  if (!challenge.technologies) challenge.technologies = '';
-  /* eslint-enable no-param-reassign */
-}
+  if (!challenge.technologies) challenge.technologies = [];
+  if (!challenge.platforms) challenge.platforms = [];
 
-/**
- * Normalizes a marathon match challenge object received from the backend.
- * NOTE: This function is copied from the existing code in the challenge listing
- * component. It is possible, that this normalization is not necessary after we
- * have moved to Topcoder API v3, but it is kept for now to minimize a risk of
- * breaking anything.
- * @param {Object} challenge MM challenge object received from the backend.
- * @param {String} username Optional.
- * @return {Object} Normalized challenge.
- */
-export function normalizeMarathonMatch(challenge, username) {
-  const startDate = _.get(challenge, 'rounds[0].codingStartAt') || challenge.startDate;
-  const endDate = _.get(challenge, 'rounds[0].codingEndAt') || challenge.endDate;
-  const endTimestamp = new Date(endDate).getTime();
-  const status = endTimestamp > Date.now() ? 'Open' : 'Close';
-  const allPhases = [{
-    actualStartTime: startDate,
-    challengeId: challenge.id,
-    phaseType: 'Registration',
-    phaseStatus: status,
-    scheduledEndTime: endDate,
-  }, {
-    actualStartTime: startDate,
-    challengeId: challenge.id,
-    phaseType: 'Submission',
-    phaseStatus: status,
-    scheduledEndTime: endDate,
-  }];
-  const groups = {};
-  if (challenge.groupIds) {
-    challenge.groupIds.forEach((id) => {
-      groups[id] = true;
-    });
+  if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
+    challenge.track = 'DATA_SCIENCE';
   }
-  _.defaults(challenge, {
-    challengeCommunity: 'Data',
-    challengeType: 'Marathon',
-    allPhases,
-    currentPhases: allPhases.filter(phase => phase.phaseStatus === 'Open'),
-    communities: new Set([COMPETITION_TRACKS.DATA_SCIENCE]),
-    currentPhaseName: endTimestamp > Date.now() ? 'Registration' : '',
-    groups,
-    numRegistrants: challenge.userIds ? challenge.userIds.length : 0,
-    numSubmissions: 0, // currently challenge doesn't return submission value
-    platforms: '',
-    prizes: [0],
-    registrationOpen: endTimestamp > Date.now()
-      && (challenge.status !== 'PAST') ? 'Yes' : 'No',
-    registrationStartDate: challenge.startDate,
-    submissionEndDate: challenge.endDate,
-    submissionEndTimestamp: endTimestamp,
-    technologies: '',
-    totalPrize: 0,
-    track: 'DATA_SCIENCE',
-    status: endTimestamp > Date.now() ? 'ACTIVE' : 'COMPLETED',
-    subTrack: 'MARATHON_MATCH',
-    users: username ? { username: true } : {},
-  });
-  /* eslint-disable no-param-reassign */
-  challenge.endDate = endDate;
-  challenge.startDate = startDate;
-  if (challenge.status === 'PAST') challenge.status = 'COMPLETED';
   /* eslint-enable no-param-reassign */
+
+  _.defaults(challenge, {
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+    groups,
+    registrationOpen,
+    submissionEndTimestamp: challenge.submissionEndDate,
+    users: username ? { [username]: true } : {},
+  });
 }
 
 /**
@@ -363,7 +232,7 @@ class ChallengesService {
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
-     * @param {String} endpoint API V3 endpoint, where the request will be send.
+     * @param {String} endpoint API endpoint, where the request will be send.
      * @param {Object} filters Optional. A map of filters to pass as `filter`
      *  query parameter (this function takes care to stringify it properly).
      * @param {Object} params Optional. A map of any other parameters beside
@@ -383,12 +252,13 @@ class ChallengesService {
       return {
         challenges: res.content || [],
         totalCount: res.metadata.totalCount,
+        meta: res.metadata,
       };
     };
 
     this.private = {
-      api: getApiV3(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V4', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,
       tokenV3,
@@ -485,34 +355,34 @@ class ChallengesService {
   }
 
   /**
-   * Gets challenge details from Topcoder API v3.
-   * NOTE: This function also uses API v2 and other v3 endpoints for now, due
+   * Gets challenge details from Topcoder API.
+   * NOTE: This function also uses API v2 and other endpoints for now, due
    * to some information is missing or
-   * incorrect in the main v3 endpoint. This may change in the future.
+   * incorrect in the main endpoint. This may change in the future.
    * @param {Number|String} challengeId
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challengeV3 = await this.private.api.get(`/challenges/${challengeId}`)
+    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res.content);
 
-    const challengeV3Filtered = await this.private.getChallenges('/challenges/', { id: challengeId })
+    const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeV3User = username && await this.getUserChallenges(username, { id: challengeId })
-      .then(res => res.challenges[0]);
+    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
+      .then(res => res.challenges[0]).catch(() => null);
 
-    const challenge = normalizeChallengeDetails(
-      challengeV3,
-      challengeV3Filtered,
-      challengeV3User,
+    const finalChallenge = normalizeChallengeDetails(
+      challenge,
+      challengeFiltered,
+      challengeUser,
       username,
     );
 
-    challenge.fetchedWithAuth = Boolean(this.private.api.private.token);
+    finalChallenge.fetchedWithAuth = Boolean(this.private.api.private.token);
 
-    return challenge;
+    return finalChallenge;
   }
 
   /**
@@ -558,27 +428,13 @@ class ChallengesService {
   }
 
   /**
-   * Gets marathon matches.
-   * @param {Object} filters Optional.
-   * @param {Object} params Optional.
-   * @return {Promise} Resolve to the api response.
-   */
-  getMarathonMatches(filters, params) {
-    return this.private.getChallenges('/marathonMatches/', filters, params)
-      .then((res) => {
-        res.challenges.forEach(item => normalizeMarathonMatch(item));
-        return res;
-      });
-  }
-
-  /**
    * Gets SRM matches.
    * @param {Object} params
    * @return {Promise}
    */
   async getSrms(params) {
     const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -597,6 +453,18 @@ class ChallengesService {
       });
   }
 
+  /**
+   * Gets marathon matches of the specified user.
+   * @param {String} username User whose challenges we want to fetch.
+   * @param {Object} filters Optional.
+   * @param {Number} params Optional.
+   * @return {Promise} Resolves to the api response.
+   */
+  getUserMarathonMatches(username, filters, params) {
+    const endpoint = `/members/${username.toLowerCase()}/mms/`;
+    return this.private.getChallenges(endpoint, filters, params);
+  }
+
 
   /**
    * Gets SRM matches related to the user.
@@ -607,7 +475,7 @@ class ChallengesService {
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -635,18 +503,6 @@ class ChallengesService {
   }
 
   /**
-   * Gets marathon matches of the specified user.
-   * @param {String} username User whose challenges we want to fetch.
-   * @param {Object} filters Optional.
-   * @param {Number} params Optional.
-   * @return {Promise} Resolves to the api response.
-   */
-  getUserMarathonMatches(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/mms/`;
-    return this.private.getChallenges(endpoint, filters, params);
-  }
-
-  /**
    * Gets count of user's active challenges.
    * @param {String} handle Topcoder user handle.
    * @return {Action} Resolves to the api response.
@@ -654,12 +510,7 @@ class ChallengesService {
   getActiveChallengesCount(handle) {
     const filter = { status: 'ACTIVE' };
     const params = { limit: 1, offset: 0 };
-
-    const calls = [];
-    calls.push(this.getUserChallenges(handle, filter, params));
-    calls.push(this.getUserMarathonMatches(handle, filter, params));
-
-    return Promise.all(calls).then(([uch, umm]) => uch.totalCount + umm.totalCount);
+    return this.getUserChallenges(handle, filter, params).then(res => res.totalCount);
   }
 
   /**

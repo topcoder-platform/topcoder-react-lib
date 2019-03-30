@@ -1,22 +1,21 @@
 /**
  * @module "services.looker"
- * @desc  This module provides a service to get look data json
- * via API V4.
+ * @desc  This module provides a service to get look data json via Topcoder API.
  */
-import { getApiResponsePayloadV4 } from '../utils/tc';
-import { getApiV4 } from './api';
+import { getLookerApiResponsePayload } from '../utils/tc';
+import { getApi } from './api';
 
 /**
  * Service class.
  */
 class LookerService {
   /**
-   * @param {String} tokenV4 Optional. Auth token for Topcoder API v4.
+   * @param {String} token Optional. Auth token for Topcoder API.
    */
-  constructor(tokenV4) {
+  constructor(token) {
     this.private = {
-      api: getApiV4(tokenV4),
-      tokenV4,
+      api: getApi('V4', token),
+      token,
     };
   }
 
@@ -27,19 +26,19 @@ class LookerService {
    */
   async getLooker(lookerId) {
     const res = await this.private.api.get(`/looks/${lookerId}/run/json`);
-    return getApiResponsePayloadV4(res);
+    return getLookerApiResponsePayload(res);
   }
 }
 
 let lastInstance = null;
 /**
  * Returns a new or existing looker service.
- * @param {String} tokenV4 Optional. Auth token for Topcoder API v4.
+ * @param {String} token Optional. Auth token for Topcoder API.
  * @return {LookerService} looker service object
  */
-export function getService(tokenV4) {
-  if (!lastInstance || tokenV4 !== lastInstance.private.tokenV4) {
-    lastInstance = new LookerService(tokenV4);
+export function getService(token) {
+  if (!lastInstance || token !== lastInstance.private.token) {
+    lastInstance = new LookerService(token);
   }
   return lastInstance;
 }

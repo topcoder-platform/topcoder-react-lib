@@ -4,8 +4,8 @@
  * via API V3.
  */
 import qs from 'qs';
-import { getApiResponsePayloadV3 } from '../utils/tc';
-import { getApiV3 } from './api';
+import { getApiResponsePayload } from '../utils/tc';
+import { getApi } from './api';
 
 class LookupService {
   /**
@@ -13,7 +13,7 @@ class LookupService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }
@@ -25,7 +25,17 @@ class LookupService {
    */
   async getTags(params) {
     const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
+  }
+
+  /**
+   * Gets countries.
+   * @param {Object} params Parameters
+   * @return {Promise} Resolves to the countries.
+   */
+  async getCountries() {
+    const res = await this.private.api.get('/members/lookup/countries');
+    return getApiResponsePayload(res);
   }
 }
 

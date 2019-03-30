@@ -7,9 +7,10 @@ import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
 import { delay } from '../utils/time';
-import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
-
-config.API.V4 = 'https://api.topcoder.com/v4';
+import {
+  setErrorIcon,
+  ERROR_ICON_TYPES,
+} from '../utils/errors';
 
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the
@@ -235,48 +236,69 @@ class Api {
 export default Api;
 
 /*
- * Topcoder API v2.
+ * Topcoder API
  */
+const lastApiInstances = {};
 
-let lastApiV2 = null;
 /**
- * Returns a new or existing Api object for Topcoder API v2.
- * @param {String} token Optional. Auth token for Topcoder API v2.
- * @return {Api} API v2 service object.
+ * Returns a new or existing Api object for Topcoder API.
+ * @param {String} version The API version.
+ * @param {String} token Optional. Auth token for Topcoder API.
+ * @return {Api} API service object.
  */
-export function getApiV2(token) {
-  if (!lastApiV2 || lastApiV2.private.token !== token) {
-    lastApiV2 = new Api(config.API.V2, token);
+export function getApi(version, token) {
+  if (!version || !config.API[version]) {
+    throw new Error(`${version} is not a valid API version`);
   }
-  return lastApiV2;
+  if (!lastApiInstances[version] || lastApiInstances[version].private.token !== token) {
+    lastApiInstances[version] = new Api(config.API[version], token);
+  }
+  return lastApiInstances[version];
 }
 
-/*
- * Topcoder API v3.
- */
-
-let lastApiV3 = null;
 /**
- * Returns a new or existing Api object for Topcoder API v3
- * @param {String} token Optional. Auth token for Topcoder API v3.
- * @return {Api} API v3 service object.
+ * Keep the old API factories for backwards compatibility
+ * DO NOT USE THEM FOR NEW IMPLEMENTATIONS.
+ * USE THE getApi(version, token) FACTORY.
  */
-export function getApiV3(token) {
-  if (!lastApiV3 || lastApiV3.private.token !== token) {
-    lastApiV3 = new Api(config.API.V3, token);
+export const getApiV2 = token => getApi('V2', token);
+export const getApiV3 = token => getApi('V3', token);
+export const getApiV4 = token => getApi('V4', token);
+
+/**
+ * Gets a valid TC M2M token, either requesting one from TC Auth0 API, or
+ * serving one from internal cache.
+ *
+ * @return {Promise} Resolves to a token, valid at least next
+ *  getTcM2mToken.MIN_LIFETIME milliseconds.
+ *
+ * @throw if called outside of the server.s
+ */
+export async function getTcM2mToken() {
+  if (!isomorphy.isServerSide()) {
+    throw new Error('getTcM2mToken() called outside the server');
   }
-  return lastApiV3;
+  const now = Date.now();
+  const { cached } = getTcM2mToken;
+  const { TC_M2M } = config.SECRET;
+  if (!cached || cached.expires < now + getTcM2mToken.MIN_LIFETIME) {
+    let res = await fetch(`https://${config.AUTH0.DOMAIN}/oauth/token`, {
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        client_id: TC_M2M.CLIENT_ID,
+        client_secret: TC_M2M.CLIENT_SECRET,
+        audience: TC_M2M.AUDIENCE,
+        grant_type: TC_M2M.GRANT_TYPE,
+      }),
+      method: 'POST',
+    });
+    res = await res.json();
+    getTcM2mToken.cached = {
+      expires: now + 1000 * res.expires_in, // [ms]
+      token: res.access_token,
+    };
+  }
+  return getTcM2mToken.cached.token;
 }
 
-let lastApiV4 = null;
-/**
- * Returns a new or existing Api object for Topcoder API V4
- * @param {String} token Optional. Auth token for Topcoder API V4.
- * @return {Api} API V4 service object.
- */
-export function getApiV4(token) {
-  if (!lastApiV4 || lastApiV4.private.token !== token) {
-    lastApiV4 = new Api(config.API.V4, token);
-  }
-  return lastApiV4;
-}
+getTcM2mToken.MIN_LIFETIME = 30 * 1000; // [ms]

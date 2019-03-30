@@ -6,8 +6,8 @@
 import { config, isomorphy } from 'topcoder-react-utils';
 
 import logger from '../utils/logger';
-import { getApiResponsePayloadV3 } from '../utils/tc';
-import { getApiV2, getApiV3 } from './api';
+import { getApiResponsePayload } from '../utils/tc';
+import { getApi } from './api';
 
 let auth0;
 
@@ -112,8 +112,8 @@ class User {
    */
   constructor(tokenV3, tokenV2) {
     this.private = {
-      api: getApiV3(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V3', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       tokenV2,
       tokenV3,
     };
@@ -152,7 +152,7 @@ class User {
   async getUser(username) {
     const url = `/users?filter=handle%3D${username}`;
     const res = await this.private.api.get(url);
-    return (await getApiResponsePayloadV3(res))[0];
+    return (await getApiResponsePayload(res))[0];
   }
 
   /**
@@ -166,7 +166,7 @@ class User {
   async getEmailPreferences(userId) {
     const url = `/users/${userId}/preferences/email`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -193,7 +193,7 @@ class User {
     const url = `/users/${userId}/preferences/email`;
 
     const res = await this.private.api.putJson(url, { param: settings });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -207,7 +207,7 @@ class User {
   async getCredential(userId) {
     const url = `/users/${userId}?fields=credential`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -228,7 +228,7 @@ class User {
 
     const url = `/users/${userId}`;
     const res = await this.private.api.patchJson(url, { param: { credential } });
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -242,7 +242,7 @@ class User {
   async getLinkedAccounts(userId) {
     const url = `/users/${userId}?fields=profiles`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -254,7 +254,7 @@ class User {
   async unlinkExternalAccount(userId, provider) {
     const url = `/users/${userId}/profiles/${provider}`;
     const res = await this.private.api.delete(url);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -299,7 +299,7 @@ class User {
           }
           logger.debug(`link API postdata: ${JSON.stringify(postData)}`);
           this.private.api.postJson(`/users/${userId}/profiles`, { param: postData })
-            .then(resp => getApiResponsePayloadV3(resp).then((result) => {
+            .then(resp => getApiResponsePayload(resp).then((result) => {
               logger.debug(`Succesfully linked account: ${JSON.stringify(result)}`);
               resolve(postData);
             }))

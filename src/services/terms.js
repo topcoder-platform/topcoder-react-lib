@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 
 import { getService as getCommunityService } from './communities';
-import { getApiV2 } from './api';
+import { getApi } from './api';
 
 /**
  * Service class.
@@ -19,7 +19,7 @@ class TermsService {
    */
   constructor(tokenV2) {
     this.private = {
-      api: getApiV2(tokenV2),
+      api: getApi('V2', tokenV2),
       tokenV2,
     };
   }

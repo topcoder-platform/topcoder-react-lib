@@ -4,8 +4,8 @@
  * via API V3.
  */
 import toCapitalCase from 'to-capital-case';
-import { getApiResponsePayloadV3 } from '../utils/tc';
-import { getApiV3 } from './api';
+import { getApiResponsePayload } from '../utils/tc';
+import { getApi } from './api';
 
 /**
  * Service class.
@@ -16,7 +16,7 @@ class UserTraitsService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApiV3(tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }
@@ -29,7 +29,7 @@ class UserTraitsService {
   async getAllUserTraits(handle) {
     // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
     const res = await this.private.api.get(`/members/${handle.toLowerCase()}/traits`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -51,7 +51,7 @@ class UserTraitsService {
     };
 
     const res = await this.private.api.postJson(`/members/${handle}/traits`, body);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -73,7 +73,7 @@ class UserTraitsService {
     };
 
     const res = await this.private.api.putJson(`/members/${handle}/traits`, body);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -84,7 +84,7 @@ class UserTraitsService {
    */
   async deleteUserTrait(handle, traitId) {
     const res = await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 }
 

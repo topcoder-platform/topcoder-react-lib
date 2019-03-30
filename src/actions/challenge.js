@@ -4,9 +4,10 @@
  */
 
 import _ from 'lodash';
+import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
 import { getService as getChallengesService } from '../services/challenges';
-import { getApiV2 } from '../services/api';
+import { getApi } from '../services/api';
 
 /**
  * @static
@@ -69,7 +70,7 @@ function getSubmissionsInit(challengeId) {
  * @return {Action}
  */
 function getSubmissionsDone(challengeId, tokenV2) {
-  return getApiV2(tokenV2)
+  return getApi('V2', tokenV2)
     .fetch(`/challenges/submissions/${challengeId}/mySubmissions`)
     .then(response => response.json())
     .then(response => ({
@@ -106,7 +107,13 @@ function registerDone(auth, challengeId) {
     .register(challengeId)
     /* As a part of registration flow we silently update challenge details,
      * reusing for this purpose the corresponding action handler. */
-    .then(() => getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2));
+    // Uses a delay to allow API time to update
+    .then(() => new Promise(
+      resolve => setTimeout(
+        () => resolve(getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2)),
+        config.CHALLENGE_DETAILS_REFRESH_DELAY,
+      ),
+    ));
 }
 
 /**
@@ -131,7 +138,13 @@ function unregisterDone(auth, challengeId) {
     .unregister(challengeId)
     /* As a part of unregistration flow we silently update challenge details,
      * reusing for this purpose the corresponding action handler. */
-    .then(() => getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2));
+    // Uses a delay to allow API time to update
+    .then(() => new Promise(
+      resolve => setTimeout(
+        () => resolve(getDetailsDone(challengeId, auth.tokenV3, auth.tokenV2)),
+        config.CHALLENGE_DETAILS_REFRESH_DELAY,
+      ),
+    ));
 }
 
 /**
@@ -156,7 +169,7 @@ function loadResultsInit(challengeId) {
  * @return {Action}
  */
 function loadResultsDone(auth, challengeId, type) {
-  return getApiV2(auth.tokenV2)
+  return getApi('V2', auth.tokenV2)
     .fetch(`/${type}/challenges/result/${challengeId}`)
     .then(response => response.json())
     .then(response => ({
@@ -181,7 +194,7 @@ function fetchCheckpointsInit() {}
  */
 function fetchCheckpointsDone(tokenV2, challengeId) {
   const endpoint = `/design/challenges/checkpoint/${challengeId}`;
-  return getApiV2(tokenV2).fetch(endpoint)
+  return getApi('V2', tokenV2).fetch(endpoint)
     .then((response) => {
       if (response.status !== 200) {
         throw response.status;

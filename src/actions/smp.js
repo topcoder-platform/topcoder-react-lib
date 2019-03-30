@@ -5,7 +5,7 @@
 
 import _ from 'lodash';
 import { createActions } from 'redux-actions';
-import { getApiV3 } from '../services/api';
+import { getApi } from '../services/api';
 
 /**
  * @static
@@ -22,7 +22,7 @@ function deleteSubmissionInit() {}
  * @return {Action}
  */
 function deleteSubmissionDone(tokenV3, submissionId) {
-  return getApiV3(tokenV3).delete(`/submissions/${submissionId}`)
+  return getApi('V3', tokenV3).delete(`/submissions/${submissionId}`)
     .then(() => submissionId);
 }
 

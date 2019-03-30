@@ -54,6 +54,8 @@ Object {
       "getLookerDone": [Function],
     },
     "lookup": Object {
+      "getCountriesDone": [Function],
+      "getCountriesInit": [Function],
       "getSkillTagsDone": [Function],
       "getSkillTagsInit": [Function],
     },
@@ -127,6 +129,8 @@ Object {
       "updateProfileInit": [Function],
       "uploadPhotoDone": [Function],
       "uploadPhotoInit": [Function],
+      "verifyMemberNewEmailDone": [Function],
+      "verifyMemberNewEmailInit": [Function],
     },
     "reviewOpportunity": Object {
       "cancelApplicationsDone": [Function],
@@ -237,9 +241,11 @@ Object {
   "services": Object {
     "api": Object {
       "default": [Function],
+      "getApi": [Function],
       "getApiV2": [Function],
       "getApiV3": [Function],
       "getApiV4": [Function],
+      "getTcM2mToken": [Function],
     },
     "billing": Object {
       "default": [Function],
@@ -253,7 +259,6 @@ Object {
       "getService": [Function],
       "normalizeChallenge": [Function],
       "normalizeChallengeDetails": [Function],
-      "normalizeMarathonMatch": [Function],
     },
     "communities": Object {
       "default": undefined,
@@ -269,6 +274,7 @@ Object {
       "checkUserGroups": [Function],
       "default": undefined,
       "getService": [Function],
+      "reduceGroupIds": [Function],
     },
     "lookup": Object {
       "default": undefined,
@@ -310,8 +316,8 @@ Object {
       "Iterative Review": "Iterative Review",
       "Spec Review": "Specification Review",
     },
-    "getApiResponsePayloadV3": [Function],
-    "getApiResponsePayloadV4": [Function],
+    "getApiResponsePayload": [Function],
+    "getLookerApiResponsePayload": [Function],
   },
   "time": Object {
     "default": undefined,

@@ -5,7 +5,7 @@
 
 import _ from 'lodash';
 import { COMPETITION_TRACKS } from '../../utils/tc';
-import { getApiV2, getApiV3 } from './api';
+import { getApi } from './api';
 
 import sampleApiV3Response from './data/challenges-v3.json';
 import sampleApiV3ResponseSingle from './data/challenge-v3.json';
@@ -215,8 +215,8 @@ class ChallengesService {
     };
 
     this.private = {
-      api: getApiV3(tokenV3),
-      apiV2: getApiV2(tokenV2),
+      api: getApi('V3', tokenV3),
+      apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,
       tokenV3,

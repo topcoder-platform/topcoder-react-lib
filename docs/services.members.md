@@ -28,14 +28,15 @@ members via API V3.
             * [.getPresignedUrl(userHandle, file)](#module_services.members..MembersService+getPresignedUrl) ⇒ <code>Promise</code>
             * [.updateMemberPhoto(S3Response)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
             * [.uploadFileToS3(presignedUrlResponse)](#module_services.members..MembersService+uploadFileToS3) ⇒ <code>Promise</code>
+           * [.verifyMemberNewEmail(handle, emailVerifyToken)](#module_services.members..MembersService+verifyMemberNewEmail) ⇒ <code>Promise</code>
 
 <a name="module_services.members.getService"></a>
 
 ### services.members.getService(tokenV3) ⇒ <code>MembersService</code>
 Returns a new or existing members service.
 
-**Kind**: static method of [<code>services.members</code>](#module_services.members)  
-**Returns**: <code>MembersService</code> - Members service object  
+**Kind**: static method of [<code>services.members</code>](#module_services.members)
+**Returns**: <code>MembersService</code> - Members service object
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -46,7 +47,7 @@ Returns a new or existing members service.
 ### services.members~MembersService
 Service class.
 
-**Kind**: inner class of [<code>services.members</code>](#module_services.members)  
+**Kind**: inner class of [<code>services.members</code>](#module_services.members)
 
 * [~MembersService](#module_services.members..MembersService)
     * [new MembersService(tokenV3)](#new_module_services.members..MembersService_new)
@@ -67,6 +68,7 @@ Service class.
     * [.getPresignedUrl(userHandle, file)](#module_services.members..MembersService+getPresignedUrl) ⇒ <code>Promise</code>
     * [.updateMemberPhoto(S3Response)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
     * [.uploadFileToS3(presignedUrlResponse)](#module_services.members..MembersService+uploadFileToS3) ⇒ <code>Promise</code>
+    * [.verifyMemberNewEmail(handle, emailVerifyToken)](#module_services.members..MembersService+verifyMemberNewEmail) ⇒ <code>Promise</code>
 
 <a name="new_module_services.members..MembersService_new"></a>
 
@@ -81,8 +83,8 @@ Service class.
 #### membersService.getMemberFinances(handle) ⇒ <code>Promise</code>
 Gets member's financial information.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the financial information object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the financial information object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -95,8 +97,8 @@ Gets public information on a member.
 
 This method does not require any authorization.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the data object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the data object.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -107,8 +109,8 @@ This method does not require any authorization.
 #### membersService.getExternalAccounts(handle) ⇒ <code>Promise</code>
 Gets member external account info.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -119,8 +121,8 @@ Gets member external account info.
 #### membersService.getExternalLinks(handle) ⇒ <code>Promise</code>
 Gets member external links.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -131,8 +133,8 @@ Gets member external links.
 #### membersService.getSkills(handle) ⇒ <code>Promise</code>
 Gets member skills.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -143,8 +145,8 @@ Gets member skills.
 #### membersService.getStats(handle) ⇒ <code>Promise</code>
 Gets member statistics.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -155,8 +157,8 @@ Gets member statistics.
 #### membersService.getStatsHistory(handle) ⇒ <code>Promise</code>
 Gets member statistics history
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -167,8 +169,8 @@ Gets member statistics history
 #### membersService.getStatsDistribution(handle, track, subTrack) ⇒ <code>Promise</code>
 Gets member statistics distribution
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the stats object.  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the stats object.
 
 | Param | Type |
 | --- | --- |
@@ -183,8 +185,8 @@ Gets a list of suggested member names for the supplied partial.
 
 WARNING: This method requires v3 authorization.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -195,8 +197,8 @@ WARNING: This method requires v3 authorization.
 #### membersService.addWebLink(userHandle, webLink) ⇒ <code>Promise</code>
 Adds external web link for member.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -208,8 +210,8 @@ Adds external web link for member.
 #### membersService.deleteWebLink(userHandle, webLinkHandle) ⇒ <code>Promise</code>
 Deletes external web link for member.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -221,8 +223,8 @@ Deletes external web link for member.
 #### membersService.addSkill(handle, skillTagId) ⇒ <code>Promise</code>
 Adds user skill.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to operation result  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to operation result
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -234,8 +236,8 @@ Adds user skill.
 #### membersService.hideSkill(handle, skillTagId) ⇒ <code>Promise</code>
 Hides user skill.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to operation result  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to operation result
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -247,8 +249,8 @@ Hides user skill.
 #### membersService.updateMemberProfile(profile) ⇒ <code>Promise</code>
 Updates member profile.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -259,8 +261,8 @@ Updates member profile.
 #### membersService.getPresignedUrl(userHandle, file) ⇒ <code>Promise</code>
 Gets presigned url for member photo file.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -272,8 +274,8 @@ Gets presigned url for member photo file.
 #### membersService.updateMemberPhoto(S3Response) ⇒ <code>Promise</code>
 Updates member photo.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -284,10 +286,22 @@ Updates member photo.
 #### membersService.uploadFileToS3(presignedUrlResponse) ⇒ <code>Promise</code>
 Uploads file to S3.
 
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)  
-**Returns**: <code>Promise</code> - Resolves to the api response content  
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
 
 | Param | Type | Description |
 | --- | --- | --- |
 | presignedUrlResponse | <code>Object</code> | The presigned url response from                                      getPresignedUrl() function. |
 
+<a name="module_services.members..MembersService+verifyMemberNewEmail"></a>
+
+#### membersService.verifyMemberNewEmail(handle, emailVerifyToken) ⇒ <code>Promise</code>
+Verify member new email.
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | The member handle |
+| emailVerifyToken | <code>String</code> | The verify token of new email |

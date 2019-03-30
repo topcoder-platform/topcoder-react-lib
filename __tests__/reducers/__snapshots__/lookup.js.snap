@@ -1,7 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Default reducer Get countries 1`] = `
+Object {
+  "countries": Array [
+    Object {
+      "country": "Afghanistan",
+      "countryCode": "AFG",
+    },
+  ],
+  "loadingCountriesError": false,
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Default reducer Get countries error 1`] = `
+Object {
+  "countries": Array [
+    Object {
+      "country": "Afghanistan",
+      "countryCode": "AFG",
+    },
+  ],
+  "loadingCountriesError": true,
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
 exports[`Default reducer Get skill tags 1`] = `
 Object {
+  "countries": Array [],
   "loadingSkillTagsError": false,
   "skillTags": Array [
     Object {
@@ -16,6 +59,7 @@ Object {
 
 exports[`Default reducer Get skill tags error 1`] = `
 Object {
+  "countries": Array [],
   "loadingSkillTagsError": true,
   "skillTags": Array [
     Object {
@@ -30,12 +74,56 @@ Object {
 
 exports[`Default reducer Initial state 1`] = `
 Object {
+  "countries": Array [],
   "skillTags": Array [],
+}
+`;
+
+exports[`Factory without server side rendering Get countries 1`] = `
+Object {
+  "countries": Array [
+    Object {
+      "country": "Afghanistan",
+      "countryCode": "AFG",
+    },
+  ],
+  "loadingCountriesError": false,
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
+}
+`;
+
+exports[`Factory without server side rendering Get countries error 1`] = `
+Object {
+  "countries": Array [
+    Object {
+      "country": "Afghanistan",
+      "countryCode": "AFG",
+    },
+  ],
+  "loadingCountriesError": true,
+  "loadingSkillTagsError": true,
+  "skillTags": Array [
+    Object {
+      "domain": "SKILLS",
+      "id": 251,
+      "name": "Jekyll",
+      "status": "APPROVED",
+    },
+  ],
 }
 `;
 
 exports[`Factory without server side rendering Get skill tags 1`] = `
 Object {
+  "countries": Array [],
   "loadingSkillTagsError": false,
   "skillTags": Array [
     Object {
@@ -50,6 +138,7 @@ Object {
 
 exports[`Factory without server side rendering Get skill tags error 1`] = `
 Object {
+  "countries": Array [],
   "loadingSkillTagsError": true,
   "skillTags": Array [
     Object {
@@ -64,6 +153,7 @@ Object {
 
 exports[`Factory without server side rendering Initial state 1`] = `
 Object {
+  "countries": Array [],
   "skillTags": Array [],
 }
 `;
