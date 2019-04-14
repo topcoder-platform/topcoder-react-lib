@@ -10,6 +10,10 @@
 /* TODO: These are originally motivated by Topcoder API v2. Topcoder API v3
  * uses upper-case literals to encode the tracks. At some point, we should
  * update it in this code as well! */
+
+import _ from 'lodash';
+import moment from 'moment';
+
 export const COMPETITION_TRACKS = {
   DATA_SCIENCE: 'data_science',
   DESIGN: 'design',
@@ -60,4 +64,49 @@ export async function getLookerApiResponsePayload(res) {
     error: !x.success,
     status: x.status,
   };
+}
+
+
+/**
+ * process srm to populate additional infomation
+ * adopt from topcoder-app repo
+ * @param  {Object} s  srm to process
+ * @return {Object}    processed srm
+ */
+export function processSRM(s) {
+  const srm = _.cloneDeep(s);
+  srm.userStatus = 'registered';
+  if (Array.isArray(srm.rounds) && srm.rounds.length) {
+    if (srm.rounds[0].userSRMDetails && srm.rounds[0].userSRMDetails.rated) {
+      srm.result = srm.rounds[0].userSRMDetails;
+    }
+    if (srm.rounds[0].codingStartAt) {
+      srm.codingStartAt = srm.rounds[0].codingStartAt;
+    }
+    if (srm.rounds[0].codingEndAt) {
+      srm.codingEndAt = srm.rounds[0].codingEndAt;
+    }
+    if (srm.rounds[0].registrationStartAt) {
+      srm.registrationStartAt = srm.rounds[0].registrationStartAt;
+    }
+    if (srm.rounds[0].registrationEndAt) {
+      srm.registrationEndAt = srm.rounds[0].registrationEndAt;
+    }
+  }
+
+  // determines if the current phase is registration
+  let start = moment(srm.registrationStartAt).unix();
+  let end = moment(srm.registrationEndAt).unix();
+  let now = moment().unix();
+  if (start <= now && end >= now) {
+    srm.currentPhase = 'REGISTRATION';
+  }
+  // determines if the current phase is coding
+  start = moment(srm.codingStartAt).unix();
+  end = moment(srm.codingEndAt).unix();
+  now = moment().unix();
+  if (start <= now && end >= now) {
+    srm.currentPhase = 'CODING';
+  }
+  return srm;
 }

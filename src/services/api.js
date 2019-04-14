@@ -11,6 +11,8 @@ import {
   setErrorIcon,
   ERROR_ICON_TYPES,
 } from '../utils/errors';
+// Todo: need to update topcoder-react-utils lib
+config.API.V4 = 'https://api.topcoder-dev.com/v4';
 
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the

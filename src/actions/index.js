@@ -13,6 +13,7 @@ import reviewOpportunityActions from './reviewOpportunity';
 import lookupActions from './lookup';
 import settingsActions from './settings';
 import lookerActions from './looker';
+import challengeListingActions from './challenge-listing';
 
 export const actions = {
   auth: authActions.auth,
@@ -30,6 +31,7 @@ export const actions = {
   lookup: lookupActions.lookup,
   settings: settingsActions.settings,
   looker: lookerActions.looker,
+  challengeListing: challengeListingActions.challengeListing,
 };
 
 export default undefined;

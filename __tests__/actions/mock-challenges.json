@@ -1,0 +1,942 @@
+[
+    {
+        "updatedAt": "2019-03-20T18:42Z",
+        "createdAt": "2019-03-20T18:41Z",
+        "createdBy": "8547899",
+        "updatedBy": "8547899",
+        "status": "ACTIVE",
+        "track": "DATA_SCIENCE",
+        "subTrack": "DEVELOP_MARATHON_MATCH",
+        "name": "MM - Final scorer processor Test",
+        "reviewType": "COMMUNITY",
+        "id": 30054694,
+        "forumId": 32831,
+        "numSubmissions": 0,
+        "numRegistrants": 0,
+        "numSubmitters": 0,
+        "registrationStartDate": "2019-03-20T20:43:04.544Z",
+        "registrationEndDate": "2019-04-20T11:43:00.000Z",
+        "submissionEndDate": "2019-04-20T21:03:00.000Z",
+        "totalPrize": 3000,
+        "isPrivate": false,
+        "upcomingPhase": {
+            "id": 764579,
+            "phaseType": "Review",
+            "phaseStatus": "Scheduled",
+            "scheduledStartTime": "2019-04-20T21:03:00.000Z",
+            "scheduledEndTime": "2019-04-22T21:03:00.000Z",
+            "duration": 172800000
+        },
+        "projectId": 10833,
+        "projectName": "1 Project",
+        "currentPhases": [
+            {
+                "id": 764577,
+                "phaseType": "Registration",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-20T20:43:04.544Z",
+                "scheduledEndTime": "2019-04-20T11:43:00.000Z",
+                "actualStartTime": "2019-03-20T20:43:04.544Z",
+                "fixedStartTime": "2019-03-20T13:00:00.000Z",
+                "duration": 2646000000
+            },
+            {
+                "id": 764578,
+                "phaseType": "Submission",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-20T21:08:50.839Z",
+                "scheduledEndTime": "2019-04-20T21:03:00.000Z",
+                "actualStartTime": "2019-03-20T21:08:50.839Z",
+                "duration": 2678100000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764577,
+                "phaseType": "Registration",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-20T20:43:04.544Z",
+                "scheduledEndTime": "2019-04-20T11:43:00.000Z",
+                "actualStartTime": "2019-03-20T20:43:04.544Z",
+                "fixedStartTime": "2019-03-20T13:00:00.000Z",
+                "duration": 2646000000
+            },
+            {
+                "id": 764578,
+                "phaseType": "Submission",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-20T21:08:50.839Z",
+                "scheduledEndTime": "2019-04-20T21:03:00.000Z",
+                "actualStartTime": "2019-03-20T21:08:50.839Z",
+                "duration": 2678100000
+            },
+            {
+                "id": 764579,
+                "phaseType": "Review",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-04-20T21:03:00.000Z",
+                "scheduledEndTime": "2019-04-22T21:03:00.000Z",
+                "duration": 172800000
+            }
+        ],
+        "prizes": [
+            2000,
+            1000
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "technologies": [],
+        "platforms": [],
+        "communities": [
+            "data_science"
+        ],
+        "groups": {},
+        "registrationOpen": "Yes",
+        "submissionEndTimestamp": "2019-04-20T21:03:00.000Z",
+        "users": {},
+        "isDataScience": true,
+        "prize": [
+            2000,
+            1000
+        ]
+    },
+    {
+        "updatedAt": "2019-04-06T13:03Z",
+        "createdAt": "2019-03-06T07:36Z",
+        "createdBy": "22748790",
+        "updatedBy": "22841596",
+        "status": "ACTIVE",
+        "track": "DATA_SCIENCE",
+        "subTrack": "DEVELOP_MARATHON_MATCH",
+        "name": "MM Test #4",
+        "reviewType": "COMMUNITY",
+        "id": 30054686,
+        "forumId": 32827,
+        "numSubmissions": 28,
+        "numRegistrants": 6,
+        "numSubmitters": 3,
+        "registrationStartDate": "2019-03-07T14:00:34.423Z",
+        "registrationEndDate": "2019-04-06T04:00:50.453Z",
+        "submissionEndDate": "2019-04-06T13:03:57.048Z",
+        "totalPrize": 0,
+        "isPrivate": false,
+        "projectId": 17898,
+        "projectName": "TC3 Quantum",
+        "currentPhases": [
+            {
+                "id": 764531,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-04-06T13:04:23.779Z",
+                "scheduledEndTime": "2019-04-08T13:04:00.000Z",
+                "actualStartTime": "2019-04-06T13:04:23.779Z",
+                "duration": 172800000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764529,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-07T14:00:34.423Z",
+                "scheduledEndTime": "2019-04-06T04:00:50.453Z",
+                "actualStartTime": "2019-03-07T14:00:34.423Z",
+                "actualEndTime": "2019-04-06T04:00:50.453Z",
+                "fixedStartTime": "2019-03-07T14:00:00.000Z",
+                "duration": 2556000000
+            },
+            {
+                "id": 764530,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-07T14:05:17.858Z",
+                "scheduledEndTime": "2019-04-06T13:03:57.048Z",
+                "actualStartTime": "2019-03-07T14:05:17.858Z",
+                "actualEndTime": "2019-04-06T13:03:57.048Z",
+                "duration": 2588100000
+            },
+            {
+                "id": 764531,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-04-06T13:04:23.779Z",
+                "scheduledEndTime": "2019-04-08T13:04:00.000Z",
+                "actualStartTime": "2019-04-06T13:04:23.779Z",
+                "duration": 172800000
+            }
+        ],
+        "prizes": [
+            0,
+            0
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "technologies": [],
+        "platforms": [],
+        "communities": [
+            "data_science"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-04-06T13:03:57.048Z",
+        "users": {},
+        "isDataScience": true,
+        "prize": [
+            0,
+            0
+        ]
+    },
+    {
+        "updatedAt": "2019-04-06T08:47Z",
+        "createdAt": "2019-03-27T08:41Z",
+        "createdBy": "23274118",
+        "updatedBy": "22841596",
+        "technologies": [
+            "Other"
+        ],
+        "status": "ACTIVE",
+        "track": "DEVELOP",
+        "subTrack": "FIRST_2_FINISH",
+        "name": "Jayatest challenge",
+        "reviewType": "INTERNAL",
+        "id": 30054720,
+        "forumId": 32836,
+        "numSubmissions": 0,
+        "numRegistrants": 0,
+        "numSubmitters": 0,
+        "registrationStartDate": "2019-03-27T08:46:50.049Z",
+        "registrationEndDate": "2019-04-06T08:47:29.142Z",
+        "submissionEndDate": "2019-04-06T08:47:34.516Z",
+        "platforms": [
+            "Other"
+        ],
+        "totalPrize": 0,
+        "isPrivate": false,
+        "projectId": 11269,
+        "projectName": "Abc",
+        "currentPhases": [
+            {
+                "id": 764624,
+                "phaseType": "Iterative Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-27T08:55:50.749Z",
+                "scheduledEndTime": "2019-03-28T08:55:00.000Z",
+                "actualStartTime": "2019-03-27T08:55:50.749Z",
+                "duration": 86400000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764623,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-27T08:46:50.049Z",
+                "scheduledEndTime": "2019-04-06T08:47:29.142Z",
+                "actualStartTime": "2019-03-27T08:46:50.049Z",
+                "actualEndTime": "2019-04-06T08:47:29.142Z",
+                "fixedStartTime": "2019-03-27T07:00:00.000Z",
+                "duration": 864000000
+            },
+            {
+                "id": 764624,
+                "phaseType": "Iterative Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-27T08:55:50.749Z",
+                "scheduledEndTime": "2019-03-28T08:55:00.000Z",
+                "actualStartTime": "2019-03-27T08:55:50.749Z",
+                "duration": 86400000
+            },
+            {
+                "id": 764625,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-27T08:51:33.520Z",
+                "scheduledEndTime": "2019-04-06T08:47:34.516Z",
+                "actualStartTime": "2019-03-27T08:51:33.520Z",
+                "actualEndTime": "2019-04-06T08:47:34.516Z",
+                "duration": 863700000
+            }
+        ],
+        "prizes": [
+            0
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "communities": [
+            "develop"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-04-06T08:47:34.516Z",
+        "users": {},
+        "isDataScience": false,
+        "prize": [
+            0
+        ]
+    },
+    {
+        "updatedAt": "2019-04-05T13:03Z",
+        "createdAt": "2019-03-25T12:05Z",
+        "createdBy": "8547899",
+        "updatedBy": "22841596",
+        "technologies": [
+            "Node.js"
+        ],
+        "status": "ACTIVE",
+        "track": "DEVELOP",
+        "subTrack": "FIRST_2_FINISH",
+        "name": "Test F2F Challenge - 25 Mar",
+        "reviewType": "INTERNAL",
+        "id": 30054702,
+        "forumId": 32834,
+        "numSubmissions": 0,
+        "numRegistrants": 0,
+        "numSubmitters": 0,
+        "registrationStartDate": "2019-03-26T13:01:08.497Z",
+        "registrationEndDate": "2019-04-05T13:01:34.449Z",
+        "submissionEndDate": "2019-04-05T13:03:53.045Z",
+        "platforms": [
+            "AWS"
+        ],
+        "totalPrize": 800,
+        "isPrivate": false,
+        "upcomingPhase": {
+            "id": 764600,
+            "phaseType": "Iterative Review",
+            "phaseStatus": "Scheduled",
+            "scheduledStartTime": "2019-03-26T13:08:52.678Z",
+            "scheduledEndTime": "2019-03-27T13:08:00.000Z",
+            "duration": 86400000
+        },
+        "projectId": 6900,
+        "projectName": "TC - Arena Design",
+        "currentPhases": [],
+        "allPhases": [
+            {
+                "id": 764599,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-26T13:01:08.497Z",
+                "scheduledEndTime": "2019-04-05T13:01:34.449Z",
+                "actualStartTime": "2019-03-26T13:01:08.497Z",
+                "actualEndTime": "2019-04-05T13:01:34.449Z",
+                "fixedStartTime": "2019-03-26T13:00:00.000Z",
+                "duration": 864000000
+            },
+            {
+                "id": 764600,
+                "phaseType": "Iterative Review",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-03-26T13:08:52.678Z",
+                "scheduledEndTime": "2019-03-27T13:08:00.000Z",
+                "duration": 86400000
+            },
+            {
+                "id": 764601,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-26T13:08:52.678Z",
+                "scheduledEndTime": "2019-04-05T13:03:53.045Z",
+                "actualStartTime": "2019-03-26T13:08:52.678Z",
+                "actualEndTime": "2019-04-05T13:03:53.045Z",
+                "duration": 863700000
+            }
+        ],
+        "prizes": [
+            800
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "communities": [
+            "develop"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-04-05T13:03:53.045Z",
+        "users": {},
+        "isDataScience": false,
+        "prize": [
+            800
+        ]
+    },
+    {
+        "updatedAt": "2019-03-31T13:03Z",
+        "createdAt": "2019-03-25T12:00Z",
+        "createdBy": "8547899",
+        "updatedBy": "22841596",
+        "technologies": [
+            "Node.js"
+        ],
+        "status": "ACTIVE",
+        "track": "DEVELOP",
+        "subTrack": "CODE",
+        "name": "Test Code Challenge - 25 Mar",
+        "reviewType": "INTERNAL",
+        "id": 30054701,
+        "forumId": 32833,
+        "numSubmissions": 0,
+        "numRegistrants": 0,
+        "numSubmitters": 0,
+        "registrationStartDate": "2019-03-26T13:01:00.504Z",
+        "registrationEndDate": "2019-03-28T13:01:23.390Z",
+        "submissionEndDate": "2019-03-31T13:03:09.569Z",
+        "platforms": [
+            "AWS"
+        ],
+        "totalPrize": 500,
+        "isPrivate": false,
+        "upcomingPhase": {
+            "id": 764593,
+            "phaseType": "Review",
+            "phaseStatus": "Scheduled",
+            "scheduledStartTime": "2019-03-31T13:03:09.569Z",
+            "scheduledEndTime": "2019-04-02T13:03:00.000Z",
+            "duration": 172800000
+        },
+        "projectId": 6900,
+        "projectName": "TC - Arena Design",
+        "currentPhases": [
+            {
+                "id": 764543,
+                "phaseType": "Post-Mortem",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-28T13:01:54.589Z",
+                "scheduledEndTime": "2019-03-29T13:01:00.000Z",
+                "actualStartTime": "2019-03-28T13:01:54.589Z",
+                "duration": 86400000
+            }
+        ],
+        "allPhases": [
+            {
+                "id": 764591,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-26T13:01:00.504Z",
+                "scheduledEndTime": "2019-03-28T13:01:23.390Z",
+                "actualStartTime": "2019-03-26T13:01:00.504Z",
+                "actualEndTime": "2019-03-28T13:01:23.390Z",
+                "fixedStartTime": "2019-03-26T13:00:00.000Z",
+                "duration": 172800000
+            },
+            {
+                "id": 764592,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-26T13:08:46.879Z",
+                "scheduledEndTime": "2019-03-31T13:03:09.569Z",
+                "actualStartTime": "2019-03-26T13:08:46.879Z",
+                "actualEndTime": "2019-03-31T13:03:09.569Z",
+                "duration": 431700000
+            },
+            {
+                "id": 764593,
+                "phaseType": "Review",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-03-31T13:03:09.569Z",
+                "scheduledEndTime": "2019-04-02T13:03:00.000Z",
+                "duration": 172800000
+            },
+            {
+                "id": 764594,
+                "phaseType": "Appeals",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-04-02T13:03:00.000Z",
+                "scheduledEndTime": "2019-04-03T13:03:00.000Z",
+                "duration": 86400000
+            },
+            {
+                "id": 764595,
+                "phaseType": "Appeals Response",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-04-03T13:03:00.000Z",
+                "scheduledEndTime": "2019-04-04T01:03:00.000Z",
+                "duration": 43200000
+            },
+            {
+                "id": 764543,
+                "phaseType": "Post-Mortem",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-28T13:01:54.589Z",
+                "scheduledEndTime": "2019-03-29T13:01:00.000Z",
+                "actualStartTime": "2019-03-28T13:01:54.589Z",
+                "duration": 86400000
+            }
+        ],
+        "prizes": [
+            350,
+            150
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "communities": [
+            "develop"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-31T13:03:09.569Z",
+        "users": {},
+        "isDataScience": false,
+        "prize": [
+            350,
+            150
+        ]
+    },
+    {
+        "updatedAt": "2019-03-29T21:22Z",
+        "createdAt": "2019-03-19T19:27Z",
+        "createdBy": "8547899",
+        "updatedBy": "22841596",
+        "technologies": [
+            "Other"
+        ],
+        "status": "ACTIVE",
+        "track": "DEVELOP",
+        "subTrack": "FIRST_2_FINISH",
+        "name": "test forum watch",
+        "reviewType": "INTERNAL",
+        "id": 30054691,
+        "forumId": 32829,
+        "numSubmissions": 0,
+        "numRegistrants": 1,
+        "numSubmitters": 0,
+        "registrationStartDate": "2019-03-19T19:28:52.901Z",
+        "registrationEndDate": "2019-03-29T19:31:49.022Z",
+        "submissionEndDate": "2019-03-29T21:22:58.837Z",
+        "platforms": [
+            "Other"
+        ],
+        "totalPrize": 800,
+        "isPrivate": false,
+        "upcomingPhase": {
+            "id": 764560,
+            "phaseType": "Iterative Review",
+            "phaseStatus": "Scheduled",
+            "scheduledStartTime": "2019-03-19T21:27:12.459Z",
+            "scheduledEndTime": "2019-03-20T21:27:00.000Z",
+            "duration": 86400000
+        },
+        "projectId": 9616,
+        "projectName": "Tony App 4",
+        "currentPhases": [],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764559,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-19T19:28:52.901Z",
+                "scheduledEndTime": "2019-03-29T19:31:49.022Z",
+                "actualStartTime": "2019-03-19T19:28:52.901Z",
+                "actualEndTime": "2019-03-29T19:31:49.022Z",
+                "fixedStartTime": "2019-03-19T19:28:52.901Z",
+                "duration": 864000000
+            },
+            {
+                "id": 764560,
+                "phaseType": "Iterative Review",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-03-19T21:27:12.459Z",
+                "scheduledEndTime": "2019-03-20T21:27:00.000Z",
+                "duration": 86400000
+            },
+            {
+                "id": 764561,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-03-19T21:27:12.459Z",
+                "scheduledEndTime": "2019-03-29T21:22:58.837Z",
+                "actualStartTime": "2019-03-19T21:27:12.459Z",
+                "actualEndTime": "2019-03-29T21:22:58.837Z",
+                "duration": 863687541
+            }
+        ],
+        "prizes": [
+            800
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "communities": [
+            "develop"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-29T21:22:58.837Z",
+        "users": {},
+        "isDataScience": false,
+        "prize": [
+            800
+        ]
+    },
+    {
+        "updatedAt": "2019-03-29T13:04Z",
+        "createdAt": "2019-02-12T11:29Z",
+        "createdBy": "22748790",
+        "updatedBy": "22841596",
+        "technologies": [
+            "Python",
+            "Data Science"
+        ],
+        "status": "ACTIVE",
+        "track": "DEVELOP",
+        "subTrack": "CODE",
+        "name": "TC3 Code02 - test tutorial #2",
+        "reviewType": "INTERNAL",
+        "id": 30054675,
+        "forumId": 32819,
+        "numSubmissions": 5,
+        "numRegistrants": 7,
+        "numSubmitters": 5,
+        "registrationStartDate": "2019-02-12T14:01:03.973Z",
+        "registrationEndDate": "2019-03-29T13:01:29.063Z",
+        "submissionEndDate": "2019-03-29T13:04:38.849Z",
+        "platforms": [
+            "Other"
+        ],
+        "totalPrize": 160,
+        "isPrivate": false,
+        "upcomingPhase": {
+            "id": 764436,
+            "phaseType": "Appeals",
+            "phaseStatus": "Scheduled",
+            "scheduledStartTime": "2019-03-31T13:04:00.000Z",
+            "scheduledEndTime": "2019-04-01T13:04:00.000Z",
+            "duration": 86400000
+        },
+        "projectId": 17898,
+        "projectName": "TC3 Quantum",
+        "currentPhases": [
+            {
+                "id": 764435,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-29T13:04:46.507Z",
+                "scheduledEndTime": "2019-03-31T13:04:00.000Z",
+                "actualStartTime": "2019-03-29T13:04:46.507Z",
+                "duration": 172800000
+            }
+        ],
+        "allPhases": [
+            {
+                "id": 764433,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-12T14:01:03.973Z",
+                "scheduledEndTime": "2019-03-29T13:01:29.063Z",
+                "actualStartTime": "2019-02-12T14:01:03.973Z",
+                "actualEndTime": "2019-03-29T13:01:29.063Z",
+                "fixedStartTime": "2019-02-12T14:00:00.000Z",
+                "duration": 3884400000
+            },
+            {
+                "id": 764434,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-12T14:09:25.247Z",
+                "scheduledEndTime": "2019-03-29T13:04:38.849Z",
+                "actualStartTime": "2019-02-12T14:09:25.247Z",
+                "actualEndTime": "2019-03-29T13:04:38.849Z",
+                "duration": 3884100000
+            },
+            {
+                "id": 764435,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-29T13:04:46.507Z",
+                "scheduledEndTime": "2019-03-31T13:04:00.000Z",
+                "actualStartTime": "2019-03-29T13:04:46.507Z",
+                "duration": 172800000
+            },
+            {
+                "id": 764436,
+                "phaseType": "Appeals",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-03-31T13:04:00.000Z",
+                "scheduledEndTime": "2019-04-01T13:04:00.000Z",
+                "duration": 86400000
+            },
+            {
+                "id": 764437,
+                "phaseType": "Appeals Response",
+                "phaseStatus": "Scheduled",
+                "scheduledStartTime": "2019-04-01T13:04:00.000Z",
+                "scheduledEndTime": "2019-04-02T01:04:00.000Z",
+                "duration": 43200000
+            }
+        ],
+        "prizes": [
+            50,
+            50,
+            50,
+            5,
+            5
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "communities": [
+            "develop"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-29T13:04:38.849Z",
+        "users": {}
+    },
+    {
+        "updatedAt": "2019-03-19T10:03Z",
+        "createdAt": "2019-01-16T15:44Z",
+        "createdBy": "23225544",
+        "updatedBy": "22841596",
+        "status": "ACTIVE",
+        "track": "DATA_SCIENCE",
+        "subTrack": "DEVELOP_MARATHON_MATCH",
+        "name": "CMap Test 02",
+        "reviewType": "COMMUNITY",
+        "id": 30054625,
+        "forumId": 32776,
+        "numSubmissions": 58,
+        "numRegistrants": 6,
+        "numSubmitters": 4,
+        "registrationStartDate": "2019-01-16T15:50:37.407Z",
+        "registrationEndDate": "2019-03-19T09:57:33.118Z",
+        "submissionEndDate": "2019-03-19T10:03:50.093Z",
+        "totalPrize": 3000,
+        "isPrivate": false,
+        "projectId": 17919,
+        "projectName": "CMAP Test",
+        "currentPhases": [
+            {
+                "id": 764159,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T10:04:19.516Z",
+                "scheduledEndTime": "2019-03-21T10:04:00.000Z",
+                "actualStartTime": "2019-03-19T10:04:19.516Z",
+                "duration": 172800000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764157,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-01-16T15:50:37.407Z",
+                "scheduledEndTime": "2019-03-19T09:57:33.118Z",
+                "actualStartTime": "2019-01-16T15:50:37.407Z",
+                "actualEndTime": "2019-03-19T09:57:33.118Z",
+                "fixedStartTime": "2019-01-15T14:00:00.000Z",
+                "duration": 5335642593
+            },
+            {
+                "id": 764158,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-01-16T15:56:38.360Z",
+                "scheduledEndTime": "2019-03-19T10:03:50.093Z",
+                "actualStartTime": "2019-01-16T15:56:38.360Z",
+                "actualEndTime": "2019-03-19T10:03:50.093Z",
+                "duration": 5335641640
+            },
+            {
+                "id": 764159,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T10:04:19.516Z",
+                "scheduledEndTime": "2019-03-21T10:04:00.000Z",
+                "actualStartTime": "2019-03-19T10:04:19.516Z",
+                "duration": 172800000
+            }
+        ],
+        "prizes": [
+            2000,
+            1000
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "technologies": [],
+        "platforms": [],
+        "communities": [
+            "data_science"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-19T10:03:50.093Z",
+        "users": {}
+    },
+    {
+        "updatedAt": "2019-03-19T08:49Z",
+        "createdAt": "2019-02-19T07:17Z",
+        "createdBy": "8547899",
+        "updatedBy": "22841596",
+        "status": "ACTIVE",
+        "track": "DATA_SCIENCE",
+        "subTrack": "DEVELOP_MARATHON_MATCH",
+        "name": "PAM MM 19 Feb.",
+        "reviewType": "COMMUNITY",
+        "id": 30054682,
+        "forumId": 32823,
+        "numSubmissions": 157,
+        "numRegistrants": 3,
+        "numSubmitters": 3,
+        "registrationStartDate": "2019-02-19T07:30:14.384Z",
+        "registrationEndDate": "2019-03-19T08:04:18.991Z",
+        "submissionEndDate": "2019-03-19T08:49:22.300Z",
+        "totalPrize": 3000,
+        "isPrivate": false,
+        "projectId": 7377,
+        "projectName": "TC - Web Based Arena",
+        "currentPhases": [
+            {
+                "id": 764507,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T08:50:36.101Z",
+                "scheduledEndTime": "2019-03-21T08:50:00.000Z",
+                "actualStartTime": "2019-03-19T08:50:36.101Z",
+                "duration": 172800000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764505,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-19T07:30:14.384Z",
+                "scheduledEndTime": "2019-03-19T08:04:18.991Z",
+                "actualStartTime": "2019-02-19T07:30:14.384Z",
+                "actualEndTime": "2019-03-19T08:04:18.991Z",
+                "fixedStartTime": "2019-02-19T07:30:00.000Z",
+                "duration": 2421285616
+            },
+            {
+                "id": 764506,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-19T07:35:04.592Z",
+                "scheduledEndTime": "2019-03-19T08:49:22.300Z",
+                "actualStartTime": "2019-02-19T07:35:04.592Z",
+                "actualEndTime": "2019-03-19T08:49:22.300Z",
+                "duration": 2423515408
+            },
+            {
+                "id": 764507,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T08:50:36.101Z",
+                "scheduledEndTime": "2019-03-21T08:50:00.000Z",
+                "actualStartTime": "2019-03-19T08:50:36.101Z",
+                "duration": 172800000
+            }
+        ],
+        "prizes": [
+            2000,
+            1000
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "technologies": [],
+        "platforms": [],
+        "communities": [
+            "data_science"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-19T08:49:22.300Z",
+        "users": {},
+        "isDataScience": true,
+        "prize": [
+            2000,
+            1000
+        ]
+    },
+    {
+        "updatedAt": "2019-03-19T08:24Z",
+        "createdAt": "2019-02-17T14:20Z",
+        "createdBy": "8547899",
+        "updatedBy": "8547899",
+        "status": "ACTIVE",
+        "track": "DATA_SCIENCE",
+        "subTrack": "DEVELOP_MARATHON_MATCH",
+        "name": "Test MM Challenge - 17 Feb",
+        "reviewType": "COMMUNITY",
+        "id": 30054681,
+        "forumId": 32821,
+        "numSubmissions": 37,
+        "numRegistrants": 3,
+        "numSubmitters": 2,
+        "registrationStartDate": "2019-02-17T14:31:22.860Z",
+        "registrationEndDate": "2019-03-19T08:11:24.767Z",
+        "submissionEndDate": "2019-03-19T08:24:04.726Z",
+        "totalPrize": 3000,
+        "isPrivate": false,
+        "projectId": 17898,
+        "projectName": "TC3 Quantum",
+        "currentPhases": [
+            {
+                "id": 764501,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T08:26:55.366Z",
+                "scheduledEndTime": "2019-03-21T08:26:00.000Z",
+                "actualStartTime": "2019-03-19T08:26:55.366Z",
+                "duration": 172800000
+            }
+        ],
+        "submissionViewable": false,
+        "allPhases": [
+            {
+                "id": 764499,
+                "phaseType": "Registration",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-17T14:31:22.860Z",
+                "scheduledEndTime": "2019-03-19T08:11:24.767Z",
+                "actualStartTime": "2019-02-17T14:31:22.860Z",
+                "actualEndTime": "2019-03-19T08:11:24.767Z",
+                "fixedStartTime": "2019-02-17T14:31:00.000Z",
+                "duration": 2569237140
+            },
+            {
+                "id": 764500,
+                "phaseType": "Submission",
+                "phaseStatus": "Closed",
+                "scheduledStartTime": "2019-02-17T14:38:22.242Z",
+                "scheduledEndTime": "2019-03-19T08:24:04.726Z",
+                "actualStartTime": "2019-02-17T14:38:22.242Z",
+                "actualEndTime": "2019-03-19T08:24:04.726Z",
+                "duration": 2569500000
+            },
+            {
+                "id": 764501,
+                "phaseType": "Review",
+                "phaseStatus": "Open",
+                "scheduledStartTime": "2019-03-19T08:26:55.366Z",
+                "scheduledEndTime": "2019-03-21T08:26:00.000Z",
+                "actualStartTime": "2019-03-19T08:26:55.366Z",
+                "duration": 172800000
+            }
+        ],
+        "prizes": [
+            2000,
+            1000
+        ],
+        "isTask": false,
+        "isRegistered": false,
+        "technologies": [],
+        "platforms": [],
+        "communities": [
+            "data_science"
+        ],
+        "groups": {},
+        "registrationOpen": "No",
+        "submissionEndTimestamp": "2019-03-19T08:24:04.726Z",
+        "users": {},
+        "isDataScience": true,
+        "prize": [
+            2000,
+            1000
+        ]
+    }
+]
