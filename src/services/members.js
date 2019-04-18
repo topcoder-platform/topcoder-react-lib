@@ -204,6 +204,9 @@ class MembersService {
   async updateMemberProfile(profile) {
     const url = profile.verifyUrl ? `/members/${profile.handle}?verifyUrl=${profile.verifyUrl}` : `/members/${profile.handle}`;
     const res = await this.private.api.putJson(url, { param: profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile });
+    if (profile.verifyUrl && res.status === 409) {
+      return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
+    }
     return getApiResponsePayload(res);
   }
 
