@@ -166,7 +166,8 @@ class User {
   async getEmailPreferences(userId) {
     const url = `/users/${userId}/preferences/email`;
     const res = await this.private.api.get(url);
-    return getApiResponsePayload(res);
+    const x = (await res.json()).result;
+    return x.content;
   }
 
   /**

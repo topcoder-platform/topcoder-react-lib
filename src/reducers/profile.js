@@ -212,6 +212,14 @@ function onDeletePhotoDone(state, { payload, error }) {
 function onUpdateProfileDone(state, { payload, error }) {
   const newState = { ...state, updatingProfile: false };
 
+  if (payload.isEmailConflict) {
+    return {
+      ...newState,
+      isEmailConflict: true,
+      updateProfileSuccess: false,
+    };
+  }
+
   if (error) {
     logger.error('Failed to update user profile', payload);
     fireErrorMessage('ERROR: Failed to update user profile!');
@@ -456,6 +464,19 @@ function onVerifyMemberNewEmailDone(state, { payload, error }) {
 }
 
 /**
+ * Handles UPDATE_EMAIL_CONFLICT action
+ * @param {Object} state
+ * @param {Object} action Payload will be a boolean value
+ * @return {Object} New state
+ */
+function onUpdateEmailConflict(state, { payload }) {
+  return {
+    ...state,
+    isEmailConflict: payload,
+  };
+}
+
+/**
  * Creates a new Profile reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Profile reducer.
@@ -509,6 +530,7 @@ function create(initialState) {
     [a.updatePasswordDone]: onUpdatePasswordDone,
     [a.verifyMemberNewEmailInit]: state => ({ ...state, verifyingEmail: true }),
     [a.verifyMemberNewEmailDone]: onVerifyMemberNewEmailDone,
+    [a.updateEmailConflict]: onUpdateEmailConflict,
   }, _.defaults(initialState, {
     achievements: null,
     copilot: false,
