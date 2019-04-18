@@ -434,6 +434,16 @@ function verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken) {
     .then(res => ({ data: res }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that toggles isEmailConflict state
+ * @param {boolean} state
+ * @return {Action}
+ */
+function updateEmailConflict(state = false) {
+  return state;
+}
+
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
@@ -480,5 +490,6 @@ export default createActions({
     UPDATE_PASSWORD_DONE: updatePasswordDone,
     VERIFY_MEMBER_NEW_EMAIL_INIT: verifyMemberNewEmailInit,
     VERIFY_MEMBER_NEW_EMAIL_DONE: verifyMemberNewEmailDone,
+    UPDATE_EMAIL_CONFLICT: updateEmailConflict,
   },
 });
