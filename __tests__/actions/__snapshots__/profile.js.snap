@@ -39,6 +39,7 @@ Object {
     "saveEmailPreferencesInit": [Function],
     "unlinkExternalAccountDone": [Function],
     "unlinkExternalAccountInit": [Function],
+    "updateEmailConflict": [Function],
     "updatePasswordDone": [Function],
     "updatePasswordInit": [Function],
     "updateProfileDone": [Function],
