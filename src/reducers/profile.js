@@ -460,6 +460,7 @@ function onVerifyMemberNewEmailDone(state, { payload, error }) {
   return {
     ...newState,
     verifyError: false,
+    emailChangeResult: payload.data,
   };
 }
 
