@@ -323,7 +323,6 @@ Object {
       "Spec Review": "Specification Review",
     },
     "getApiResponsePayload": [Function],
-    "getApiResponsePayloadV3": [Function],
     "getLookerApiResponsePayload": [Function],
   },
   "time": Object {
