@@ -6,7 +6,7 @@
 import { config, isomorphy } from 'topcoder-react-utils';
 
 import logger from '../utils/logger';
-import { getApiResponsePayload, getApiResponsePayloadV3 } from '../utils/tc';
+import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 
 let auth0;
@@ -148,7 +148,7 @@ class User {
    */
   async getUserPublicV3(username) {
     const res = await this.private.api.get(`/members/${username}`);
-    return getApiResponsePayloadV3(res);
+    return getApiResponsePayload(res);
   }
 
   /**

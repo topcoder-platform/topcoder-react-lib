@@ -39,19 +39,6 @@ export async function getApiResponsePayload(res) {
 }
 
 /**
- * Gets payload from a standard success response from TC API v3; or throws
- * an error in case of a failure response.
- * @param {Object} res
- * @return {Promise} Resolves to the payload.
- */
-export async function getApiResponsePayloadV3(res) {
-  if (!res.ok) throw new Error(res.statusText);
-  const x = (await res.json()).result;
-  if (!x.success) throw new Error(x.content);
-  return x.content;
-}
-
-/**
  * Gets payload from a standard success response from TC LOOKER API; or throws
  * an error in case of a failure response.
  * @param {Object} res

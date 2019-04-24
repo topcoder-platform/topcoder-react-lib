@@ -11,7 +11,6 @@ Collection of small Topcoder-related functions.
 * [tc](#module_tc)
     * [.REVIEW_OPPORTUNITY_TYPES](#module_tc.REVIEW_OPPORTUNITY_TYPES)
     * [.getApiResponsePayload(res)](#module_tc.getApiResponsePayload) ⇒ <code>Promise</code>
-    * [.getApiResponsePayloadV3(res)](#module_tc.getApiResponsePayloadV3) ⇒ <code>Promise</code>
 
 <a name="module_tc.REVIEW_OPPORTUNITY_TYPES"></a>
 
@@ -32,15 +31,3 @@ an error in case of a failure response.
 | --- | --- |
 | res | <code>Object</code> | 
 
-<a name="module_tc.getApiResponsePayloadV3"></a>
-
-### tc.getApiResponsePayloadV3(res) ⇒ <code>Promise</code>
-Gets payload from a standard success response from TC v3 API; or throws
-an error in case of a failure response.
-
-**Kind**: static method of [<code>tc</code>](#module_tc)  
-**Returns**: <code>Promise</code> - Resolves to the payload.  
-
-| Param | Type |
-| --- | --- |
-| res | <code>Object</code> | 
