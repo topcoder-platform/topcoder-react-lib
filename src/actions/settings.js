@@ -10,11 +10,10 @@ import { getService } from '../services/user-traits';
 /**
  * @static
  * @desc Creates an action that loads user's all traits.
- * @param {String} uuid Operation UUID.
+ * @param {String} handle the topcoder member handle
  * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-
 async function getAllUserTraits(handle, tokenV3) {
   const data = await getService(tokenV3).getAllUserTraits(handle);
   return { data, handle };
