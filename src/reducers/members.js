@@ -438,6 +438,7 @@ function create(initialState = {}) {
     [a.dropAll]: onDropAll,
     [a.getAchievementsInit]: onGetAchievementsInit,
     [a.getAchievementsDone]: onGetAchievementsDone,
+    [a.getAchievementsV3Done]: onGetAchievementsDone,
     [a.getFinancesInit]: onGetFinancesInit,
     [a.getFinancesDone]: onGetFinancesDone,
     [a.getStatsInit]: onGetStatsInit,

@@ -31,13 +31,24 @@ function getAchievementsInit() {}
 
 /**
  * @static
- * @desc Creates an action that loads user achievements.
+ * @desc Creates an action that loads user achievements from API v2.
  * @todo This duplicates similar action in {@link actions.members.md}!
  * @param {String} handle User handle.
  * @return {Action}
  */
 function getAchievementsDone(handle) {
   return getUserService().getUserPublic(handle);
+}
+
+/**
+ * @static
+ * @desc Creates an action that loads user achievements from API v3.
+ * @todo This duplicates similar action in {@link actions.members.md}!
+ * @param {String} handle User handle.
+ * @return {Action}
+ */
+function getAchievementsV3Done(handle) {
+  return getUserService().getUserPublicV3(handle);
 }
 
 /**
@@ -450,6 +461,7 @@ export default createActions({
     CLEAR_PROFILE: _.noop,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
+    GET_ACHIEVEMENTS_V3_DONE: getAchievementsV3Done,
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,
     GET_EXTERNAL_ACCOUNTS_DONE: getExternalAccountsDone,
     GET_EXTERNAL_LINKS_INIT: getExternalLinksInit,

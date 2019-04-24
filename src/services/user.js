@@ -6,7 +6,7 @@
 import { config, isomorphy } from 'topcoder-react-utils';
 
 import logger from '../utils/logger';
-import { getApiResponsePayload } from '../utils/tc';
+import { getApiResponsePayload, getApiResponsePayloadV3 } from '../utils/tc';
 import { getApi } from './api';
 
 let auth0;
@@ -139,6 +139,16 @@ class User {
     const res = await this.private.apiV2.get(`/users/${username}`);
     if (!res.ok) throw new Error(res.statusText);
     return res.json() || null;
+  }
+
+  /**
+   * Gets public user info from v3 API. Does not need auth.
+   * @param {String} username
+   * @return {Object}
+   */
+  async getUserPublicV3(username) {
+    const res = await this.private.api.get(`/members/${username}`);
+    return getApiResponsePayloadV3(res);
   }
 
   /**
