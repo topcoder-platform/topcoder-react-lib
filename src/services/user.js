@@ -142,6 +142,16 @@ class User {
   }
 
   /**
+   * Gets public user info from v3 API. Does not need auth.
+   * @param {String} username
+   * @return {Object}
+   */
+  async getUserPublicV3(username) {
+    const res = await this.private.api.get(`/members/${username}`);
+    return getApiResponsePayload(res);
+  }
+
+  /**
    * Gets user data object for the specified username.
    *
    * NOTE: Only admins are authorized to use the underlying endpoint.

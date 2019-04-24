@@ -9,6 +9,7 @@ Actions related to members data.
     * [.dropAll()](#module_actions.members.dropAll) ⇒ <code>Action</code>
     * [.getAchievementsInit(handle, uuid)](#module_actions.members.getAchievementsInit) ⇒ <code>Action</code>
     * [.getAchievementsDone(handle, uuid)](#module_actions.members.getAchievementsDone) ⇒ <code>Action</code>
+    * [.getAchievementsV3Done(handle, uuid)](#module_actions.members.getAchievementsV3Done) ⇒ <code>Action</code>
     * [.getFinancesInit(handle, uuid)](#module_actions.members.getFinancesInit) ⇒ <code>Action</code>
     * [.getFinancesDone(handle, uuid, tokenV3)](#module_actions.members.getFinancesDone) ⇒ <code>Action</code>
     * [.getStatsInit(handle, uuid)](#module_actions.members.getStatsInit) ⇒ <code>Action</code>
@@ -55,7 +56,19 @@ Creates an action that signals beginning of member achievements
 <a name="module_actions.members.getAchievementsDone"></a>
 
 ### actions.members.getAchievementsDone(handle, uuid) ⇒ <code>Action</code>
-Creates an action that loads member achievements.
+Creates an action that loads member achievements from v2 API.
+
+**Kind**: static method of [<code>actions.members</code>](#module_actions.members)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| handle | <code>String</code> | Member handle. |
+| uuid | <code>String</code> | Loading operation |
+
+<a name="module_actions.members.getAchievementsV3Done"></a>
+
+### actions.members.getAchievementsV3Done(handle, uuid) ⇒ <code>Action</code>
+Creates an action that loads member achievements from v3 API.
 
 **Kind**: static method of [<code>actions.members</code>](#module_actions.members)  
 

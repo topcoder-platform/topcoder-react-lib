@@ -14,6 +14,7 @@ Actions for interactions with profile details API.
     * [.clearProfile()](#module_actions.profile.clearProfile) ⇒ <code>Action</code>
     * [.getAchievementsInit()](#module_actions.profile.getAchievementsInit) ⇒ <code>Action</code>
     * [.getAchievementsDone(handle)](#module_actions.profile.getAchievementsDone) ⇒ <code>Action</code>
+    * [.getAchievementsV3Done(handle)](#module_actions.profile.getAchievementsV3Done) ⇒ <code>Action</code>
     * [.getExternalAccountsInit()](#module_actions.profile.getExternalAccountsInit) ⇒ <code>Action</code>
     * [.getExternalAccountsDone(handle)](#module_actions.profile.getExternalAccountsDone) ⇒ <code>Action</code>
     * [.getExternalLinksInit()](#module_actions.profile.getExternalLinksInit) ⇒ <code>Action</code>
@@ -94,7 +95,7 @@ Creates an action that signals beginning of user achievements loading.
 <a name="module_actions.profile.getAchievementsDone"></a>
 
 ### actions.profile.getAchievementsDone(handle) ⇒ <code>Action</code>
-Creates an action that loads user achievements.
+Creates an action that loads user achievements from v2 API.
 
 **Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 **Todo**
@@ -105,6 +106,13 @@ Creates an action that loads user achievements.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | User handle. |
+
+<a name="module_actions.profile.getAchievementsV3Done"></a>
+
+### actions.profile.getAchievementsV3Done(handle) ⇒ <code>Action</code>
+Creates an action that loads user achievements from V3 API.
+
+**Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
 
 <a name="module_actions.profile.getExternalAccountsInit"></a>
 

@@ -59,6 +59,23 @@ async function getAchievementsDone(handle, uuid) {
 
 /**
  * @static
+ * @desc Creates an action that loads member achievements from v3 API.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Loading operation
+ * @return {Action}
+ */
+async function getAchievementsV3Done(handle, uuid) {
+  let data;
+  try {
+    data = await getUserService().getAchievementsV3(handle);
+  } catch (e) {
+    data = [];
+  }
+  return { data, handle, uuid };
+}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of loading the member's
  *  financial information.
  * @param {String} handle Member handle.
@@ -344,6 +361,7 @@ export default createActions({
     DROP_ALL: dropAll,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
+    GET_ACHIEVEMENTS_V3_DONE: getAchievementsV3Done,
     GET_FINANCES_INIT: getFinancesInit,
     GET_FINANCES_DONE: getFinancesDone,
     GET_STATS_INIT: getStatsInit,

@@ -21,7 +21,7 @@ Review Opportunity types
 <a name="module_tc.getApiResponsePayload"></a>
 
 ### tc.getApiResponsePayload(res) ⇒ <code>Promise</code>
-Gets payload from a standard success response from TC API; or throws
+Gets payload from a standard success response from TC v2 API; or throws
 an error in case of a failure response.
 
 **Kind**: static method of [<code>tc</code>](#module_tc)  

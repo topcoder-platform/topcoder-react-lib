@@ -38,7 +38,6 @@ export async function getApiResponsePayload(res) {
   return x.content;
 }
 
-
 /**
  * Gets payload from a standard success response from TC LOOKER API; or throws
  * an error in case of a failure response.
