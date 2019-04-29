@@ -29,6 +29,31 @@ Object {
       "updateChallengeDone": [Function],
       "updateChallengeInit": [Function],
     },
+    "challengeListing": Object {
+      "dropChallenges": [Function],
+      "expandTag": [Function],
+      "getActiveChallengesDone": [Function],
+      "getActiveChallengesInit": [Function],
+      "getAllActiveChallengesDone": [Function],
+      "getAllActiveChallengesInit": [Function],
+      "getChallengeSubtracksDone": [Function],
+      "getChallengeSubtracksInit": [Function],
+      "getChallengeTagsDone": [Function],
+      "getChallengeTagsInit": [Function],
+      "getMoreChallenges": [Function],
+      "getPastChallengesDone": [Function],
+      "getPastChallengesInit": [Function],
+      "getRestActiveChallengesDone": [Function],
+      "getRestActiveChallengesInit": [Function],
+      "getReviewOpportunitiesDone": [Function],
+      "getReviewOpportunitiesInit": [Function],
+      "getSrmsDone": [Function],
+      "getSrmsInit": [Function],
+      "selectCommunity": [Function],
+      "setDatepickerStatus": [Function],
+      "setFilter": [Function],
+      "setSort": [Function],
+    },
     "direct": Object {
       "dropAll": [Function],
       "getProjectDetailsDone": [Function],
@@ -173,13 +198,145 @@ Object {
     },
   },
   "challenge": Object {
+    "buckets": Object {
+      "BUCKETS": Object {
+        "ALL": "all",
+        "MY": "my",
+        "ONGOING": "ongoing",
+        "OPEN_FOR_REGISTRATION": "openForRegistration",
+        "PAST": "past",
+        "REVIEW_OPPORTUNITIES": "reviewOpportunities",
+        "SAVED_FILTER": "saved-filter",
+        "SAVED_REVIEW_OPPORTUNITIES_FILTER": "savedReviewOpportunitiesFilter",
+        "UPCOMING": "upcoming",
+      },
+      "BUCKET_DATA": Object {
+        "all": Object {
+          "filter": Object {
+            "started": true,
+            "status": Array [
+              "ACTIVE",
+            ],
+          },
+          "hideCount": false,
+          "name": "All Challenges",
+          "sorts": Array [],
+        },
+        "my": Object {
+          "filter": Object {
+            "started": true,
+            "status": Array [
+              "ACTIVE",
+            ],
+          },
+          "hideCount": false,
+          "name": "My Challenges",
+          "sorts": Array [
+            "most-recent",
+            "time-to-submit",
+            "num-registrants",
+            "num-submissions",
+            "prize-high-to-low",
+            "title-a-to-z",
+          ],
+        },
+        "ongoing": Object {
+          "filter": Object {
+            "registrationOpen": false,
+            "started": true,
+            "status": Array [
+              "ACTIVE",
+            ],
+          },
+          "hideCount": false,
+          "name": "Ongoing challenges",
+          "sorts": Array [
+            "most-recent",
+            "current-phase",
+            "title-a-to-z",
+            "prize-high-to-low",
+          ],
+        },
+        "openForRegistration": Object {
+          "filter": Object {
+            "registrationOpen": true,
+            "started": true,
+            "status": Array [
+              "ACTIVE",
+            ],
+          },
+          "hideCount": false,
+          "name": "Open for registration",
+          "sorts": Array [
+            "most-recent",
+            "time-to-register",
+            "time-to-submit",
+            "num-registrants",
+            "num-submissions",
+            "prize-high-to-low",
+            "title-a-to-z",
+          ],
+        },
+        "past": Object {
+          "filter": Object {
+            "status": Array [
+              "COMPLETED",
+              "PAST",
+            ],
+          },
+          "hideCount": true,
+          "name": "Past challenges",
+          "sorts": Array [
+            "most-recent",
+            "prize-high-to-low",
+            "title-a-to-z",
+          ],
+        },
+        "reviewOpportunities": Object {
+          "filter": Object {},
+          "hideCount": true,
+          "name": "Open for review",
+          "sorts": Array [
+            "review-opportunities-start-date",
+            "review-opportunities-payment",
+            "review-opportunities-title-a-to-z",
+          ],
+        },
+        "savedReviewOpportunitiesFilter": Object {
+          "filter": Object {},
+          "sorts": Array [
+            "review-opportunities-start-date",
+            "review-opportunities-payment",
+            "review-opportunities-title-a-to-z",
+          ],
+        },
+        "upcoming": Object {
+          "filter": Object {
+            "upcoming": true,
+          },
+          "hideCount": true,
+          "name": "Upcoming challenges",
+          "sorts": Array [
+            "most-recent",
+            "prize-high-to-low",
+            "title-a-to-z",
+          ],
+        },
+      },
+      "default": undefined,
+      "getBuckets": [Function],
+      "isReviewOpportunitiesBucket": [Function],
+      "registerBucket": [Function],
+    },
     "filter": Object {
       "addTrack": [Function],
       "combine": [Function],
       "default": undefined,
+      "filterByDate": [Function],
       "getFilterFunction": [Function],
       "getReviewOpportunitiesFilterFunction": [Function],
       "mapToBackend": [Function],
+      "newMeta": [Function],
       "removeTrack": [Function],
       "setEndDate": [Function],
       "setReviewOpportunityType": [Function],
@@ -187,6 +344,67 @@ Object {
       "setSubtracks": [Function],
       "setTags": [Function],
       "setText": [Function],
+    },
+    "sort": Object {
+      "SORTS": Object {
+        "CURRENT_PHASE": "current-phase",
+        "MOST_RECENT": "most-recent",
+        "NUM_REGISTRANTS": "num-registrants",
+        "NUM_SUBMISSIONS": "num-submissions",
+        "PRIZE_HIGH_TO_LOW": "prize-high-to-low",
+        "REVIEW_OPPORTUNITIES_PAYMENT": "review-opportunities-payment",
+        "REVIEW_OPPORTUNITIES_START_DATE": "review-opportunities-start-date",
+        "REVIEW_OPPORTUNITIES_TITLE_A_TO_Z": "review-opportunities-title-a-to-z",
+        "TIME_TO_REGISTER": "time-to-register",
+        "TIME_TO_SUBMIT": "time-to-submit",
+        "TITLE_A_TO_Z": "title-a-to-z",
+      },
+      "SORTS_DATA": Object {
+        "current-phase": Object {
+          "func": [Function],
+          "name": "Current phase",
+        },
+        "most-recent": Object {
+          "func": [Function],
+          "name": "Most recent",
+        },
+        "num-registrants": Object {
+          "func": [Function],
+          "name": "# of registrants",
+        },
+        "num-submissions": Object {
+          "func": [Function],
+          "name": "# of submissions",
+        },
+        "prize-high-to-low": Object {
+          "func": [Function],
+          "name": "Prize high to low",
+        },
+        "review-opportunities-payment": Object {
+          "func": [Function],
+          "name": "Payment",
+        },
+        "review-opportunities-start-date": Object {
+          "func": [Function],
+          "name": "Review start date",
+        },
+        "review-opportunities-title-a-to-z": Object {
+          "func": [Function],
+          "name": "Title A-Z",
+        },
+        "time-to-register": Object {
+          "func": [Function],
+          "name": "Time to register",
+        },
+        "time-to-submit": Object {
+          "func": [Function],
+          "name": "Time to submit",
+        },
+        "title-a-to-z": Object {
+          "func": [Function],
+          "name": "Title A-Z",
+        },
+      },
     },
   },
   "errors": Object {
@@ -227,6 +445,7 @@ Object {
   "reducers": Object {
     "auth": [Function],
     "challenge": [Function],
+    "challengeListing": [Function],
     "direct": [Function],
     "errors": [Function],
     "groups": [Function],
@@ -321,11 +540,17 @@ Object {
     },
     "getApiResponsePayload": [Function],
     "getLookerApiResponsePayload": [Function],
+    "processSRM": [Function],
   },
   "time": Object {
     "default": undefined,
     "delay": [Function],
     "formatDuration": [Function],
+  },
+  "url": Object {
+    "default": undefined,
+    "removeTrailingSlash": [Function],
+    "updateQuery": [Function],
   },
 }
 `;
