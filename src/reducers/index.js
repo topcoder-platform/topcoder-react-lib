@@ -22,6 +22,7 @@ import settings, { factory as settingsFactory }
   from './settings';
 import looker, { factory as lookerFactory }
   from './looker';
+import challengeListing, { factory as challengeListingFactory } from './challenge-listing';
 
 
 export function factory(options) {
@@ -41,6 +42,7 @@ export function factory(options) {
     mySubmissionsManagement: mySubmissionsManagementFactory(options),
     settings: settingsFactory(options),
     looker: lookerFactory(options),
+    challengeListing: challengeListingFactory(options),
   });
 }
 
@@ -60,4 +62,5 @@ export default ({
   mySubmissionsManagement,
   settings,
   looker,
+  challengeListing,
 });
