@@ -19,8 +19,8 @@ const { PAGE_SIZE, REVIEW_OPPORTUNITY_PAGE_SIZE } = config;
 
 /**
  * Process filter
- * Development challenges having Data Science tech tag, still should be
- * included into data science track.
+ * When filter includes Data Science track, still should be
+ * included DEVELOP_MARATHON_MATCH sub track.
  * @param filter
  * @returns {string}
  */
@@ -28,9 +28,15 @@ function processFilter(filter) {
   const newFilter = _.clone(filter);
   if (_.has(filter, 'track')
     && filter.track.includes(COMPETITION_TRACKS.DATA_SCIENCE.toUpperCase())
-    && !filter.track.includes(COMPETITION_TRACKS.DEVELOP.toUpperCase())
+    && ((_.has(filter, 'subTrack') && !filter.subTrack.includes('DEVELOP_MARATHON_MATCH'))
+    || !_.has(filter, 'subTrack'))
   ) {
-    newFilter.track = `${newFilter.track},${COMPETITION_TRACKS.DEVELOP.toUpperCase()}`;
+    newFilter.subTrack = `${_.has(filter, 'subTrack') ? `${newFilter.subTrack},DEVELOP_MARATHON_MATCH` : 'DEVELOP_MARATHON_MATCH'}`;
+    newFilter.track = _.remove(filter.track.split(','), item => item.toUpperCase() !== COMPETITION_TRACKS.DATA_SCIENCE.toUpperCase()).join(',');
+
+    if (_.isEmpty(newFilter.track)) {
+      delete newFilter.track;
+    }
   }
   return newFilter;
 }
