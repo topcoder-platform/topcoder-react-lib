@@ -191,31 +191,33 @@ function getActiveChallengesDone(
     user = decodeToken(tokenV3).handle;
     // Handle any errors on this endpoint so that the non-user specific challenges
     // will still be loaded.
-    calls.push(getAll(
-      params => service.getUserChallenges(user, filter, params).catch(() => ({ challenges: [] })),
-    ));
+    calls.push(service.getUserChallenges(user, filter, {
+      limit: PAGE_SIZE,
+      offset: page * PAGE_SIZE,
+    }).catch(() => ({ challenges: [] })));
   }
   return Promise.all(calls).then(([ch, uch]) => {
+    let fullCH = ch;
     /* uch array contains challenges where the user is participating in
      * some role. The same challenge are already listed in res array, but they
      * are not attributed to the user there. This block of code marks user
      * challenges in an efficient way. */
     if (uch) {
       const map = {};
-      uch.challenges.forEach((item) => { map[item.id] = item; });
-      ch.challenges.forEach((item) => {
-        if (map[item.id]) {
-          /* It is fine to reassing, as the array we modifying is created just
-           * above within the same function. */
-          /* eslint-disable no-param-reassign */
-          item.users[user] = true;
-          item.userDetails = map[item.id].userDetails;
-          /* eslint-enable no-param-reassign */
-        }
+      uch.challenges.forEach((item) => {
+        map[item.id] = item;
+        /* eslint-disable no-param-reassign */
+        item.users[user] = true;
+        item.userDetails = map[item.id].userDetails;
+        /* eslint-enable no-param-reassign */
       });
     }
 
-    let { challenges, meta } = ch;
+    if (uch) {
+      fullCH = uch;
+    }
+    let { challenges } = fullCH;
+    let { meta } = ch;
     // filter by date range and re-compute meta
     // we can safely remove the next two lines when backend support date range
     challenges = filterUtil.filterByDate(challenges, frontFilter);
