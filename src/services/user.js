@@ -114,6 +114,7 @@ class User {
     this.private = {
       api: getApi('V3', tokenV3),
       apiV2: getApi('V2', tokenV2),
+      apiV5: getApi('V5', tokenV3),
       tokenV2,
       tokenV3,
     };
@@ -174,10 +175,10 @@ class User {
    * @returns {Promise} Resolves to the email preferences result
    */
   async getEmailPreferences(userId) {
-    const url = `/users/${userId}/preferences/email`;
-    const res = await this.private.api.get(url);
-    const x = (await res.json()).result;
-    return x.content;
+    const url = `/users/${userId}/preferences`;
+    const res = await this.private.apiV5.get(url);
+    const x = (await res.json());
+    return x.email;
   }
 
   /**
@@ -193,18 +194,17 @@ class User {
     const settings = {
       firstName,
       lastName,
-      subscriptions: {},
+      createdBy: String(userId),
+      updatedBy: String(userId),
+      subscriptions: preferences,
     };
 
-    if (!preferences) {
-      settings.subscriptions.TOPCODER_NL_GEN = true;
-    } else {
-      settings.subscriptions = preferences;
-    }
-    const url = `/users/${userId}/preferences/email`;
-
-    const res = await this.private.api.putJson(url, { param: settings });
-    return getApiResponsePayload(res);
+    const url = `/users/${userId}/preferences`;
+    const res = await this.private.apiV5.putJson(
+      url,
+      { email: settings, objectId: String(userId) },
+    );
+    return res;
   }
 
   /**
