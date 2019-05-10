@@ -434,13 +434,13 @@ function onSaveEmailPreferencesDone(state, { payload, error }) {
     return newState;
   }
 
-  if (newState.profileForHandle !== payload.handle || !payload.data) {
+  if (newState.profileForHandle !== payload.handle) {
     return newState;
   }
 
   return {
     ...newState,
-    emailPreferences: payload.data.subscriptions,
+    emailPreferences: payload.preferences,
   };
 }
 
