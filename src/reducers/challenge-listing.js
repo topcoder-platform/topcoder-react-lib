@@ -94,20 +94,33 @@ function onGetAllActiveChallengesDone(state, { error, payload }) {
     logger.error(payload);
     return state;
   }
-  const { uuid, challenges: loaded } = payload;
+  const {
+    uuid, challenges: loaded, handle,
+  } = payload;
   if (uuid !== state.loadingActiveChallengesUUID) return state;
   /* Once all active challenges are fetched from the API, we remove from the
    * store any active challenges stored there previously, and also any
    * challenges with IDs matching any challenges loaded now as active. */
   const ids = new Set();
   loaded.forEach(item => ids.add(item.id));
-  const challenges = state.challenges
-    .filter(item => item.status !== 'ACTIVE' && !ids.has(item.id))
-    .concat(loaded);
+
+  const filter = item => !ids.has(item.id) && item.status !== 'ACTIVE';
+  // BUCKET.MY
+  const my = processBucketData(
+    handle, state.challenges, loaded, BUCKETS.MY, null, null, filter, {},
+  );
+  // BUCKET.ALL
+  const all = processBucketData(
+    handle, state.challenges, loaded, BUCKETS.ALL, null, null, filter, {},
+  );
+
+  const newChallenges = _.cloneDeep(state.challenges);
+  newChallenges[BUCKETS.ALL] = all;
+  newChallenges[BUCKETS.MY] = my;
 
   return {
     ...state,
-    challenges,
+    challenges: newChallenges,
     lastUpdateOfActiveChallenges: Date.now(),
     loadingActiveChallengesUUID: '',
   };
