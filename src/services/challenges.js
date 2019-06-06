@@ -461,7 +461,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserMarathonMatches(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/mms/`;
+    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
     return this.private.getChallenges(endpoint, filters, params);
   }
 
