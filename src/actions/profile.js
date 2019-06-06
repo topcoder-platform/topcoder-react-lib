@@ -31,13 +31,24 @@ function getAchievementsInit() {}
 
 /**
  * @static
- * @desc Creates an action that loads user achievements.
+ * @desc Creates an action that loads user achievements from API v2.
  * @todo This duplicates similar action in {@link actions.members.md}!
  * @param {String} handle User handle.
  * @return {Action}
  */
 function getAchievementsDone(handle) {
   return getUserService().getUserPublic(handle);
+}
+
+/**
+ * @static
+ * @desc Creates an action that loads user achievements from API v3.
+ * @todo This duplicates similar action in {@link actions.members.md}!
+ * @param {String} handle User handle.
+ * @return {Action}
+ */
+function getAchievementsV3Done(handle) {
+  return getUserService().getUserPublicV3(handle);
 }
 
 /**
@@ -386,7 +397,7 @@ function saveEmailPreferencesInit() {}
 function saveEmailPreferencesDone(profile, tokenV3, preferences) {
   const service = getUserService(tokenV3);
   return service.saveEmailPreferences(profile, preferences)
-    .then(res => ({ data: res, handle: profile.handle }));
+    .then(res => ({ data: res, handle: profile.handle, preferences }));
 }
 
 /**
@@ -434,12 +445,23 @@ function verifyMemberNewEmailDone(handle, tokenV3, emailVerifyToken) {
     .then(res => ({ data: res }));
 }
 
+/**
+ * @static
+ * @desc Creates an action that toggles isEmailConflict state
+ * @param {boolean} state
+ * @return {Action}
+ */
+function updateEmailConflict(state = false) {
+  return state;
+}
+
 export default createActions({
   PROFILE: {
     LOAD_PROFILE: loadProfile,
     CLEAR_PROFILE: _.noop,
     GET_ACHIEVEMENTS_INIT: getAchievementsInit,
     GET_ACHIEVEMENTS_DONE: getAchievementsDone,
+    GET_ACHIEVEMENTS_V3_DONE: getAchievementsV3Done,
     GET_EXTERNAL_ACCOUNTS_INIT: getExternalAccountsInit,
     GET_EXTERNAL_ACCOUNTS_DONE: getExternalAccountsDone,
     GET_EXTERNAL_LINKS_INIT: getExternalLinksInit,
@@ -480,5 +502,6 @@ export default createActions({
     UPDATE_PASSWORD_DONE: updatePasswordDone,
     VERIFY_MEMBER_NEW_EMAIL_INIT: verifyMemberNewEmailInit,
     VERIFY_MEMBER_NEW_EMAIL_DONE: verifyMemberNewEmailDone,
+    UPDATE_EMAIL_CONFLICT: updateEmailConflict,
   },
 });

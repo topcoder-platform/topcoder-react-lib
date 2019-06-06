@@ -33,7 +33,7 @@ const mockActions = {
     deleteWebLinkInit: mockAction('DELETE_WEB_LINK_INIT'),
     deleteWebLinkDone: mockAction('DELETE_WEB_LINK_DONE', { handle, data: webLink }),
     saveEmailPreferencesInit: mockAction('SAVE_EMAIL_PREFERENCES_INIT'),
-    saveEmailPreferencesDone: mockAction('SAVE_EMAIL_PREFERENCES_DONE', { handle, data: { subscriptions: { TOPCODER_NL_DATA: true } } }),
+    saveEmailPreferencesDone: mockAction('SAVE_EMAIL_PREFERENCES_DONE', { handle, preferences: { 'Dev Newsletter': true } }),
     linkExternalAccountInit: mockAction('LINK_EXTERNAL_ACCOUNT_INIT'),
     linkExternalAccountDone: mockAction('LINK_EXTERNAL_ACCOUNT_DONE', { handle, data: linkedAccount2 }),
     unlinkExternalAccountInit: mockAction('UNLINK_EXTERNAL_ACCOUNT_INIT'),

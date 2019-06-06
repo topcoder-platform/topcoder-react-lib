@@ -14,6 +14,7 @@ The User service provides functionality related to Topcoder user
             * [new User(tokenV3, tokenV2)](#new_module_services.user..User_new)
             * [.getAchievements(username)](#module_services.user..User+getAchievements) ⇒ <code>Object</code>
             * [.getUserPublic(username)](#module_services.user..User+getUserPublic) ⇒ <code>Object</code>
+            * [.getUserPublicV3(username)](#module_services.user..User+getUserPublicV3) ⇒ <code>Object</code>
             * [.getUser(username)](#module_services.user..User+getUser) ⇒ <code>Promise</code>
             * [.getEmailPreferences(userId)](#module_services.user..User+getEmailPreferences) ⇒ <code>Promise</code>
             * [.saveEmailPreferences(user, preferences)](#module_services.user..User+saveEmailPreferences) ⇒ <code>Promise</code>
@@ -54,6 +55,7 @@ Service class.
     * [new User(tokenV3, tokenV2)](#new_module_services.user..User_new)
     * [.getAchievements(username)](#module_services.user..User+getAchievements) ⇒ <code>Object</code>
     * [.getUserPublic(username)](#module_services.user..User+getUserPublic) ⇒ <code>Object</code>
+    * [.getUserPublicV3(username)](#module_services.user..User+getUserPublicV3) ⇒ <code>Object</code>
     * [.getUser(username)](#module_services.user..User+getUser) ⇒ <code>Promise</code>
     * [.getEmailPreferences(userId)](#module_services.user..User+getEmailPreferences) ⇒ <code>Promise</code>
     * [.saveEmailPreferences(user, preferences)](#module_services.user..User+saveEmailPreferences) ⇒ <code>Promise</code>
@@ -88,7 +90,18 @@ Gets user achievements. Does not need auth.
 <a name="module_services.user..User+getUserPublic"></a>
 
 #### user.getUserPublic(username) ⇒ <code>Object</code>
-Gets public user info. Does not need auth.
+Gets public user info from v2 API. Does not need auth.
+
+**Kind**: instance method of [<code>User</code>](#module_services.user..User)  
+
+| Param | Type |
+| --- | --- |
+| username | <code>String</code> | 
+
+<a name="module_services.user..User+getUserPublicV3"></a>
+
+#### user.getUserPublicV3(username) ⇒ <code>Object</code>
+Gets public user info from v3 API. Does not need auth.
 
 **Kind**: instance method of [<code>User</code>](#module_services.user..User)  
 

@@ -17,6 +17,7 @@ Reducer for the Redux store segment that holds members data.
         * [~onDropAll()](#module_reducers.members..onDropAll) ⇒ <code>Object</code>
         * [~onGetAchievementsInit(state)](#module_reducers.members..onGetAchievementsInit) ⇒ <code>Object</code>
         * [~onGetAchievementsDone(state, error)](#module_reducers.members..onGetAchievementsDone) ⇒ <code>Object</code>
+        * [~onGetAchievementsV3Done(state, error)](#module_reducers.members..onGetAchievementsV3Done) ⇒ <code>Object</code>
         * [~onGetFinancesInit(state)](#module_reducers.members..onGetFinancesInit) ⇒ <code>Object</code>
         * [~onGetFinancesDone(state, action)](#module_reducers.members..onGetFinancesDone) ⇒ <code>Object</code>
         * [~onGetStatsInit(state, action)](#module_reducers.members..onGetStatsInit) ⇒ <code>Object</code>
@@ -81,7 +82,23 @@ Inits the loading of member achievements.
 <a name="module_reducers.members..onGetAchievementsDone"></a>
 
 ### reducers.members~onGetAchievementsDone(state, error) ⇒ <code>Object</code>
-Finalizes the loading of member achievements.
+Finalizes the loading of member achievements from v2 API.
+
+**Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
+**Returns**: <code>Object</code> - New state.  
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> | 
+| error | <code>Object</code> | 
+| payload.data | <code>Array</code> | 
+| payload.handle | <code>String</code> | 
+| payload.uuid | <code>String</code> | 
+
+<a name="module_reducers.members..onGetAchievementsV3Done"></a>
+
+### reducers.members~onGetAchievementsV3Done(state, error) ⇒ <code>Object</code>
+Finalizes the loading of member achievements from v3 API.
 
 **Kind**: inner method of [<code>reducers.members</code>](#module_reducers.members)  
 **Returns**: <code>Object</code> - New state.  

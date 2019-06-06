@@ -30,6 +30,26 @@ function onGetAchievementsDone(state, { payload, error }) {
 }
 
 /**
+ * Handles PROFILE/GET_ACHIEVEMENTS_V3_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetAchievementsV3Done(state, { payload, error }) {
+  if (error) {
+    return { ...state, loadingError: true };
+  }
+
+  return ({
+    ...state,
+    achievements: payload.achievements || [],
+    copilot: payload.copilot,
+    country: payload.country,
+    loadingError: false,
+  });
+}
+
+/**
  * Handles PROFILE/GET_EXTERNAL_ACCOUNTS_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
@@ -211,6 +231,14 @@ function onDeletePhotoDone(state, { payload, error }) {
  */
 function onUpdateProfileDone(state, { payload, error }) {
   const newState = { ...state, updatingProfile: false };
+
+  if (payload.isEmailConflict) {
+    return {
+      ...newState,
+      isEmailConflict: true,
+      updateProfileSuccess: false,
+    };
+  }
 
   if (error) {
     logger.error('Failed to update user profile', payload);
@@ -406,13 +434,13 @@ function onSaveEmailPreferencesDone(state, { payload, error }) {
     return newState;
   }
 
-  if (newState.profileForHandle !== payload.handle || !payload.data) {
+  if (newState.profileForHandle !== payload.handle) {
     return newState;
   }
 
   return {
     ...newState,
-    emailPreferences: payload.data.subscriptions,
+    emailPreferences: payload.preferences,
   };
 }
 
@@ -452,6 +480,20 @@ function onVerifyMemberNewEmailDone(state, { payload, error }) {
   return {
     ...newState,
     verifyError: false,
+    emailChangeResult: payload.data,
+  };
+}
+
+/**
+ * Handles UPDATE_EMAIL_CONFLICT action
+ * @param {Object} state
+ * @param {Object} action Payload will be a boolean value
+ * @return {Object} New state
+ */
+function onUpdateEmailConflict(state, { payload }) {
+  return {
+    ...state,
+    isEmailConflict: payload,
   };
 }
 
@@ -469,6 +511,7 @@ function create(initialState) {
     [a.loadProfile]: (state, action) => ({ ...state, profileForHandle: action.payload }),
     [a.getAchievementsInit]: state => state,
     [a.getAchievementsDone]: onGetAchievementsDone,
+    [a.getAchievementsV3Done]: onGetAchievementsV3Done,
     [a.getExternalAccountsInit]: state => state,
     [a.getExternalAccountsDone]: onGetExternalAccountsDone,
     [a.getExternalLinksInit]: state => state,
@@ -509,6 +552,7 @@ function create(initialState) {
     [a.updatePasswordDone]: onUpdatePasswordDone,
     [a.verifyMemberNewEmailInit]: state => ({ ...state, verifyingEmail: true }),
     [a.verifyMemberNewEmailDone]: onVerifyMemberNewEmailDone,
+    [a.updateEmailConflict]: onUpdateEmailConflict,
   }, _.defaults(initialState, {
     achievements: null,
     copilot: false,
