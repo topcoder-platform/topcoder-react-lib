@@ -195,10 +195,9 @@ function getActiveChallengesDone(
     user = decodeToken(tokenV3).handle;
     // Handle any errors on this endpoint so that the non-user specific challenges
     // will still be loaded.
-    calls.push(service.getUserChallenges(user, filter, {
-      limit: PAGE_SIZE,
-      offset: page * PAGE_SIZE,
-    }).catch(() => ({ challenges: [] })));
+    calls.push(getAll(
+      params => service.getUserChallenges(user, filter, params).catch(() => ({ challenges: [] })),
+    ));
   }
   return Promise.all(calls).then(([ch, uch]) => {
     // let fullCH = ch;
