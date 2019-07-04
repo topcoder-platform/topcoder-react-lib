@@ -15,6 +15,8 @@ State segment managed by this reducer has the following strcuture:
         * [.default](#module_reducers.challenge.default)
         * [.factory(options)](#module_reducers.challenge.factory) ⇒ <code>Promise</code>
     * _inner_
+        * [~onGetMMSubmissionsInit(state, action)](#module_reducers.challenge..onGetMMSubmissionsInit) ⇒ <code>Object</code>
+        * [~onGetMMSubmissionsDone(state, action)](#module_reducers.challenge..onGetDetailsDone) ⇒ <code>Object</code>
         * [~onGetDetailsInit(state, action)](#module_reducers.challenge..onGetDetailsInit) ⇒ <code>Object</code>
         * [~onGetDetailsDone(state, action)](#module_reducers.challenge..onGetDetailsDone) ⇒ <code>Object</code>
         * [~onGetSubmissionsInit(state, action)](#module_reducers.challenge..onGetSubmissionsInit) ⇒ <code>Object</code>
@@ -34,7 +36,7 @@ State segment managed by this reducer has the following strcuture:
 ### reducers.challenge.default
 Reducer with default intial state.
 
-**Kind**: static property of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: static property of [<code>reducers.challenge</code>](#module_reducers.challenge)
 <a name="module_reducers.challenge.factory"></a>
 
 ### reducers.challenge.factory(options) ⇒ <code>Promise</code>
@@ -42,7 +44,7 @@ Factory which creates a new reducer with its initial state tailored to the
 given options object, if specified (for server-side rendering). If options
 object is not specified, it creates just the default reducer. Accepted options are:
 
-**Kind**: static method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: static method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Resolves**: <code>Function(state, action): state</code> New reducer.  
 
 | Param | Type | Default | Description |
@@ -53,18 +55,48 @@ object is not specified, it creates just the default reducer. Accepted options a
 | [options.challenge.challengeDetails.id] | <code>String</code> | <code>&#x27;&#x27;</code> | Optional. ID of  the challenge to load details for. |
 | [options.challenge.challengeDetails.mySubmission] | <code>Boolean</code> | <code>false</code> | Optional. The flag indicates whether load my submission. |
 
+<a name="module_reducers.challenge..onGetMMSubmissionsInit"></a>
+
+### reducers.challenge~onGetMMSubmissionsInit(state, action) ⇒ <code>Object</code>
+Handles CHALLENGE/GET_MM_SUBMISSION_INIT action.
+
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
+**Returns**: <code>Object</code> - New state
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> |
+| action | <code>Object</code> |
+
+<a name="module_reducers.challenge..onGetDetailsDone"></a>
+
+### reducers.challenge~onGetMMSubmissionsDone(state, action) ⇒ <code>Object</code>
+Handles CHALLENGE/GET_MM_SUBMISSION_DONE action.
+Note, that it silently discards received details if the ID of received
+challenge mismatches the one stored in loadingMMSubmissionsForChallengeId field
+of the state.
+
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
+**Returns**: <code>Object</code> - New state.
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> |
+| action | <code>Object</code> |
+
+
 <a name="module_reducers.challenge..onGetDetailsInit"></a>
 
 ### reducers.challenge~onGetDetailsInit(state, action) ⇒ <code>Object</code>
 Handles CHALLENGE/GET_DETAILS_INIT action.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state  
 
 | Param | Type |
 | --- | --- |
-| state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| state | <code>Object</code> |
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..onGetDetailsDone"></a>
 
@@ -74,26 +106,26 @@ Note, that it silently discards received details if the ID of received
 challenge mismatches the one stored in loadingDetailsForChallengeId field
 of the state.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state.  
 
 | Param | Type |
 | --- | --- |
-| state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| state | <code>Object</code> |
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..onGetSubmissionsInit"></a>
 
 ### reducers.challenge~onGetSubmissionsInit(state, action) ⇒ <code>Object</code>
 Handles CHALLENGE/GET_SUBMISSION_INIT action.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state.  
 
 | Param | Type |
 | --- | --- |
-| state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| state | <code>Object</code> |
+| action | <code>Object</code>|
 
 <a name="module_reducers.challenge..onGetSubmissionsDone"></a>
 
@@ -128,8 +160,8 @@ Handles CHALLENGE/LOAD_RESULTS_INIT action.
 
 | Param | Type |
 | --- | --- |
-| state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| state | <code>Object</code> |
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..onLoadResultsDone"></a>
 
@@ -141,7 +173,7 @@ Handles CHALLENGE/LOAD_RESULTS_DONE action.
 | Param | Type |
 | --- | --- |
 | state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..onRegisterDone"></a>
 
@@ -164,15 +196,15 @@ Handles CHALLENGE/UNREGISTER_DONE action.
 
 | Param | Type |
 | --- | --- |
-| state | <code>Object</code> | 
-| action | <code>Object</code> | 
+| state | <code>Object</code> |
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..onUpdateChallengeInit"></a>
 
 ### reducers.challenge~onUpdateChallengeInit(state, actions) ⇒ <code>Object</code>
 Handles CHALLENGE/UPDATE_CHALLENGE_INIT.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state.  
 
 | Param | Type | Description |
@@ -185,7 +217,7 @@ Handles CHALLENGE/UPDATE_CHALLENGE_INIT.
 ### reducers.challenge~onUpdateChallengeDone(state, actions) ⇒ <code>Object</code>
 Handles CHALLENGE/UPDATE_CHALLENGE_DONE.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state.  
 
 | Param | Type | Description |
@@ -198,7 +230,7 @@ Handles CHALLENGE/UPDATE_CHALLENGE_DONE.
 ### reducers.challenge~onGetActiveChallengesCountDone(state, action) ⇒ <code>Object</code>
 Handles CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
@@ -211,7 +243,7 @@ Handles CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
 ### reducers.challenge~create(initialState) ⇒ <code>function</code>
 Creates a new Challenge reducer with the specified initial state.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>function</code> - Challenge reducer.  
 
 | Param | Type | Description |

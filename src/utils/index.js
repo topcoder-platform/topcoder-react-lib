@@ -10,6 +10,7 @@ import * as filter from './challenge/filter';
 import * as buckets from './challenge/buckets';
 import * as sort from './challenge/sort';
 import * as url from './url';
+import * as submission from './submission';
 
 const challenge = {
   filter,
@@ -25,4 +26,5 @@ export {
   mock,
   errors,
   url,
+  submission,
 };

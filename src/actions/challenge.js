@@ -2,12 +2,48 @@
  * @module "actions.challenge"
  * @desc Actions related to Topcoder challenges APIs.
  */
-
+/* global CONFIG */
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
 import { getService as getChallengesService } from '../services/challenges';
+import { getService as getSubmissionService } from '../services/submissions';
+import { getService as getMemberService } from '../services/members';
 import { getApi } from '../services/api';
+import * as submissionUtil from '../utils/submission';
+
+const { PAGE_SIZE } = CONFIG;
+
+/**
+ * Private. Loads from the backend all data matching some conditions.
+ * @param {Function} getter Given params object of shape { limit, offset }
+ *  loads from the backend at most "limit" data, skipping the first
+ *  "offset" ones. Returns loaded data as an array.
+ * @param {Number} page Optional. Next page of data to load.
+ * @param {Array} prev Optional. data loaded so far.
+ */
+function getAll(getter, page = 1, prev) {
+  /* Amount of submissions to fetch in one API call. 50 is the current maximum
+   * amount of submissions the backend returns, event when the larger limit is
+   * explicitely required. */
+  return getter({
+    page,
+    perPage: PAGE_SIZE,
+  }).then((res) => {
+    if (res.length === 0) {
+      return prev || res;
+    }
+    // parse submissions
+    let current = [];
+    if (prev) {
+      current = prev.concat(res);
+    } else {
+      current = res;
+    }
+    return getAll(getter, 1 + page, current);
+  });
+}
+
 
 /**
  * @static
@@ -82,6 +118,49 @@ function getSubmissionsDone(challengeId, tokenV2) {
       throw err;
     });
 }
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of Marathon Match submissions loading.
+ * @param {String} challengeId Challenge ID.
+ * @return {Action}
+ */
+function getMMSubmissionsInit(challengeId) {
+  /* As a safeguard, we enforce challengeId to be string (in case somebody
+   * passes in a number, by mistake). */
+  return _.toString(challengeId);
+}
+
+
+/**
+ * @static
+ * @desc Creates an action that loads Marathon Match submissions to the specified
+ * challenge.
+ * @param {String} challengeId Challenge ID.
+ * @param {Array} submitterIds The array of submitter ids.
+ * @param {Array} registrants The array of register.
+ * @param {String} tokenV3  Topcoder auth token v3.
+ * @return {Action}
+ */
+function getMMSubmissionsDone(challengeId, submitterIds, registrants, tokenV3) {
+  const filter = { challengeId };
+  const memberService = getMemberService(tokenV3);
+  const submissionsService = getSubmissionService(tokenV3);
+  const calls = [
+    memberService.getMembersInformation(submitterIds),
+    getAll(params => submissionsService.getSubmissions(filter, params)),
+  ];
+  return Promise.all(calls).then(([resources, submissions]) => {
+    const finalSubmissions = submissionUtil
+      .processMMSubmissions(submissions, resources, registrants);
+    return {
+      challengeId,
+      submissions: finalSubmissions,
+      tokenV3,
+    };
+  });
+}
+
 
 /**
  * @static
@@ -305,5 +384,7 @@ export default createActions({
     UPDATE_CHALLENGE_DONE: updateChallengeDone,
     GET_ACTIVE_CHALLENGES_COUNT_INIT: getActiveChallengesCountInit,
     GET_ACTIVE_CHALLENGES_COUNT_DONE: getActiveChallengesCountDone,
+    GET_MM_SUBMISSIONS_INIT: getMMSubmissionsInit,
+    GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
   },
 });

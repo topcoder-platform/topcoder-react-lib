@@ -114,6 +114,44 @@ function onGetSubmissionsDone(state, action) {
 }
 
 /**
+ * Handles CHALLENGE/GET_MM_SUBMISSION_INIT action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetMMSubmissionsInit(state, action) {
+  return {
+    ...state,
+    loadingMMSubmissionsForChallengeId: action.payload,
+    mmSubmissions: [],
+  };
+}
+
+/**
+ * Handles CHALLENGE/GET_MM_SUBMISSION_DONE action.
+ * @param {Object} state Previous state.
+ * @param {Object} action Action.
+ */
+function onGetMMSubmissionsDone(state, action) {
+  if (action.error) {
+    logger.error('Failed to get Marathon Match submissions for the challenge', action.payload);
+    return {
+      ...state,
+      loadingMMSubmissionsForChallengeId: '',
+      mmSubmissions: [],
+    };
+  }
+
+  const { challengeId, submissions } = action.payload;
+  if (challengeId.toString() !== state.loadingMMSubmissionsForChallengeId) return state;
+  return {
+    ...state,
+    loadingMMSubmissionsForChallengeId: '',
+    mmSubmissions: submissions,
+  };
+}
+
+/**
  * Handles challengeActions.fetchCheckpointsDone action.
  * @param {Object} state Previous state.
  * @param {Object} action Action.
@@ -294,6 +332,8 @@ function create(initialState) {
     [a.getDetailsDone]: onGetDetailsDone,
     [a.getSubmissionsInit]: onGetSubmissionsInit,
     [a.getSubmissionsDone]: onGetSubmissionsDone,
+    [a.getMmSubmissionsInit]: onGetMMSubmissionsInit,
+    [a.getMmSubmissionsDone]: onGetMMSubmissionsDone,
     [smpActions.smp.deleteSubmissionDone]: (state, { payload }) => ({
       ...state,
       mySubmissions: {
@@ -324,6 +364,7 @@ function create(initialState) {
     loadingCheckpoints: false,
     loadingDetailsForChallengeId: '',
     loadingResultsForChallengeId: '',
+    loadingMMSubmissionsForChallengeId: '',
     mySubmissions: {},
     checkpoints: null,
     registering: false,
@@ -331,6 +372,7 @@ function create(initialState) {
     resultsLoadedForChallengeId: '',
     unregistering: false,
     updatingChallengeUuid: '',
+    mmSubmissions: [],
   }));
 }
 

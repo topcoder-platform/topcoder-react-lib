@@ -143,6 +143,12 @@ action to really cancel group loading.</p>
 <dd><p>Reducer for state.terms.</p>
 </dd>
 <dt>
+<a href="services.submissions.md">services.submissions</a></dt>
+<dd><p>his module provides a service for convenient manipulation with
+ Topcoder submissions via TC API.</p>
+</dd>
+<dt>
+<dt>
 <a href="services.api.md">services.api</a></dt>
 <dd><p>This module provides a service for conventient access to Topcoder APIs.</p>
 </dd>
@@ -299,5 +305,10 @@ the proxy will forward them to the service only if LOG_ENTRIES_TOKEN is set).</p
  <dt>
 <a href="url.md">url</a></dt>
 <dd><p>Collection of url function.</p>
+</dd>
+<dt>
+ <dt>
+<a href="submission.md">submission</a></dt>
+<dd><p>Collection of submission function.</p>
 </dd>
 <dt>
