@@ -68,7 +68,7 @@ function getAll(getter, page = 0, prev) {
     } else {
       current = res;
     }
-    return getAll(getter, 1 + page, current);
+    return page === 0 ? current : getAll(getter, 1 + page, current);
   });
 }
 
