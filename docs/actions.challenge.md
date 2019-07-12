@@ -24,6 +24,8 @@ Actions related to Topcoder challenges APIs.
     * [.updateChallengeDone(uuid, challenge, tokenV3)](#module_actions.challenge.updateChallengeDone) ⇒ <code>Action</code>
     * [.getActiveChallengesCountInit()](#module_actions.challenge.getActiveChallengesCountInit) ⇒ <code>Action</code>
     * [.getActiveChallengesCountDone(handle, tokenV3)](#module_actions.challenge.getActiveChallengesCountDone) ⇒ <code>Action</code>
+    * [.getMMSubmissionsInit(challengeId)](#module_actions.challenge.getMMSubmissionsInit) ⇒ <code>Action</code>
+    * [.getMMSubmissionsDone(challengeId, submitterIds, registrants, tokenV3)](#module_actions.challenge.getMMSubmissionsDone) ⇒ <code>Action</code>
 
 <a name="module_actions.challenge.dropCheckpoints"></a>
 
@@ -31,14 +33,14 @@ Actions related to Topcoder challenges APIs.
 Creates an action that drops from Redux store all checkpoints loaded
  before.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.dropResults"></a>
 
 ### actions.challenge.dropResults() ⇒ <code>Action</code>
 Creates an action that drops from Redux store all challenge results
  loaded before.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.getDetailsInit"></a>
 
 ### actions.challenge.getDetailsInit(challengeId) ⇒ <code>Action</code>
@@ -93,7 +95,7 @@ challenge.
 Creates an action that signals beginning of registration for a
 challenge.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.registerDone"></a>
 
 ### actions.challenge.registerDone(auth, challengeId) ⇒ <code>Action</code>
@@ -114,7 +116,7 @@ Creates an action that registers user for a challenge.
 Creates an action that signals beginning of user unregistration from a
  challenge.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.unregisterDone"></a>
 
 ### actions.challenge.unregisterDone(auth, challengeId) ⇒ <code>Action</code>
@@ -161,7 +163,7 @@ Creates an action that loads challenge results.
 Creates an action that signals beginning of challenge checkpoints data
  loading.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.fetchCheckpointsDone"></a>
 
 ### actions.challenge.fetchCheckpointsDone(tokenV2, challengeId)
@@ -180,7 +182,7 @@ Creates an action that loads challenge checkpoints data.
 Creates an action that Toggles checkpoint details panel in the Topcoder
  Submission Management Page.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 **Todo**
 
 - [ ] This is UI action relevant to a specific page in specific app. Must be
@@ -197,7 +199,7 @@ Creates an action that Toggles checkpoint details panel in the Topcoder
 ### actions.challenge.updateChallengeInit(uuid) ⇒ <code>Action</code>
 Creates an action that signals beginning of challenge details update.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 **Todo**
 
 - [ ] No idea, why we have this action. This functionality should be covered
@@ -214,7 +216,7 @@ Creates an action that signals beginning of challenge details update.
 ### actions.challenge.updateChallengeDone(uuid, challenge, tokenV3) ⇒ <code>Action</code>
 Creates an action that updates challenge details.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 **Todo**
 
 - [ ] No idea, why we have this action. This functionality should be covered
@@ -233,7 +235,7 @@ Creates an action that updates challenge details.
 ### actions.challenge.getActiveChallengesCountInit() ⇒ <code>Action</code>
 Creates an action that signals beginning of getting count of user's active challenges.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 <a name="module_actions.challenge.getActiveChallengesCountDone"></a>
 
 ### actions.challenge.getActiveChallengesCountDone(handle, tokenV3) ⇒ <code>Action</code>
@@ -246,3 +248,28 @@ Creates an action that gets count of user's active challenges from the backend.
 | handle | <code>String</code> | Topcoder user handle. |
 | tokenV3 | <code>String</code> | Optional. Topcoder auth token v3. Without token only  public challenges will be counted. With the token provided, the action will  also count private challenges related to this user. |
 
+
+
+### actions.challenge.getMMSubmissionsInit(challengeId) ⇒ <code>Action</code>
+Creates an action that signals beginning of Marathon Match submissions loading.
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
+<a name="module_actions.challenge.getMMSubmissionsInit"></a>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| challengeId | <code>String</code> | The challenge id. |
+
+### actions.challenge.getMMSubmissionsDone(challengeId, submitterIds, registrants, tokenV3) ⇒ <code>Action</code>
+Creates an action that loads Marathon Match submissions to the specified
+challenge.
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
+<a name="module_actions.challenge.getMMSubmissionsDone"></a>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| challengeId | <code>String</code> | The challenge id. |
+| submitterIds | <code>Array</code> | The ids of submitters |
+| registrants | <code>Array</code> | The registrants of challenge |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |

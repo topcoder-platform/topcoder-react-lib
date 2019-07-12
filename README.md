@@ -6,6 +6,11 @@
 
 The [Topcoder](https://www.topcoder.com) lib for internal ReactJS projects.
 
+
+### Configuration for AV-Scan scorer review type ID
+
+Change the property in `AV_SCAN_SCORER_REVIEW_TYPE_ID` in config.
+
 ### Development
 ```shell
 # Install dependencies

@@ -1,7 +1,7 @@
 /**
  * Challenge listing actions.
  */
-
+/* global CONFIG */
 import _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { decodeToken } from 'tc-accounts';
@@ -10,12 +10,12 @@ import { processSRM, COMPETITION_TRACKS } from '../utils/tc';
 import { services } from '../services';
 import { errors } from '../utils';
 import * as filterUtil from '../utils/challenge/filter';
-import * as config from '../config';
+
 
 const { fireErrorMessage } = errors;
 const { getService } = services.challenge;
 const { getReviewOpportunitiesService } = services.reviewOpportunities;
-const { PAGE_SIZE, REVIEW_OPPORTUNITY_PAGE_SIZE } = config;
+const { PAGE_SIZE, REVIEW_OPPORTUNITY_PAGE_SIZE } = CONFIG;
 
 /**
  * Process filter

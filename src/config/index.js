@@ -1,4 +1,0 @@
-module.exports = {
-  PAGE_SIZE: 50,
-  REVIEW_OPPORTUNITY_PAGE_SIZE: 1000,
-};
