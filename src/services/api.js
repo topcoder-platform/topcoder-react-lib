@@ -264,6 +264,7 @@ export function getApi(version, token) {
 export const getApiV2 = token => getApi('V2', token);
 export const getApiV3 = token => getApi('V3', token);
 export const getApiV4 = token => getApi('V4', token);
+export const getApiV5 = token => getApi('V5', token);
 
 /**
  * Gets a valid TC M2M token, either requesting one from TC Auth0 API, or
