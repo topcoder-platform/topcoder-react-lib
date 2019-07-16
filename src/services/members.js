@@ -289,6 +289,18 @@ class MembersService {
     const res = await this.private.api.get(`/members/${handle}/verify?token=${emailVerifyToken}`);
     return getApiResponsePayload(res);
   }
+
+  /**
+   * Get members information
+   * @param {Array} userIds the member ids
+   */
+  async getMembersInformation(userIds) {
+    const query = `query=${encodeURI(_.map(userIds, id => `userId:${id}`).join(' OR '))}`;
+    const limit = `limit=${userIds.length}`;
+    const url = `/members/_search?fields=userId%2Chandle%2CphotoURL%2CfirstName%2ClastName&${query}&${limit}`;
+    const res = await this.private.api.get(url);
+    return getApiResponsePayload(res);
+  }
 }
 
 let lastInstance = null;

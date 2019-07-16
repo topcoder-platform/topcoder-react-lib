@@ -17,6 +17,8 @@ Object {
       "getActiveChallengesCountInit": [Function],
       "getDetailsDone": [Function],
       "getDetailsInit": [Function],
+      "getMmSubmissionsDone": [Function],
+      "getMmSubmissionsInit": [Function],
       "getSubmissionsDone": [Function],
       "getSubmissionsInit": [Function],
       "loadResultsDone": [Function],
@@ -248,6 +250,7 @@ Object {
       "getApiV2": [Function],
       "getApiV3": [Function],
       "getApiV4": [Function],
+      "getApiV5": [Function],
       "getTcM2mToken": [Function],
     },
     "billing": Object {
@@ -291,6 +294,10 @@ Object {
       "default": undefined,
       "getReviewOpportunitiesService": [Function],
     },
+    "submissions": Object {
+      "default": undefined,
+      "getService": [Function],
+    },
     "terms": Object {
       "default": undefined,
       "getService": [Function],
@@ -307,6 +314,12 @@ Object {
       "default": undefined,
       "getService": [Function],
     },
+  },
+  "submission": Object {
+    "default": undefined,
+    "getFinalScore": [Function],
+    "getProvisionalScore": [Function],
+    "processMMSubmissions": [Function],
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
