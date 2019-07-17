@@ -339,7 +339,8 @@ async function getUserMarathonDone(
   uuid, handle, tokenV3, pageNum, pageSize,
   refresh,
 ) {
-  const filter = { status: 'PAST', isRatedForMM: 'true' };
+  const filter = { status: 'COMPLETED', track: 'DATA_SCIENCE',
+    subTrack: 'MARATHON_MATCH,DEVELOP_MARATHON_MATCH' };
   const params = {};
   params.orderBy = 'endDate desc';
   params.limit = pageSize;
