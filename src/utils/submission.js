@@ -46,6 +46,11 @@ function processRanks(submissions) {
     let pB = _.get(b, 'submissions[0]', { provisionalScore: 0 }).provisionalScore;
     if (pA === '-') pA = 0;
     if (pB === '-') pB = 0;
+    if (pA === pB) {
+      const timeA = new Date(_.get(a, 'submissions[0].submissionTime'));
+      const timeB = new Date(_.get(b, 'submissions[0].submissionTime'));
+      return timeA - timeB;
+    }
     return pB - pA;
   });
   _.each(submissions, (submission, i) => {
@@ -53,12 +58,17 @@ function processRanks(submissions) {
   });
 
   submissions.sort((a, b) => {
-    let pA = _.get(a, 'submissions[0]', { provisionalScore: 0 }).finalScore;
-    let pB = _.get(b, 'submissions[0]', { provisionalScore: 0 }).finalScore;
+    let pA = _.get(a, 'submissions[0]', { finalScore: 0 }).finalScore;
+    let pB = _.get(b, 'submissions[0]', { finalScore: 0 }).finalScore;
     if (pA === '-') pA = 0;
     if (pB === '-') pB = 0;
     if (pA > 0) maxFinalScore = pA;
     if (pB > 0) maxFinalScore = pB;
+    if (pA === pB) {
+      const timeA = new Date(_.get(a, 'submissions[0].submissionTime'));
+      const timeB = new Date(_.get(b, 'submissions[0].submissionTime'));
+      return timeA - timeB;
+    }
     return pB - pA;
   });
   if (maxFinalScore > 0) {
@@ -130,22 +140,10 @@ export function processMMSubmissions(submissions, resources, registrants) {
       const dateB = new Date(b.created);
       return dateB - dateA;
     });
-    let provisionalScore;
-    if (validReviews.length > 0) {
-      provisionalScore = _.get(validReviews, '[0].score', 0);
-      if (_.isString(provisionalScore)) provisionalScore = _.toFinite(provisionalScore);
-      provisionalScore = toFixed(provisionalScore, 5);
-    } else {
-      provisionalScore = -1;
-    }
 
-    let finalScore = _.get(submission, 'reviewSummation[0].aggregateScore', 0);
-    if (_.isString(finalScore)) finalScore = _.toFinite(finalScore);
-    if (finalScore > 0) {
-      finalScore = toFixed(finalScore, 5);
-    } else {
-      finalScore = 0;
-    }
+    const provisionalScore = toFixed(parseFloat(_.get(validReviews, '[0].score', '-')), 5);
+    const finalScore = toFixed(parseFloat(_.get(submission, 'reviewSummation[0].aggregateScore', '-')), 5);
+
     data[memberHandle].push({
       submissionId: submission.id,
       submissionTime: submission.created,
