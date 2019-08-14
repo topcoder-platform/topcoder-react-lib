@@ -42,7 +42,7 @@ function getAll(getter, page = 1, perPage = PAGE_SIZE, prev) {
     } else {
       current = res;
     }
-    return getAll(getter, 1 + page, current);
+    return getAll(getter, 1 + page, perPage, current);
   });
 }
 
