@@ -21,15 +21,16 @@ const { PAGE_SIZE } = CONFIG;
  *  loads from the backend at most "limit" data, skipping the first
  *  "offset" ones. Returns loaded data as an array.
  * @param {Number} page Optional. Next page of data to load.
+ * @param {Number} perPage Optional. The size of the page content to load.
  * @param {Array} prev Optional. data loaded so far.
  */
-function getAll(getter, page = 1, prev) {
+function getAll(getter, page = 1, perPage = PAGE_SIZE, prev) {
   /* Amount of submissions to fetch in one API call. 50 is the current maximum
    * amount of submissions the backend returns, event when the larger limit is
    * explicitely required. */
   return getter({
     page,
-    perPage: PAGE_SIZE,
+    perPage,
   }).then((res) => {
     if (res.length === 0) {
       return prev || res;
@@ -148,7 +149,8 @@ function getMMSubmissionsDone(challengeId, submitterIds, registrants, tokenV3) {
   const submissionsService = getSubmissionService(tokenV3);
   const calls = [
     memberService.getMembersInformation(submitterIds),
-    getAll(params => submissionsService.getSubmissions(filter, params)),
+    // TODO: Move those numbers to configs
+    getAll(params => submissionsService.getSubmissions(filter, params), 1, 500),
   ];
   return Promise.all(calls).then(([resources, submissions]) => {
     const finalSubmissions = submissionUtil
