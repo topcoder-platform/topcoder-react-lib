@@ -24,7 +24,7 @@ Actions for interactions with profile details API.
     * [.getSkillsInit()](#module_actions.profile.getSkillsInit) ⇒ <code>Action</code>
     * [.getSkillsDone(handle)](#module_actions.profile.getSkillsDone) ⇒ <code>Action</code>
     * [.getStatsInit()](#module_actions.profile.getStatsInit) ⇒ <code>Action</code>
-    * [.getStatsDone(handle)](#module_actions.profile.getStatsDone) ⇒ <code>Action</code>
+    * [.getStatsDone(handle, groupIds)](#module_actions.profile.getStatsDone) ⇒ <code>Action</code>
     * [.getLinkedAccountsInit()](#module_actions.profile.getLinkedAccountsInit) ⇒ <code>Action</code>
     * [.getLinkedAccountsDone(profile, tokenV3)](#module_actions.profile.getLinkedAccountsDone) ⇒ <code>Action</code>
     * [.getCredentialInit()](#module_actions.profile.getCredentialInit) ⇒ <code>Action</code>
@@ -207,7 +207,7 @@ Creates an action that signals beginning of loading member's stats.
 
 <a name="module_actions.profile.getStatsDone"></a>
 
-### actions.profile.getStatsDone(handle) ⇒ <code>Action</code>
+### actions.profile.getStatsDone(handle, groupIds) ⇒ <code>Action</code>
 Creates an action that loads member's stats.
 
 **Kind**: static method of [<code>actions.profile</code>](#module_actions.profile)
@@ -215,6 +215,7 @@ Creates an action that loads member's stats.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | Member handle. |
+| groupIds | <code>String</code> | Group ids. |
 
 <a name="module_actions.profile.getLinkedAccountsInit"></a>
 
