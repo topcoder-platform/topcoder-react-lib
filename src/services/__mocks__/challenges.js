@@ -292,14 +292,15 @@ class ChallengesService {
 
   /**
    * Gets challenges of the specified user.
+   * @param {String} userId User ID whose challenges we want to fetch.
    * @param {String} username User whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserChallenges(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getChallenges(endpoint, filters, params)
+  getUserChallenges(userId, username, filters, params) {
+    const endpoint = '/challenges';
+    return this.private.getChallenges(endpoint, { ...filters, userIds: userId }, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item, username));
         return res;
@@ -330,11 +331,12 @@ class ChallengesService {
 
   /**
    * Gets count of user's active challenges.
+   * @param {String} userId Topcoder user ID.
    * @param {String} handle Topcoder user handle.
    * @return {Action} Resolves to the api response.
    */
-  getActiveChallengesCount(handle) {
-    _.noop(this, handle);
+  getActiveChallengesCount(userId, handle) {
+    _.noop(this, userId, handle);
     return Promise.resolve(10);
   }
 }

@@ -369,8 +369,11 @@ class ChallengesService {
     const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
-    const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
+    const decodedToken = this.private.tokenV3 && decodeToken(this.private.tokenV3);
+    const username = decodedToken.handle;
+    const { userId } = decodedToken;
+    const challengeUser = username
+    && await this.getUserChallenges(userId, username, { id: challengeId })
       .then(res => res.challenges[0]).catch(() => null);
 
     const finalChallenge = normalizeChallengeDetails(
@@ -439,14 +442,15 @@ class ChallengesService {
 
   /**
    * Gets challenges of the specified user.
+   * @param {String} userId User ID whose challenges we want to fetch.
    * @param {String} username User whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserChallenges(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getChallenges(endpoint, filters, params)
+  getUserChallenges(userId, username, filters, params) {
+    const endpoint = '/challenges';
+    return this.private.getChallenges(endpoint, { ...filters, userIds: userId }, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item, username));
         return res;
@@ -504,13 +508,14 @@ class ChallengesService {
 
   /**
    * Gets count of user's active challenges.
+   * @param {String} userId Topcoder user ID.
    * @param {String} handle Topcoder user handle.
    * @return {Action} Resolves to the api response.
    */
-  getActiveChallengesCount(handle) {
+  getActiveChallengesCount(userId, handle) {
     const filter = { status: 'ACTIVE' };
     const params = { limit: 1, offset: 0 };
-    return this.getUserChallenges(handle, filter, params).then(res => res.totalCount);
+    return this.getUserChallenges(userId, handle, filter, params).then(res => res.totalCount);
   }
 
   /**
