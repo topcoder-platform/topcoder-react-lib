@@ -126,9 +126,10 @@ function getAllActiveChallengesDone(uuid, tokenV3) {
   let user;
   if (tokenV3) {
     user = decodeToken(tokenV3).handle;
+    const { userId } = decodeToken(tokenV3);
     // Handle any errors on this endpoint so that the non-user specific challenges
     // will still be loaded.
-    calls.push(getAll(params => service.getUserChallenges(user, filter, params)
+    calls.push(getAll(params => service.getUserChallenges(userId, user, filter, params)
       .catch(() => ({ challenges: [] }))));
   }
   return Promise.all(calls).then(([ch, uch]) => {
@@ -184,20 +185,20 @@ function getActiveChallengesDone(
   });
 
   const service = getService(tokenV3);
+  const paginationParams = {
+    limit: PAGE_SIZE,
+    offset: page * PAGE_SIZE,
+  };
   const calls = [
-    service.getChallenges(filter, {
-      limit: PAGE_SIZE,
-      offset: page * PAGE_SIZE,
-    }),
+    service.getChallenges(filter, paginationParams),
   ];
   let user;
   if (tokenV3) {
     user = decodeToken(tokenV3).handle;
+    const { userId } = decodeToken(tokenV3);
     // Handle any errors on this endpoint so that the non-user specific challenges
     // will still be loaded.
-    calls.push(getAll(
-      params => service.getUserChallenges(user, filter, params).catch(() => ({ challenges: [] })),
-    ));
+    calls.push(service.getUserChallenges(userId, user, filter, paginationParams));
   }
   return Promise.all(calls).then(([ch, uch]) => {
     // let fullCH = ch;
@@ -270,7 +271,8 @@ function getRestActiveChallengesDone(
   let user;
   if (tokenV3) {
     user = decodeToken(tokenV3).handle;
-    calls.push(getAll(params => service.getUserChallenges(user, filter, params)
+    const { userId } = decodeToken(tokenV3);
+    calls.push(getAll(params => service.getUserChallenges(userId, user, filter, params)
       .catch(() => ({ challenges: [] }))), 1);
   }
   return Promise.all(calls).then(([ch, uch]) => {
