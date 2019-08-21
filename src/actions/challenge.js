@@ -354,14 +354,15 @@ function getActiveChallengesCountInit() {}
 /**
  * @static
  * @desc Creates an action that gets count of user's active challenges from the backend.
+ * @param {String} userId Topcoder user ID.
  * @param {String} handle Topcoder user handle.
  * @param {String} tokenV3 Optional. Topcoder auth token v3. Without token only
  *  public challenges will be counted. With the token provided, the action will
  *  also count private challenges related to this user.
  * @return {Action}
  */
-function getActiveChallengesCountDone(handle, tokenV3) {
-  return getChallengesService(tokenV3).getActiveChallengesCount(handle);
+function getActiveChallengesCountDone(userId, handle, tokenV3) {
+  return getChallengesService(tokenV3).getActiveChallengesCount(userId, handle);
 }
 
 export default createActions({

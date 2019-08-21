@@ -5,6 +5,7 @@
 
 import qs from 'qs';
 import { createActions } from 'redux-actions';
+import { decodeToken } from 'tc-accounts';
 import { getService } from '../services/members';
 import { getService as getUserService } from '../services/user';
 import { getService as getChallengesService } from '../services/challenges';
@@ -158,8 +159,9 @@ async function getActiveChallengesDone(handle, uuid, tokenV3) {
       return getAll(getter, 1 + page, prev ? prev.concat(chunk) : chunk);
     });
   }
+  const { userId } = decodeToken(tokenV3);
   const calls = [
-    getAll(params => service.getUserChallenges(handle, filter, params)),
+    getAll(params => service.getUserChallenges(userId, handle, filter, params)),
   ];
 
   const [challenges] = await Promise.all(calls);
@@ -258,7 +260,8 @@ async function getSubtrackChallengesDone(
   params.offset = pageNum * pageSize;
 
   const service = getChallengesService(tokenV3);
-  return service.getUserChallenges(handle, filter, params)
+  const { userId } = decodeToken(tokenV3);
+  return service.getUserChallenges(userId, handle, filter, params)
     .then(res => ({
       uuid,
       challenges: res.challenges,

@@ -166,6 +166,7 @@ Object {
       },
     },
     "handle": "tcscoder",
+    "preferences": Object {},
   },
   "type": "PROFILE/SAVE_EMAIL_PREFERENCES_DONE",
 }

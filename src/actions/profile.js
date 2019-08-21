@@ -397,7 +397,7 @@ function saveEmailPreferencesInit() {}
 function saveEmailPreferencesDone(profile, tokenV3, preferences) {
   const service = getUserService(tokenV3);
   return service.saveEmailPreferences(profile, preferences)
-    .then(res => ({ data: res, handle: profile.handle }));
+    .then(res => ({ data: res, handle: profile.handle, preferences }));
 }
 
 /**
