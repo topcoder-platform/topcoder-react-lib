@@ -81,10 +81,16 @@ class MembersService {
   /**
    * Gets member statistics.
    * @param {String} handle
+   * @param {String} groupIds
    * @return {Promise} Resolves to the stats object.
    */
-  async getStats(handle) {
-    const res = await this.private.api.get(`/members/${handle}/stats`);
+  async getStats(handle, groupIds) {
+    let res;
+    if (groupIds) {
+      res = await this.private.api.get(`/members/${handle}/stats?groupIds=${groupIds}`);
+    } else {
+      res = await this.private.api.get(`/members/${handle}/stats`);
+    }
     return getApiResponsePayload(res);
   }
 

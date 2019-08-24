@@ -13,7 +13,7 @@ Actions related to members data.
     * [.getFinancesInit(handle, uuid)](#module_actions.members.getFinancesInit) ⇒ <code>Action</code>
     * [.getFinancesDone(handle, uuid, tokenV3)](#module_actions.members.getFinancesDone) ⇒ <code>Action</code>
     * [.getStatsInit(handle, uuid)](#module_actions.members.getStatsInit) ⇒ <code>Action</code>
-    * [.getStatsDone(handle, uuid, tokenV3)](#module_actions.members.getStatsDone) ⇒ <code>Action</code>
+    * [.getStatsDone(handle, groupIds, uuid, tokenV3)](#module_actions.members.getStatsDone) ⇒ <code>Action</code>
     * [.getActiveChallengesInit(handle, uuid)](#module_actions.members.getActiveChallengesInit) ⇒ <code>Object</code>
     * [.getActiveChallengesDone(handle, uuid, tokenV3)](#module_actions.members.getActiveChallengesDone) ⇒ <code>Object</code>
     * [.getStatsHistoryInit(handle, uuid)](#module_actions.members.getStatsHistoryInit) ⇒ <code>Action</code>
@@ -117,7 +117,7 @@ Creates an action that signals beginning of member stats loading.
 
 <a name="module_actions.members.getStatsDone"></a>
 
-### actions.members.getStatsDone(handle, uuid, tokenV3) ⇒ <code>Action</code>
+### actions.members.getStatsDone(handle, groupIds, uuid, tokenV3) ⇒ <code>Action</code>
 Create an action that loads member statistics.
 
 **Kind**: static method of [<code>actions.members</code>](#module_actions.members)  
@@ -125,6 +125,7 @@ Create an action that loads member statistics.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | Member handle. |
+| groupIds | <code>String</code> | Group ids. |
 | uuid | <code>String</code> | Operation UUID. |
 | tokenV3 | <code>String</code> | v3 auth token. |
 
