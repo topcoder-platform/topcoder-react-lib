@@ -202,6 +202,10 @@ Currently, we use it to save user-defined filters in the challenge search.</p>
  accounts.</p>
 </dd>
 <dt>
+<a href="services.submissions.md">services.submissions</a></dt>
+<dd><p>The Submissions service provides functionality related to Topcoder submissions</p>
+</dd>
+<dt>
 <a href="challenge.filter.md">challenge.filter</a></dt>
 <dd><p>Universal challenge filter. Must be used in all places where we need filter
 or fetch challenges. This way we keep all related logic in the same place,

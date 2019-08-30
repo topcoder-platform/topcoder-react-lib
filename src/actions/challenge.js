@@ -364,6 +364,31 @@ function getActiveChallengesCountDone(handle, tokenV3) {
   return getChallengesService(tokenV3).getActiveChallengesCount(handle);
 }
 
+/**
+ * @static
+ * @desc Creates an action that gets submission information by submission id
+ * @param {String} submissionId The submission id
+ * @return {Action}
+ */
+function getSubmissionInformationInit(submissionId) {
+  return _.toString(submissionId);
+}
+
+/**
+ * @static
+ * @desc Creates an action that gets submission information from the backend.
+ * @param {String} submissionId The submission id
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @return {Action}
+ */
+function getSubmissionInformationDone(submissionId, tokenV3) {
+  return getSubmissionService(tokenV3)
+    .getSubmissionInformation(submissionId)
+    .then(response => ({
+      submissionId, submission: response,
+    }));
+}
+
 export default createActions({
   CHALLENGE: {
     DROP_CHECKPOINTS: dropCheckpoints,
@@ -387,5 +412,7 @@ export default createActions({
     GET_ACTIVE_CHALLENGES_COUNT_DONE: getActiveChallengesCountDone,
     GET_MM_SUBMISSIONS_INIT: getMMSubmissionsInit,
     GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
+    GET_SUBMISSION_INFORMATION_INIT: getSubmissionInformationInit,
+    GET_SUBMISSION_INFORMATION_DONE: getSubmissionInformationDone,
   },
 });

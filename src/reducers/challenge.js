@@ -319,6 +319,45 @@ function onGetActiveChallengesCountDone(state, { payload, error }) {
 }
 
 /**
+ * Handles CHALLENGE/GET_SUBMISSION_INFORMATION_INIT action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetSubmissionInformationInit(state, action) {
+  return {
+    ...state,
+    loadingSubmissionInformationForSubmissionId: action.payload,
+    submissionInformation: null,
+  };
+}
+
+/**
+ * Handles CHALLENGE/GET_SUBMISSION_INFORMATION_DONE action.
+ * @param {Object} state Previous state.
+ * @param {Object} action Action.
+ */
+function onGetSubmissionInformationDone(state, action) {
+  if (action.error) {
+    logger.error('Failed to get submission information', action.payload);
+    return {
+      ...state,
+      loadingSubmissionInformationForSubmissionId: '',
+      submissionInformation: null,
+    };
+  }
+
+  const { submissionId, submission } = action.payload;
+  if (submissionId !== state.loadingSubmissionInformationForSubmissionId) return state;
+
+  return {
+    ...state,
+    loadingSubmissionInformationForSubmissionId: '',
+    submissionInformation: submission,
+  };
+}
+
+/**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Challenge reducer.
@@ -359,12 +398,15 @@ function create(initialState) {
     [a.updateChallengeDone]: onUpdateChallengeDone,
     [a.getActiveChallengesCountInit]: state => state,
     [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
+    [a.getSubmissionInformationInit]: onGetSubmissionInformationInit,
+    [a.getSubmissionInformationDone]: onGetSubmissionInformationDone,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,
     loadingDetailsForChallengeId: '',
     loadingResultsForChallengeId: '',
     loadingMMSubmissionsForChallengeId: '',
+    loadingSubmissionInformationForSubmissionId: '',
     mySubmissions: {},
     checkpoints: null,
     registering: false,
@@ -373,6 +415,7 @@ function create(initialState) {
     unregistering: false,
     updatingChallengeUuid: '',
     mmSubmissions: [],
+    submissionInformation: null,
   }));
 }
 
