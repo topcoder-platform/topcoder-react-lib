@@ -303,7 +303,7 @@ class MembersService {
   async getMembersInformation(userIds) {
     const query = `query=${encodeURI(_.map(userIds, id => `userId:${id}`).join(' OR '))}`;
     const limit = `limit=${userIds.length}`;
-    const url = `/members/_search?fields=userId%2Chandle%2CphotoURL%2CfirstName%2ClastName&${query}&${limit}`;
+    const url = `/members/_search?fields=userId%2Chandle&${query}&${limit}`;
     const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
   }

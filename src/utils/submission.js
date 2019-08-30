@@ -17,7 +17,7 @@ function round(num, decimal) {
 }
 
 function removeDecimal(num, decimal) {
-  return ((num % decimal) + decimal) % decimal;
+  return num < 0 ? ((num % decimal) - decimal) % decimal : ((num % decimal) + decimal) % decimal;
 }
 
 function toFixed(num, decimal) {
