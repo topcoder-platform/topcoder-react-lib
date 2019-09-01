@@ -138,29 +138,30 @@ function getMMSubmissionsInit(challengeId) {
  * @desc Creates an action that loads Marathon Match submissions to the specified
  * challenge.
  * @param {String} challengeId Challenge ID.
- * @param {Array} submitterIds The array of submitter ids.
  * @param {Array} registrants The array of register.
  * @param {String} tokenV3  Topcoder auth token v3.
  * @return {Action}
  */
-function getMMSubmissionsDone(challengeId, submitterIds, registrants, tokenV3) {
+function getMMSubmissionsDone(challengeId, registrants, tokenV3) {
   const filter = { challengeId };
   const memberService = getMemberService(tokenV3);
   const submissionsService = getSubmissionService(tokenV3);
-  const calls = [
-    memberService.getMembersInformation(submitterIds),
-    // TODO: Move those numbers to configs
-    getAll(params => submissionsService.getSubmissions(filter, params), 1, 500),
-  ];
-  return Promise.all(calls).then(([resources, submissions]) => {
-    const finalSubmissions = submissionUtil
-      .processMMSubmissions(submissions, resources, registrants);
-    return {
-      challengeId,
-      submissions: finalSubmissions,
-      tokenV3,
-    };
-  });
+
+  // TODO: Move those numbers to configs
+  return getAll(params => submissionsService.getSubmissions(filter, params), 1, 500)
+    .then((submissions) => {
+      const userIds = _.uniq(_.map(submissions, sub => sub.memberId));
+      return memberService.getMembersInformation(userIds)
+        .then((resources) => {
+          const finalSubmissions = submissionUtil
+            .processMMSubmissions(submissions, resources, registrants);
+          return {
+            challengeId,
+            submissions: finalSubmissions,
+            tokenV3,
+          };
+        });
+    });
 }
 
 /**
