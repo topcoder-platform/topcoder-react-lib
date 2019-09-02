@@ -13,7 +13,6 @@ import { logger, errors, challenge as challengeUtils } from '../utils';
 const { fireErrorMessage } = errors;
 const { filter: Filter } = challengeUtils;
 const { BUCKETS, BUCKET_DATA, getBuckets } = challengeUtils.buckets;
-
 /**
  * Process challenge data for bucket
  * @param handle user handle
@@ -187,22 +186,16 @@ function onGetActiveChallengesDone(state, { error, payload }) {
         ? item => !ids.has(item.id)
         : item => !ids.has(item.id) && item.status !== 'ACTIVE';
 
-      const data = processBucketData(
-        handle, state.challenges, loaded, bucket, state.sorts, sort, filter,
-      );
       newChallenges = _.cloneDeep(state.challenges);
-      newChallenges[bucket] = data;
+      let oldData = newChallenges[bucket];
+      if (!oldData) {
+        oldData = [];
+      }
+      newChallenges[bucket] = [...oldData, ...payload.challenges];
       otherState.loadingMyChallengesUUID = '';
-      otherState.allMyChallengesLoaded = checkAllLoaded(state.challenges, bucket, loaded, data);
+      otherState.allMyChallengesLoaded = newChallenges[bucket].length === meta.myChallengesCount;
       otherState.gettingMoreMyChallenges = !otherState.allMyChallengesLoaded;
       otherState.meta = _.clone(meta);
-      /* TODO Due to the meta of backend response is currently not correct,
-/* so should update counts after fetch all challenges of bucket */
-      if (_.get(meta, 'myChallengesCount') !== data.length && otherState.allMyChallengesLoaded) {
-        otherState.meta.myChallengesCount = data.length;
-        otherState.meta.allChallengesCount = meta.allChallengesCount
-          + data.length - meta.myChallengesCount;
-      }
     }
       break;
     case BUCKETS.OPEN_FOR_REGISTRATION: {
