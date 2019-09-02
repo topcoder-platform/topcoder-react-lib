@@ -16,7 +16,6 @@ const { fireErrorMessage } = errors;
 const { getService } = services.challenge;
 const { getReviewOpportunitiesService } = services.reviewOpportunities;
 const { PAGE_SIZE, REVIEW_OPPORTUNITY_PAGE_SIZE } = config;
-
 /**
  * Process filter
  * When filter includes Data Science track, still should be
@@ -205,7 +204,7 @@ function getActiveChallengesDone(
     /* uch array contains challenges where the user is participating in
      * some role. The same challenge are already listed in res array, but they
      * are not attributed to the user there. This block of code marks user
-     * challenges in an efficient way. */
+    //  * challenges in an efficient way. */
     if (uch) {
       const map = {};
       uch.challenges.forEach((item) => { map[item.id] = item; });
@@ -226,6 +225,10 @@ function getActiveChallengesDone(
     // we can safely remove the next two lines when backend support date range
     challenges = filterUtil.filterByDate(challenges, frontFilter);
     meta = filterUtil.newMeta(meta, challenges, frontFilter);
+    if (bucket === 'my') {
+      const { challenges: u } = uch;
+      challenges = u;
+    }
     return {
       uuid,
       handle: tokenV3 ? user : null,
