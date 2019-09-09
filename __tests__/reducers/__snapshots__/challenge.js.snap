@@ -8,12 +8,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -31,12 +33,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -54,12 +58,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -74,12 +80,14 @@ Object {
   "loadingDetailsForChallengeId": "12345",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -97,6 +105,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -109,6 +118,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -126,6 +136,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -140,6 +151,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -157,6 +169,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -169,6 +182,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -186,6 +200,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "12345",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -196,6 +211,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -214,6 +230,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -226,6 +243,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -243,6 +261,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -257,6 +276,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -274,6 +294,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -288,6 +309,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -305,6 +327,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -319,6 +342,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -336,6 +360,7 @@ Object {
   "loadingDetailsForChallengeId": "12345",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -350,6 +375,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -367,6 +393,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -379,6 +406,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -396,6 +424,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -410,6 +439,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -427,6 +457,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -439,6 +470,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -456,6 +488,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "12345",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -466,6 +499,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -484,6 +518,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -496,6 +531,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -509,12 +545,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -532,12 +570,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -555,12 +595,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -575,12 +617,14 @@ Object {
   "loadingDetailsForChallengeId": "12345",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -598,6 +642,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -610,6 +655,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -627,6 +673,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -641,6 +688,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -658,6 +706,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -670,6 +719,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -687,6 +737,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "12345",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -697,6 +748,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -715,6 +767,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -727,6 +780,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -740,12 +794,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -763,12 +819,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -786,12 +844,14 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -806,12 +866,14 @@ Object {
   "loadingDetailsForChallengeId": "12345",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {},
   "mySubmissionsManagement": Object {},
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -829,6 +891,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -841,6 +904,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -858,6 +922,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -872,6 +937,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -889,6 +955,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -901,6 +968,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -918,6 +986,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "12345",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -928,6 +997,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
@@ -946,6 +1016,7 @@ Object {
   "loadingDetailsForChallengeId": "",
   "loadingMMSubmissionsForChallengeId": "",
   "loadingResultsForChallengeId": "",
+  "loadingSubmissionInformationForSubmissionId": "",
   "loadingSubmissionsForChallengeId": "",
   "mmSubmissions": Array [],
   "mySubmissions": Object {
@@ -958,6 +1029,7 @@ Object {
   "registering": false,
   "results": null,
   "resultsLoadedForChallengeId": "",
+  "submissionInformation": null,
   "unregistering": false,
   "updatingChallengeUuid": "",
 }
