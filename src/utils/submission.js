@@ -7,22 +7,23 @@ import _ from 'lodash';
 
 const { AV_SCAN_SCORER_REVIEW_TYPE_ID } = CONFIG;
 
-function round(num, decimal) {
-  if (_.isNaN(num)) {
-    return 0;
-  }
-  const p1 = 10 ** (decimal + 1);
-  const p2 = 10 ** decimal;
-  return Math.round(num * p1 / 10) / p2;
+function removeDecimal(num) {
+  const re = new RegExp('^-?\\d+');
+  return num.toString().match(re)[0];
 }
 
-function removeDecimal(num, decimal) {
-  return num < 0 ? ((num % decimal) - decimal) % decimal : ((num % decimal) + decimal) % decimal;
+function toAcurateFixed(num, decimal) {
+  const re = new RegExp(`^-?\\d+(?:.\\d{0,${(decimal - 1)}})?`);
+  return num.toString().match(re)[0];
 }
 
 function toFixed(num, decimal) {
-  const result = _.toFinite(round(num, decimal).toFixed(decimal));
-  const integerResult = _.toFinite(removeDecimal(result, decimal));
+  if (_.isNaN(parseFloat(num))) return num;
+  num = parseFloat(num);
+
+  const result = _.toFinite(toAcurateFixed(num, decimal));
+  const integerResult = _.toFinite(removeDecimal(num));
+
   if (_.isInteger(integerResult)) {
     return integerResult;
   }
@@ -141,8 +142,8 @@ export function processMMSubmissions(submissions, resources, registrants) {
       return dateB - dateA;
     });
 
-    const provisionalScore = toFixed(parseFloat(_.get(validReviews, '[0].score', '-')), 5);
-    const finalScore = toFixed(parseFloat(_.get(submission, 'reviewSummation[0].aggregateScore', '-')), 5);
+    const provisionalScore = toFixed(_.get(validReviews, '[0].score', '-'), 5);
+    const finalScore = toFixed(_.get(submission, 'reviewSummation[0].aggregateScore', '-'), 5);
 
     data[memberHandle].push({
       submissionId: submission.id,
