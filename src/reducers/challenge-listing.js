@@ -186,12 +186,13 @@ function onGetActiveChallengesDone(state, { error, payload }) {
         ? item => !ids.has(item.id)
         : item => !ids.has(item.id) && item.status !== 'ACTIVE';
 
+      const data = processBucketData(
+        handle, state.challenges, loaded,
+        bucket, state.sorts, sort, filter, frontFilter,
+      );
+
       newChallenges = _.cloneDeep(state.challenges);
-      let oldData = newChallenges[bucket];
-      if (!oldData) {
-        oldData = [];
-      }
-      newChallenges[bucket] = [...oldData, ...payload.challenges];
+      newChallenges[bucket] = data;
       otherState.loadingMyChallengesUUID = '';
       otherState.allMyChallengesLoaded = newChallenges[bucket].length === meta.myChallengesCount;
       otherState.gettingMoreMyChallenges = !otherState.allMyChallengesLoaded;
@@ -216,13 +217,6 @@ function onGetActiveChallengesDone(state, { error, payload }) {
       otherState.allOpenChallengesLoaded = checkAllLoaded(state.challenges, bucket, loaded, data);
       otherState.gettingMoreOpenChallenges = !otherState.allOpenChallengesLoaded;
       otherState.meta = _.clone(meta);
-      /* TODO Due to the meta of backend response is currently not correct,
-      /* so should update counts after fetch all challenges of bucket */
-      if (_.get(meta, 'openChallengesCount') !== data.length && otherState.allOpenChallengesLoaded) {
-        otherState.meta.openChallengesCount = data.length;
-        otherState.meta.allChallengesCount = meta.allChallengesCount
-          + data.length - meta.openChallengesCount;
-      }
     }
       break;
     case BUCKETS.ONGOING: {
@@ -242,14 +236,7 @@ function onGetActiveChallengesDone(state, { error, payload }) {
       otherState.allOnGoingChallengesLoaded = checkAllLoaded(state.challenges,
         bucket, loaded, data);
       otherState.gettingMoreOnGoingChallenges = !otherState.allOnGoingChallengesLoaded;
-      /* TODO Due to the meta of backend response is currently not correct,
-      /* so should update counts after fetch all challenges of bucket */
       otherState.meta = _.clone(meta);
-      if (_.get(meta, 'ongoingChallengesCount') !== data.length && otherState.allOnGoingChallengesLoaded) {
-        otherState.meta.ongoingChallengesCount = data.length;
-        otherState.meta.allChallengesCount = meta.allChallengesCount
-          + data.length - meta.ongoingChallengesCount;
-      }
     }
       break;
     default:
