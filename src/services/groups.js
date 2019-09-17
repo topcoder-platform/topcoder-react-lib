@@ -193,7 +193,7 @@ class GroupService {
   constructor(tokenV3) {
     const now = Date.now();
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V5', tokenV3),
       cache: {
         groupTreeIds: {
           lastCleanUp: now,
