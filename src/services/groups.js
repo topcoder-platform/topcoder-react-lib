@@ -16,13 +16,13 @@
  * the loaded data.
  */
 
-import _ from 'lodash'
-import { config } from 'topcoder-react-utils'
-import logger from '../utils/logger'
-import { getApi } from './api'
+import _ from 'lodash';
+import { config } from 'topcoder-react-utils';
+import logger from '../utils/logger';
+import { getApi } from './api';
 
 /* The value of USER_GROUP_MAXAGE constant converted to [ms]. */
-const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000
+const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000;
 
 /**
  * Given an array of IDs (or a single ID) of user groups, and a map of known
@@ -32,20 +32,20 @@ const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000
  * @param {Object} knownGroups
  * @return {String[]}
  */
-export function addDescendantGroups (groupIds, knownGroups) {
-  let res = _.isArray(groupIds) ? groupIds : [groupIds]
-  const visitedGroupsIds = new Set()
-  let pos = 0
+export function addDescendantGroups(groupIds, knownGroups) {
+  let res = _.isArray(groupIds) ? groupIds : [groupIds];
+  const visitedGroupsIds = new Set();
+  let pos = 0;
   while (pos < res.length) {
-    const id = res[pos]
+    const id = res[pos];
     if (!visitedGroupsIds.has(id)) {
-      visitedGroupsIds.add(id)
-      const g = knownGroups[id]
-      if (g && g.subGroupIds) res = res.concat(g.subGroupIds)
+      visitedGroupsIds.add(id);
+      const g = knownGroups[id];
+      if (g && g.subGroupIds) res = res.concat(g.subGroupIds);
     }
-    pos += 1
+    pos += 1;
   }
-  return _.uniq(res)
+  return _.uniq(res);
 }
 
 /**
@@ -69,29 +69,29 @@ export function addDescendantGroups (groupIds, knownGroups) {
  *    (or outdated), and are not being loaded.
  *  - "unknown" - the groups that are absent in "knownGroups" map.
  */
-export function checkGroupsStatus (groupIds, knownGroups = {}, loadingGroups = {}) {
-  const loaded = []
-  const loading = []
-  const missing = []
-  const unknown = []
-  const now = Date.now()
-  const tested = new Set()
-  const ids = _.isArray(groupIds) ? groupIds : [groupIds]
+export function checkGroupsStatus(groupIds, knownGroups = {}, loadingGroups = {}) {
+  const loaded = [];
+  const loading = [];
+  const missing = [];
+  const unknown = [];
+  const now = Date.now();
+  const tested = new Set();
+  const ids = _.isArray(groupIds) ? groupIds : [groupIds];
   ids.forEach((id) => {
-    if (tested.has(id)) return
-    tested.add(id)
-    const g = knownGroups[id]
-    if (!g) unknown.push(id)
-    if (g && (now - g.timestamp || 0) < USER_GROUP_MAXAGE) loaded.push(id)
-    else if (loadingGroups[id]) loading.push(id)
-    else missing.push(id)
-  })
+    if (tested.has(id)) return;
+    tested.add(id);
+    const g = knownGroups[id];
+    if (!g) unknown.push(id);
+    if (g && (now - g.timestamp || 0) < USER_GROUP_MAXAGE) loaded.push(id);
+    else if (loadingGroups[id]) loading.push(id);
+    else missing.push(id);
+  });
   return {
     loaded: loaded.length ? loaded : null,
     loading: loading.length ? loading : null,
     missing: missing.length ? missing : null,
-    unknown: unknown.length ? unknown : null
-  }
+    unknown: unknown.length ? unknown : null,
+  };
 }
 
 /**
@@ -103,32 +103,32 @@ export function checkGroupsStatus (groupIds, knownGroups = {}, loadingGroups = {
  * @param {Object} knownGroups Map of known groups.
  * @return {Boolean}
  */
-export function checkUserGroups (groupIds, userGroups, knownGroups) {
-  const queue = _.isArray(groupIds) ? groupIds : [groupIds]
-  if (!queue.length) return true
-  if (!userGroups.length) return false
+export function checkUserGroups(groupIds, userGroups, knownGroups) {
+  const queue = _.isArray(groupIds) ? groupIds : [groupIds];
+  if (!queue.length) return true;
+  if (!userGroups.length) return false;
 
   /* Algorithmically, "knownGroups" stores, in compressed form, data on
    * known trees of user groups; and we want to check whether any of groups
    * from "userGroups" belong to sub-trees having groups from "groupIds" as
    * their roots. So, we do a breadth-frist search through the group trees. */
-  const userGroupIds = new Set()
-  const visitedGroupIds = new Set()
-  userGroups.forEach(g => userGroupIds.add(_.isObject(g) ? g.id : g))
-  let pos = 0
+  const userGroupIds = new Set();
+  const visitedGroupIds = new Set();
+  userGroups.forEach(g => userGroupIds.add(_.isObject(g) ? g.id : g));
+  let pos = 0;
   while (pos < queue.length) {
-    const id = queue[pos]
-    if (userGroupIds.has(id)) return true
-    visitedGroupIds.add(id)
-    const g = knownGroups[id]
+    const id = queue[pos];
+    if (userGroupIds.has(id)) return true;
+    visitedGroupIds.add(id);
+    const g = knownGroups[id];
     if (g && g.subGroupIds) {
       g.subGroupIds.forEach(sgId => (
         !visitedGroupIds.has(sgId) ? queue.push(sgId) : null
-      ))
+      ));
     }
-    pos += 1
+    pos += 1;
   }
-  return false
+  return false;
 }
 
 /**
@@ -136,11 +136,9 @@ export function checkUserGroups (groupIds, userGroups, knownGroups) {
  * @param {Object} response
  * @return {Promise} On success resolves to the data fetched from the API.
  */
-function handleApiResponse (response) {
-  if (!response.ok) throw new Error(response.statusText)
-  return response.json().then(({ result }) => {
-    return result
-  })
+function handleApiResponse(response) {
+  if (!response.ok) throw new Error(response.statusText);
+  return response.json().then(({ result }) => result);
 }
 
 /**
@@ -152,16 +150,16 @@ function handleApiResponse (response) {
  * @param {Object} groups
  * @param {Object} group
  */
-function mergeGroup (groups, group) {
+function mergeGroup(groups, group) {
   /* eslint-disable no-param-reassign */
-  const sg = group.subGroups
-  group.timestamp = Date.now()
+  const sg = group.subGroups;
+  group.timestamp = Date.now();
   if (sg && sg.length) {
-    group.subGroupIds = sg.map(g => g.id)
-    sg.forEach(g => mergeGroup(groups, g))
+    group.subGroupIds = sg.map(g => g.id);
+    sg.forEach(g => mergeGroup(groups, g));
   }
-  delete group.subGroups
-  groups[group.id] = group
+  delete group.subGroups;
+  groups[group.id] = group;
   /* eslint-enable no-param-reassign */
 }
 
@@ -171,14 +169,14 @@ function mergeGroup (groups, group) {
  * @param {Object} group
  * @return {String[]} Array of IDs.
  */
-export function reduceGroupIds ({ id, subGroups }) {
-  let res = [id]
+export function reduceGroupIds({ id, subGroups }) {
+  let res = [id];
   if (subGroups) {
     subGroups.forEach((g) => {
-      res = res.concat(reduceGroupIds(g))
-    })
+      res = res.concat(reduceGroupIds(g));
+    });
   }
-  return res
+  return res;
 }
 
 /**
@@ -188,18 +186,18 @@ class GroupService {
   /**
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    */
-  constructor (tokenV3) {
-    const now = Date.now()
+  constructor(tokenV3) {
+    const now = Date.now();
     this.private = {
       api: getApi('V5', tokenV3),
       cache: {
         groupTreeIds: {
           lastCleanUp: now,
-          data: {}
-        }
+          data: {},
+        },
       },
-      tokenV3
-    }
+      tokenV3,
+    };
   }
 
   /**
@@ -209,10 +207,10 @@ class GroupService {
    * @param {String} membershipType
    * @return {Promise}
    */
-  addMember (groupId, memberId, membershipType) {
+  addMember(groupId, memberId, membershipType) {
     return this.private.api.postJson(`/groups/${groupId}/members`, {
-      param: { memberId, membershipType }
-    }).then(handleApiResponse)
+      param: { memberId, membershipType },
+    }).then(handleApiResponse);
   }
 
   /**
@@ -227,12 +225,12 @@ class GroupService {
    *  whether the response should information about sub-groups, if any.
    * @return {Promise} On success resolves to the group data object.
    */
-  getGroup (groupId, withSubGroups = true) {
-    let url = `/groups/${groupId}`
+  getGroup(groupId, withSubGroups = true) {
+    let url = `/groups/${groupId}`;
     if (withSubGroups) {
-      url = `${url}/getSubGroups?includeSubGroups=true&oneLevel=false`
+      url = `${url}/getSubGroups?includeSubGroups=true&oneLevel=false`;
     }
-    return this.private.api.get(url).then(handleApiResponse)
+    return this.private.api.get(url).then(handleApiResponse);
   }
 
   /**
@@ -248,13 +246,13 @@ class GroupService {
    *  data on the sub-groups will be moved to the root of the map object.
    *  It also timestamps each fetched group.
    */
-  getGroupMap (groupIds) {
-    const res = {}
-    const seen = new Set()
-    const query = _.isArray(groupIds) ? groupIds : [groupIds]
+  getGroupMap(groupIds) {
+    const res = {};
+    const seen = new Set();
+    const query = _.isArray(groupIds) ? groupIds : [groupIds];
     const promises = query.map((id) => {
-      if (seen.has(id)) return null
-      seen.add(id)
+      if (seen.has(id)) return null;
+      seen.add(id);
       return this.getGroup(id)
         .then(group => mergeGroup(res, group))
         .catch((err) => {
@@ -263,15 +261,15 @@ class GroupService {
           * those groups that we managed to get. Otherwise it will be to
           * easy to break our code by minor mistakes in the group-related
           * configuration in the API and in the App. */
-          logger.error(`Failed to get user group #${id}`, err)
+          logger.error(`Failed to get user group #${id}`, err);
 
           /* Empty group with timestamp is added to the result, as we still
           * want to cache the result, even if the result is that we cannot
           * load this group, at least for this visitor. */
-          res[id] = { id, timestamp: Date.now() }
-        })
-    })
-    return Promise.all(promises).then(() => res)
+          res[id] = { id, timestamp: Date.now() };
+        });
+    });
+    return Promise.all(promises).then(() => res);
   }
 
   /**
@@ -292,28 +290,28 @@ class GroupService {
    *  cache. Defaults to 5 minutes.
    * @return {Promise} Resolves to ID array.
    */
-  async getGroupTreeIds (rootGroupId, maxage = 5 * 60 * 1000) {
-    const now = Date.now()
-    const cache = this.private.cache.groupTreeIds
+  async getGroupTreeIds(rootGroupId, maxage = 5 * 60 * 1000) {
+    const now = Date.now();
+    const cache = this.private.cache.groupTreeIds;
 
     /* Clean-up: removes stale records from the cache. */
-    const CLEAN_UP_INTERVAL = 24 * 60 * 60 * 1000 // 1 day in ms.
+    const CLEAN_UP_INTERVAL = 24 * 60 * 60 * 1000; // 1 day in ms.
     if (now - cache.lastCleanUp > CLEAN_UP_INTERVAL) {
       _.forOwn(cache, ({ timestamp }, key) => {
-        if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key]
-      })
-      cache.lastCleanUp = now
+        if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key];
+      });
+      cache.lastCleanUp = now;
     }
 
     /* If result is found in cache, and is fresh enough, return it. */
-    const cached = cache[rootGroupId]
-    if (cached && now - cached.timestamp < maxage) return _.clone(cached.data)
+    const cached = cache[rootGroupId];
+    if (cached && now - cached.timestamp < maxage) return _.clone(cached.data);
 
     /* Otherwise, fetch result from the API, write it to the cache, and
      * finally return that. */
-    const res = reduceGroupIds(await this.getGroup(rootGroupId))
-    cache[rootGroupId] = { data: res, timestamp: now }
-    return _.clone(res)
+    const res = reduceGroupIds(await this.getGroup(rootGroupId));
+    cache[rootGroupId] = { data: res, timestamp: now };
+    return _.clone(res);
   }
 
   /**
@@ -322,9 +320,9 @@ class GroupService {
    * @return {Promise} On sucess resolves to the array of member objects,
    *  which include user IDs, membership time, and some bookkeeping data.
    */
-  getMembers (groupId) {
+  getMembers(groupId) {
     return this.private.api.get(`/groups/${groupId}/members`)
-      .then(handleApiResponse)
+      .then(handleApiResponse);
   }
 
   /**
@@ -334,37 +332,37 @@ class GroupService {
    *  will include members of sub-groups of the specified group.
    * @return {Promise} Resolves to the members count.
    */
-  async getMembersCount (groupId, withSubGroups) {
-    let url = `/groups/${groupId}/membersCount`
-    if (withSubGroups) url += '?includeSubGroups=true'
-    let res = await this.private.api.get(url)
-    if (!res.ok) throw new Error(res.statusText)
-    res = (await res.json()).result
-    if (!res.success) throw new Error(res.content)
-    return Number(res.content)
+  async getMembersCount(groupId, withSubGroups) {
+    let url = `/groups/${groupId}/membersCount`;
+    if (withSubGroups) url += '?includeSubGroups=true';
+    let res = await this.private.api.get(url);
+    if (!res.ok) throw new Error(res.statusText);
+    res = (await res.json()).result;
+    if (!res.success) throw new Error(res.content);
+    return Number(res.content);
   }
 
   /**
    * Returns TC Auth Token V3 used by the service instance.
    * @return {String} Token.
    */
-  getTokenV3 () {
-    return this.private.tokenV3
+  getTokenV3() {
+    return this.private.tokenV3;
   }
 }
 
-let lastInstance = null
+let lastInstance = null;
 /**
  * Returns a new or existing instance of challenge service, which works with
  * the specified auth token.
  * @param {String} tokenV3 Optional. Topcoder API v3 auth token.
  * @return {GroupService} Instance of the service.
  */
-export function getService (tokenV3) {
+export function getService(tokenV3) {
   if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
-    lastInstance = new GroupService(tokenV3)
+    lastInstance = new GroupService(tokenV3);
   }
-  return lastInstance
+  return lastInstance;
 }
 
-export default undefined
+export default undefined;
