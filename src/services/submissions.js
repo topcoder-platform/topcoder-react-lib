@@ -27,7 +27,7 @@ class SubmissionsService {
    * @return {Promise} Resolves to the api response.
    */
   async getSubmissions(challengeId) {
-    const url = `/submissions?challengeId=${challengeId}`;
+    const url = `/v5/submissions?challengeId=${challengeId}`;
     return this.private.broker.get(url)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
@@ -38,7 +38,7 @@ class SubmissionsService {
    * @returns {Promise} Resolves to the api response.
    */
   async getSubmissionInformation(submissionId) {
-    const url = `/submissions/${submissionId}`;
+    const url = `/v5/submissions/${submissionId}`;
     return this.private.broker.get(url)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
