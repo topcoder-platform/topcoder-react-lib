@@ -318,10 +318,8 @@ Object {
     },
   },
   "submission": Object {
-    "default": undefined,
     "getFinalScore": [Function],
     "getProvisionalScore": [Function],
-    "processMMSubmissions": [Function],
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
