@@ -24,7 +24,7 @@ function toFixed(num, decimal) {
   const result = _.toFinite(toAcurateFixed(num, decimal));
   const integerResult = _.toFinite(removeDecimal(num));
 
-  if (_.isInteger(integerResult)) {
+  if (_.isInteger(result)) {
     return integerResult;
   }
   return result;
