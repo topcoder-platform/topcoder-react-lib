@@ -13,7 +13,7 @@ function removeDecimal(num) {
 }
 
 function toAcurateFixed(num, decimal) {
-  const re = new RegExp(`^-?\\d+(?:.\\d{0,${(decimal - 1)}})?`);
+  const re = new RegExp(`^-?\\d+(?:.\\d{0,${(decimal)}})?`);
   return num.toString().match(re)[0];
 }
 
@@ -24,7 +24,7 @@ function toFixed(num, decimal) {
   const result = _.toFinite(toAcurateFixed(num, decimal));
   const integerResult = _.toFinite(removeDecimal(num));
 
-  if (_.isInteger(integerResult)) {
+  if (_.isInteger(result)) {
     return integerResult;
   }
   return result;
