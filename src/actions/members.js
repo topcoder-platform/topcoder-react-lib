@@ -115,12 +115,13 @@ async function getStatsInit(handle, uuid) {
  * @static
  * @desc Create an action that loads member statistics.
  * @param {String} handle Member handle.
+ * @param {String} groupIds Group ids.
  * @param {String} uuid Operation UUID.
  * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function getStatsDone(handle, uuid, tokenV3) {
-  const data = await getService(tokenV3).getStats(handle);
+async function getStatsDone(handle, groupIds, uuid, tokenV3) {
+  const data = await getService(tokenV3).getStats(handle, groupIds);
   return { data, handle, uuid };
 }
 

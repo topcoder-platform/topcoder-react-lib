@@ -24,6 +24,8 @@ Actions related to Topcoder challenges APIs.
     * [.updateChallengeDone(uuid, challenge, tokenV3)](#module_actions.challenge.updateChallengeDone) ⇒ <code>Action</code>
     * [.getActiveChallengesCountInit()](#module_actions.challenge.getActiveChallengesCountInit) ⇒ <code>Action</code>
     * [.getActiveChallengesCountDone(handle, tokenV3)](#module_actions.challenge.getActiveChallengesCountDone) ⇒ <code>Action</code>
+    * [.getSubmissionInformationInit(submissionId)](#module_actions.challenge.getSubmissionInformationInit) ⇒ <code>Action</code>
+    * [.getSubmissionInformationDone(submissionId, tokenV3)](#module_actions.challenge.getSubmissionInformationDone) ⇒ <code>Action</code>
 
 <a name="module_actions.challenge.dropCheckpoints"></a>
 
@@ -246,3 +248,20 @@ Creates an action that gets count of user's active challenges from the backend.
 | handle | <code>String</code> | Topcoder user handle. |
 | tokenV3 | <code>String</code> | Optional. Topcoder auth token v3. Without token only  public challenges will be counted. With the token provided, the action will  also count private challenges related to this user. |
 
+<a name="module_actions.challenge.getSubmissionInformationInit"></a>
+
+### actions.challenge.getSubmissionInformationInit(submissionId) ⇒ <code>Action</code>
+Creates an action that signals beginning of getting submission information
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
+
+<a name="module_actions.challenge.getSubmissionInformationDone"></a>
+### actions.challenge.getSubmissionInformationDone(submissionId, tokenV3) ⇒ <code>Action</code>
+Creates an action that gets submission information from the backend.
+
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| submissionId | <code>String</code> | The id of submission |
+| tokenV3 | <code>String</code> | Topcoder auth token v3. |

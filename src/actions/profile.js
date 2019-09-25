@@ -132,10 +132,11 @@ function getStatsInit() {}
  * @static
  * @desc Creates an action that loads member's stats.
  * @param {String} handle Member handle.
+ * @param {String} groupIds Group ids.
  * @return {Action}
  */
-function getStatsDone(handle) {
-  return getMembersService().getStats(handle);
+function getStatsDone(handle, groupIds) {
+  return getMembersService().getStats(handle, groupIds);
 }
 
 /**

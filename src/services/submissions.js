@@ -38,6 +38,18 @@ class SubmissionsService {
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => res);
   }
+
+  /**
+   * Get submission information by submission id
+   * @param submissionId The submission id
+   * @returns {Promise} Resolves to the api response.
+   */
+  async getSubmissionInformation(submissionId) {
+    const url = `/submissions/${submissionId}`;
+    return this.private.apiV5.get(url)
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => res);
+  }
 }
 
 let lastInstance = null;

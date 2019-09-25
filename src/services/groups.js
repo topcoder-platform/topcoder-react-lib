@@ -139,10 +139,11 @@ export function checkUserGroups(groupIds, userGroups, knownGroups) {
  */
 function handleApiResponse(response) {
   if (!response.ok) throw new Error(response.statusText);
-  return response.json().then(({ result }) => {
-    if (result.status !== 200) throw new Error(result.content);
-    return result.content;
-  });
+  return response.json();
+  // return response.json().then(({ result }) => {
+  //   return result;
+  // if (result.status !== 200) throw new Error(result.content);
+  // });
 }
 
 /**
@@ -193,7 +194,7 @@ class GroupService {
   constructor(tokenV3) {
     const now = Date.now();
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V5', tokenV3),
       cache: {
         groupTreeIds: {
           lastCleanUp: now,
@@ -341,9 +342,9 @@ class GroupService {
     if (withSubGroups) url += '?includeSubGroups=true';
     let res = await this.private.api.get(url);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (!res.success) throw new Error(res.content);
-    return Number(res.content);
+    res = (await res.json());
+    // if (!res.success) throw new Error(res.content);
+    return Number(res.count);
   }
 
   /**

@@ -27,6 +27,8 @@ State segment managed by this reducer has the following strcuture:
         * [~onUpdateChallengeInit(state, actions)](#module_reducers.challenge..onUpdateChallengeInit) ⇒ <code>Object</code>
         * [~onUpdateChallengeDone(state, actions)](#module_reducers.challenge..onUpdateChallengeDone) ⇒ <code>Object</code>
         * [~onGetActiveChallengesCountDone(state, action)](#module_reducers.challenge..onGetActiveChallengesCountDone) ⇒ <code>Object</code>
+        * [~onGetSubmissionInformationInit(state, action)](#module_reducers.challenge..onGetSubmissionInformationInit) ⇒ <code>Object</code>
+        * [~onGetSubmissionInformationDone(state, action)](#module_reducers.challenge..onGetSubmissionInformationDone) ⇒ <code>Object</code>
         * [~create(initialState)](#module_reducers.challenge..create) ⇒ <code>function</code>
 
 <a name="module_reducers.challenge.default"></a>
@@ -198,13 +200,39 @@ Handles CHALLENGE/UPDATE_CHALLENGE_DONE.
 ### reducers.challenge~onGetActiveChallengesCountDone(state, action) ⇒ <code>Object</code>
 Handles CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE action.
 
-**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)  
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
 **Returns**: <code>Object</code> - New state  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | state | <code>Object</code> | Old state. |
 | action | <code>Object</code> | Action payload/error |
+
+<a name="module_reducers.challenge..onGetSubmissionInformationInit"></a>
+
+### reducers.challenge~onGetSubmissionInformationInit(state, action) ⇒ <code>Object</code>
+Handles CHALLENGE/GET_SUBMISSION_INFORMATION_INIT action.
+
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
+**Returns**: <code>Object</code> - New state
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> |
+| action | <code>Object</code> |
+
+<a name="module_reducers.challenge..onGetSubmissionInformationDone"></a>
+
+### reducers.challenge~onGetSubmissionInformationDone(state, action) ⇒ <code>Object</code>
+Handles CHALLENGE/GET_SUBMISSION_INFORMATION_DONE action.
+
+**Kind**: inner method of [<code>reducers.challenge</code>](#module_reducers.challenge)
+**Returns**: <code>Object</code> - New state.
+
+| Param | Type |
+| --- | --- |
+| state | <code>Object</code> |
+| action | <code>Object</code> |
 
 <a name="module_reducers.challenge..create"></a>
 

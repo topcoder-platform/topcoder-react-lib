@@ -81,10 +81,16 @@ class MembersService {
   /**
    * Gets member statistics.
    * @param {String} handle
+   * @param {String} groupIds
    * @return {Promise} Resolves to the stats object.
    */
-  async getStats(handle) {
-    const res = await this.private.api.get(`/members/${handle}/stats`);
+  async getStats(handle, groupIds) {
+    let res;
+    if (groupIds) {
+      res = await this.private.api.get(`/members/${handle}/stats?groupIds=${groupIds}`);
+    } else {
+      res = await this.private.api.get(`/members/${handle}/stats`);
+    }
     return getApiResponsePayload(res);
   }
 
@@ -297,7 +303,7 @@ class MembersService {
   async getMembersInformation(userIds) {
     const query = `query=${encodeURI(_.map(userIds, id => `userId:${id}`).join(' OR '))}`;
     const limit = `limit=${userIds.length}`;
-    const url = `/members/_search?fields=userId%2Chandle%2CphotoURL%2CfirstName%2ClastName&${query}&${limit}`;
+    const url = `/members/_search?fields=userId%2Chandle&${query}&${limit}`;
     const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
   }

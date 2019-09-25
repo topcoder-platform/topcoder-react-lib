@@ -19,6 +19,8 @@ Object {
       "getDetailsInit": [Function],
       "getMmSubmissionsDone": [Function],
       "getMmSubmissionsInit": [Function],
+      "getSubmissionInformationDone": [Function],
+      "getSubmissionInformationInit": [Function],
       "getSubmissionsDone": [Function],
       "getSubmissionsInit": [Function],
       "loadResultsDone": [Function],
