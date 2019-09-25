@@ -139,10 +139,11 @@ export function checkUserGroups(groupIds, userGroups, knownGroups) {
  */
 function handleApiResponse(response) {
   if (!response.ok) throw new Error(response.statusText);
-  return response.json().then(({ result }) => {
-    // if (result.status !== 200) throw new Error(result.content);
-    return response.json();
-  });
+  return response.json();
+  // return response.json().then(({ result }) => {
+  //   return result;
+  // if (result.status !== 200) throw new Error(result.content);
+  // });
 }
 
 /**
