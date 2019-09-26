@@ -244,10 +244,10 @@ class ChallengesService {
       params = {},
     ) => {
       const query = {
-        filter: qs.stringify(filters, { encode: false }),
+        filter: qs.stringify(filters, { encode: false }).replace('&', '%26'),
         ...params,
       };
-      const url = `${endpoint}?${qs.stringify(query)}`;
+      const url = `${endpoint}?${qs.stringify(query, { encode: false })}`;
       const res = await this.private.api.get(url).then(checkError);
       return {
         challenges: res.content || [],

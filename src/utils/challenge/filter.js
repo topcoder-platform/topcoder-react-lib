@@ -178,6 +178,39 @@ function filterByUsers(challenge, state) {
 }
 
 /**
+ * [filterByDate filter challenges by date reange]
+ * @param  {[type]} challenges input challenges
+ * @param  {[type]} filter     filter including startDate and endDate
+ * @return {[type]}            filtered challenges array
+ */
+export function filterByDate(challenges, filter) {
+  let cs = challenges.filter(c => filterByStartDate(c, filter));
+  cs = cs.filter(c => filterByEndDate(c, filter));
+  return cs;
+}
+
+/**
+ * [newMeta compute new meta via challenges and filter]
+ * @param  {[type]} meta       old meta
+ * @param  {[type]} challenges input challenges
+ * @param  {[type]} filter     filter including startDate and end endDate
+ * @return {[type]}            new meta
+ */
+export function newMeta(meta, challenges, filter) {
+  if (!filter.startDate && !filter.endDate) {
+    return meta;
+  }
+  const m = {
+  };
+  m.allChallengesCount = challenges.length;
+  m.openChallengesCount = challenges.filter(c => c.registrationOpen === 'Yes').length;
+  m.ongoingChallengesCount = m.allChallengesCount - m.openChallengesCount;
+  m.myChallengesCount = challenges.filter(c => c.user && !_.isEmpty(c.user)).length;
+  m.totalCount = challenges.length;
+  return m;
+}
+
+/**
  * Returns clone of the state with the specified competition track added.
  * @param {Object} state
  * @param {String} track
