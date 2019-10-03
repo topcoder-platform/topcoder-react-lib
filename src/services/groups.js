@@ -174,8 +174,8 @@ function mergeGroup(groups, group) {
  * @param {Object} group
  * @return {String[]} Array of IDs.
  */
-export function reduceGroupIds({ id, subGroups }) {
-  let res = [id];
+export function reduceGroupIds({ oldId, subGroups }) {
+  let res = [oldId];
   if (subGroups) {
     subGroups.forEach((g) => {
       res = res.concat(reduceGroupIds(g));
@@ -212,10 +212,12 @@ class GroupService {
    * @param {String} membershipType
    * @return {Promise}
    */
-  addMember(groupId, memberId, membershipType) {
-    return this.private.api.postJson(`/groups/${groupId}/members`, {
+  async addMember(groupId, memberId, membershipType) {
+    const response = await this.private.api.postJson(`/groups/${groupId}/members`, {
       param: { memberId, membershipType },
-    }).then(handleApiResponse);
+    });
+
+    return handleApiResponse(response);
   }
 
   /**
@@ -230,12 +232,14 @@ class GroupService {
    *  whether the response should information about sub-groups, if any.
    * @return {Promise} On success resolves to the group data object.
    */
-  getGroup(groupId, withSubGroups = true) {
+  async getGroup(groupId, withSubGroups = true) {
     let url = `/groups/${groupId}`;
     if (withSubGroups) {
-      url = `${url}/getSubGroups?includeSubGroups=true&oneLevel=false`;
+      url = `${url}/?includeSubGroups=true&oneLevel=false`;
     }
-    return this.private.api.get(url).then(handleApiResponse);
+
+    const response = await this.private.api.get(url)
+    return handleApiResponse(response);
   }
 
   /**
@@ -325,9 +329,9 @@ class GroupService {
    * @return {Promise} On sucess resolves to the array of member objects,
    *  which include user IDs, membership time, and some bookkeeping data.
    */
-  getMembers(groupId) {
-    return this.private.api.get(`/groups/${groupId}/members`)
-      .then(handleApiResponse);
+  async getMembers(groupId) {
+    const response = await this.private.api.get(`/groups/${groupId}/members`);
+    return handleApiResponse(response);
   }
 
   /**
