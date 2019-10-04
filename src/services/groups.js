@@ -238,7 +238,7 @@ class GroupService {
       url = `${url}/?includeSubGroups=true&oneLevel=false`;
     }
 
-    const response = await this.private.api.get(url)
+    const response = await this.private.api.get(url);
     return handleApiResponse(response);
   }
 
