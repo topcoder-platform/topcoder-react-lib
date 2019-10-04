@@ -4,7 +4,7 @@
  * submitting applications.
  */
 import { getApi } from './api';
-
+import qs from 'qs';
 /**
  * Service class.
  */
@@ -25,9 +25,15 @@ class ReviewOpportunitiesService {
    * @param {Number} offset Offset, used with limit to lazy load.
    * @return {Promise} Resolves to the api response in JSON.
    */
-  getReviewOpportunities(limit, offset) {
-    const endpoint = `/reviewOpportunities?limit=${limit}&offset=${offset}`;
-    return this.private.api.get(endpoint)
+  getReviewOpportunities(limit, offset, filters = {}) {
+    const query = {
+      limit,
+      offset,
+      filter: qs.stringify(filters, { encode: false })
+    };
+    const endpoint = `/reviewOpportunities`;
+    const url = `${endpoint}?${qs.stringify(query)}`;
+    return this.private.api.get(url)
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`Error Code: ${res.status}`))))
       .then(res => (
         res.result.status === 200
