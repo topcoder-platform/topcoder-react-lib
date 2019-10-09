@@ -12,6 +12,7 @@ import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
+import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -82,6 +83,15 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     numberOfCheckpointSubmissions: challenge.numberOfCheckpointSubmissions,
     registrants: challenge.registrants || [],
   };
+
+
+  _.forEach(finalChallenge.registrants, (registrant) => {
+    if (registrant.memberInfo) {
+      const { homeCountryCode } = registrant.memberInfo;
+      // eslint-disable-next-line no-param-reassign
+      registrant.countryCode = homeCountryCode || registrant.memberInfo.competitionCountryCode;
+    }
+  });
 
   // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
   finalChallenge.winners = _.map(
@@ -262,6 +272,7 @@ class ChallengesService {
       getChallenges,
       tokenV2,
       tokenV3,
+      memberService: getMembersService(),
     };
   }
 
@@ -372,6 +383,8 @@ class ChallengesService {
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
     const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
       .then(res => res.challenges[0]).catch(() => null);
+
+    await this.private.memberService.getListMemberInfo(challenge.registrants || [], false);
 
     const finalChallenge = normalizeChallengeDetails(
       challenge,

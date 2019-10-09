@@ -13,6 +13,7 @@ members via API V3.
             * [new MembersService(tokenV3)](#new_module_services.members..MembersService_new)
             * [.getMemberFinances(handle)](#module_services.members..MembersService+getMemberFinances) ⇒ <code>Promise</code>
             * [.getMemberInfo(handle)](#module_services.members..MembersService+getMemberInfo) ⇒ <code>Promise</code>
+            * [.getListMemberInfo(members)](#module_services.members..MembersService+getListMemberInfo) ⇒ <code>Promise</code>
             * [.getExternalAccounts(handle)](#module_services.members..MembersService+getExternalAccounts) ⇒ <code>Promise</code>
             * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
             * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
@@ -53,6 +54,7 @@ Service class.
     * [new MembersService(tokenV3)](#new_module_services.members..MembersService_new)
     * [.getMemberFinances(handle)](#module_services.members..MembersService+getMemberFinances) ⇒ <code>Promise</code>
     * [.getMemberInfo(handle)](#module_services.members..MembersService+getMemberInfo) ⇒ <code>Promise</code>
+    * [.getListMemberInfo(members)](#module_services.members..MembersService+getListMemberInfo) ⇒ <code>Promise</code>
     * [.getExternalAccounts(handle)](#module_services.members..MembersService+getExternalAccounts) ⇒ <code>Promise</code>
     * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
     * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
@@ -104,6 +106,18 @@ This method does not require any authorization.
 | --- | --- | --- |
 | handle | <code>String</code> | Member handle. |
 
+#### membersService.getListMemberInfo(members) ⇒ <code>Promise</code>
+Gets public information on a list member.
+
+This method does not require any authorization.
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the array.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| members | <code>Array</code> | Array of member info. |
+
 <a name="module_services.members..MembersService+getExternalAccounts"></a>
 
 #### membersService.getExternalAccounts(handle) ⇒ <code>Promise</code>
@@ -114,7 +128,7 @@ Gets member external account info.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getExternalLinks"></a>
 
@@ -126,7 +140,7 @@ Gets member external links.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getSkills"></a>
 
@@ -138,7 +152,7 @@ Gets member skills.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStats"></a>
 
@@ -150,7 +164,7 @@ Gets member statistics.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStatsHistory"></a>
 
@@ -162,7 +176,7 @@ Gets member statistics history
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStatsDistribution"></a>
 
@@ -174,9 +188,9 @@ Gets member statistics distribution
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
-| track | <code>String</code> | 
-| subTrack | <code>String</code> | 
+| handle | <code>String</code> |
+| track | <code>String</code> |
+| subTrack | <code>String</code> |
 
 <a name="module_services.members..MembersService+getMemberSuggestions"></a>
 
