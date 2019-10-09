@@ -386,6 +386,17 @@ class ChallengesService {
   }
 
   /**
+   * Gets challenge registrants from Topcoder API.
+   * @param {Number|String} challengeId
+   * @return {Promise} Resolves to the challenge registrants array.
+   */
+  async getChallengeRegistrants(challengeId) {
+    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
+      .then(checkError).then(res => res.content);
+    return challenge.registrants;
+  }
+
+  /**
    * Gets possible challenge subtracks.
    * @return {Promise} Resolves to the array of subtrack names.
    */
