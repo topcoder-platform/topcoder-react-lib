@@ -49,25 +49,6 @@ class MembersService {
   }
 
   /**
-   * Gets public information on a list member.
-   *
-   * This method does not require any authorization.
-   *
-   * @param {Array} members List member info.
-   * @param {Boolean} shouldThrowError should throw error if request fail
-   * @return {Promise} Resolves to the data object.
-   */
-  async getListMemberInfo(members, shouldThrowError = true) {
-    const getHandle = async (member) => {
-      const result = await this.private.api.get(`/members/${member.handle}`);
-      // eslint-disable-next-line no-param-reassign
-      member.memberInfo = await getApiResponsePayload(result, shouldThrowError);
-    };
-    const apis = members.map(member => getHandle(member));
-    await Promise.all(apis);
-  }
-
-  /**
    * Gets member external account info.
    * @param {String} handle
    * @return {Promise} Resolves to the stats object.

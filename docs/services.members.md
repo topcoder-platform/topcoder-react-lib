@@ -13,7 +13,6 @@ members via API V3.
             * [new MembersService(tokenV3)](#new_module_services.members..MembersService_new)
             * [.getMemberFinances(handle)](#module_services.members..MembersService+getMemberFinances) ⇒ <code>Promise</code>
             * [.getMemberInfo(handle)](#module_services.members..MembersService+getMemberInfo) ⇒ <code>Promise</code>
-            * [.getListMemberInfo(members)](#module_services.members..MembersService+getListMemberInfo) ⇒ <code>Promise</code>
             * [.getExternalAccounts(handle)](#module_services.members..MembersService+getExternalAccounts) ⇒ <code>Promise</code>
             * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
             * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
@@ -54,7 +53,6 @@ Service class.
     * [new MembersService(tokenV3)](#new_module_services.members..MembersService_new)
     * [.getMemberFinances(handle)](#module_services.members..MembersService+getMemberFinances) ⇒ <code>Promise</code>
     * [.getMemberInfo(handle)](#module_services.members..MembersService+getMemberInfo) ⇒ <code>Promise</code>
-    * [.getListMemberInfo(members)](#module_services.members..MembersService+getListMemberInfo) ⇒ <code>Promise</code>
     * [.getExternalAccounts(handle)](#module_services.members..MembersService+getExternalAccounts) ⇒ <code>Promise</code>
     * [.getExternalLinks(handle)](#module_services.members..MembersService+getExternalLinks) ⇒ <code>Promise</code>
     * [.getSkills(handle)](#module_services.members..MembersService+getSkills) ⇒ <code>Promise</code>
@@ -105,18 +103,6 @@ This method does not require any authorization.
 | Param | Type | Description |
 | --- | --- | --- |
 | handle | <code>String</code> | Member handle. |
-
-#### membersService.getListMemberInfo(members) ⇒ <code>Promise</code>
-Gets public information on a list member.
-
-This method does not require any authorization.
-
-**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
-**Returns**: <code>Promise</code> - Resolves to the array.
-
-| Param | Type | Description |
-| --- | --- | --- |
-| members | <code>Array</code> | Array of member info. |
 
 <a name="module_services.members..MembersService+getExternalAccounts"></a>
 
