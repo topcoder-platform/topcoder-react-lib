@@ -3,6 +3,8 @@
 exports[`Module exports 1`] = `
 Object {
   "lookup": Object {
+    "getAllCountriesDone": [Function],
+    "getAllCountriesInit": [Function],
     "getCountriesDone": [Function],
     "getCountriesInit": [Function],
     "getSkillTagsDone": [Function],
