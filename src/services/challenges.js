@@ -388,6 +388,17 @@ class ChallengesService {
   }
 
   /**
+   * Gets challenge registrants from Topcoder API.
+   * @param {Number|String} challengeId
+   * @return {Promise} Resolves to the challenge registrants array.
+   */
+  async getChallengeRegistrants(challengeId) {
+    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
+      .then(checkError).then(res => res.content);
+    return challenge.registrants;
+  }
+
+  /**
    * Gets possible challenge subtracks.
    * @return {Promise} Resolves to the array of subtrack names.
    */
@@ -466,7 +477,6 @@ class ChallengesService {
     const endpoint = `/members/${username.toLowerCase()}/mms/`;
     return this.private.getChallenges(endpoint, filters, params);
   }
-
 
   /**
    * Gets SRM matches related to the user.
@@ -576,6 +586,26 @@ class ChallengesService {
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
     return res.content;
+  }
+
+  /**
+   * Gets roles of a user in the specified challenge. The user tested is
+   * the owner of authentication token used to instantiate the service.
+   *
+   * Notice, if you have already loaded the challenge as that user, these roles
+   * are attached to the challenge object under `userDetails.roles` path during
+   * challenge normalization. However, if you have not, this method is the most
+   * efficient way to get them, as it by-passes any unnecessary normalizations
+   * of the challenge object.
+   *
+   * @param {Number} challengeId Challenge ID.
+   */
+  async getUserRolesInChallenge(challengeId) {
+    const user = decodeToken(this.private.tokenV3);
+    const username = user.handle || user.payload.handle;
+    const url = `/members/${username.toLowerCase()}/challenges`;
+    const data = await this.private.getChallenges(url, { id: challengeId });
+    return data.challenges[0].userDetails.roles;
   }
 }
 
