@@ -84,15 +84,6 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     registrants: challenge.registrants || [],
   };
 
-
-  _.forEach(finalChallenge.registrants, (registrant) => {
-    if (registrant.memberInfo) {
-      const { homeCountryCode } = registrant.memberInfo;
-      // eslint-disable-next-line no-param-reassign
-      registrant.countryCode = homeCountryCode || registrant.memberInfo.competitionCountryCode;
-    }
-  });
-
   // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
   finalChallenge.winners = _.map(
     challenge.winners,
@@ -383,8 +374,6 @@ class ChallengesService {
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
     const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
       .then(res => res.challenges[0]).catch(() => null);
-
-    await this.private.memberService.getListMemberInfo(challenge.registrants || [], false);
 
     const finalChallenge = normalizeChallengeDetails(
       challenge,
