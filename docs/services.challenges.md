@@ -21,6 +21,7 @@ This module provides a service for convenient manipulation with
             * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
             * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
             * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
+            * [.getMyChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
             * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
             * [.getSrms(params)](#module_services.challenges..ChallengesService+getSrms) ⇒ <code>Promise</code>
             * [.getUserChallenges(username, filters, params)](#module_services.challenges..ChallengesService+getUserChallenges) ⇒ <code>Promise</code>
@@ -41,8 +42,8 @@ NOTE: It is possible, that this normalization is not necessary after we
 have moved to Topcoder API v3, but it is kept for now to minimize a risk of
 breaking anything.
 
-**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)  
-**Returns**: <code>Object</code> - Normalized challenge object.  
+**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)
+**Returns**: <code>Object</code> - Normalized challenge object.
 **Todo**
 
 - [ ] Why this one is exported? It should be only used internally!
@@ -65,7 +66,7 @@ component. It is possible, that this normalization is not necessary after we
 have moved to Topcoder API v3, but it is kept for now to minimize a risk of
 breaking anything.
 
-**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)  
+**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)
 **Todo**
 
 - [ ] Should be used only internally!
@@ -85,8 +86,8 @@ component. It is possible, that this normalization is not necessary after we
 have moved to Topcoder API v3, but it is kept for now to minimize a risk of
 breaking anything.
 
-**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)  
-**Returns**: <code>Object</code> - Normalized challenge.  
+**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)
+**Returns**: <code>Object</code> - Normalized challenge.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -98,8 +99,8 @@ breaking anything.
 ### services.challenges.getService(tokenV3, tokenV2) ⇒ <code>ChallengesService</code>
 Returns a new or existing challenges service.
 
-**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)  
-**Returns**: <code>ChallengesService</code> - Challenges service object  
+**Kind**: static method of [<code>services.challenges</code>](#module_services.challenges)
+**Returns**: <code>ChallengesService</code> - Challenges service object
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -111,7 +112,7 @@ Returns a new or existing challenges service.
 ### services.challenges~ChallengesService
 Challenge service.
 
-**Kind**: inner class of [<code>services.challenges</code>](#module_services.challenges)  
+**Kind**: inner class of [<code>services.challenges</code>](#module_services.challenges)
 
 * [~ChallengesService](#module_services.challenges..ChallengesService)
     * [new ChallengesService(tokenV3, tokenV2)](#new_module_services.challenges..ChallengesService_new)
@@ -122,6 +123,7 @@ Challenge service.
     * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
     * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
     * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
+    * [.getMyChallenges(filters, params)](#module_services.challenges..ChallengesService+getMyChallenges) ⇒ <code>Promise</code>
     * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
     * [.getSrms(params)](#module_services.challenges..ChallengesService+getSrms) ⇒ <code>Promise</code>
     * [.getUserChallenges(username, filters, params)](#module_services.challenges..ChallengesService+getUserChallenges) ⇒ <code>Promise</code>
@@ -149,22 +151,22 @@ Creates a new ChallengeService instance.
 #### challengesService.activate(challengeId) ⇒ <code>Promise</code>
 Activates the specified challenge.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 **Returns**: <code>Promise</code> - Resolves to null value in case of success; otherwise it
- is rejected.  
+ is rejected.
 
 | Param | Type |
 | --- | --- |
-| challengeId | <code>Number</code> | 
+| challengeId | <code>Number</code> |
 
 <a name="module_services.challenges..ChallengesService+close"></a>
 
 #### challengesService.close(challengeId, winnerId) ⇒ <code>Promise</code>
 Closes the specified challenge.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 **Returns**: <code>Promise</code> - Resolves to null value in case of success; otherwise it
- is rejected.  
+ is rejected.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -176,8 +178,8 @@ Closes the specified challenge.
 #### challengesService.createTask(projectId, accountId, title, description, assignee, payment) ⇒ <code>Promise</code>
 Creates a new payment task.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the created challenge object (payment task).  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the created challenge object (payment task).
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -196,34 +198,45 @@ NOTE: This function also uses API v2 and other v3 endpoints for now, due
 to some information is missing or
 incorrect in the main v3 endpoint. This may change in the future.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the challenge object.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the challenge object.
 
 | Param | Type |
 | --- | --- |
-| challengeId | <code>Number</code> \| <code>String</code> | 
+| challengeId | <code>Number</code> \| <code>String</code> |
 
 <a name="module_services.challenges..ChallengesService+getChallengeSubtracks"></a>
 
 #### challengesService.getChallengeSubtracks() ⇒ <code>Promise</code>
 Gets possible challenge subtracks.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the array of subtrack names.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the array of subtrack names.
 <a name="module_services.challenges..ChallengesService+getChallengeTags"></a>
 
 #### challengesService.getChallengeTags() ⇒ <code>Promise</code>
 Gets possible challenge tags (technologies).
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the array of tag strings.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the array of tag strings.
 <a name="module_services.challenges..ChallengesService+getChallenges"></a>
 
 #### challengesService.getChallenges(filters, params) ⇒ <code>Promise</code>
 Gets challenges.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the api response.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the api response.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| filters | <code>Object</code> | Optional. |
+| params | <code>Object</code> | Optional. |
+
+#### challengesService.getMyChallenges(filters, params) ⇒ <code>Promise</code>
+Gets my challenges.
+
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the api response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -235,8 +248,8 @@ Gets challenges.
 #### challengesService.getMarathonMatches(filters, params) ⇒ <code>Promise</code>
 Gets marathon matches.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolve to the api response.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolve to the api response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -248,19 +261,19 @@ Gets marathon matches.
 #### challengesService.getSrms(params) ⇒ <code>Promise</code>
 Gets SRM matches.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type |
 | --- | --- |
-| params | <code>Object</code> | 
+| params | <code>Object</code> |
 
 <a name="module_services.challenges..ChallengesService+getUserChallenges"></a>
 
 #### challengesService.getUserChallenges(username, filters, params) ⇒ <code>Promise</code>
 Gets challenges of the specified user.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the api response.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the api response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -273,42 +286,42 @@ Gets challenges of the specified user.
 #### challengesService.getUserSrms(handle, params) ⇒ <code>Promise</code>
 Gets SRM matches related to the user.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
-| params | <code>Object</code> | 
+| handle | <code>String</code> |
+| params | <code>Object</code> |
 
 <a name="module_services.challenges..ChallengesService+register"></a>
 
 #### challengesService.register(challengeId) ⇒ <code>Promise</code>
 Registers user to the specified challenge.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type |
 | --- | --- |
-| challengeId | <code>String</code> | 
+| challengeId | <code>String</code> |
 
 <a name="module_services.challenges..ChallengesService+unregister"></a>
 
 #### challengesService.unregister(challengeId) ⇒ <code>Promise</code>
 Unregisters user from the specified challenge.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type |
 | --- | --- |
-| challengeId | <code>String</code> | 
+| challengeId | <code>String</code> |
 
 <a name="module_services.challenges..ChallengesService+getUserMarathonMatches"></a>
 
 #### challengesService.getUserMarathonMatches(username, filters, params) ⇒ <code>Promise</code>
 Gets marathon matches of the specified user.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Promise</code> - Resolves to the api response.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Promise</code> - Resolves to the api response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -321,8 +334,8 @@ Gets marathon matches of the specified user.
 #### challengesService.getActiveChallengesCount(handle) ⇒ <code>Action</code>
 Gets count of user's active challenges.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
-**Returns**: <code>Action</code> - Resolves to the api response.  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
+**Returns**: <code>Action</code> - Resolves to the api response.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -334,7 +347,7 @@ Gets count of user's active challenges.
 Submits a challenge submission.  Uses APIV2 for Development submission
 and APIV3 for Design submisisons.
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -347,20 +360,20 @@ and APIV3 for Design submisisons.
 #### challengesService.updateChallenge(challenge, tokenV3) ⇒ <code>Promise</code>
 Updates the challenge (saves the give challenge to the API).
 
-**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
+**Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)
 
 | Param | Type |
 | --- | --- |
-| challenge | <code>Object</code> | 
-| tokenV3 | <code>String</code> | 
+| challenge | <code>Object</code> |
+| tokenV3 | <code>String</code> |
 
 <a name="module_services.challenges..normalizeNameConventionForSubtrack"></a>
 
 ### services.challenges~normalizeNameConventionForSubtrack(subTrack) ⇒ <code>String</code>
 Normalize name convention for subtrack
 
-**Kind**: inner method of [<code>services.challenges</code>](#module_services.challenges)  
-**Returns**: <code>String</code> - Normalized subtrack ID.  
+**Kind**: inner method of [<code>services.challenges</code>](#module_services.challenges)
+**Returns**: <code>String</code> - Normalized subtrack ID.
 
 | Param | Type | Description |
 | --- | --- | --- |
