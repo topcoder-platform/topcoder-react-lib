@@ -14,6 +14,7 @@ class LookupService {
   constructor(tokenV3) {
     this.private = {
       api: getApi('V3', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       tokenV3,
     };
   }
@@ -36,6 +37,16 @@ class LookupService {
   async getCountries() {
     const res = await this.private.api.get('/members/lookup/countries');
     return getApiResponsePayload(res);
+  }
+
+  /**
+   * Gets all countries.
+   * @return {Promise} Resolves to the countries.
+   */
+  async getAllCountries() {
+    const res = await this.private.apiV5.get('/lookups/countries');
+    const jsonResult = await res.json();
+    return jsonResult;
   }
 }
 

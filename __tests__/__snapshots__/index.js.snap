@@ -58,6 +58,8 @@ Object {
       "getLookerDone": [Function],
     },
     "lookup": Object {
+      "getAllCountriesDone": [Function],
+      "getAllCountriesInit": [Function],
       "getCountriesDone": [Function],
       "getCountriesInit": [Function],
       "getSkillTagsDone": [Function],
@@ -318,10 +320,8 @@ Object {
     },
   },
   "submission": Object {
-    "default": undefined,
     "getFinalScore": [Function],
     "getProvisionalScore": [Function],
-    "processMMSubmissions": [Function],
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
