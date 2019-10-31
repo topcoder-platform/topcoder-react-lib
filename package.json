@@ -15,7 +15,7 @@
   ],
   "license": "UNLICENSED",
   "main": "index.js",
-  "name": "topcoder-react-lib",
+  "name": "@topcoder-platform/topcoder-react-lib",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/topcoder-platform/topcoder-react-lib.git"
