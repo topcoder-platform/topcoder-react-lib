@@ -15,7 +15,7 @@
   ],
   "license": "UNLICENSED",
   "main": "index.js",
-  "name": "@topcoder-platform/topcoder-react-lib",
+  "name": "topcoder-react-lib",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/topcoder-platform/topcoder-react-lib.git"
@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "1000.2.1",
+  "version": "1000.2.2",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
