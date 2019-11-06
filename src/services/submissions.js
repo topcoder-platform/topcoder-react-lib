@@ -3,7 +3,7 @@
  * @desc This module provides a service for convenient manipulation with
  *  Topcoder submissions via TC API. Currently only used for MM challenges
  */
-
+import qs from 'qs';
 import { getApi } from './api';
 
 /**
@@ -16,20 +16,27 @@ class SubmissionsService {
    */
   constructor(tokenV3) {
     this.private = {
-      broker: getApi('MM_BROKER', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       tokenV3,
     };
   }
 
   /**
    * Get submissions of challenge
-   * @param {Object} challengeId
+   * @param {Object} filters
+   * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getSubmissions(challengeId) {
-    const url = `/v5/submissions?challengeId=${challengeId}`;
-    return this.private.broker.get(url)
-      .then(res => (res.ok ? res.json() : new Error(res.statusText)));
+  async getSubmissions(filters, params) {
+    const query = {
+      ...filters,
+      ...params,
+    };
+
+    const url = `/submissions?${qs.stringify(query, { encode: false })}`;
+    return this.private.apiV5.get(url)
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => res);
   }
 
   /**
@@ -38,9 +45,10 @@ class SubmissionsService {
    * @returns {Promise} Resolves to the api response.
    */
   async getSubmissionInformation(submissionId) {
-    const url = `/v5/submissions/${submissionId}`;
-    return this.private.broker.get(url)
-      .then(res => (res.ok ? res.json() : new Error(res.statusText)));
+    const url = `/submissions/${submissionId}`;
+    return this.private.apiV5.get(url)
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => res);
   }
 }
 
