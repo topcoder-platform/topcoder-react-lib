@@ -327,7 +327,8 @@ function onGetActiveChallengesCountDone(state, { payload, error }) {
 function onGetSubmissionInformationInit(state, action) {
   return {
     ...state,
-    loadingSubmissionInformationForSubmissionId: action.payload,
+    loadingSubmissionInformationForChallengeId: action.payload.challengeId,
+    loadingSubmissionInformationForSubmissionId: action.payload.submissionId,
     submissionInformation: null,
   };
 }

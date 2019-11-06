@@ -3,12 +3,48 @@
  * @desc Actions related to Topcoder challenges APIs.
  */
 
+/* global CONFIG */
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
+import { getService as getMemberService } from '../services/members';
 import { getApi } from '../services/api';
+import * as submissionUtil from '../utils/submission';
+
+const { PAGE_SIZE } = CONFIG;
+
+/**
+ * Private. Loads from the backend all data matching some conditions.
+ * @param {Function} getter Given params object of shape { limit, offset }
+ *  loads from the backend at most "limit" data, skipping the first
+ *  "offset" ones. Returns loaded data as an array.
+ * @param {Number} page Optional. Next page of data to load.
+ * @param {Number} perPage Optional. The size of the page content to load.
+ * @param {Array} prev Optional. data loaded so far.
+ */
+function getAll(getter, page = 1, perPage = PAGE_SIZE, prev) {
+  /* Amount of submissions to fetch in one API call. 50 is the current maximum
+   * amount of submissions the backend returns, event when the larger limit is
+   * explicitely required. */
+  return getter({
+    page,
+    perPage,
+  }).then((res) => {
+    if (res.length === 0) {
+      return prev || res;
+    }
+    // parse submissions
+    let current = [];
+    if (prev) {
+      current = prev.concat(res);
+    } else {
+      current = res;
+    }
+    return getAll(getter, 1 + page, perPage, current);
+  });
+}
 
 /**
  * @static
@@ -106,10 +142,26 @@ function getMMSubmissionsInit(challengeId) {
  * @param {String} tokenV3  Topcoder auth token v3.
  * @return {Action}
  */
-async function getMMSubmissionsDone(challengeId, registrants, tokenV3) {
+function getMMSubmissionsDone(challengeId, registrants, tokenV3) {
+  const filter = { challengeId };
+  const memberService = getMemberService(tokenV3);
   const submissionsService = getSubmissionService(tokenV3);
-  const submissions = await submissionsService.getSubmissions(challengeId);
-  return { challengeId, submissions, tokenV3 };
+
+  // TODO: Move those numbers to configs
+  return getAll(params => submissionsService.getSubmissions(filter, params), 1, 500)
+    .then((submissions) => {
+      const userIds = _.uniq(_.map(submissions, sub => sub.memberId));
+      return memberService.getMembersInformation(userIds)
+        .then((resources) => {
+          const finalSubmissions = submissionUtil
+            .processMMSubmissions(submissions, resources, registrants);
+          return {
+            challengeId,
+            submissions: finalSubmissions,
+            tokenV3,
+          };
+        });
+    });
 }
 
 /**
@@ -319,8 +371,8 @@ function getActiveChallengesCountDone(handle, tokenV3) {
  * @param {String} submissionId The submission id
  * @return {Action}
  */
-function getSubmissionInformationInit(submissionId) {
-  return _.toString(submissionId);
+function getSubmissionInformationInit(challengeId, submissionId) {
+  return { challengeId: _.toString(challengeId), submissionId: _.toString(submissionId) };
 }
 
 /**
@@ -330,12 +382,16 @@ function getSubmissionInformationInit(submissionId) {
  * @param {String} tokenV3 Topcoder auth token v3.
  * @return {Action}
  */
-function getSubmissionInformationDone(submissionId, tokenV3) {
-  return getSubmissionService(tokenV3)
-    .getSubmissionInformation(submissionId)
-    .then(response => ({
-      submissionId, submission: response,
-    }));
+function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
+  const filter = { challengeId };
+  const submissionsService = getSubmissionService(tokenV3);
+
+  return getAll(params => submissionsService.getSubmissions(filter, params), 1, 500)
+    .then((submissions) => {
+      const submission = _.find(submissions, { id: submissionId });
+      _.remove(submission.review, review => review.typeId === CONFIG.AV_SCAN_SCORER_REVIEW_TYPE_ID);
+      return { submissionId, submission };
+    });
 }
 
 export default createActions({
