@@ -114,7 +114,7 @@ Gets member external account info.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getExternalLinks"></a>
 
@@ -126,7 +126,7 @@ Gets member external links.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getSkills"></a>
 
@@ -138,7 +138,7 @@ Gets member skills.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStats"></a>
 
@@ -150,7 +150,7 @@ Gets member statistics.
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStatsHistory"></a>
 
@@ -162,7 +162,7 @@ Gets member statistics history
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
+| handle | <code>String</code> |
 
 <a name="module_services.members..MembersService+getStatsDistribution"></a>
 
@@ -174,9 +174,9 @@ Gets member statistics distribution
 
 | Param | Type |
 | --- | --- |
-| handle | <code>String</code> | 
-| track | <code>String</code> | 
-| subTrack | <code>String</code> | 
+| handle | <code>String</code> |
+| track | <code>String</code> |
+| subTrack | <code>String</code> |
 
 <a name="module_services.members..MembersService+getMemberSuggestions"></a>
 

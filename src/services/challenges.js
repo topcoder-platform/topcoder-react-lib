@@ -12,6 +12,7 @@ import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
+import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -262,6 +263,7 @@ class ChallengesService {
       getChallenges,
       tokenV2,
       tokenV3,
+      memberService: getMembersService(),
     };
   }
 
