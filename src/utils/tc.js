@@ -29,12 +29,25 @@ export const REVIEW_OPPORTUNITY_TYPES = {
  * Gets payload from a standard success response from TC API; or throws
  * an error in case of a failure response.
  * @param {Object} res
+ * @param {Boolean} shouldThrowError should throw error if request fail
  * @return {Promise} Resolves to the payload.
  */
-export async function getApiResponsePayload(res) {
-  if (!res.ok) throw new Error(res.statusText);
+export async function getApiResponsePayload(res, shouldThrowError = true) {
+  if (!res.ok) {
+    if (shouldThrowError) {
+      throw new Error(res.statusText);
+    } else {
+      return null;
+    }
+  }
   const x = (await res.json()).result;
-  if (!x.success) throw new Error(x.content);
+  if ((!x.success)) {
+    if (shouldThrowError) {
+      throw new Error(x.content);
+    } else {
+      return null;
+    }
+  }
   return x.content;
 }
 

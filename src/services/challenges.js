@@ -12,6 +12,7 @@ import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
+import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -249,9 +250,10 @@ class ChallengesService {
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
       const res = await this.private.api.get(url).then(checkError);
+      const challengeList = res.content || [];
       return {
-        challenges: res.content || [],
-        totalCount: res.metadata.totalCount,
+        challenges: challengeList,
+        totalCount: res.metadata ? res.metadata.totalCount : challengeList.length,
         meta: res.metadata,
       };
     };
@@ -262,6 +264,7 @@ class ChallengesService {
       getChallenges,
       tokenV2,
       tokenV3,
+      memberService: getMembersService(),
     };
   }
 
@@ -432,6 +435,20 @@ class ChallengesService {
    */
   getChallenges(filters, params) {
     return this.private.getChallenges('/challenges/', filters, params)
+      .then((res) => {
+        res.challenges.forEach(item => normalizeChallenge(item));
+        return res;
+      });
+  }
+
+  /**
+   * Gets my challenges.
+   * @param {Object} filters Optional.
+   * @param {Object} params Optional.
+   * @return {Promise} Resolves to the api response.
+   */
+  getMyChallenges(filters, params) {
+    return this.private.getChallenges('/challenges/member', filters, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
