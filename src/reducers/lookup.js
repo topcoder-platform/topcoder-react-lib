@@ -49,6 +49,25 @@ function onGetCountriesDone(state, { payload, error }) {
 }
 
 /**
+ * Handles LOOKUP/GET_ALL_COUNTRIES_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetAllCountriesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get all countries', payload);
+    return { ...state, loadingAllCountriesError: true };
+  }
+
+  return ({
+    ...state,
+    loadingAllCountriesError: false,
+    allCountries: payload,
+  });
+}
+
+/**
  * Creates a new Lookup reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Lookup reducer.
@@ -60,9 +79,12 @@ function create(initialState = {}) {
     [a.getSkillTagsDone]: onGetSkillTagsDone,
     [a.getCountriesInit]: state => state,
     [a.getCountriesDone]: onGetCountriesDone,
+    [a.getAllCountriesInit]: state => state,
+    [a.getAllCountriesDone]: onGetAllCountriesDone,
   }, _.defaults(initialState, {
     skillTags: [],
     countries: [],
+    allCountries: [],
   }));
 }
 

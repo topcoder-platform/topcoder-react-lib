@@ -58,6 +58,8 @@ Object {
       "getLookerDone": [Function],
     },
     "lookup": Object {
+      "getAllCountriesDone": [Function],
+      "getAllCountriesInit": [Function],
       "getCountriesDone": [Function],
       "getCountriesInit": [Function],
       "getSkillTagsDone": [Function],
