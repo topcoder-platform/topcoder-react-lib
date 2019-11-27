@@ -22,6 +22,7 @@ function getSkillTagsDone() {
   const params = {
     domain: 'SKILLS',
     status: 'APPROVED',
+    limit: 1000,
   };
   return getService().getTags(params);
 }

@@ -25,7 +25,7 @@ class LookupService {
    * @return {Promise} Resolves to the tags.
    */
   async getTags(params) {
-    const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
+    const res = await this.private.api.get(`/tags/?filter=${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
