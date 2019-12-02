@@ -5,7 +5,7 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
 
-const { AV_SCAN_SCORER_REVIEW_TYPE_ID } = CONFIG;
+const { AV_SCAN_SCORER_REVIEW_TYPE_ID, PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID } = CONFIG;
 
 function removeDecimal(num) {
   const re = new RegExp('^-?\\d+');
@@ -142,6 +142,10 @@ export function processMMSubmissions(submissions, resources, registrants) {
       return dateB - dateA;
     });
 
+    const provisionalScoringIsCompleted = _.some(
+      submission.review,
+      { id: PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID },
+    );
     const provisionalScore = toFixed(_.get(validReviews, '[0].score', '-'), 5);
     const finalScore = toFixed(_.get(submission, 'reviewSummation[0].aggregateScore', '-'), 5);
 
@@ -150,6 +154,8 @@ export function processMMSubmissions(submissions, resources, registrants) {
       submissionTime: submission.created,
       provisionalScore,
       finalScore,
+      provisionalScoringIsCompleted,
+      review: submission.review,
     });
   });
 
