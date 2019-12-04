@@ -209,10 +209,7 @@ class GroupService {
    * @return {Promise}
    */
   async addMember(groupId, memberId, membershipType) {
-    const response = await this.private.api.postJson(`/groups/${groupId}/members`, {
-      param: { memberId, membershipType },
-    });
-
+    const response = await this.private.api.postJson(`/groups/${groupId}/members`, { memberId, membershipType });
     return handleApiResponse(response);
   }
 
