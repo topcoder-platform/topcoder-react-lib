@@ -24,7 +24,9 @@ function getSkillTagsDone() {
       domain: 'SKILLS',
       status: 'APPROVED'
     },
-    limit: 1000,
+    limit: {
+      limit: 1000
+    }
   };
   return getService().getTags(params);
 }
