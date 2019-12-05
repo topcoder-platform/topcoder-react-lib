@@ -31,7 +31,11 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
+<<<<<<< HEAD
   "version": "0.10.0",
+=======
+  "version": "1000.5.0",
+>>>>>>> Update package.json
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
