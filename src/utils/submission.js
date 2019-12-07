@@ -144,8 +144,9 @@ export function processMMSubmissions(submissions, resources, registrants) {
 
     const provisionalScoringIsCompleted = _.some(
       submission.review,
-      { id: PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID },
+      { typeId: PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID },
     );
+
     const provisionalScore = toFixed(_.get(validReviews, '[0].score', '-'), 5);
     const finalScore = toFixed(_.get(submission, 'reviewSummation[0].aggregateScore', '-'), 5);
 
