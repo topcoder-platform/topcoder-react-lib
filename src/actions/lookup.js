@@ -22,11 +22,11 @@ function getSkillTagsDone() {
   const params = {
     filter: {
       domain: 'SKILLS',
-      status: 'APPROVED'
+      status: 'APPROVED',
     },
     limit: {
-      limit: 1000
-    }
+      limit: 1000,
+    },
   };
   return getService().getTags(params);
 }
