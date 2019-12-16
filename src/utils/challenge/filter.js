@@ -89,12 +89,12 @@ function filterByRegistrationOpen(challenge, state) {
     if (challenge.subTrack === 'MARATHON_MATCH') {
       return challenge.status !== 'PAST';
     }
-    const registrationPhase = challenge.allPhases.find(item => item.phaseType === 'Registration');
+    const registrationPhase = (challenge.allPhases || challenge.phases || []).find(item => item.phaseType === 'Registration');
     if (!registrationPhase || registrationPhase.phaseStatus !== 'Open') {
       return false;
     }
     if (challenge.track === 'DESIGN') {
-      const checkpointPhase = challenge.allPhases.find(item => item.phaseType === 'Checkpoint Submission');
+      const checkpointPhase = (challenge.allPhases || challenge.phases || []).find(item => item.phaseType === 'Checkpoint Submission');
       return !checkpointPhase || checkpointPhase.phaseStatus !== 'Closed';
     }
     return true;

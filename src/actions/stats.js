@@ -42,7 +42,7 @@ async function getCommunityStatsDone(community, uuid, challenges, token) {
     /* TODO: At the moment, this component loads challenge objects to calculate
     * the number of challenges and the total prize. Probably in future, we'll
     * have a special API to get these data. */
-    let filtered = challenges.filter(x => x.status === 'ACTIVE');
+    let filtered = challenges.filter(x => x.status === 'Active');
     if (community.challengeFilter) {
       const filterFunction = Filter.getFilterFunction(community.challengeFilter);
       filtered = filtered.filter(filterFunction);

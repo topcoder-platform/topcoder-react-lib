@@ -173,7 +173,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.phaseType === 'Registration' || !d.phaseType))[0].phaseStatus === 'Open' ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -221,6 +221,29 @@ async function checkError(res) {
 }
 
 /**
+ * Helper method that checks for HTTP error response v5 and throws Error in this case.
+ * @param {Object} res HTTP response object
+ * @return {Object} API JSON response object
+ * @private
+ */
+async function checkErrorV5(res) {
+  if (!res.ok) {
+    if (res.status >= 500) {
+      setErrorIcon(ERROR_ICON_TYPES.API, '/challenges', res.statusText);
+    }
+    throw new Error(res.statusText);
+  }
+  const jsonRes = (await res.json());
+  if (jsonRes.message) {
+    throw new Error(res.message);
+  }
+  return {
+    result: jsonRes,
+    headers: res.headers,
+  };
+}
+
+/**
  * Challenge service.
  */
 class ChallengesService {
@@ -245,6 +268,32 @@ class ChallengesService {
       params = {},
     ) => {
       const query = {
+        ...filters,
+        ...params,
+      };
+      const url = `${endpoint}?${qs.stringify(query)}`;
+      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      return {
+        challenges: res.result || [],
+        totalCount: res.headers.get('x-total'),
+        meta: res.headers,
+      };
+    };
+    /**
+     * Private function being re-used in all methods related to getting
+     * challenges. It handles query-related arguments in the uniform way:
+     * @param {String} endpoint API endpoint, where the request will be send.
+     * @param {Object} filters Optional. A map of filters to pass as `filter`
+     *  query parameter (this function takes care to stringify it properly).
+     * @param {Object} params Optional. A map of any other parameters beside
+     *  `filter`.
+     */
+    const getMemberChallenges = async (
+      endpoint,
+      filters = {},
+      params = {},
+    ) => {
+      const query = {
         filter: qs.stringify(filters, { encode: false }),
         ...params,
       };
@@ -259,8 +308,10 @@ class ChallengesService {
 
     this.private = {
       api: getApi('V4', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
       getChallenges,
+      getMemberChallenges,
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
@@ -365,8 +416,8 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
-      .then(checkError).then(res => res.content);
+    const challenge = await this.private.apiV5.get(`/challenges/${challengeId}`)
+      .then(checkErrorV5).then(res => res);
 
     const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
@@ -393,9 +444,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
-      .then(checkError).then(res => res.content);
-    return challenge.registrants;
+    const challenge = await this.private.apiV5.get(`/challenges/${challengeId}`)
+      .then(checkError).then(res => res);
+    return challenge.registrants || [];
   }
 
   /**
@@ -403,12 +454,12 @@ class ChallengesService {
    * @return {Promise} Resolves to the array of subtrack names.
    */
   getChallengeSubtracks() {
-    return this.private.api.get('/challenge-types')
+    return this.private.apiV5.get('/challengeTypes')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
-        res.result.status === 200
-          ? res.result.content
-          : new Error(res.result.content)
+        res.message
+          ? new Error(res.message)
+          : res
       ));
   }
 
@@ -450,6 +501,19 @@ class ChallengesService {
     return getApiResponsePayload(res);
   }
 
+  static updateFiltersParamsForGettingMemberChallenges(filters, params) {
+    if (filters && filters.status === 'Active') {
+      // eslint-disable-next-line no-param-reassign
+      filters.status = 'ACTIVE';
+    }
+    if (params && params.perPage) {
+      // eslint-disable-next-line no-param-reassign
+      params.offset = (params.page - 1) * params.perPage;
+      // eslint-disable-next-line no-param-reassign
+      params.limit = params.perPage;
+    }
+  }
+
   /**
    * Gets challenges of the specified user.
    * @param {String} username User whose challenges we want to fetch.
@@ -458,8 +522,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserChallenges(username, filters, params) {
+    ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
     const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getChallenges(endpoint, filters, params)
+    return this.private.getMemberChallenges(endpoint, filters, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item, username));
         return res;
@@ -474,8 +539,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserMarathonMatches(username, filters, params) {
+    ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
     const endpoint = `/members/${username.toLowerCase()}/mms/`;
-    return this.private.getChallenges(endpoint, filters, params);
+    return this.private.getMemberChallenges(endpoint, filters, params);
   }
 
   /**
@@ -520,7 +586,7 @@ class ChallengesService {
    * @return {Action} Resolves to the api response.
    */
   getActiveChallengesCount(handle) {
-    const filter = { status: 'ACTIVE' };
+    const filter = { status: 'Active' };
     const params = { limit: 1, offset: 0 };
     return this.getUserChallenges(handle, filter, params).then(res => res.totalCount);
   }
@@ -604,7 +670,7 @@ class ChallengesService {
     const user = decodeToken(this.private.tokenV3);
     const username = user.handle || user.payload.handle;
     const url = `/members/${username.toLowerCase()}/challenges`;
-    const data = await this.private.getChallenges(url, { id: challengeId });
+    const data = await this.private.getMemberChallenges(url, { id: challengeId });
     return data.challenges[0].userDetails.roles;
   }
 }
