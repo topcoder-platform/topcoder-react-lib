@@ -2,10 +2,11 @@
 const webpack = require('webpack');
 
 module.exports = {
-  plugins: [
-    // eslint-disable-next-line global-require
-    new webpack.DefinePlugin({ CONFIG: JSON.stringify(require('config')) }),
-  ],
+  node: {
+    tls: 'empty',
+    fs: 'empty',
+    net: 'empty',
+  },
   // Don't include the dependencies to keep built bundle small,
   // they will be provided by the app using this lib
   externals: [
