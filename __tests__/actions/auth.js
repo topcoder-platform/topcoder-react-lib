@@ -1,4 +1,4 @@
-const MOCK_GROUPS_REQ_URL = 'https://api.topcoder-dev.com/v3/groups?memberId=12345&membershipType=user';
+// const MOCK_GROUPS_REQ_URL = 'https://api.topcoder-dev.com/v3/groups?memberId=12345&membershipType=user';
 const MOCK_GROUPS_REQ_URL_V5 = 'https://api.topcoder-dev.com/v5/groups?memberId=12345&membershipType=user';
 const MOCK_PROFILE_REQ_URL = 'https://api.topcoder-dev.com/v3/members/username12345';
 
