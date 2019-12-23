@@ -60,7 +60,6 @@ function onGetDetailsDone(state, action) {
       loadingDetailsForChallengeId: '',
     };
   }
-
   const details = action.payload;
   if (_.toString(details.id) !== state.loadingDetailsForChallengeId) {
     return state;

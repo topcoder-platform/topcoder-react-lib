@@ -39,13 +39,14 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
   const finalChallenge = {
     ...challenge,
 
-    id: challenge.challengeId,
+    id: challenge.id,
     reliabilityBonus: _.get(filtered, 'reliabilityBonus', 0),
     status: (challenge.currentStatus || '').toUpperCase(),
 
     allPhases: [],
     currentPhases: [],
-    name: challenge.challengeName || challenge.challengeTitle,
+    challengeType: {},
+    name: challenge.challengeName || challenge.challengeTitle || challenge.name || '',
     projectId: Number(challenge.projectId),
     forumId: Number(challenge.forumId),
     introduction: challenge.introduction || '',
@@ -65,8 +66,12 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     submissionLimit: Number(challenge.submissionLimit) || 0,
     drPoints: challenge.digitalRunPoints,
     directUrl: challenge.directUrl,
-    technologies: challenge.technologies || challenge.technology || [],
-    platforms: challenge.platforms || [],
+    tags: _.union(
+      challenge.technologies || [],
+      challenge.technology || [],
+      challenge.platforms || [],
+      challenge.tags || [],
+    ),
     prizes: challenge.prize || challenge.prizes || [],
     events: _.map(challenge.event, e => ({
       eventName: e.eventShortDesc,
@@ -137,10 +142,12 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     });
   }
 
+  const allPhases = finalChallenge.allPhases || finalChallenge.phases || [];
+
   // Fill some derived data
   const registrationOpen = _.some(
-    finalChallenge.allPhases,
-    phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
+    allPhases,
+    phase => phase.name === 'Registration' && phase.isActive,
   ) ? 'Yes' : 'No';
   _.defaults(finalChallenge, {
     communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
@@ -173,7 +180,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.phaseType === 'Registration' || !d.phaseType))[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isActive ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -199,6 +206,7 @@ export function normalizeChallenge(challenge, username) {
     registrationOpen,
     submissionEndTimestamp: challenge.submissionEndDate,
     users: username ? { [username]: true } : {},
+    challengeType: {},
   });
 }
 
@@ -276,7 +284,13 @@ class ChallengesService {
       return {
         challenges: res.result || [],
         totalCount: res.headers.get('x-total'),
-        meta: res.headers,
+        meta: {
+          allChallengesCount: res.headers.get('x-total'),
+          myChallengesCount: 0,
+          ongoingChallengesCount: 0,
+          openChallengesCount: 0,
+          totalCount: res.headers.get('x-total'),
+        },
       };
     };
     /**
@@ -417,14 +431,17 @@ class ChallengesService {
    */
   async getChallengeDetails(challengeId) {
     const challenge = await this.private.apiV5.get(`/challenges/${challengeId}`)
-      .then(checkErrorV5).then(res => res);
+      .then(checkErrorV5).then(res => res.result);
 
     const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
-      .then(res => res.challenges[0]).catch(() => null);
+    let challengeUser = {};
+    if (challenge.legacyId) {
+      challengeUser = username && await this.getUserChallenges(username, { id: challenge.legacyId })
+        .then(res => res.challenges[0]).catch(() => null);
+    }
 
     const finalChallenge = normalizeChallengeDetails(
       challenge,
@@ -454,7 +471,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the array of subtrack names.
    */
   getChallengeSubtracks() {
-    return this.private.apiV5.get('/challengeTypes')
+    return this.private.apiV5.get('/challengetypes')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
@@ -522,9 +539,10 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserChallenges(username, filters, params) {
-    ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
+    const userFilters = _.cloneDeep(filters);
+    ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
     const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getMemberChallenges(endpoint, filters, params)
+    return this.private.getMemberChallenges(endpoint, userFilters, params)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item, username));
         return res;

@@ -134,7 +134,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
   // Fill some derived data
   const registrationOpen = _.some(
     challenge.allPhases,
-    phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
+    phase => phase.name === 'Registration' && phase.isActive,
   ) ? 'Yes' : 'No';
   _.defaults(challenge, {
     communities: new Set([COMPETITION_TRACKS[challenge.track]]),
@@ -163,7 +163,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
  * @return {Object} Normalized challenge.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = challenge.allPhases.filter(d => d.name === 'Registration')[0].isActive ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
