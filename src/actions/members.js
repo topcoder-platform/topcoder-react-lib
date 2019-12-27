@@ -144,7 +144,7 @@ async function getActiveChallengesInit(handle, uuid) {
  * @returns {Object} Payload
  */
 async function getActiveChallengesDone(handle, uuid, tokenV3) {
-  const filter = { status: 'ACTIVE' };
+  const filter = { status: 'Active' };
   const service = getChallengesService(tokenV3);
   /* TODO: Reuse `getAll` from `actions/challenge-listing`
   /* after it moved from `community-app` to here.
@@ -152,8 +152,8 @@ async function getActiveChallengesDone(handle, uuid, tokenV3) {
   function getAll(getter, page = 0, prev = null) {
     const PAGE_SIZE = 50;
     return getter({
-      limit: PAGE_SIZE,
-      offset: page * PAGE_SIZE,
+      perPage: PAGE_SIZE,
+      page: page + 1,
     }).then(({ challenges: chunk }) => {
       if (!chunk.length) return prev || [];
       return getAll(getter, 1 + page, prev ? prev.concat(chunk) : chunk);
@@ -247,7 +247,7 @@ async function getSubtrackChallengesDone(
   refresh,
 ) {
   const filter = {
-    status: 'completed',
+    status: 'Completed',
     hasUserSubmittedForReview: 'true',
     track,
     subTrack,

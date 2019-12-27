@@ -86,16 +86,16 @@ function filterByRegistrationOpen(challenge, state) {
     if (challenge.registrationOpen) {
       return challenge.registrationOpen === 'Yes';
     }
-    if (challenge.subTrack === 'MARATHON_MATCH') {
-      return challenge.status !== 'PAST';
+    if (challenge.challengeType && challenge.challengeType.name === 'Marathon Match') {
+      return challenge.status !== 'Past';
     }
-    const registrationPhase = challenge.allPhases.find(item => item.phaseType === 'Registration');
-    if (!registrationPhase || registrationPhase.phaseStatus !== 'Open') {
+    const registrationPhase = (challenge.allPhases || challenge.phases || []).find(item => item.name === 'Registration');
+    if (!registrationPhase || !registrationPhase.isActive) {
       return false;
     }
     if (challenge.track === 'DESIGN') {
-      const checkpointPhase = challenge.allPhases.find(item => item.phaseType === 'Checkpoint Submission');
-      return !checkpointPhase || checkpointPhase.phaseStatus !== 'Closed';
+      const checkpointPhase = (challenge.allPhases || challenge.phases || []).find(item => item.name === 'Checkpoint Submission');
+      return !checkpointPhase || !checkpointPhase.isActive;
     }
     return true;
   };
@@ -120,7 +120,10 @@ function filterByStartDate(challenge, state) {
 
 function filterByStarted(challenge, state) {
   if (_.isUndefined(state.started)) return true;
-  return moment(challenge.registrationStartDate).isBefore(Date.now());
+  if (!challenge.phases) {
+    return true;
+  }
+  return _.some(challenge.phases, { isActive: true, name: 'Registration' });
 }
 
 function filterByStatus(challenge, state) {
@@ -130,14 +133,12 @@ function filterByStatus(challenge, state) {
 
 function filterBySubtracks(challenge, state) {
   if (!state.subtracks) return true;
-
   /* TODO: Although this is taken from the current code in prod,
    * it probably does not work in all cases. It should be double-checked,
    * why challenge subtracks in challenge objects are different from those
    * return from the API as the list of possible subtracks. */
   const filterSubtracks = state.subtracks.map(item => item.toLowerCase().replace(/[_ ]/g, ''));
-  const challengeSubtrack = challenge.subTrack.toLowerCase().replace(/[_ ]/g, '');
-  return filterSubtracks.includes(challengeSubtrack);
+  return filterSubtracks.includes(challenge.typeId);
 }
 
 function filterByTags(challenge, state) {
@@ -149,7 +150,7 @@ function filterByTags(challenge, state) {
 
 function filterByText(challenge, state) {
   if (!state.text) return true;
-  const str = `${challenge.name} ${challenge.platforms} ${challenge.technologies}`
+  const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.technologies}`
     .toLowerCase();
   return str.includes(state.text.toLowerCase());
 }
@@ -160,7 +161,7 @@ function filterByTrack(challenge, state) {
   /* Development challenges having Data Science tech tag, still should be
    * included into data science track. */
   if (state.tracks[COMPETITION_TRACKS.DATA_SCIENCE]
-    && _.includes(challenge.technologies, 'Data Science')) {
+    && _.includes(challenge.tags, 'Data Science')) {
     return true;
   }
 
