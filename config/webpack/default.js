@@ -1,6 +1,4 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
-const webpack = require('webpack');
-
 module.exports = {
   node: {
     tls: 'empty',
@@ -26,7 +24,4 @@ module.exports = {
     'to-capital-case',
     'topcoder-react-utils',
   ],
-  node: {
-    fs: 'empty',
-  },
 };
