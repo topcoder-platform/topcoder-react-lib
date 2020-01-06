@@ -6,11 +6,16 @@
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
+import { auth } from 'tc-core-library-js';
 import { delay } from '../utils/time';
 import {
   setErrorIcon,
   ERROR_ICON_TYPES,
 } from '../utils/errors';
+
+const { m2m: m2mAuth } = auth;
+
+const m2m = m2mAuth(_.pick(config.SECRET.TC_M2M, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']));
 
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the
@@ -279,27 +284,9 @@ export async function getTcM2mToken() {
   if (!isomorphy.isServerSide()) {
     throw new Error('getTcM2mToken() called outside the server');
   }
-  const now = Date.now();
-  const { cached } = getTcM2mToken;
-  const { TC_M2M } = config.SECRET;
-  if (!cached || cached.expires < now + getTcM2mToken.MIN_LIFETIME) {
-    let res = await fetch(`https://${config.AUTH0.DOMAIN}/oauth/token`, {
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_id: TC_M2M.CLIENT_ID,
-        client_secret: TC_M2M.CLIENT_SECRET,
-        audience: TC_M2M.AUDIENCE,
-        grant_type: TC_M2M.GRANT_TYPE,
-      }),
-      method: 'POST',
-    });
-    res = await res.json();
-    getTcM2mToken.cached = {
-      expires: now + 1000 * res.expires_in, // [ms]
-      token: res.access_token,
-    };
-  }
-  return getTcM2mToken.cached.token;
-}
 
-getTcM2mToken.MIN_LIFETIME = 30 * 1000; // [ms]
+  const { TC_M2M } = config.SECRET;
+
+  const token = await m2m.getMachineToken(TC_M2M.CLIENT_ID, TC_M2M.CLIENT_SECRET);
+  return token;
+}
