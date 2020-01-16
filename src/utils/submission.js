@@ -134,8 +134,7 @@ export function processMMSubmissions(submissions, resources, registrants) {
     if (!data[memberHandle]) {
       data[memberHandle] = [];
     }
-    const validReviews = _.filter(submission.review,
-      r => !_.isEmpty(r) && (r.typeId !== AV_SCAN_SCORER_REVIEW_TYPE_ID));
+    const validReviews = _.reject(submission.review, ['typeId', AV_SCAN_SCORER_REVIEW_TYPE_ID]);
     validReviews.sort((a, b) => {
       const dateA = new Date(a.created);
       const dateB = new Date(b.created);
