@@ -6,6 +6,7 @@
 import _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { getApi } from '../services/api';
+import { getService as getSubmissionService } from '../services/submissions';
 
 /**
  * @static
@@ -17,13 +18,25 @@ function deleteSubmissionInit() {}
 /**
  * @static
  * @desc Creates an action that deletes user's submission to a challenge.
- * @param {String} tokenV3 Topcoder v3 auth token.
+ * @param {String} tokenV5 Topcoder v5 auth token.
  * @param {Number|String} submissionId Submission ID.
  * @return {Action}
  */
-function deleteSubmissionDone(tokenV3, submissionId) {
-  return getApi('V3', tokenV3).delete(`/submissions/${submissionId}`)
-    .then(() => submissionId);
+function deleteSubmissionDone(tokenV5, submissionId) {
+	const submissionsService = getSubmissionService(tokenV5);
+	const filters = { legacySubmissionId: submissionId };
+
+	// from the legacy submissionId first get the GUID of the submission
+	// and pass that id to the V5 api
+	submissionsService.getSubmissions(filters, {})
+		.then(submissions => {
+			if (submissions.length === 0) {
+				throw new Error(`Submission ${submissionId} does not exist.`);
+			}
+			return getApi('V5', tokenV5).delete(`/submissions/${submissions[0].id}`)
+		    .then(res => (res.ok ? submissionId : new Error(res.statusText)))
+		    .then(res => res);
+		});
 }
 
 /**
