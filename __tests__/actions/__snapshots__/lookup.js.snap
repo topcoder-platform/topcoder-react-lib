@@ -7,8 +7,16 @@ Object {
     "getAllCountriesInit": [Function],
     "getCountriesDone": [Function],
     "getCountriesInit": [Function],
+    "getManufacturersDone": [Function],
+    "getManufacturersInit": [Function],
+    "getModelsDone": [Function],
+    "getModelsInit": [Function],
+    "getOsesDone": [Function],
+    "getOsesInit": [Function],
     "getSkillTagsDone": [Function],
     "getSkillTagsInit": [Function],
+    "getTypesDone": [Function],
+    "getTypesInit": [Function],
   },
 }
 `;
