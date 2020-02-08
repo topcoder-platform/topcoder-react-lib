@@ -23,7 +23,7 @@ function onGetTypesDone(state, { payload, error }) {
     return { ...state, loadingTypesError: true };
   }
 
-  const types = _.map(payload.sort(), v => ({
+  const types = _.map(_.uniq(payload.sort()), v => ({
     key: v,
     name: v,
   }));
@@ -59,7 +59,7 @@ function onGetManufacturersDone(state, { payload, error }) {
     return { ...state, loadingManufacturersError: true };
   }
 
-  const manufacturers = _.map(payload.sort(), v => ({
+  const manufacturers = _.map(_.uniq(payload.sort()), v => ({
     key: v,
     name: v,
   }));
@@ -99,11 +99,14 @@ function onGetModelsDone(state, { payload, error }) {
     return { ...state, loadingModelsError: true, isModelsLoading: false };
   }
 
-  let models = _.orderBy(payload, ['model'], ['asc']);
+  let models = payload;
 
   if (state.modelPage > 1) {
     models = [...state.models, ...models];
   }
+  models = _.orderBy(models, ['model'], ['asc']);
+  models = _.uniqBy(models, m => m.name);
+
   return ({
     ...state,
     loadingModelsError: false,
@@ -138,11 +141,13 @@ function onGetOsesDone(state, { payload, error }) {
     return { ...state, loadingOsesError: true, isOsesLoading: false };
   }
 
-  let oses = _.orderBy(payload, ['operatingSystem'], ['asc']);
+  let oses = payload;
   if (state.osPage > 1) {
     oses = [...state.oses, ...oses];
   }
+  oses = _.orderBy(payload, ['operatingSystem'], ['asc']);
 
+  oses = _.uniqBy(oses, m => m.name);
   return ({
     ...state,
     loadingOsesError: false,
