@@ -93,6 +93,16 @@ Object {
       "getUserSrmDone": [Function],
       "getUserSrmInit": [Function],
     },
+    "notifications": Object {
+      "getNotificationsDone": [Function],
+      "getNotificationsInit": [Function],
+      "markAllNotificationAsReadDone": [Function],
+      "markAllNotificationAsReadInit": [Function],
+      "markAllNotificationAsSeenDone": [Function],
+      "markAllNotificationAsSeenInit": [Function],
+      "markNotificationAsReadDone": [Function],
+      "markNotificationAsReadInit": [Function],
+    },
     "profile": Object {
       "addSkillDone": [Function],
       "addSkillInit": [Function],
@@ -241,6 +251,7 @@ Object {
     "memberTasks": [Function],
     "members": [Function],
     "mySubmissionsManagement": [Function],
+    "notifications": [Function],
     "profile": [Function],
     "reviewOpportunity": [Function],
     "settings": [Function],
@@ -291,6 +302,10 @@ Object {
       "getService": [Function],
     },
     "members": Object {
+      "default": undefined,
+      "getService": [Function],
+    },
+    "notifications": Object {
       "default": undefined,
       "getService": [Function],
     },
