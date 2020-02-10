@@ -85,9 +85,10 @@ function getUserProjectsInit(tokenV3) {
  * @return {Action}
  */
 async function getUserProjectsDone(tokenV3, hasActiveBillingAccount) {
-  const params = {};
-  if (hasActiveBillingAccount) params.hasActiveBillingAccount = true;
-  const projects = await getService(tokenV3).getUserProjects(params);
+  const projects = await getService(tokenV3).getUserProjects();
+  if (hasActiveBillingAccount) {
+    _.remove(projects, proj => !proj.billingAccountId || proj.billingAccountId === 0);
+  }
   return { tokenV3, projects };
 }
 

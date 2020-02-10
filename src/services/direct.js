@@ -21,7 +21,7 @@ class Direct {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V5', tokenV3),
       tokenV3,
     };
   }
@@ -32,11 +32,9 @@ class Direct {
    * @return {Promise} Resolves to the project details object.
    */
   async getProjectDetails(projectId) {
-    let res = await this.private.api.get(`/direct/projects/${projectId}`);
+    const res = await this.private.api.get(`/projects/${projectId}`);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (res.status !== 200) throw new Error(res.content);
-    return res.content;
+    return res.json();
   }
 
   /**
@@ -46,12 +44,10 @@ class Direct {
    * @return {Promise} Resolves to the user permissions data.
    */
   async getProjectPermissions(projectId) {
-    const URL = `/direct/projects/${projectId}/permissions`;
-    let res = await this.private.api.get(URL);
+    const URL = `/projects/${projectId}/permissions`;
+    const res = await this.private.api.get(URL);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (res.status !== 200) throw new Error(res.content);
-    return res.content;
+    return res.json();
   }
 
   /**
@@ -60,13 +56,11 @@ class Direct {
    * @return {Promise} Resolves to an array of project objects.
    */
   async getUserProjects(query) {
-    let url = '/direct/projects/user';
+    let url = '/projects';
     if (query) url += `?${qs.stringify(query)}`;
-    let res = await this.private.api.get(url);
+    const res = await this.private.api.get(url);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (res.status !== 200) throw new Error(res.content);
-    return res.content;
+    return res.json();
   }
 }
 
