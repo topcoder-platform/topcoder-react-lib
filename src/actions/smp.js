@@ -23,20 +23,20 @@ function deleteSubmissionInit() {}
  * @return {Action}
  */
 function deleteSubmissionDone(tokenV5, submissionId) {
-	const submissionsService = getSubmissionService(tokenV5);
-	const filters = { legacySubmissionId: submissionId };
+  const submissionsService = getSubmissionService(tokenV5);
+  const filters = { legacySubmissionId: submissionId };
 
-	// from the legacy submissionId first get the GUID of the submission
-	// and pass that id to the V5 api
-	submissionsService.getSubmissions(filters, {})
-		.then(submissions => {
-			if (submissions.length === 0) {
-				throw new Error(`Submission ${submissionId} does not exist.`);
-			}
-			return getApi('V5', tokenV5).delete(`/submissions/${submissions[0].id}`)
-		    .then(res => (res.ok ? submissionId : new Error(res.statusText)))
-		    .then(res => res);
-		});
+  // from the legacy submissionId first get the GUID of the submission
+  // and pass that id to the V5 api
+  submissionsService.getSubmissions(filters, {})
+    .then((submissions) => {
+      if (submissions.length === 0) {
+        throw new Error(`Submission ${submissionId} does not exist.`);
+      }
+      return getApi('V5', tokenV5).delete(`/submissions/${submissions[0].id}`)
+        .then(res => (res.ok ? submissionId : new Error(res.statusText)))
+        .then(res => res);
+    });
 }
 
 /**
