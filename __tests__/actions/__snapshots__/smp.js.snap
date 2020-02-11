@@ -2,7 +2,6 @@
 
 exports[`smp.deleteSubmissionDone 1`] = `
 Object {
-  "payload": Promise {},
   "type": "SMP/DELETE_SUBMISSION_DONE",
 }
 `;
