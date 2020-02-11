@@ -28,7 +28,7 @@ function deleteSubmissionDone(tokenV5, submissionId) {
 
   // from the legacy submissionId first get the GUID of the submission
   // and pass that id to the V5 api
-  submissionsService.getSubmissions(filters, {})
+  return submissionsService.getSubmissions(filters, {})
     .then((submissions) => {
       if (submissions.length === 0) {
         throw new Error(`Submission ${submissionId} does not exist.`);
