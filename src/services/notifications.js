@@ -4,6 +4,8 @@
  * notifications.
  */
 
+import _ from 'lodash';
+
 const eventTypes = {
   PROJECT: {
     ACTIVE: 'connect.notification.project.active',
@@ -212,6 +214,16 @@ class NotificationService {
       const m = this.MockNotifications[idx];
       m.isSeen = true;
     }
+    return this.MockNotifications;
+  }
+
+  /**
+   * Dismiss challenge notifications.
+   * @return {Promise} Resolves to the notification information object.
+   */
+  async dismissChallengeNotifications(challengeId) {
+    this.MockNotifications = _.filter(this.MockNotifications, n => n.sourceId !== challengeId);
+
     return this.MockNotifications;
   }
 }

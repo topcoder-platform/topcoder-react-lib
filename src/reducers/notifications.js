@@ -165,6 +165,42 @@ function onMarkAllNotificationAsSeenDone(state, { error, payload }) {
   };
 }
 
+/**
+ * Handles NOTIFICATIONS/DISMISS_CHALLENGE_NOTIFICATIONS_INIT action.
+ * @param {Object} state
+ * @return {Object} New state
+ */
+function onDismissChallengeNotificationsInit(state) {
+  return { ...state };
+}
+
+/**
+ * Handles NOTIFICATIONS/DISMISS_CHALLENGE_NOTIFICATIONS_DONE action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onDismissChallengeNotificationsDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to dismiss notification!', payload);
+    fireErrorMessage(
+      'ERROR: Failed to dismiss the notification',
+      'Please, try again a bit later',
+    );
+    return {
+      ...state,
+      fetchNotificationsFailure: true,
+      items: [],
+    };
+  }
+
+  return {
+    ...state,
+    items: payload,
+    fetchNotificationsFailure: false,
+  };
+}
+
 
 /**
  * Creates a new Members reducer with the specified initial state.
@@ -182,6 +218,8 @@ function create(initialState = {}) {
     [a.markAllNotificationAsReadDone]: onMarkAllNotificationAsReadDone,
     [a.markAllNotificationAsSeenInit]: onMarkAllNotificationAsSeenInit,
     [a.markAllNotificationAsSeenDone]: onMarkAllNotificationAsSeenDone,
+    [a.dismissChallengeNotificationsInit]: onDismissChallengeNotificationsInit,
+    [a.dismissChallengeNotificationsDone]: onDismissChallengeNotificationsDone,
   }, initialState);
 }
 

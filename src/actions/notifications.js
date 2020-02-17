@@ -109,6 +109,32 @@ async function markAllNotificationAsSeenDone() {
 }
 
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of dismiss all challenge notifications
+ *  loading.
+ * @return {Action}
+ */
+function dismissChallengeNotificationsInit() {
+  return { };
+}
+
+/**
+ * @static
+ * @desc Creates an action that dismisses all challenge notifications
+ * @return {Action}
+ */
+async function dismissChallengeNotificationsDone(challengeId) {
+  let data;
+  try {
+    data = await getService().dismissChallengeNotifications(challengeId);
+  } catch (e) {
+    data = [];
+  }
+  return data;
+}
+
+
 export default createActions({
   NOTIFICATIONS: {
     GET_NOTIFICATIONS_INIT: getNotificationsInit,
@@ -119,5 +145,7 @@ export default createActions({
     MARK_ALL_NOTIFICATION_AS_READ_DONE: markAllNotificationAsReadDone,
     MARK_ALL_NOTIFICATION_AS_SEEN_INIT: markAllNotificationAsSeenInit,
     MARK_ALL_NOTIFICATION_AS_SEEN_DONE: markAllNotificationAsSeenDone,
+    DISMISS_CHALLENGE_NOTIFICATIONS_INIT: dismissChallengeNotificationsInit,
+    DISMISS_CHALLENGE_NOTIFICATIONS_DONE: dismissChallengeNotificationsDone,
   },
 });
