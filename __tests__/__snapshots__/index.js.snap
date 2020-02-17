@@ -94,6 +94,8 @@ Object {
       "getUserSrmInit": [Function],
     },
     "notifications": Object {
+      "dismissChallengeNotificationsDone": [Function],
+      "dismissChallengeNotificationsInit": [Function],
       "getNotificationsDone": [Function],
       "getNotificationsInit": [Function],
       "markAllNotificationAsReadDone": [Function],
