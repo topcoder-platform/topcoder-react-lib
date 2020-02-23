@@ -2,7 +2,7 @@
  * @module "actions.member-search"
  * @desc Actions for management of members search.
  */
-import _ from 'lodash'
+import _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { getService } from '../services/member-search';
 
@@ -49,8 +49,8 @@ function checkIfSearchTermIsATag(searchTerm) {
  */
 function setSearchTerm(searchTerm) {
   return {
-    previousSearchTerm: searchTerm
-  }
+    previousSearchTerm: searchTerm,
+  };
 }
 
 /**
@@ -61,8 +61,8 @@ function setSearchTerm(searchTerm) {
  */
 function setSearchTag(searchTag) {
   return {
-    searchTermTag: searchTag
-  }
+    searchTermTag: searchTag,
+  };
 }
 
 export default createActions({
@@ -75,6 +75,6 @@ export default createActions({
     MEMBER_SEARCH_SUCCESS: _.noop,
     SET_SEARCH_TERM: setSearchTerm,
     SET_SEARCH_TAG: setSearchTag,
-    RESET_SEARCH_TERM: _.noop
-  }
+    RESET_SEARCH_TERM: _.noop,
+  },
 });

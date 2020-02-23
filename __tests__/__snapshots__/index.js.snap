@@ -65,6 +65,17 @@ Object {
       "getSkillTagsDone": [Function],
       "getSkillTagsInit": [Function],
     },
+    "memberSearch": Object {
+      "checkIfSearchTermIsATag": [Function],
+      "clearMemberSearch": [Function],
+      "loadMoreUsernames": [Function],
+      "memberSearchSuccess": [Function],
+      "resetSearchTerm": [Function],
+      "setSearchTag": [Function],
+      "setSearchTerm": [Function],
+      "topMemberSearchSuccess": [Function],
+      "usernameSearchSuccess": [Function],
+    },
     "memberTasks": Object {
       "dropAll": [Function],
       "getDone": [Function],
@@ -238,6 +249,7 @@ Object {
     "groups": [Function],
     "looker": [Function],
     "lookup": [Function],
+    "memberSearch": [Function],
     "memberTasks": [Function],
     "members": [Function],
     "mySubmissionsManagement": [Function],
@@ -287,6 +299,10 @@ Object {
       "reduceGroupIds": [Function],
     },
     "lookup": Object {
+      "default": undefined,
+      "getService": [Function],
+    },
+    "memberSearch": Object {
       "default": undefined,
       "getService": [Function],
     },
