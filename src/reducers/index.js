@@ -22,7 +22,7 @@ import settings, { factory as settingsFactory }
   from './settings';
 import looker, { factory as lookerFactory }
   from './looker';
-
+import memberSearch, { factory as memberSearchFactory } from './member-search';
 
 export function factory(options) {
   return redux.resolveReducers({
@@ -41,6 +41,7 @@ export function factory(options) {
     mySubmissionsManagement: mySubmissionsManagementFactory(options),
     settings: settingsFactory(options),
     looker: lookerFactory(options),
+    memberSearch: memberSearchFactory(options),
   });
 }
 
@@ -60,4 +61,5 @@ export default ({
   mySubmissionsManagement,
   settings,
   looker,
+  memberSearch,
 });
