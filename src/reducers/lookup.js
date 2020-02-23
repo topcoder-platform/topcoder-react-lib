@@ -105,7 +105,7 @@ function onGetModelsDone(state, { payload, error }) {
     models = [...state.models, ...models];
   }
   models = _.orderBy(models, ['model'], ['asc']);
-  models = _.uniqBy(models, m => m.name);
+  models = _.uniqBy(models, m => m.model);
 
   return ({
     ...state,
@@ -147,7 +147,7 @@ function onGetOsesDone(state, { payload, error }) {
   }
   oses = _.orderBy(payload, ['operatingSystem'], ['asc']);
 
-  oses = _.uniqBy(oses, m => m.name);
+  oses = _.uniqBy(oses, m => m.operatingSystem);
   return ({
     ...state,
     loadingOsesError: false,
