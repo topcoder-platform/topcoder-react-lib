@@ -1,4 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require('webpack');
+
 module.exports = {
   node: {
     tls: 'empty',
@@ -23,5 +25,10 @@ module.exports = {
     'tc-accounts',
     'to-capital-case',
     'topcoder-react-utils',
+    'tc-core-library-js',
+  ],
+  plugins: [
+    // eslint-disable-next-line global-require
+    new webpack.DefinePlugin({ CONFIG: JSON.stringify(require('config')) }),
   ],
 };
