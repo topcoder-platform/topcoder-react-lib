@@ -15,7 +15,7 @@ import {
 
 const { m2m: m2mAuth } = auth;
 
-const m2m = m2mAuth(_.pick(config.SECRET.TC_M2M, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']));
+const m2m = m2mAuth(_.pick(config.AUTH_CONFIG, ['AUTH0_URL', 'AUTH0_AUDIENCE', 'TOKEN_CACHE_TIME', 'AUTH0_PROXY_SERVER_URL']));
 
 /* The minimal delay [ms] between API calls. To avoid problems with the requests
  * rate limits configured in Topcoder APIs, we throttle requests rate at the
