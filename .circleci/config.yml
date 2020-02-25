@@ -28,8 +28,13 @@ jobs:
       - attach_workspace:
           at: .
       - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+<<<<<<< HEAD
       - run: npm publish --tag test-release
 
+=======
+      - run: npm publish
+# dont change anything
+>>>>>>> origin/develop-mm-sub-merge-fix
 workflows:
   version: 2
   build:

@@ -50,6 +50,16 @@ class SubmissionsService {
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => res);
   }
+
+  /**
+   * Download submission.
+   * @param {Number|String} submissionId Submission ID.
+   * @return {Promise} Resolves to the list of submission object.
+   */
+  async downloadSubmission(submissionId) {
+    return this.private.apiV5.get(`/submissions/${submissionId}/download`)
+      .then(response => response.blob());
+  }
 }
 
 let lastInstance = null;
