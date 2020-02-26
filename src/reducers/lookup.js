@@ -100,6 +100,7 @@ function onGetModelsDone(state, { payload, error }) {
   }
 
   let models = payload;
+  const hasMore = models.length === PAGE_SIZE;
 
   if (state.modelPage > 1) {
     models = [...state.models, ...models];
@@ -111,7 +112,7 @@ function onGetModelsDone(state, { payload, error }) {
     ...state,
     loadingModelsError: false,
     models,
-    hasMoreModels: models.length === PAGE_SIZE,
+    hasMoreModels: hasMore,
     isModelsLoading: false,
   });
 }
@@ -142,6 +143,7 @@ function onGetOsesDone(state, { payload, error }) {
   }
 
   let oses = payload;
+  const hasMore = oses.length === PAGE_SIZE;
   if (state.osPage > 1) {
     oses = [...state.oses, ...oses];
   }
@@ -152,7 +154,7 @@ function onGetOsesDone(state, { payload, error }) {
     ...state,
     loadingOsesError: false,
     oses,
-    hasMoreOses: oses.length === PAGE_SIZE,
+    hasMoreOses: hasMore,
     isOsesLoading: false,
   });
 }
