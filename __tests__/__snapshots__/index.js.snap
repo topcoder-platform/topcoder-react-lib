@@ -62,6 +62,8 @@ Object {
       "getAllCountriesInit": [Function],
       "getCountriesDone": [Function],
       "getCountriesInit": [Function],
+      "getReviewTypesDone": [Function],
+      "getReviewTypesInit": [Function],
       "getSkillTagsDone": [Function],
       "getSkillTagsInit": [Function],
     },

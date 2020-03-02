@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.10.0",
+  "version": "1000.10.0",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
@@ -48,6 +48,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
+    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
     "to-capital-case": "^1.0.0",
     "topcoder-react-utils": "0.7.5"
   },

@@ -49,6 +49,25 @@ function onGetCountriesDone(state, { payload, error }) {
 }
 
 /**
+ * Handles LOOKUP/GET_REVIEW_TYPES_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetReviewTypesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get review types', payload);
+    return { ...state, loadingReviewTypesError: true };
+  }
+
+  return ({
+    ...state,
+    loadingReviewTypesError: false,
+    reviewTypes: payload,
+  });
+}
+
+/**
  * Handles LOOKUP/GET_ALL_COUNTRIES_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
@@ -79,12 +98,15 @@ function create(initialState = {}) {
     [a.getSkillTagsDone]: onGetSkillTagsDone,
     [a.getCountriesInit]: state => state,
     [a.getCountriesDone]: onGetCountriesDone,
+    [a.getReviewTypesInit]: state => state,
+    [a.getReviewTypesDone]: onGetReviewTypesDone,
     [a.getAllCountriesInit]: state => state,
     [a.getAllCountriesDone]: onGetAllCountriesDone,
   }, _.defaults(initialState, {
     skillTags: [],
     countries: [],
     allCountries: [],
+    reviewTypes: [],
   }));
 }
 
