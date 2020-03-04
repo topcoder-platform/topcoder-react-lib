@@ -49,6 +49,23 @@ function getCountriesDone() {
 
 /**
  * @static
+ * @desc Creates an action that signals beginning of getting all review types.
+ * @return {Action}
+ */
+function getReviewTypesInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets all review types.
+ * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
+ * @return {Action}
+ */
+function getReviewTypesDone(tokenV3) {
+  return getService(tokenV3).getReviewTypes();
+}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of getting all countries api version 5.
  * @return {Action}
  */
@@ -70,6 +87,8 @@ export default createActions({
     GET_SKILL_TAGS_DONE: getSkillTagsDone,
     GET_COUNTRIES_INIT: getCountriesInit,
     GET_COUNTRIES_DONE: getCountriesDone,
+    GET_REVIEW_TYPES_INIT: getReviewTypesInit,
+    GET_REVIEW_TYPES_DONE: getReviewTypesDone,
     GET_ALL_COUNTRIES_INIT: getAllCountriesInit,
     GET_ALL_COUNTRIES_DONE: getAllCountriesDone,
   },
