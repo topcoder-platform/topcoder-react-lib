@@ -20,8 +20,13 @@ function getSkillTagsInit() {}
  */
 function getSkillTagsDone() {
   const params = {
-    domain: 'SKILLS',
-    status: 'APPROVED',
+    filter: {
+      domain: 'SKILLS',
+      status: 'APPROVED',
+    },
+    limit: {
+      limit: 1000,
+    },
   };
   return getService().getTags(params);
 }
