@@ -4,188 +4,29 @@
  * notifications.
  */
 
-import _ from 'lodash';
-
-const eventTypes = {
-  PROJECT: {
-    ACTIVE: 'connect.notification.project.active',
-    COMPLETED: 'connect.notification.project.completed',
-  },
-};
-
-const now = new Date();
-const daysAgo = d => (new Date()).setHours(now.getDay() - d);
-const minutesAgo = m => (new Date()).setHours(now.getMinutes() - m);
-const hoursAgo = h => (new Date()).setHours(now.getHours() - h);
-
+import { getApi } from './api';
 
 /**
- * Service class.
+ * Service class for Notifications.
  */
 class NotificationService {
-  MockNotifications = [
-    {
-      id: 1,
-      sourceId: 111111,
-      sourceName: 'Northumbrian Water (NWL) - Customer Engagement Gamification Mobile App Design Concepts Challenge ',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(35),
-      isRead: false,
-      isSeen: false,
-      contents: 'Specification is modified',
-      version: 1,
-    },
-    {
-      id: 2,
-      sourceId: 222222,
-      sourceName: 'Eniatus Bank Internal Product Dashboard Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(40),
-      isRead: false,
-      isSeen: true,
-      contents: 'Checkpoint review is ready',
-      version: 1,
-    },
-    {
-      id: 3,
-      sourceId: 222222,
-      sourceName: 'Eniatus Bank Internal Product Dashboard Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(40),
-      isRead: false,
-      isSeen: false,
-      contents: 'Forum has been updated by fajar.mln',
-      version: 1,
-    },
-    {
-      id: 4,
-      sourceId: 333333,
-      sourceName: 'DLP Responsive Web Application Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(50),
-      isRead: true,
-      isSeen: true,
-      contents: 'Forum has been updated by fajar.mln',
-      version: 1,
-    },
-    {
-      id: 5,
-      sourceId: 555555,
-      sourceName: 'TC Member Profile Page - Rating Details Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: hoursAgo(1),
-      isRead: false,
-      isSeen: true,
-      contents: 'Checkpoint Review is ready',
-      version: 1,
-    },
-    {
-      id: 6,
-      sourceId: 555555,
-      sourceName: 'TC Member Profile Page - Rating Details Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: hoursAgo(1),
-      isRead: true,
-      isSeen: true,
-      contents: 'Forum has been updated by systic',
-      version: 1,
-    },
-    {
-      id: 7,
-      sourceId: 666666,
-      sourceName: 'TC Member Profile Page - Rating Details Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: hoursAgo(1),
-      isRead: true,
-      isSeen: true,
-      contents: 'Forum has been updated by systic',
-      version: 1,
-    },
-    {
-      id: 8,
-      sourceId: 10101012,
-      sourceName: 'DLP Responsive Web Application Design Challenge',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: hoursAgo(1),
-      isRead: false,
-      isSeen: false,
-      contents: 'Specification is modified',
-      version: 1,
-    },
-    {
-      id: 9,
-      sourceId: 777777,
-      sourceName: 'Eniatus Bank Internal Product Dashboard Design Challenge ',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(40),
-      isRead: false,
-      isSeen: true,
-      contents: 'Checkpoint review is ready',
-      version: 1,
-    },
-    {
-      id: 10,
-      sourceId: 777777,
-      sourceName: 'Eniatus Bank Internal Product Dashboard Design Challenge ',
-      eventType: eventTypes.PROJECT.ACTIVE,
-      date: minutesAgo(50),
-      isRead: false,
-      isSeen: true,
-      contents: 'Checkpoint review is ready',
-      version: 1,
-    },
-    {
-      id: 11,
-      sourceId: 888888,
-      sourceName: 'Talent Cloud Experiences powered by Microsoft Teams Concept Design Challenge',
-      eventType: eventTypes.PROJECT.COMPLETED,
-      date: daysAgo(1),
-      isRead: true,
-      isSeen: true,
-      contents: 'Checkpoint review is ready',
-      version: 1,
-    },
-    {
-      id: 12,
-      sourceId: 888888,
-      sourceName: 'Talent Cloud Experiences powered by Microsoft Teams Concept Design Challenge',
-      eventType: eventTypes.PROJECT.COMPLETED,
-      date: daysAgo(1),
-      isRead: true,
-      isSeen: true,
-      contents: 'Forum has been updated by fajar.mln',
-      version: 1,
-    },
-    {
-      id: 13,
-      sourceId: 999999,
-      sourceName: 'Telehealth Mobile Application Splash Animation Video F2F Design Challenge',
-      eventType: eventTypes.PROJECT.COMPLETED,
-      date: daysAgo(1),
-      isRead: true,
-      isSeen: true,
-      contents: 'Checkpoint review is ready',
-      version: 1,
-    },
-    {
-      id: 14,
-      sourceId: 10101010,
-      sourceName: 'GOVT - Integrated Poral Mobile App Design Challenge',
-      eventType: eventTypes.PROJECT.COMPLETED,
-      date: now,
-      isRead: true,
-      isSeen: true,
-      contents: 'Forum has been updated by fajar.mln',
-      version: 1,
-    },
-  ];
+  /**
+   * @param {String} tokenV3 Optional. Auth token for Topcoder API v5.
+   */
+  constructor(tokenV3) {
+    this.private = {
+      apiV5: getApi('V5', tokenV3),
+      tokenV3,
+    };
+  }
 
   /**
    * Gets member's notification information.
    * @return {Promise} Resolves to the notification information object.
    */
   async getNotifications() {
-    return this.MockNotifications;
+    return this.private.apiV5.get('/notifications/?platform=community&limit=20')
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
 
   /**
@@ -193,14 +34,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async markNotificationAsRead(item) {
-    for (let idx = 0; idx < this.MockNotifications.length; idx += 1) {
-      const m = this.MockNotifications[idx];
-      if (m.id === item.id) {
-        m.isRead = true;
-      }
-    }
-
-    return this.MockNotifications;
+    return this.private.apiV5.put(`/notifications/${item}/read`)
+      .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
   /**
@@ -208,45 +43,38 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async markAllNotificationAsRead() {
-    for (let idx = 0; idx < this.MockNotifications.length; idx += 1) {
-      const m = this.MockNotifications[idx];
-      m.isRead = true;
-      m.isSeen = true;
-    }
-    return this.MockNotifications;
+    return this.private.apiV5.put('/notifications/read')
+      .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
   /**
    * Marks all notification as seen.
    * @return {Promise} Resolves to the notification information object.
    */
-  async markAllNotificationAsSeen() {
-    for (let idx = 0; idx < this.MockNotifications.length; idx += 1) {
-      const m = this.MockNotifications[idx];
-      m.isSeen = true;
-    }
-    return this.MockNotifications;
+  async markAllNotificationAsSeen(items) {
+    return this.private.apiV5.put(`/notifications/${items}/seen`)
+      .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
   /**
    * Dismiss challenge notifications.
    * @return {Promise} Resolves to the notification information object.
    */
-  async dismissChallengeNotifications(challengeId) {
-    this.MockNotifications = _.filter(this.MockNotifications, n => n.sourceId !== challengeId);
-
-    return this.MockNotifications;
+  async dismissChallengeNotifications(challengeID) {
+    return this.private.apiV5.put(`/notifications/${challengeID}/dismiss`)
+      .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 }
 
 let lastInstance = null;
 /**
  * Returns a new or existing notifications service.
+ * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {NotificationService} Notification service object
  */
-export function getService() {
-  if (!lastInstance) {
-    lastInstance = new NotificationService();
+export function getService(tokenV3) {
+  if (!lastInstance || tokenV3 !== lastInstance.private.tokenV3) {
+    lastInstance = new NotificationService(tokenV3);
   }
   return lastInstance;
 }

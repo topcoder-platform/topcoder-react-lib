@@ -3,8 +3,30 @@
  * @desc Actions related to notifications data.
  */
 
+import _ from 'lodash';
 import { createActions } from 'redux-actions';
 import { getService } from '../services/notifications';
+
+/**
+  * TODO: We will need to change this based on API and
+  * frontend mapping we need later.
+  */
+function processData(data) {
+  const retData = _.map(data, (item) => {
+    const object = {};
+    object.id = item.id;
+    object.sourceId = item.contents.id;
+    object.sourceName = item.contents.name || item.contents.title;
+    object.eventType = item.type;
+    object.isRead = item.read;
+    object.isSeen = item.seen;
+    object.contents = item.contents.message || item.contents.title;
+    object.version = item.version;
+    object.date = item.createdAt;
+    return object;
+  });
+  return retData;
+}
 
 /**
  * @static
@@ -19,17 +41,17 @@ function getNotificationsInit() {
 /**
  * @static
  * @desc Creates an action that loads member achievements.
+ * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function getNotificationsDone(item) {
+async function getNotificationsDone(tokenV3) {
   let data;
   try {
-    data = await getService().getNotifications(item);
+    data = await getService(tokenV3).getNotifications();
   } catch (e) {
     data = [];
   }
-
-  return data;
+  return processData(data.items || []);
 }
 
 /**
@@ -45,16 +67,16 @@ function markNotificationAsReadInit() {
 /**
  * @static
  * @desc Creates an action that marks notification as read.
+ * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function markNotificationAsReadDone(item) {
-  let data;
+async function markNotificationAsReadDone(item, tokenV3) {
   try {
-    data = await getService().markNotificationAsRead(item);
+    await getService(tokenV3).markNotificationAsRead(item.id);
   } catch (e) {
-    data = [];
+    return e;
   }
-  return data;
+  return item;
 }
 
 /**
@@ -70,16 +92,16 @@ function markAllNotificationAsReadInit() {
 /**
  * @static
  * @desc Creates an action that marks all notification as read.
+ * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function markAllNotificationAsReadDone() {
-  let data;
+async function markAllNotificationAsReadDone(tokenV3) {
   try {
-    data = await getService().markAllNotificationAsRead();
+    await getService(tokenV3).markAllNotificationAsRead();
   } catch (e) {
-    data = [];
+    return e;
   }
-  return data;
+  return true;
 }
 
 
@@ -96,16 +118,16 @@ function markAllNotificationAsSeenInit() {
 /**
  * @static
  * @desc Creates an action that marks all notification as seen.
+ * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function markAllNotificationAsSeenDone() {
-  let data;
+async function markAllNotificationAsSeenDone(items, tokenV3) {
   try {
-    data = await getService().markAllNotificationAsSeen();
+    await getService(tokenV3).markAllNotificationAsSeen(items);
   } catch (e) {
-    data = [];
+    return e;
   }
-  return data;
+  return items;
 }
 
 
@@ -122,16 +144,16 @@ function dismissChallengeNotificationsInit() {
 /**
  * @static
  * @desc Creates an action that dismisses all challenge notifications
+ * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function dismissChallengeNotificationsDone(challengeId) {
-  let data;
+async function dismissChallengeNotificationsDone(challengeId, tokenV3) {
   try {
-    data = await getService().dismissChallengeNotifications(challengeId);
+    await getService(tokenV3).dismissChallengeNotifications(challengeId);
   } catch (e) {
-    data = [];
+    return e;
   }
-  return data;
+  return true;
 }
 
 

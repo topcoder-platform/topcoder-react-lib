@@ -14,7 +14,6 @@
 
 
 import { handleActions } from 'redux-actions';
-
 import actions from '../actions/notifications';
 import logger from '../utils/logger';
 import { fireErrorMessage } from '../utils/errors';
@@ -81,14 +80,17 @@ function onMarkNotificationAsReadDone(state, { error, payload }) {
     return {
       ...state,
       fetchNotificationsFailure: true,
-      items: [],
     };
   }
 
+  const notifications = state.items;
+  const itemIndex = state.items.findIndex(item => item.id === payload.id);
+  notifications[itemIndex].isRead = true;
+
   return {
     ...state,
-    items: payload,
     fetchNotificationsFailure: false,
+    items: notifications,
   };
 }
 
@@ -118,14 +120,18 @@ function onMarkAllNotificationAsReadDone(state, { error, payload }) {
     return {
       ...state,
       fetchNotificationsFailure: true,
-      items: [],
     };
   }
 
+  const notifications = state.items;
+  notifications.forEach((item, index) => {
+    notifications[index].isRead = true;
+  });
+
   return {
     ...state,
-    items: payload,
-    fetchNotificationsFailure: false,
+    fetchNotificationsFailure: true,
+    items: notifications,
   };
 }
 
@@ -154,14 +160,21 @@ function onMarkAllNotificationAsSeenDone(state, { error, payload }) {
     return {
       ...state,
       fetchNotificationsFailure: true,
-      items: [],
     };
   }
 
+  const items = payload.split('-');
+  const notifications = state.items;
+  state.items.forEach((item, index) => {
+    if (items.includes(String(item.id))) {
+      notifications[index].isSeen = true;
+    }
+  });
+
   return {
     ...state,
-    items: payload,
     fetchNotificationsFailure: false,
+    items: notifications,
   };
 }
 
@@ -196,7 +209,6 @@ function onDismissChallengeNotificationsDone(state, { error, payload }) {
 
   return {
     ...state,
-    items: payload,
     fetchNotificationsFailure: false,
   };
 }
