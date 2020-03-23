@@ -156,6 +156,56 @@ async function dismissChallengeNotificationsDone(challengeId, tokenV3) {
   return true;
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of notification settings
+ *  loading.
+ * @return {Action}
+ */
+async function getNotificationSettingsInit() {
+  return { };
+}
+
+/**
+ * @static
+ * @desc Creates an action that loads member achievements.
+ * @param {String} tokenV3 v3 auth token.
+ * @return {Action}
+ */
+async function getNotificationSettingsDone(tokenV3) {
+  let settingsData;
+  try {
+    settingsData = await getService(tokenV3).getNotificationSettings();
+  } catch (e) {
+    return { error: e.message };
+  }
+  return settingsData.notifications || [];
+}
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of save notification settings
+ *  loading.
+ * @return {Action}
+ */
+async function saveNotificationSettingsInit() {
+  return { };
+}
+
+/**
+ * @static
+ * @desc Creates an action that saves member achievements.
+ * @param {String} tokenV3 v3 auth token.
+ * @return {Action}
+ */
+async function saveNotificationSettingsDone(data, tokenV3) {
+  try {
+    await getService(tokenV3).saveNotificationSettings(data);
+  } catch (e) {
+    return { error: e.message };
+  }
+  return true;
+}
 
 export default createActions({
   NOTIFICATIONS: {
@@ -169,5 +219,9 @@ export default createActions({
     MARK_ALL_NOTIFICATION_AS_SEEN_DONE: markAllNotificationAsSeenDone,
     DISMISS_CHALLENGE_NOTIFICATIONS_INIT: dismissChallengeNotificationsInit,
     DISMISS_CHALLENGE_NOTIFICATIONS_DONE: dismissChallengeNotificationsDone,
+    GET_NOTIFICATION_SETTINGS_INIT: getNotificationSettingsInit,
+    GET_NOTIFICATION_SETTINGS_DONE: getNotificationSettingsDone,
+    SAVE_NOTIFICATION_SETTINGS_INIT: saveNotificationSettingsInit,
+    SAVE_NOTIFICATION_SETTINGS_DONE: saveNotificationSettingsDone,
   },
 });

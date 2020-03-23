@@ -215,6 +215,77 @@ function onDismissChallengeNotificationsDone(state, { error, payload }) {
 
 
 /**
+ * Handles NOTIFICATIONS/GET_NOTIFICATION_SETTINGS_INIT action.
+ * @param {Object} state
+ * @return {Object} New state
+ */
+function onGetNotificationSettingsInit(state) {
+  return { ...state };
+}
+
+/**
+ * Handles NOTIFICATIONS/GET_NOTIFICATION_SETTINGS_DONE action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetNotificationSettingsDone(state, { error, payload }) {
+  if (payload.error) {
+    logger.error('Failed to get notification settings!', error);
+    fireErrorMessage(
+      'ERROR: Failed to load the notification settings',
+      'Please, try again a bit later',
+    );
+    return {
+      ...state,
+      fetchNotificationsFailure: true,
+      notificationSettings: {},
+    };
+  }
+
+  return {
+    ...state,
+    fetchNotificationsFailure: false,
+    notificationSettings: payload,
+  };
+}
+
+/**
+ * Handles NOTIFICATIONS/SAVE_NOTIFICATION_SETTINGS_INIT action.
+ * @param {Object} state
+ * @return {Object} New state
+ */
+function onsaveNotificationSettingsInit(state) {
+  return { ...state };
+}
+
+/**
+ * Handles NOTIFICATIONS/SAVE_NOTIFICATION_SETTINGS_DONE action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onsaveNotificationSettingsDone(state, { error, payload }) {
+  if (payload.error) {
+    logger.error('Failed to get notification settings!', error);
+    fireErrorMessage(
+      'ERROR: Failed to load the notification settings',
+      'Please, try again a bit later',
+    );
+    return {
+      ...state,
+      fetchNotificationsFailure: true,
+      notificationSettings: {},
+    };
+  }
+
+  return {
+    ...state,
+    fetchNotificationsFailure: false,
+  };
+}
+
+/**
  * Creates a new Members reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Members reducer.
@@ -232,6 +303,10 @@ function create(initialState = {}) {
     [a.markAllNotificationAsSeenDone]: onMarkAllNotificationAsSeenDone,
     [a.dismissChallengeNotificationsInit]: onDismissChallengeNotificationsInit,
     [a.dismissChallengeNotificationsDone]: onDismissChallengeNotificationsDone,
+    [a.getNotificationSettingsInit]: onGetNotificationSettingsInit,
+    [a.getNotificationSettingsDone]: onGetNotificationSettingsDone,
+    [a.saveNotificationSettingsInit]: onsaveNotificationSettingsInit,
+    [a.saveNotificationSettingsDone]: onsaveNotificationSettingsDone,
   }, initialState);
 }
 
