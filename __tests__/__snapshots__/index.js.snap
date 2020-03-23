@@ -96,6 +96,8 @@ Object {
     "notifications": Object {
       "dismissChallengeNotificationsDone": [Function],
       "dismissChallengeNotificationsInit": [Function],
+      "getNotificationSettingsDone": [Function],
+      "getNotificationSettingsInit": [Function],
       "getNotificationsDone": [Function],
       "getNotificationsInit": [Function],
       "markAllNotificationAsReadDone": [Function],
@@ -104,6 +106,8 @@ Object {
       "markAllNotificationAsSeenInit": [Function],
       "markNotificationAsReadDone": [Function],
       "markNotificationAsReadInit": [Function],
+      "saveNotificationSettingsDone": [Function],
+      "saveNotificationSettingsInit": [Function],
     },
     "profile": Object {
       "addSkillDone": [Function],

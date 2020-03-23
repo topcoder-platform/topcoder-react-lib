@@ -64,6 +64,24 @@ class NotificationService {
     return this.private.apiV5.put(`/notifications/${challengeID}/dismiss`)
       .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
+
+  /**
+   * Gets member's notification settings.
+   * @return {Promise} Resolves to the notification information object.
+   */
+  async getNotificationSettings() {
+    return this.private.apiV5.get('/notifications/settings')
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)));
+  }
+
+  /**
+   * Save member's notification settings.
+   * @return {Promise} Resolves to the notification information object.
+   */
+  async saveNotificationSettings(data) {
+    return this.private.apiV5.put('/notifications/settings', data)
+      .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
+  }
 }
 
 let lastInstance = null;
