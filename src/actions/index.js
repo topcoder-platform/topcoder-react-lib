@@ -14,6 +14,7 @@ import lookupActions from './lookup';
 import settingsActions from './settings';
 import lookerActions from './looker';
 import memberSearchActions from './member-search';
+import notificationActions from './notifications';
 
 export const actions = {
   auth: authActions.auth,
@@ -32,6 +33,7 @@ export const actions = {
   settings: settingsActions.settings,
   looker: lookerActions.looker,
   memberSearch: memberSearchActions.memberSearch,
+  notifications: notificationActions.notifications,
 };
 
 export default undefined;
