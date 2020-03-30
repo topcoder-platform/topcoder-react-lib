@@ -13,11 +13,8 @@ import reviewOpportunityActions from './reviewOpportunity';
 import lookupActions from './lookup';
 import settingsActions from './settings';
 import lookerActions from './looker';
-<<<<<<< HEAD
 import memberSearchActions from './member-search';
-=======
 import notificationActions from './notifications';
->>>>>>> origin/notifications
 
 export const actions = {
   auth: authActions.auth,
@@ -35,11 +32,8 @@ export const actions = {
   lookup: lookupActions.lookup,
   settings: settingsActions.settings,
   looker: lookerActions.looker,
-<<<<<<< HEAD
   memberSearch: memberSearchActions.memberSearch,
-=======
   notifications: notificationActions.notifications,
->>>>>>> origin/notifications
 };
 
 export default undefined;
