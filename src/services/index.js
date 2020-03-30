@@ -15,6 +15,7 @@ import * as user from './user';
 import * as lookup from './lookup';
 import * as userTraits from './user-traits';
 import * as submissions from './submissions';
+import * as memberSearch from './member-search';
 import * as notifications from './notifications';
 
 export const services = {
@@ -32,6 +33,7 @@ export const services = {
   lookup,
   userTraits,
   submissions,
+  memberSearch,
   notifications,
 };
 

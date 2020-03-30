@@ -13,6 +13,7 @@ import reviewOpportunityActions from './reviewOpportunity';
 import lookupActions from './lookup';
 import settingsActions from './settings';
 import lookerActions from './looker';
+import memberSearchActions from './member-search';
 import notificationActions from './notifications';
 
 export const actions = {
@@ -31,6 +32,7 @@ export const actions = {
   lookup: lookupActions.lookup,
   settings: settingsActions.settings,
   looker: lookerActions.looker,
+  memberSearch: memberSearchActions.memberSearch,
   notifications: notificationActions.notifications,
 };
 

@@ -4,4 +4,12 @@ module.exports = {
     V3: 'https://api.topcoder-dev.com/v3',
   },
   dummyConfigKey: 'Dummy config value',
+  SECRET: {
+    TC_M2M: {
+      AUTH0_URL: '',
+      AUTH0_AUDIENCE: '',
+      TOKEN_CACHE_TIME: '',
+      AUTH0_PROXY_SERVER_URL: '',
+    },
+  },
 };
