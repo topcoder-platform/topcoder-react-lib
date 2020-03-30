@@ -102,7 +102,7 @@ class MembersService {
   async getStatsHistory(handle, groupIds) {
     let res;
     if (groupIds) {
-      res = await this.private.api.get(`/members/${handle}/stats/history=${groupIds}`);
+      res = await this.private.api.get(`/members/${handle}/stats/history?groupIds=${groupIds}`);
     } else {
       res = await this.private.api.get(`/members/${handle}/stats/history`);
     }
