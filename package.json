@@ -21,6 +21,7 @@
     "url": "git+https://github.com/topcoder-platform/topcoder-react-lib.git"
   },
   "scripts": {
+    "prepare": "npm run build",
     "build": "npm run clean && npm run build:dev && npm run build:prod",
     "build:dev": "./node_modules/.bin/webpack --env=development --progress --profile --colors --display-optimization-bailout",
     "build:dev:watch": "npm run clean && ./node_modules/.bin/webpack --env=development --progress --profile --colors --watch --display-optimization-bailout",
