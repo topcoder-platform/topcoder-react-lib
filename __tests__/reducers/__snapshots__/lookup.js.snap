@@ -18,6 +18,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -48,6 +49,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -72,6 +74,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -96,6 +99,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -119,6 +123,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [],
   "types": Array [],
 }
@@ -142,6 +147,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -172,6 +178,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -196,6 +203,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -220,6 +228,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -243,6 +252,7 @@ Object {
   "models": Array [],
   "osPage": 1,
   "oses": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [],
   "types": Array [],
 }

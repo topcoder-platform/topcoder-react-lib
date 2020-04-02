@@ -13,6 +13,8 @@ Object {
     "getModelsInit": [Function],
     "getOsesDone": [Function],
     "getOsesInit": [Function],
+    "getReviewTypesDone": [Function],
+    "getReviewTypesInit": [Function],
     "getSkillTagsDone": [Function],
     "getSkillTagsInit": [Function],
     "getTypesDone": [Function],

@@ -83,7 +83,7 @@ class LookupService {
    * @return {Promise} Resolves to the tags.
    */
   async getTags(params) {
-    const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
+    const res = await this.private.api.get(`/tags/?filter=${encodeURIComponent(qs.stringify(params.filter))}&${qs.stringify(params.limit)}`);
     return getApiResponsePayload(res);
   }
 
@@ -103,6 +103,16 @@ class LookupService {
    */
   async getAllCountries() {
     const res = await this.private.apiV5.get('/lookups/countries');
+    const jsonResult = await res.json();
+    return jsonResult;
+  }
+
+  /**
+   * Gets all reviewTypes.
+   * @return {Promise} Resolves to the review types.
+   */
+  async getReviewTypes() {
+    const res = await this.private.apiV5.get('/reviewTypes');
     const jsonResult = await res.json();
     return jsonResult;
   }
