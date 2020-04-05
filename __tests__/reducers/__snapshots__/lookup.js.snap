@@ -11,6 +11,7 @@ Object {
   ],
   "loadingCountriesError": false,
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -33,6 +34,7 @@ Object {
   ],
   "loadingCountriesError": true,
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -49,6 +51,7 @@ Object {
   "allCountries": Array [],
   "countries": Array [],
   "loadingSkillTagsError": false,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -65,6 +68,7 @@ Object {
   "allCountries": Array [],
   "countries": Array [],
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -80,6 +84,7 @@ exports[`Default reducer Initial state 1`] = `
 Object {
   "allCountries": Array [],
   "countries": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [],
 }
 `;
@@ -95,6 +100,7 @@ Object {
   ],
   "loadingCountriesError": false,
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -117,6 +123,7 @@ Object {
   ],
   "loadingCountriesError": true,
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -133,6 +140,7 @@ Object {
   "allCountries": Array [],
   "countries": Array [],
   "loadingSkillTagsError": false,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -149,6 +157,7 @@ Object {
   "allCountries": Array [],
   "countries": Array [],
   "loadingSkillTagsError": true,
+  "reviewTypes": Array [],
   "skillTags": Array [
     Object {
       "domain": "SKILLS",
@@ -164,6 +173,7 @@ exports[`Factory without server side rendering Initial state 1`] = `
 Object {
   "allCountries": Array [],
   "countries": Array [],
+  "reviewTypes": Array [],
   "skillTags": Array [],
 }
 `;

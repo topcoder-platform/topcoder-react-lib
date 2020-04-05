@@ -187,8 +187,8 @@ async function getStatsHistoryInit(handle, uuid) {
  * @param {String} tokenV3 v3 auth token.
  * @return {Action}
  */
-async function getStatsHistoryDone(handle, uuid, tokenV3) {
-  const data = await getService(tokenV3).getStatsHistory(handle);
+async function getStatsHistoryDone(handle, groupIds, uuid, tokenV3) {
+  const data = await getService(tokenV3).getStatsHistory(handle, groupIds);
   return { data, handle, uuid };
 }
 

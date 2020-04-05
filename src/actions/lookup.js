@@ -20,8 +20,13 @@ function getSkillTagsInit() {}
  */
 function getSkillTagsDone() {
   const params = {
-    domain: 'SKILLS',
-    status: 'APPROVED',
+    filter: {
+      domain: 'SKILLS',
+      status: 'APPROVED',
+    },
+    limit: {
+      limit: 1000,
+    },
   };
   return getService().getTags(params);
 }
@@ -40,6 +45,23 @@ function getCountriesInit() {}
  */
 function getCountriesDone() {
   return getService().getCountries();
+}
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of getting all review types.
+ * @return {Action}
+ */
+function getReviewTypesInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets all review types.
+ * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
+ * @return {Action}
+ */
+function getReviewTypesDone(tokenV3) {
+  return getService(tokenV3).getReviewTypes();
 }
 
 /**
@@ -65,6 +87,8 @@ export default createActions({
     GET_SKILL_TAGS_DONE: getSkillTagsDone,
     GET_COUNTRIES_INIT: getCountriesInit,
     GET_COUNTRIES_DONE: getCountriesDone,
+    GET_REVIEW_TYPES_INIT: getReviewTypesInit,
+    GET_REVIEW_TYPES_DONE: getReviewTypesDone,
     GET_ALL_COUNTRIES_INIT: getAllCountriesInit,
     GET_ALL_COUNTRIES_DONE: getAllCountriesDone,
   },
