@@ -8,7 +8,157 @@
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 import logger from '../utils/logger';
-import actions from '../actions/lookup';
+import actions, { PAGE_SIZE } from '../actions/lookup';
+
+
+/**
+ * Handles LOOKUP/GET_TYPES_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetTypesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get types', payload);
+    return { ...state, loadingTypesError: true };
+  }
+
+  const types = _.map(_.uniq(payload.sort()), v => ({
+    key: v,
+    name: v,
+  }));
+  return ({
+    ...state,
+    loadingTypesError: false,
+    types,
+  });
+}
+
+
+/**
+ * Handles LOOKUP/GET_MANUFACTURERS_INIT action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetManufacturersInit(state) {
+  return {
+    ...state, manufacturers: [], models: [], oses: [],
+  };
+}
+
+/**
+ * Handles LOOKUP/GET_MANUFACTURERS_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetManufacturersDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get types', payload);
+    return { ...state, loadingManufacturersError: true };
+  }
+
+  const manufacturers = _.map(_.uniq(payload.sort()), v => ({
+    key: v,
+    name: v,
+  }));
+  return ({
+    ...state,
+    loadingManufacturersError: false,
+    manufacturers,
+  });
+}
+
+
+/**
+ * Handles LOOKUP/GET_MODELS_INIT action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetModelsInit(state, { payload }) {
+  // if load more, don't clear state
+  if (payload.page > 1) {
+    return { ...state, modelPage: payload.page, isModelsLoading: true };
+  }
+  return {
+    ...state, models: [], oses: [], modelPage: payload.page, isModelsLoading: true,
+  };
+}
+
+/**
+ * Handles LOOKUP/GET_MODELS_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetModelsDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get types', payload);
+    return { ...state, loadingModelsError: true, isModelsLoading: false };
+  }
+
+  let models = payload;
+  const hasMore = models.length === PAGE_SIZE;
+
+  if (state.modelPage > 1) {
+    models = [...state.models, ...models];
+  }
+  models = _.orderBy(models, ['model'], ['asc']);
+  models = _.uniqBy(models, m => m.model);
+
+  return ({
+    ...state,
+    loadingModelsError: false,
+    models,
+    hasMoreModels: hasMore,
+    isModelsLoading: false,
+  });
+}
+
+/**
+ * Handles LOOKUP/GET_OSES_INIT action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetOsesInit(state, { payload }) {
+  return {
+    ...state, osPage: payload.page, isOsesLoading: true,
+  };
+}
+
+
+/**
+ * Handles LOOKUP/GET_OSES_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetOsesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get types', payload);
+    return { ...state, loadingOsesError: true, isOsesLoading: false };
+  }
+
+  let oses = payload;
+  const hasMore = oses.length === PAGE_SIZE;
+  if (state.osPage > 1) {
+    oses = [...state.oses, ...oses];
+  }
+  oses = _.orderBy(payload, ['operatingSystem'], ['asc']);
+
+  oses = _.uniqBy(oses, m => m.operatingSystem);
+  return ({
+    ...state,
+    loadingOsesError: false,
+    oses,
+    hasMoreOses: hasMore,
+    isOsesLoading: false,
+  });
+}
+
 
 /**
  * Handles LOOKUP/GET_SKILL_TAGS_DONE action.
@@ -49,6 +199,25 @@ function onGetCountriesDone(state, { payload, error }) {
 }
 
 /**
+ * Handles LOOKUP/GET_REVIEW_TYPES_DONE action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onGetReviewTypesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to get review types', payload);
+    return { ...state, loadingReviewTypesError: true };
+  }
+
+  return ({
+    ...state,
+    loadingReviewTypesError: false,
+    reviewTypes: payload,
+  });
+}
+
+/**
  * Handles LOOKUP/GET_ALL_COUNTRIES_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
@@ -75,16 +244,35 @@ function onGetAllCountriesDone(state, { payload, error }) {
 function create(initialState = {}) {
   const a = actions.lookup;
   return handleActions({
+    [a.getTypesInit]: state => state,
+    [a.getTypesDone]: onGetTypesDone,
+    [a.getManufacturersInit]: onGetManufacturersInit,
+    [a.getManufacturersDone]: onGetManufacturersDone,
+    [a.getModelsInit]: onGetModelsInit,
+    [a.getModelsDone]: onGetModelsDone,
+    [a.getOsesInit]: onGetOsesInit,
+    [a.getOsesDone]: onGetOsesDone,
     [a.getSkillTagsInit]: state => state,
     [a.getSkillTagsDone]: onGetSkillTagsDone,
     [a.getCountriesInit]: state => state,
     [a.getCountriesDone]: onGetCountriesDone,
+    [a.getReviewTypesInit]: state => state,
+    [a.getReviewTypesDone]: onGetReviewTypesDone,
     [a.getAllCountriesInit]: state => state,
     [a.getAllCountriesDone]: onGetAllCountriesDone,
   }, _.defaults(initialState, {
     skillTags: [],
     countries: [],
     allCountries: [],
+    types: [],
+    manufacturers: [],
+    models: [],
+    modelPage: 1,
+    hasMoreModels: false,
+    oses: [],
+    osPage: 1,
+    hasMoreOses: false,
+    reviewTypes: [],
   }));
 }
 

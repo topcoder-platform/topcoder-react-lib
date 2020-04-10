@@ -13,6 +13,7 @@ via API V5.
             * [new SubmissionsService(tokenV3)](#new_module_services.submissions..SubmissionsService_new)
             * [.getSubmissions(filters, params)](#module_services.submissions..SubmissionsService+getSubmissions) ⇒ <code>Promise</code>
             * [.getSubmissionInformation(submissionId)](#module_services.submissions..SubmissionsService+getSubmissionInformation) ⇒ <code>Promise</code>
+            * [.downloadSubmission(submissionId)](#module_services.submissions..SubmissionsService+downloadSubmission) ⇒ <code>Promise</code>
 
 <a name="module_services.submissions.getService"></a>
 
@@ -35,6 +36,7 @@ Returns a new or existing submissions service.
     * [new SubmissionsService(tokenV3)](#new_module_services.submissions..SubmissionsService_new)
     * [.getSubmissions(filters, params)](#module_services.submissions..SubmissionsService+getSubmissions) ⇒ <code>Promise</code>
     * [.getSubmissionInformation(submissionId)](#module_services.submissions..SubmissionsService+getSubmissionInformation) ⇒ <code>Promise</code>
+    * [.downloadSubmission(submissionId)](#module_services.submissions..SubmissionsService+downloadSubmission) ⇒ <code>Promise</code>
 
 <a name="new_module_services.submissions..SubmissionsService_new"></a>
 
@@ -64,6 +66,18 @@ Gets submission information.
 
 **Kind**: instance method of [<code>SubmissionsService</code>](#module_services.submissions..SubmissionsService)
 **Returns**: <code>Promise</code> - Resolves to the submission information.
+
+| Param | Type | Description |
+| --- | --- | --- |
+| submissionId | <code>String</code> | The id of submission |
+
+<a name="module_services.submissions..SubmissionsService+downloadSubmission"></a>
+
+#### submissionsService.downloadSubmission(submissionId) ⇒ <code>Promise</code>
+Download submission.
+
+**Kind**: instance method of [<code>SubmissionsService</code>](#module_services.submissions..SubmissionsService)
+**Returns**: <code>Promise</code> - Resolves to the submission file.
 
 | Param | Type | Description |
 | --- | --- | --- |

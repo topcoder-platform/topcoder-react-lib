@@ -4,6 +4,7 @@
  * via API V3.
  */
 import qs from 'qs';
+import { assign } from 'lodash';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 
@@ -20,12 +21,69 @@ class LookupService {
   }
 
   /**
+   * Gets types
+   * @return {Promise} Resolves to the types
+   */
+  async getTypes() {
+    try {
+      const res = await this.private.apiV5.get('/lookups/devices/types');
+      return res.json();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * Gets Manufacturers.
+   * @param {String} params type
+   * @return {Promise} Resolves to the getManufacturers.
+   */
+  async getManufacturers(type) {
+    const params = {
+      type,
+    };
+
+    try {
+      const res = await this.private.apiV5.get(`/lookups/devices/manufacturers?${qs.stringify(params)}`);
+      return res.json();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  /**
+   * Gets Devices
+   * @param {number}  page
+   * @param {Number}  pageSize
+   * @param {String}  type
+   * @param {String}  manufacturer
+   * @param {String}  model
+   * @return {Promise} Resolves to the Devices.
+   */
+  async getDevices(page = 1, pageSize, type, manufacturer, model) {
+    const params = {
+      perPage: pageSize,
+    };
+    assign(params, {
+      type, manufacturer, model, page,
+    });
+
+    try {
+      const res = await this.private.apiV5.get(`/lookups/devices?${qs.stringify(params)}`);
+      return res.json();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+
+  /**
    * Gets tags.
    * @param {Object} params Parameters
    * @return {Promise} Resolves to the tags.
    */
   async getTags(params) {
-    const res = await this.private.api.get(`/tags/?${qs.stringify(params)}`);
+    const res = await this.private.api.get(`/tags/?filter=${encodeURIComponent(qs.stringify(params.filter))}&${qs.stringify(params.limit)}`);
     return getApiResponsePayload(res);
   }
 
@@ -45,6 +103,16 @@ class LookupService {
    */
   async getAllCountries() {
     const res = await this.private.apiV5.get('/lookups/countries');
+    const jsonResult = await res.json();
+    return jsonResult;
+  }
+
+  /**
+   * Gets all reviewTypes.
+   * @return {Promise} Resolves to the review types.
+   */
+  async getReviewTypes() {
+    const res = await this.private.apiV5.get('/reviewTypes');
     const jsonResult = await res.json();
     return jsonResult;
   }
