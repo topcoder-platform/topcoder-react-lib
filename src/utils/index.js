@@ -8,6 +8,7 @@ import * as mock from './mock';
 import * as errors from './errors';
 import * as filter from './challenge/filter';
 import * as submission from './submission';
+import * as tracking from './tracking';
 
 const challenge = {
   filter,
@@ -21,4 +22,5 @@ export {
   mock,
   errors,
   submission,
+  tracking,
 };
