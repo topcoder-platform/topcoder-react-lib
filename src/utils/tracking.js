@@ -1,7 +1,9 @@
 /* global window */
+/* global CONFIG */
 
 import ReactGA from 'react-ga';
 
+const { GOOGLE_ANALYTICS_ID } = CONFIG;
 const TRACKING_NAME = 'tracking';
 
 /**
@@ -10,7 +12,7 @@ const TRACKING_NAME = 'tracking';
  */
 export const init = (userId) => {
   ReactGA.initialize([{
-    trackingId: 'UA-161803421-1',
+    trackingId: GOOGLE_ANALYTICS_ID,
     gaOptions: {
       name: TRACKING_NAME,
       userId,
