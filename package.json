@@ -22,16 +22,16 @@
   },
   "scripts": {
     "build": "npm run clean && npm run build:dev && npm run build:prod",
-    "build:dev": "NODE_ENV=development ./node_modules/.bin/webpack --env=development --progress --profile --colors --display-optimization-bailout",
+    "build:dev": "./node_modules/.bin/webpack --env=development --progress --profile --colors --display-optimization-bailout",
     "build:dev:watch": "npm run clean && ./node_modules/.bin/webpack --env=development --progress --profile --colors --watch --display-optimization-bailout",
-    "build:prod": "NODE_ENV=production ./node_modules/.bin/webpack --env=production --progress --profile --colors --display-optimization-bailout",
+    "build:prod": "./node_modules/.bin/webpack --env=production --progress --profile --colors --display-optimization-bailout",
     "clean": "rimraf dist",
     "jest": "jest --no-cache --maxWorkers=4 --config config/jest/default.js",
     "lint": "npm run lint:js",
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.10.0",
+  "version": "0.14.0",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
@@ -49,6 +49,7 @@
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
     "tc-accounts": "https://github.com/appirio-tech/accounts-app.git#dev",
+    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
     "to-capital-case": "^1.0.0",
     "topcoder-react-utils": "0.7.5"
   },
