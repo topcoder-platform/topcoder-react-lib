@@ -90,12 +90,12 @@ function filterByRegistrationOpen(challenge, state) {
       return challenge.status !== 'Past';
     }
     const registrationPhase = (challenge.allPhases || challenge.phases || []).find(item => item.name === 'Registration');
-    if (!registrationPhase || !registrationPhase.isActive) {
+    if (!registrationPhase || !registrationPhase.isOpen) {
       return false;
     }
     if (challenge.track === 'DESIGN') {
       const checkpointPhase = (challenge.allPhases || challenge.phases || []).find(item => item.name === 'Checkpoint Submission');
-      return !checkpointPhase || !checkpointPhase.isActive;
+      return !checkpointPhase || !checkpointPhase.isOpen;
     }
     return true;
   };
@@ -123,7 +123,7 @@ function filterByStarted(challenge, state) {
   if (!challenge.phases) {
     return true;
   }
-  return _.some(challenge.phases, { isActive: true, name: 'Registration' });
+  return _.some(challenge.phases, { isOpen: true, name: 'Registration' });
 }
 
 function filterByStatus(challenge, state) {
@@ -143,14 +143,14 @@ function filterBySubtracks(challenge, state) {
 
 function filterByTags(challenge, state) {
   if (!state.tags) return true;
-  const { platforms, technologies } = challenge;
-  const str = `${platforms} ${technologies}`.toLowerCase();
+  const { platforms, tags } = challenge;
+  const str = `${platforms} ${tags}`.toLowerCase();
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
 }
 
 function filterByText(challenge, state) {
   if (!state.text) return true;
-  const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.technologies}`
+  const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.tags}`
     .toLowerCase();
   return str.includes(state.text.toLowerCase());
 }

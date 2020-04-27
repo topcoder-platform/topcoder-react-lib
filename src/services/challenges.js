@@ -80,7 +80,6 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     })),
     terms: challenge.terms,
     submissions: challenge.submissions,
-    track: _.toUpper(challenge.challengeCommunity),
     subTrack: challenge.subTrack,
     checkpoints: challenge.checkpoints,
     documents: challenge.documents || [],
@@ -147,7 +146,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
   // Fill some derived data
   const registrationOpen = _.some(
     allPhases,
-    phase => phase.name === 'Registration' && phase.isActive,
+    phase => phase.name === 'Registration' && phase.isOpen,
   ) ? 'Yes' : 'No';
   _.defaults(finalChallenge, {
     communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
@@ -180,7 +179,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isActive ? 'Yes' : 'No';
+  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isOpen ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -511,18 +510,15 @@ class ChallengesService {
   /**
    * Gets SRM matches.
    * @param {Object} params
+   * @param {string} typeId Challenge SRM TypeId
    * @return {Promise}
    */
   async getSrms(params) {
-    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
+    const res = await this.private.apiV5.get(`/challenges/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
   static updateFiltersParamsForGettingMemberChallenges(filters, params) {
-    if (filters && filters.status === 'Active') {
-      // eslint-disable-next-line no-param-reassign
-      filters.status = 'ACTIVE';
-    }
     if (params && params.perPage) {
       // eslint-disable-next-line no-param-reassign
       params.offset = (params.page - 1) * params.perPage;
@@ -577,11 +573,15 @@ class ChallengesService {
   /**
    * Registers user to the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async register(challengeId) {
-    const endpoint = `/challenges/${challengeId}/register`;
-    const res = await this.private.api.postJson(endpoint);
+  async register(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.post('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -589,11 +589,15 @@ class ChallengesService {
   /**
    * Unregisters user from the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async unregister(challengeId) {
-    const endpoint = `/challenges/${challengeId}/unregister`;
-    const res = await this.private.api.post(endpoint);
+  async unregister(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.post('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
