@@ -21,7 +21,6 @@
     "url": "git+https://github.com/topcoder-platform/topcoder-react-lib.git"
   },
   "scripts": {
-    "prepare": "npm run build",
     "build": "npm run clean && npm run build:dev && npm run build:prod",
     "build:dev": "./node_modules/.bin/webpack --env=development --progress --profile --colors --display-optimization-bailout",
     "build:dev:watch": "npm run clean && ./node_modules/.bin/webpack --env=development --progress --profile --colors --watch --display-optimization-bailout",
@@ -32,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "1000.13.4",
+  "version": "1000.13.6",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
