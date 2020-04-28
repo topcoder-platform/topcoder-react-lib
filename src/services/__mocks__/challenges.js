@@ -250,10 +250,10 @@ class ChallengesService {
   }
 
   /**
-   * Gets possible challenge subtracks.
-   * @return {Promise} Resolves to the array of subtrack names.
+   * Gets possible challenge types.
+   * @return {Promise} Resolves to the array of challenge type names.
    */
-  getChallengeSubtracks() {
+  getChallengeTypes() {
     return Promise.all([
       this.private.apiV2.get('/design/challengetypes')
         .then(res => (res.ok ? res.json() : new Error(res.statusText))),

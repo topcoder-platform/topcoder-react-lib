@@ -57,7 +57,6 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
     topCheckPointPrize: challenge.topCheckPointPrize,
     submissionsViewable: challenge.submissionsViewable || 'false',
-    reviewType: challenge.reviewType,
     allowStockArt: challenge.allowStockArt === 'true',
     fileTypes: challenge.filetypes || [],
     environment: challenge.environment,
@@ -66,12 +65,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     submissionLimit: Number(challenge.submissionLimit) || 0,
     drPoints: challenge.digitalRunPoints,
     directUrl: challenge.directUrl,
-    tags: _.union(
-      challenge.technologies || [],
-      challenge.technology || [],
-      challenge.platforms || [],
-      challenge.tags || [],
-    ),
+    tags: challenge.tags || [],
     prizes: challenge.prize || challenge.prizes || [],
     events: _.map(challenge.event, e => ({
       eventName: e.eventShortDesc,
@@ -191,8 +185,7 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.totalPrize) {
     challenge.totalPrize = challenge.prizes.reduce((sum, x) => sum + x, 0);
   }
-  if (!challenge.technologies) challenge.technologies = [];
-  if (!challenge.platforms) challenge.platforms = [];
+  if (!challenge.tags) challenge.tags = [];
 
   if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
     challenge.track = 'DATA_SCIENCE';
@@ -338,7 +331,12 @@ class ChallengesService {
    *  is rejected.
    */
   async activate(challengeId) {
-    let res = await this.private.api.post(`/challenges/${challengeId}/activate`);
+    const params = {
+      status: 'Active',
+    };
+
+    let res = await this.private.apiV5.patch(`/challenge/${challengeId}`, params);
+
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -348,15 +346,14 @@ class ChallengesService {
   /**
    * Closes the specified challenge.
    * @param {Number} challengeId
-   * @param {Number} winnerId Optional. ID of the assignee to declare the
-   *  winner.
    * @return {Promise} Resolves to null value in case of success; otherwise it
    *  is rejected.
    */
-  async close(challengeId, winnerId) {
-    let url = `/challenges/${challengeId}/close`;
-    if (winnerId) url = `${url}?winnerId=${winnerId}`;
-    let res = await this.private.api.post(url);
+  async close(challengeId) {
+    const params = {
+      status: 'Completed',
+    };
+    let res = await this.private.apiV5.patch(`/challenges/${challengeId}/close`, params);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -374,7 +371,7 @@ class ChallengesService {
    * @param {String} submissionGuidelines
    * @param {Number} copilotId
    * @param {Number} copilotFee
-   * @param {?} technologies
+   * @param {?} tags
    * @return {Promise} Resolves to the created challenge object (payment task).
    */
   async createTask(
@@ -387,7 +384,7 @@ class ChallengesService {
     submissionGuidelines,
     copilotId,
     copilotFee,
-    technologies,
+    tags,
   ) {
     const payload = {
       param: {
@@ -398,7 +395,7 @@ class ChallengesService {
         submissionGuidelines,
         milestoneId: 1,
         name: title,
-        technologies,
+        tags,
         prizes: payment ? [payment] : [],
         projectId,
         registrationStartsAt: moment().toISOString(),
@@ -466,11 +463,11 @@ class ChallengesService {
   }
 
   /**
-   * Gets possible challenge subtracks.
+   * Gets possible challenge types.
    * @return {Promise} Resolves to the array of subtrack names.
    */
-  getChallengeSubtracks() {
-    return this.private.apiV5.get('/challengetypes')
+  getChallengeTypes() {
+    return this.private.apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
