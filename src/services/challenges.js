@@ -57,7 +57,6 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
     topCheckPointPrize: challenge.topCheckPointPrize,
     submissionsViewable: challenge.submissionsViewable || 'false',
-    reviewType: challenge.reviewType,
     allowStockArt: challenge.allowStockArt === 'true',
     fileTypes: challenge.filetypes || [],
     environment: challenge.environment,
@@ -66,12 +65,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     submissionLimit: Number(challenge.submissionLimit) || 0,
     drPoints: challenge.digitalRunPoints,
     directUrl: challenge.directUrl,
-    tags: _.union(
-      challenge.technologies || [],
-      challenge.technology || [],
-      challenge.platforms || [],
-      challenge.tags || [],
-    ),
+    tags: challenge.tags || [],
     prizes: challenge.prize || challenge.prizes || [],
     events: _.map(challenge.event, e => ({
       eventName: e.eventShortDesc,
@@ -80,7 +74,6 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     })),
     terms: challenge.terms,
     submissions: challenge.submissions,
-    track: _.toUpper(challenge.challengeCommunity),
     subTrack: challenge.subTrack,
     checkpoints: challenge.checkpoints,
     documents: challenge.documents || [],
@@ -147,7 +140,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
   // Fill some derived data
   const registrationOpen = _.some(
     allPhases,
-    phase => phase.name === 'Registration' && phase.isActive,
+    phase => phase.name === 'Registration' && phase.isOpen,
   ) ? 'Yes' : 'No';
   _.defaults(finalChallenge, {
     communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
@@ -180,7 +173,7 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isActive ? 'Yes' : 'No';
+  const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isOpen ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -192,8 +185,7 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.totalPrize) {
     challenge.totalPrize = challenge.prizes.reduce((sum, x) => sum + x, 0);
   }
-  if (!challenge.technologies) challenge.technologies = [];
-  if (!challenge.platforms) challenge.platforms = [];
+  if (!challenge.tags) challenge.tags = [];
 
   if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
     challenge.track = 'DATA_SCIENCE';
@@ -339,7 +331,12 @@ class ChallengesService {
    *  is rejected.
    */
   async activate(challengeId) {
-    let res = await this.private.api.post(`/challenges/${challengeId}/activate`);
+    const params = {
+      status: 'Active',
+    };
+
+    let res = await this.private.apiV5.patch(`/challenge/${challengeId}`, params);
+
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -349,15 +346,14 @@ class ChallengesService {
   /**
    * Closes the specified challenge.
    * @param {Number} challengeId
-   * @param {Number} winnerId Optional. ID of the assignee to declare the
-   *  winner.
    * @return {Promise} Resolves to null value in case of success; otherwise it
    *  is rejected.
    */
-  async close(challengeId, winnerId) {
-    let url = `/challenges/${challengeId}/close`;
-    if (winnerId) url = `${url}?winnerId=${winnerId}`;
-    let res = await this.private.api.post(url);
+  async close(challengeId) {
+    const params = {
+      status: 'Completed',
+    };
+    let res = await this.private.apiV5.patch(`/challenges/${challengeId}/close`, params);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -375,7 +371,7 @@ class ChallengesService {
    * @param {String} submissionGuidelines
    * @param {Number} copilotId
    * @param {Number} copilotFee
-   * @param {?} technologies
+   * @param {?} tags
    * @return {Promise} Resolves to the created challenge object (payment task).
    */
   async createTask(
@@ -388,7 +384,7 @@ class ChallengesService {
     submissionGuidelines,
     copilotId,
     copilotFee,
-    technologies,
+    tags,
   ) {
     const payload = {
       param: {
@@ -399,7 +395,7 @@ class ChallengesService {
         submissionGuidelines,
         milestoneId: 1,
         name: title,
-        technologies,
+        tags,
         prizes: payment ? [payment] : [],
         projectId,
         registrationStartsAt: moment().toISOString(),
@@ -467,11 +463,11 @@ class ChallengesService {
   }
 
   /**
-   * Gets possible challenge subtracks.
+   * Gets possible challenge types.
    * @return {Promise} Resolves to the array of subtrack names.
    */
-  getChallengeSubtracks() {
-    return this.private.apiV5.get('/challengetypes')
+  getChallengeTypes() {
+    return this.private.apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
@@ -511,18 +507,15 @@ class ChallengesService {
   /**
    * Gets SRM matches.
    * @param {Object} params
+   * @param {string} typeId Challenge SRM TypeId
    * @return {Promise}
    */
   async getSrms(params) {
-    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
+    const res = await this.private.apiV5.get(`/challenges/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
   static updateFiltersParamsForGettingMemberChallenges(filters, params) {
-    if (filters && filters.status === 'Active') {
-      // eslint-disable-next-line no-param-reassign
-      filters.status = 'ACTIVE';
-    }
     if (params && params.perPage) {
       // eslint-disable-next-line no-param-reassign
       params.offset = (params.page - 1) * params.perPage;
@@ -577,11 +570,15 @@ class ChallengesService {
   /**
    * Registers user to the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async register(challengeId) {
-    const endpoint = `/challenges/${challengeId}/register`;
-    const res = await this.private.api.postJson(endpoint);
+  async register(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.post('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -589,11 +586,15 @@ class ChallengesService {
   /**
    * Unregisters user from the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async unregister(challengeId) {
-    const endpoint = `/challenges/${challengeId}/unregister`;
-    const res = await this.private.api.post(endpoint);
+  async unregister(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.post('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
