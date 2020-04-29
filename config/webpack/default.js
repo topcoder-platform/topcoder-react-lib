@@ -19,6 +19,7 @@ module.exports = {
     'moment-duration-format',
     'react',
     'react-dom',
+    'react-ga',
     'redux',
     'redux-actions',
     'isomorphic-fetch',
