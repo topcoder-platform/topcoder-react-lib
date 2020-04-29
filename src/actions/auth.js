@@ -22,7 +22,7 @@ function loadProfileDone(userTokenV3) {
     api.get(`/members/${user.handle}`)
       .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
     apiV5.get(`/groups?memberId=${user.userId}&membershipType=user`)
-      .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : [])),
+      .then(res => (res.ok ? res.json() : new Error(res.statusText))),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
 
