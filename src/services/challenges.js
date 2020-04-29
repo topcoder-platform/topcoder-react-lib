@@ -35,6 +35,12 @@ export const ORDER_BY = {
  * @return {Object} Normalized challenge object.
  */
 export function normalizeChallengeDetails(challenge, filtered, user, username) {
+  // FIXME: This has not been updated to use V5
+  // We should not be modifying the challenge data to get it in shape.
+  // Instead, we should be modifying the frontend to be able to
+  // consume the data as it comes from the API.
+  // So, Ideally, this method should be removed
+  // ------------------------------------
   // Normalize exising data to make it consistent with the rest of the code
   const finalChallenge = {
     ...challenge,
@@ -173,6 +179,11 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
+  // FIXME: This has not been updated to use V5
+  // We should not be modifying the challenge data to get it in shape.
+  // Instead, we should be modifying the frontend to be able to
+  // consume the data as it comes from the API.
+  // So, Ideally, this method should be removed
   const registrationOpen = (challenge.allPhases || challenge.phases || []).filter(d => (d.name === 'Registration' || !d.name))[0].isOpen ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
@@ -304,6 +315,9 @@ class ChallengesService {
         ...params,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
+      // FIXME: This has not been updated to use the V5 API
+      // Ref: http://api.topcoder-dev.com/v5/challenges/docs/#/Challenges/get_challenges
+      // Use the `memberId` query parameter to filter challenges for a specific member
       const res = await this.private.api.get(url).then(checkError);
       return {
         challenges: res.content || [],
@@ -353,7 +367,7 @@ class ChallengesService {
     const params = {
       status: 'Completed',
     };
-    let res = await this.private.apiV5.patch(`/challenges/${challengeId}/close`, params);
+    let res = await this.private.apiV5.patch(`/challenges/${challengeId}`, params);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -387,6 +401,7 @@ class ChallengesService {
     tags,
   ) {
     const payload = {
+      // FIXME: This has not been updated to use the v5 API
       param: {
         assignees: [assignee],
         billingAccountId: accountId,
@@ -457,6 +472,10 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
+    // FIXME: The implementation here is wrong.
+    // The correct implementation would be to call the Resources API to fetch the
+    // resources for the given challenge and filter based on the registrant resource role ID
+    // Ref: http://api.topcoder-dev.com/v5/resources/docs/#/Resources/get_resources
     const challenge = await this.private.apiV5.get(`/challenges/${challengeId}`)
       .then(checkError).then(res => res);
     return challenge.registrants || [];
@@ -532,6 +551,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserChallenges(username, filters, params) {
+    // FIXME: This has not been updated to use the V5 API
     const userFilters = _.cloneDeep(filters);
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
     const endpoint = `/members/${username.toLowerCase()}/challenges/`;
@@ -550,6 +570,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   getUserMarathonMatches(username, filters, params) {
+    // FIXME: This has not been updated to use the V5 API
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
     const endpoint = `/members/${username.toLowerCase()}/mms/`;
     return this.private.getMemberChallenges(endpoint, filters, params);
@@ -562,6 +583,7 @@ class ChallengesService {
    * @return {Promise}
    */
   async getUserSrms(handle, params) {
+    // FIXME: This has not been updated to use the V5 API
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
     const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
@@ -594,7 +616,7 @@ class ChallengesService {
     const params = {
       challengeId, memberHandle, roleId,
     };
-    const res = await this.private.apiV5.post('/resources', params);
+    const res = await this.private.apiV5.delete('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
