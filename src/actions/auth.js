@@ -17,11 +17,12 @@ function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
   const api = getApi('V3', userTokenV3);
+  const apiV5 = getApi('V5', userTokenV3);
   return Promise.all([
     api.get(`/members/${user.handle}`)
       .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
-    api.get(`/groups?memberId=${user.userId}&membershipType=user`)
-      .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : [])),
+    apiV5.get(`/groups?memberId=${user.userId}&membershipType=user`)
+      .then(res => (res.ok ? res.json() : new Error(res.statusText))),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
 

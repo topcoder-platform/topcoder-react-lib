@@ -172,7 +172,7 @@ class GroupService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V5', tokenV3),
       tokenV3,
     };
   }
@@ -185,9 +185,8 @@ class GroupService {
    * @return {Promise}
    */
   addMember(groupId, memberId, membershipType) {
-    return this.private.api.postJson(`/groups/${groupId}/members`, {
-      param: { memberId, membershipType },
-    }).then(handleApiResponse);
+    return this.private.api.postJson(`/groups/${groupId}/members`, { memberId, membershipType })
+      .then(handleApiResponse);
   }
 
   /**
