@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "0.17.0",
+  "version": "0.15.0",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
@@ -44,7 +44,6 @@
     "qs": "^6.5.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-ga": "^2.7.0",
     "react-redux": "^6.0.1",
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
