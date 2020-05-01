@@ -4,7 +4,7 @@
  */
 
 import _ from 'lodash';
-import fetch from 'isomorphic-fetch';
+import fetch from 'cross-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
 import { auth } from 'tc-core-library-js';
 import { delay } from '../utils/time';

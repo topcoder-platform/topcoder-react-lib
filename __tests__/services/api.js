@@ -4,6 +4,11 @@ jest.mock(
   () => jest.fn((url, ops) => Promise.resolve({ url, ops })),
 );
 
+jest.mock(
+  'cross-fetch',
+  () => jest.fn((url, ops) => Promise.resolve({ url, ops })),
+);
+
 const { config } = require('topcoder-react-utils');
 const { getApi } = require('../../src/services/api');
 
