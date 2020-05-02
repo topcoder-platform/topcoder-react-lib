@@ -307,22 +307,19 @@ class ChallengesService {
      */
     const getMemberChallenges = async (
       endpoint,
-      filters = {},
       params = {},
     ) => {
+      const memberId = decodeToken(this.private.tokenV3).userId;
       const query = {
-        filter: qs.stringify(filters, { encode: false }),
         ...params,
+        memberId,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
-      // FIXME: This has not been updated to use the V5 API
-      // Ref: http://api.topcoder-dev.com/v5/challenges/docs/#/Challenges/get_challenges
-      // Use the `memberId` query parameter to filter challenges for a specific member
-      const res = await this.private.api.get(url).then(checkError);
+      const res = await this.private.apiV5.get(url).then(checkError);
+      const totalCount = res.length;
       return {
-        challenges: res.content || [],
-        totalCount: res.metadata.totalCount,
-        meta: res.metadata,
+        challenges: res || [],
+        totalCount,
       };
     };
 
@@ -401,7 +398,6 @@ class ChallengesService {
     tags,
   ) {
     const payload = {
-      // FIXME: This has not been updated to use the v5 API
       param: {
         assignees: [assignee],
         billingAccountId: accountId,
@@ -425,7 +421,7 @@ class ChallengesService {
         copilotFee,
       });
     }
-    let res = await this.private.api.postJson('/challenges', payload);
+    let res = await this.private.apiV5.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -554,8 +550,8 @@ class ChallengesService {
     // FIXME: This has not been updated to use the V5 API
     const userFilters = _.cloneDeep(filters);
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
-    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getMemberChallenges(endpoint, userFilters, params)
+    const endpoint = '/challenges';
+    return this.private.getMemberChallenges(endpoint)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item, username));
         return res;
@@ -573,7 +569,7 @@ class ChallengesService {
     // FIXME: This has not been updated to use the V5 API
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
     const endpoint = `/members/${username.toLowerCase()}/mms/`;
-    return this.private.getMemberChallenges(endpoint, filters, params);
+    return this.private.getMemberChallenges(endpoint);
   }
 
   /**
