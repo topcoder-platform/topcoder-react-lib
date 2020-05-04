@@ -206,29 +206,15 @@ class ChallengesService {
 
     const payload = {
       param: {
-        description,
-        reviewType: 'INTERNAL',
         name: title,
+        typeId: 'e885273d-aeda-42c0-917d-bfbf979afbba',
+        description,
         legacy: {
           track: 'FIRST_2_FINISH',
+          reviewType: 'INTERNAL',
           confidentialityType: 'public',
           billingAccountId: accountId,
-          milestoneId: 1,
         },
-        metadata: [
-          {
-            type: 'submissionGuidelines',
-            value: [submissionGuidelines],
-          },
-          {
-            type: 'assignees',
-            value: [assignee],
-          },
-          {
-            type: 'billingAccountId',
-            value: accountId,
-          },
-        ],
         phases: [
           {
             phaseId: registrationPhase.id,
@@ -238,7 +224,13 @@ class ChallengesService {
         prizeSets: [
           {
             type: 'Challenge Prizes',
-            prizes: payment ? [payment] : [],
+            description: 'Challenge Prize',
+            prizes: [
+              {
+                value: payment,
+                type: 'First Placement',
+              },
+            ],
           },
         ],
         tags,
