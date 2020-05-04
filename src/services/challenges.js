@@ -10,7 +10,7 @@ import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
-import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
+import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 
@@ -279,13 +279,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    // FIXME: The implementation here is wrong.
-    // The correct implementation would be to call the Resources API to fetch the
-    // resources for the given challenge and filter based on the registrant resource role ID
-    // Ref: http://api.topcoder-dev.com/v5/resources/docs/#/Resources/get_resources
-    const challenge = await this.private.apiV5.get(`/challenges/${challengeId}`)
+    const registrants = await this.private.apiV5.get(`/resources/challengeId=${challengeId}`)
       .then(checkError).then(res => res);
-    return challenge.registrants || [];
+    return registrants || [];
   }
 
   /**
@@ -384,9 +380,18 @@ class ChallengesService {
    * @return {Promise}
    */
   async getUserSrms(handle, params) {
-    // FIXME: This has not been updated to use the V5 API
-    const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const res = await this.private.api.get(url);
+    const challenges = await this.private.apiV5.get(`/resources?memberHandle=${handle}`);
+    let newParams = params;
+    if (challenges) {
+      const { challengeId } = challenges[0];
+      newParams = {
+        ...params,
+        challengeId,
+      };
+    }
+
+    const url = `/challenges/${qs.stringify(newParams)}`;
+    const res = await this.private.apiV5.get(url);
     return getApiResponsePayload(res);
   }
 
