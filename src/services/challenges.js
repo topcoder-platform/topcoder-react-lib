@@ -112,14 +112,16 @@ class ChallengesService {
      */
     const getMemberChallenges = async (
       endpoint,
+      filters = {},
       params = {},
     ) => {
       const memberId = decodeToken(this.private.tokenV3).userId;
       const query = {
         ...params,
+        ...filters,
         memberId,
       };
-      const url = `${endpoint}?${qs.stringify(query)}`;
+      const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
       const res = await this.private.apiV5.get(url).then(checkError);
       const totalCount = res.length;
       return {
@@ -132,6 +134,7 @@ class ChallengesService {
       api: getApi('V4', tokenV3),
       apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
+      apiV3: getApi('V3', tokenV3),
       getChallenges,
       getMemberChallenges,
       tokenV2,
@@ -337,32 +340,39 @@ class ChallengesService {
 
   /**
    * Gets challenges of the specified user.
-   * @param {String} username User whose challenges we want to fetch.
+   * @param {String} userId User id whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserChallenges(username, filters, params) {
-    // FIXME: This has not been updated to use the V5 API
+  getUserChallenges(userId, filters, params) {
     const userFilters = _.cloneDeep(filters);
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
+    const query = {
+      ...params,
+      ...userFilters,
+      memberId: userId,
+    };
     const endpoint = '/challenges';
-    const res = this.private.getMemberChallenges(endpoint);
+    const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
+
+    const res = this.private.apiV5.get(url);
     return res;
   }
 
   /**
    * Gets marathon matches of the specified user.
-   * @param {String} username User whose challenges we want to fetch.
+   * @param {String} userId User whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserMarathonMatches(username, filters, params) {
-    // FIXME: This has not been updated to use the V5 API
-    ChallengesService.updateFiltersParamsForGettingMemberChallenges(filters, params);
-    const endpoint = `/members/${username.toLowerCase()}/mms/`;
-    return this.private.getMemberChallenges(endpoint);
+  async getUserMarathonMatches(userId) {
+    const marathonTypeId = 'c2579605-e294-4967-b3db-875ef85240cd';
+    const url = `/challenges?typeId=${marathonTypeId}&memberId=${userId}`;
+
+    const res = await this.private.apiV5.get(url);
+    return res;
   }
 
   /**
@@ -484,9 +494,9 @@ class ChallengesService {
    * @return {Promise}
    */
   async updateChallenge(challenge) {
-    const URL = `/challenges/${challenge.id}`;
-    const body = { param: challenge };
-    let res = await this.private.api.putJson(URL, body);
+    const url = `/challenges/${challenge.id}`;
+    const body = { body: challenge };
+    let res = await this.private.apiV5.put(url, body);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -507,10 +517,10 @@ class ChallengesService {
    */
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const username = user.handle || user.payload.handle;
-    const url = `/members/${username.toLowerCase()}/challenges`;
-    const data = await this.private.getMemberChallenges(url, { id: challengeId });
-    return data.challenges[0].userDetails.roles;
+    const url = `/resources?challengeId=${challengeId}?memberHandle=${user.handle}`;
+    const resources = await this.private.apiV5(url);
+    if (resources) return resources[0].roleId;
+    throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }
 
