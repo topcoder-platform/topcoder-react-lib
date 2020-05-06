@@ -495,8 +495,7 @@ class ChallengesService {
    */
   async updateChallenge(challenge) {
     const url = `/challenges/${challenge.id}`;
-    const body = { body: challenge };
-    let res = await this.private.apiV5.put(url, body);
+    let res = await this.private.apiV5.put(url, challenge);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -518,8 +517,8 @@ class ChallengesService {
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
     const url = `/resources?challengeId=${challengeId}?memberHandle=${user.handle}`;
-    const resources = await this.private.apiV5(url);
-    if (resources) return resources[0].roleId;
+    const resources = await this.private.apiV5.get(url);
+    if (resources) return _.map(resources, 'roleId');
     throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }
