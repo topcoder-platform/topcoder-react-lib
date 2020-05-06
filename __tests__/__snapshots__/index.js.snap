@@ -294,8 +294,6 @@ Object {
       },
       "default": undefined,
       "getService": [Function],
-      "normalizeChallenge": [Function],
-      "normalizeChallengeDetails": [Function],
     },
     "communities": Object {
       "default": undefined,
