@@ -387,11 +387,5 @@ Object {
     "delay": [Function],
     "formatDuration": [Function],
   },
-  "tracking": Object {
-    "default": undefined,
-    "event": [Function],
-    "init": [Function],
-    "pageView": [Function],
-  },
 }
 `;
