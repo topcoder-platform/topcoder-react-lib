@@ -19,150 +19,6 @@ export const ORDER_BY = {
 };
 
 /**
- * Normalizes a regular challenge details object received from the backend APIs.
- * @todo Why this one is exported? It should be only used internally!
- * @param {Object} challenge Challenge object received from the /challenges/{id}
- *  endpoint.
- * @param {Object} filtered Challenge object received from the
- *  /challenges?filter=id={id} endpoint.
- * @param {Object} user Challenge object received from the
- *  /members/{username}/challenges?filter=id={id} endpoint.
- * If action was fired for authenticated visitor, `user` will contain
- * details fetched specifically for the user (thus may include additional
- * data comparing to the standard API response for the challenge details,
- * stored in `filtered`).
- * @param {String} username Optional.
- * @return {Object} Normalized challenge object.
- */
-export function normalizeChallengeDetails(challenge, filtered, user, username) {
-  // Normalize exising data to make it consistent with the rest of the code
-  const finalChallenge = {
-    ...challenge,
-
-    id: challenge.challengeId,
-    reliabilityBonus: _.get(filtered, 'reliabilityBonus', 0),
-    status: (challenge.currentStatus || '').toUpperCase(),
-
-    allPhases: [],
-    currentPhases: [],
-    name: challenge.challengeName || challenge.challengeTitle,
-    projectId: Number(challenge.projectId),
-    forumId: Number(challenge.forumId),
-    introduction: challenge.introduction || '',
-    detailedRequirements: challenge.detailedRequirements === 'null' ? '' : challenge.detailedRequirements,
-    finalSubmissionGuidelines: challenge.finalSubmissionGuidelines === 'null' ? '' : challenge.finalSubmissionGuidelines,
-    screeningScorecardId: Number(challenge.screeningScorecardId),
-    reviewScorecardId: Number(challenge.reviewScorecardId),
-    numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
-    topCheckPointPrize: challenge.topCheckPointPrize,
-    submissionsViewable: challenge.submissionsViewable || 'false',
-    reviewType: challenge.reviewType,
-    allowStockArt: challenge.allowStockArt === 'true',
-    fileTypes: challenge.filetypes || [],
-    environment: challenge.environment,
-    codeRepo: challenge.codeRepo,
-    forumLink: challenge.forumLink,
-    submissionLimit: Number(challenge.submissionLimit) || 0,
-    drPoints: challenge.digitalRunPoints,
-    directUrl: challenge.directUrl,
-    technologies: challenge.technologies || challenge.technology || [],
-    platforms: challenge.platforms || [],
-    prizes: challenge.prize || challenge.prizes || [],
-    events: _.map(challenge.event, e => ({
-      eventName: e.eventShortDesc,
-      eventId: e.id,
-      description: e.eventDescription,
-    })),
-    terms: challenge.terms,
-    submissions: challenge.submissions,
-    track: _.toUpper(challenge.challengeCommunity),
-    subTrack: challenge.subTrack,
-    checkpoints: challenge.checkpoints,
-    documents: challenge.documents || [],
-    numRegistrants: challenge.numberOfRegistrants,
-    numberOfCheckpointSubmissions: challenge.numberOfCheckpointSubmissions,
-    registrants: challenge.registrants || [],
-  };
-
-  // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
-  finalChallenge.winners = _.map(
-    challenge.winners,
-    (winner, index) => ({
-      ...winner,
-      handle: winner.submitter,
-      placement: winner.rank || index + 1, // Legacy MMs do not have a rank but are sorted by points
-    }),
-  );
-
-  if (finalChallenge.subTrack === 'MARATHON_MATCH') {
-    finalChallenge.track = 'DATA_SCIENCE';
-  }
-
-  // It's not clear if this will be the main event, will need to be investigated
-  finalChallenge.mainEvent = finalChallenge.events[0] || {};
-
-  /* It's unclear if these normalization steps are still required for `challenge` */
-  // Fill missing data from filtered
-  if (filtered) {
-    const groups = {};
-    if (filtered.groupIds) {
-      filtered.groupIds.forEach((id) => {
-        groups[id] = true;
-      });
-    }
-
-    _.merge(finalChallenge, {
-      componentId: filtered.componentId,
-      contestId: filtered.contestId,
-
-      submissionEndDate: filtered.submissionEndDate, // Dates are not correct in `challenge`
-      submissionEndTimestamp: filtered.submissionEndDate, // Dates are not correct in `challenge`
-
-      /* Taking phases from filtered, because dates are not correct in `challenge` */
-      allPhases: filtered.allPhases || [],
-
-      /* Taking phases from filtered, because dates are not correct in `challenge` */
-      currentPhases: filtered.currentPhases || [],
-
-      /* `challenge` has incorrect value for numberOfSubmissions for some reason */
-      numSubmissions: filtered.numSubmissions,
-      groups,
-    });
-  }
-
-  // Fill missing data from user
-  if (user) {
-    _.defaults(finalChallenge, {
-      userDetails: user.userDetails,
-    });
-  }
-
-  // Fill some derived data
-  const registrationOpen = _.some(
-    finalChallenge.allPhases,
-    phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
-  ) ? 'Yes' : 'No';
-  _.defaults(finalChallenge, {
-    communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
-    registrationOpen,
-    users: username ? { [username]: true } : {},
-  });
-
-  // A hot fix to show submissions for on-going challenges
-  if (!finalChallenge.submissions || !finalChallenge.submissions.length) {
-    finalChallenge.submissions = finalChallenge.registrants
-      .filter(r => r.submissionDate || '')
-      .sort((a, b) => (a.submissionDate || '')
-        .localeCompare(b.submissionDate || ''));
-  }
-
-  if (!finalChallenge.allPhases) finalChallenge.allPhases = [];
-  if (!finalChallenge.track) finalChallenge.track = '';
-
-  return finalChallenge;
-}
-
-/**
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
  * component. It is possible, that this normalization is not necessary after we
@@ -173,31 +29,38 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const phases = challenge.allPhases || challenge.phases || [];
+  let registrationOpen = phases.filter(d => d.name === 'Registration')[0];
+  if (registrationOpen && registrationOpen.isOpen) {
+    registrationOpen = 'Yes';
+  } else {
+    registrationOpen = 'No';
+  }
   const groups = {};
-  if (challenge.groupIds) {
-    challenge.groupIds.forEach((id) => {
+  if (challenge.groups) {
+    challenge.groups.forEach((id) => {
       groups[id] = true;
     });
   }
   /* eslint-disable no-param-reassign */
-  if (!challenge.prizes) challenge.prizes = challenge.prize || [];
-  if (!challenge.totalPrize) {
-    challenge.totalPrize = challenge.prizes.reduce((sum, x) => sum + x, 0);
-  }
-  if (!challenge.technologies) challenge.technologies = [];
+  if (!challenge.prizeSets) challenge.prizeSets = [];
+  if (!challenge.tags) challenge.tags = [];
   if (!challenge.platforms) challenge.platforms = [];
 
-  if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
-    challenge.track = 'DATA_SCIENCE';
+  if (challenge.type === 'Marathon Match') {
+    challenge.legacy.track = 'DATA_SCIENCE';
   }
   /* eslint-enable no-param-reassign */
 
+  let submissionEndTimestamp = phases.filter(d => d.name === 'Submission')[0];
+  if (submissionEndTimestamp) {
+    submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
+  }
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
     groups,
     registrationOpen,
-    submissionEndTimestamp: challenge.submissionEndDate,
+    submissionEndTimestamp,
     users: username ? { [username]: true } : {},
   });
 }
@@ -218,6 +81,29 @@ async function checkError(res) {
   const jsonRes = (await res.json()).result;
   if (jsonRes.status !== 200) throw new Error(jsonRes.content);
   return jsonRes;
+}
+
+/**
+ * Helper method that checks for HTTP error response v5 and throws Error in this case.
+ * @param {Object} res HTTP response object
+ * @return {Object} API JSON response object
+ * @private
+ */
+async function checkErrorV5(res) {
+  if (!res.ok) {
+    if (res.status >= 500) {
+      setErrorIcon(ERROR_ICON_TYPES.API, '/challenges', res.statusText);
+    }
+    throw new Error(res.statusText);
+  }
+  const jsonRes = (await res.json());
+  if (jsonRes.message) {
+    throw new Error(res.message);
+  }
+  return {
+    result: jsonRes,
+    headers: res.headers,
+  };
 }
 
 /**
@@ -245,22 +131,59 @@ class ChallengesService {
       params = {},
     ) => {
       const query = {
-        filter: qs.stringify(filters, { encode: false }),
+        ...filters,
         ...params,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
-      const res = await this.private.api.get(url).then(checkError);
+      const res = await this.private.apiV5.get(url).then(checkErrorV5);
       return {
-        challenges: res.content || [],
-        totalCount: res.metadata.totalCount,
-        meta: res.metadata,
+        challenges: res.result || [],
+        totalCount: res.headers.get('x-total'),
+        meta: {
+          allChallengesCount: res.headers.get('x-total'),
+          myChallengesCount: 0,
+          ongoingChallengesCount: 0,
+          openChallengesCount: 0,
+          totalCount: res.headers.get('x-total'),
+        },
+      };
+    };
+    /**
+     * Private function being re-used in all methods related to getting
+     * challenges. It handles query-related arguments in the uniform way:
+     * @param {String} endpoint API endpoint, where the request will be send.
+     * @param {Object} filters Optional. A map of filters to pass as `filter`
+     *  query parameter (this function takes care to stringify it properly).
+     * @param {Object} params Optional. A map of any other parameters beside
+     *  `filter`.
+     */
+    const getMemberChallenges = async (
+      endpoint,
+      filters = {},
+      params = {},
+    ) => {
+      const memberId = decodeToken(this.private.tokenV3).userId;
+      const query = {
+        ...params,
+        ...filters,
+        memberId,
+      };
+      const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
+      const res = await this.private.apiV5.get(url).then(checkError);
+      const totalCount = res.length;
+      return {
+        challenges: res || [],
+        totalCount,
       };
     };
 
     this.private = {
       api: getApi('V4', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
+      apiV3: getApi('V3', tokenV3),
       getChallenges,
+      getMemberChallenges,
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
@@ -274,7 +197,12 @@ class ChallengesService {
    *  is rejected.
    */
   async activate(challengeId) {
-    let res = await this.private.api.post(`/challenges/${challengeId}/activate`);
+    const params = {
+      status: 'Active',
+    };
+
+    let res = await this.private.apiV5.patch(`/challenge/${challengeId}`, params);
+
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -284,15 +212,14 @@ class ChallengesService {
   /**
    * Closes the specified challenge.
    * @param {Number} challengeId
-   * @param {Number} winnerId Optional. ID of the assignee to declare the
-   *  winner.
    * @return {Promise} Resolves to null value in case of success; otherwise it
    *  is rejected.
    */
-  async close(challengeId, winnerId) {
-    let url = `/challenges/${challengeId}/close`;
-    if (winnerId) url = `${url}?winnerId=${winnerId}`;
-    let res = await this.private.api.post(url);
+  async close(challengeId) {
+    const params = {
+      status: 'Completed',
+    };
+    let res = await this.private.apiV5.patch(`/challenges/${challengeId}`, params);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -310,7 +237,7 @@ class ChallengesService {
    * @param {String} submissionGuidelines
    * @param {Number} copilotId
    * @param {Number} copilotFee
-   * @param {?} technologies
+   * @param {?} tags
    * @return {Promise} Resolves to the created challenge object (payment task).
    */
   async createTask(
@@ -323,24 +250,41 @@ class ChallengesService {
     submissionGuidelines,
     copilotId,
     copilotFee,
-    technologies,
+    tags,
   ) {
+    const registrationPhase = await this.private.apiV5.get('/challenge-phases?name=Registration');
+
     const payload = {
       param: {
-        assignees: [assignee],
-        billingAccountId: accountId,
-        confidentialityType: 'public',
-        detailedRequirements: description,
-        submissionGuidelines,
-        milestoneId: 1,
         name: title,
-        technologies,
-        prizes: payment ? [payment] : [],
+        typeId: 'e885273d-aeda-42c0-917d-bfbf979afbba',
+        description,
+        legacy: {
+          track: 'FIRST_2_FINISH',
+          reviewType: 'INTERNAL',
+          confidentialityType: 'public',
+          billingAccountId: accountId,
+        },
+        phases: [
+          {
+            phaseId: registrationPhase.id,
+            scheduledEndDate: moment().toISOString(),
+          },
+        ],
+        prizeSets: [
+          {
+            type: 'Challenge Prizes',
+            description: 'Challenge Prize',
+            prizes: [
+              {
+                value: payment,
+                type: 'First Placement',
+              },
+            ],
+          },
+        ],
+        tags,
         projectId,
-        registrationStartsAt: moment().toISOString(),
-        reviewType: 'INTERNAL',
-        subTrack: 'FIRST_2_FINISH',
-        task: true,
       },
     };
     if (copilotId) {
@@ -349,7 +293,7 @@ class ChallengesService {
         copilotFee,
       });
     }
-    let res = await this.private.api.postJson('/challenges', payload);
+    let res = await this.private.apiV5.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -365,26 +309,10 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
-      .then(checkError).then(res => res.content);
-
     const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
-    const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
-      .then(res => res.challenges[0]).catch(() => null);
-
-    const finalChallenge = normalizeChallengeDetails(
-      challenge,
-      challengeFiltered,
-      challengeUser,
-      username,
-    );
-
-    finalChallenge.fetchedWithAuth = Boolean(this.private.api.private.token);
-
-    return finalChallenge;
+    return challengeFiltered;
   }
 
   /**
@@ -393,22 +321,22 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
-      .then(checkError).then(res => res.content);
-    return challenge.registrants;
+    const registrants = await this.private.apiV5.get(`/resources/challengeId=${challengeId}`)
+      .then(checkError).then(res => res);
+    return registrants || [];
   }
 
   /**
-   * Gets possible challenge subtracks.
+   * Gets possible challenge types.
    * @return {Promise} Resolves to the array of subtrack names.
    */
-  getChallengeSubtracks() {
-    return this.private.api.get('/challenge-types')
+  getChallengeTypes() {
+    return this.private.apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
-        res.result.status === 200
-          ? res.result.content
-          : new Error(res.result.content)
+        res.message
+          ? new Error(res.message)
+          : res
       ));
   }
 
@@ -443,39 +371,61 @@ class ChallengesService {
   /**
    * Gets SRM matches.
    * @param {Object} params
+   * @param {string} typeId Challenge SRM TypeId
    * @return {Promise}
    */
   async getSrms(params) {
-    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
+    const res = await this.private.apiV5.get(`/challenges/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
+  }
+
+  static updateFiltersParamsForGettingMemberChallenges(filters, params) {
+    if (params && params.perPage) {
+      // eslint-disable-next-line no-param-reassign
+      params.offset = (params.page - 1) * params.perPage;
+      // eslint-disable-next-line no-param-reassign
+      params.limit = params.perPage;
+    }
   }
 
   /**
    * Gets challenges of the specified user.
-   * @param {String} username User whose challenges we want to fetch.
+   * @param {String} userId User id whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserChallenges(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
-    return this.private.getChallenges(endpoint, filters, params)
+  getUserChallenges(userId, filters, params) {
+    const userFilters = _.cloneDeep(filters);
+    ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
+    const query = {
+      ...params,
+      ...userFilters,
+      memberId: userId,
+    };
+    const endpoint = '/challenges';
+    const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
+
+    return this.private.apiV5.get(url)
       .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item, username));
+        res.challenges.forEach(item => normalizeChallenge(item, userId));
         return res;
       });
   }
 
   /**
    * Gets marathon matches of the specified user.
-   * @param {String} username User whose challenges we want to fetch.
+   * @param {String} userId User whose challenges we want to fetch.
    * @param {Object} filters Optional.
    * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getUserMarathonMatches(username, filters, params) {
-    const endpoint = `/members/${username.toLowerCase()}/mms/`;
-    return this.private.getChallenges(endpoint, filters, params);
+  async getUserMarathonMatches(userId) {
+    const marathonTypeId = 'c2579605-e294-4967-b3db-875ef85240cd';
+    const url = `/challenges?typeId=${marathonTypeId}&memberId=${userId}`;
+
+    const res = await this.private.apiV5.get(url);
+    return res;
   }
 
   /**
@@ -485,19 +435,33 @@ class ChallengesService {
    * @return {Promise}
    */
   async getUserSrms(handle, params) {
-    const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const res = await this.private.api.get(url);
+    const challenges = await this.private.apiV5.get(`/resources?memberHandle=${handle}`);
+    let newParams = params;
+    if (challenges) {
+      const { challengeId } = challenges[0];
+      newParams = {
+        ...params,
+        challengeId,
+      };
+    }
+
+    const url = `/challenges/${qs.stringify(newParams)}`;
+    const res = await this.private.apiV5.get(url);
     return getApiResponsePayload(res);
   }
 
   /**
    * Registers user to the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async register(challengeId) {
-    const endpoint = `/challenges/${challengeId}/register`;
-    const res = await this.private.api.postJson(endpoint);
+  async register(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.post('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -505,11 +469,15 @@ class ChallengesService {
   /**
    * Unregisters user from the specified challenge.
    * @param {String} challengeId
+   * @param {String} memberHandle
+   * @param {String} roleId
    * @return {Promise}
    */
-  async unregister(challengeId) {
-    const endpoint = `/challenges/${challengeId}/unregister`;
-    const res = await this.private.api.post(endpoint);
+  async unregister(challengeId, memberHandle, roleId) {
+    const params = {
+      challengeId, memberHandle, roleId,
+    };
+    const res = await this.private.apiV5.delete('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -520,7 +488,7 @@ class ChallengesService {
    * @return {Action} Resolves to the api response.
    */
   getActiveChallengesCount(handle) {
-    const filter = { status: 'ACTIVE' };
+    const filter = { status: 'Active' };
     const params = { limit: 1, offset: 0 };
     return this.getUserChallenges(handle, filter, params).then(res => res.totalCount);
   }
@@ -579,9 +547,8 @@ class ChallengesService {
    * @return {Promise}
    */
   async updateChallenge(challenge) {
-    const URL = `/challenges/${challenge.id}`;
-    const body = { param: challenge };
-    let res = await this.private.api.putJson(URL, body);
+    const url = `/challenges/${challenge.id}`;
+    let res = await this.private.apiV5.put(url, challenge);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -602,10 +569,10 @@ class ChallengesService {
    */
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const username = user.handle || user.payload.handle;
-    const url = `/members/${username.toLowerCase()}/challenges`;
-    const data = await this.private.getChallenges(url, { id: challengeId });
-    return data.challenges[0].userDetails.roles;
+    const url = `/resources?challengeId=${challengeId}?memberHandle=${user.handle}`;
+    const resources = await this.private.apiV5.get(url);
+    if (resources) return _.map(resources, 'roleId');
+    throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }
 

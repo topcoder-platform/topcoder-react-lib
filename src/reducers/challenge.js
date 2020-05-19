@@ -462,7 +462,7 @@ export function factory(options = {}) {
       const checkpointsPromise = track === 'design' ? (
         redux.resolveAction(actions.challenge.fetchCheckpointsDone(tokens.tokenV2, challengeId))
       ) : null;
-      const resultsPromise = _.get(details, 'payload.status', '') === 'COMPLETED' ? (
+      const resultsPromise = _.get(details, 'payload.status', '') === 'Completed' ? (
         redux.resolveAction(actions.challenge.loadResultsDone(tokens, challengeId, track))
       ) : null;
       return Promise.all([details, checkpointsPromise, resultsPromise]);

@@ -134,7 +134,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
   // Fill some derived data
   const registrationOpen = _.some(
     challenge.allPhases,
-    phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
+    phase => phase.name === 'Registration' && phase.isOpen,
   ) ? 'Yes' : 'No';
   _.defaults(challenge, {
     communities: new Set([COMPETITION_TRACKS[challenge.track]]),
@@ -163,7 +163,7 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
  * @return {Object} Normalized challenge.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationOpen = challenge.allPhases.filter(d => d.name === 'Registration')[0].isOpen ? 'Yes' : 'No';
   const groups = {};
   if (challenge.groupIds) {
     challenge.groupIds.forEach((id) => {
@@ -250,10 +250,10 @@ class ChallengesService {
   }
 
   /**
-   * Gets possible challenge subtracks.
-   * @return {Promise} Resolves to the array of subtrack names.
+   * Gets possible challenge types.
+   * @return {Promise} Resolves to the array of challenge type names.
    */
-  getChallengeSubtracks() {
+  getChallengeTypes() {
     return Promise.all([
       this.private.apiV2.get('/design/challengetypes')
         .then(res => (res.ok ? res.json() : new Error(res.statusText))),
