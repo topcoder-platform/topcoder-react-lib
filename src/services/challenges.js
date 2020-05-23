@@ -430,12 +430,12 @@ class ChallengesService {
 
   /**
    * Gets SRM matches related to the user.
-   * @param {String} handle
+   * @param {Number} memberId
    * @param {Object} params
    * @return {Promise}
    */
-  async getUserSrms(handle, params) {
-    const challenges = await this.private.apiV5.get(`/resources?memberHandle=${handle}`);
+  async getUserSrms(memberId, params) {
+    const challenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`);
     let newParams = params;
     if (challenges) {
       const { challengeId } = challenges[0];

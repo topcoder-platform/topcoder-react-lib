@@ -283,7 +283,7 @@ async function getUserSRMInit(handle, uuid) {
  * @static
  * @desc Create an action that loads the member SRM.
  * @param {String} uuid Operation UUID.
- * @param {String} handle Member handle.
+ * @param {Number} memberId Member ID.
  * @param {String} tokenV3 v3 auth token.
  * @param {Number} start page.
  * @param {Number} page size.
@@ -291,7 +291,7 @@ async function getUserSRMInit(handle, uuid) {
  * @return {Action}
  */
 async function getUserSRMDone(
-  uuid, handle, tokenV3, pageNum, pageSize,
+  uuid, memberId, tokenV3, pageNum, pageSize,
   refresh,
 ) {
   const filter = {
@@ -306,11 +306,11 @@ async function getUserSRMDone(
   };
 
   const service = getChallengesService(tokenV3);
-  return service.getUserSrms(handle, params).then(res => ({
+  return service.getUserSrms(memberId, params).then(res => ({
     uuid,
     srms: res,
     refresh,
-    handle,
+    memberId,
   }));
 }
 
