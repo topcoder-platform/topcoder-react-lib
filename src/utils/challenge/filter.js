@@ -257,6 +257,8 @@ export function getReviewOpportunitiesFilterFunction(state, validSubtracks) {
         opp.challenge.track.toLowerCase(),
       ]),
       typeId: newSubTrack.id,
+      tags: opp.challenge.technologies || [],
+      platforms: opp.challenge.platforms || [],
     };
 
     return (
