@@ -30,11 +30,16 @@ export const ORDER_BY = {
  */
 export function normalizeChallenge(challenge, username) {
   const phases = challenge.allPhases || challenge.phases || [];
-  let registrationOpen = phases.filter(d => d.name === 'Registration')[0];
-  if (registrationOpen && registrationOpen.isOpen) {
-    registrationOpen = 'Yes';
-  } else {
-    registrationOpen = 'No';
+  const registration = phases.filter(d => d.name === 'Registration')[0];
+  let registrationOpen = 'No';
+  let registrationStartDate;
+  let registrationEndDate;
+  if (registration) {
+    registrationStartDate = registration.actualStartDate || registration.scheduledStartDate;
+    if (registration.isOpen) {
+      registrationOpen = 'Yes';
+    }
+    registrationEndDate = registration.actualEndDate || registration.scheduledEndDate;
   }
   const groups = {};
   if (challenge.groups) {
@@ -56,11 +61,16 @@ export function normalizeChallenge(challenge, username) {
   if (submissionEndTimestamp) {
     submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
   }
+  const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
     communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
+    registrationStartDate,
+    registrationEndDate,
+    totalPrize: prizes.reduce((acc, prize) => acc + prize.value, 0),
+    submissionEndDate: submissionEndTimestamp,
     users: username ? { [username]: true } : {},
   });
 }
