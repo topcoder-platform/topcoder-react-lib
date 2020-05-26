@@ -111,20 +111,18 @@ function filterByReviewOpportunityType(opp, state) {
 
 function filterByStartDate(challenge, state) {
   if (!state.startDate) return true;
-  const submissionPhase = challenge.phases.filter(d => d.name === 'Submission')[0];
-  if (submissionPhase) {
-    return moment(state.startDate).isBefore(submissionPhase.scheduledEndDate);
-  }
-  return false;
+  const submissionPhase = (challenge.phases || []).filter(d => d.name === 'Submission')[0];
+  const submissionEndDate = submissionPhase ? submissionPhase.scheduledEndDate
+    : challenge.submissionEndDate;
+  return moment(state.startDate).isBefore(submissionEndDate);
 }
 
 function filterByEndDate(challenge, state) {
   if (!state.endDate) return true;
-  const registrationPhase = challenge.phases.filter(d => d.name === 'Registration')[0];
-  if (registrationPhase) {
-    return moment(state.endDate).isAfter(registrationPhase.scheduledStartDate);
-  }
-  return false;
+  const registrationPhase = (challenge.phases || []).filter(d => d.name === 'Registration')[0];
+  const registrationStartDate = registrationPhase ? registrationPhase.scheduledStartDate
+    : challenge.registrationStartDate;
+  return moment(state.endDate).isAfter(registrationStartDate);
 }
 
 function filterByStarted(challenge, state) {
