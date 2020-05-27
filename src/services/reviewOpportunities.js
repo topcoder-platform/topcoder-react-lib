@@ -3,8 +3,25 @@
  * @desc This module provides a service for retrieving Review Opportunities and
  * submitting applications.
  */
+import _ from 'lodash';
 import { getApi } from './api';
 
+/**
+ * Sync the fields of V3 and V5 for front-end to process successfully
+ * @param challenges - challenges to normalize
+ */
+export function normalizeChallenges(challenges) {
+  if (challenges) {
+    _.map(challenges, (ch) => {
+      const { challenge } = ch;
+      if (challenge.technologies && challenge.technologies.includes('Data Science')) {
+        challenge.track = 'DATA_SCIENCE';
+      }
+      return _.defaults(ch, { challenge });
+    });
+  }
+  return challenges;
+}
 /**
  * Service class.
  */
@@ -31,7 +48,7 @@ class ReviewOpportunitiesService {
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`Error Code: ${res.status}`))))
       .then(res => (
         res.result.status === 200
-          ? res.result.content
+          ? normalizeChallenges(res.result.content)
           : Promise.reject(res.result.content)
       ));
   }
