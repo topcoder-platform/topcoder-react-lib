@@ -461,17 +461,39 @@ class ChallengesService {
   }
 
   /**
-   * Registers user to the specified challenge.
-   * @param {String} challengeId
-   * @param {String} memberHandle
-   * @param {String} roleId
+   * Get the Resource Role ID from provided Role Name
+   * @param {String} roleName
    * @return {Promise}
    */
-  async register(challengeId, memberHandle, roleId) {
+  async getResourceRoleId(roleName) {
     const params = {
-      challengeId, memberHandle, roleId,
+      name: roleName,
+      isActive: true,
     };
-    const res = await this.private.apiV5.post('/resources', params);
+    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
+      .then(checkErrorV5).then(res => res);
+
+    if (_.isEmpty(roles.result)) {
+      throw new Error('Resource Role not found!');
+    }
+
+    return roles.result[0].id;
+  }
+
+  /**
+   * Registers user to the specified challenge.
+   * @param {String} challengeId
+   * @return {Promise}
+   */
+  async register(challengeId) {
+    const user = decodeToken(this.private.tokenV3);
+    const roleId = await this.getResourceRoleId('Submitter');
+    const params = {
+      challengeId,
+      memberHandle: user.handle,
+      roleId,
+    };
+    const res = await this.private.apiV5.postJson('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -479,13 +501,15 @@ class ChallengesService {
   /**
    * Unregisters user from the specified challenge.
    * @param {String} challengeId
-   * @param {String} memberHandle
-   * @param {String} roleId
    * @return {Promise}
    */
-  async unregister(challengeId, memberHandle, roleId) {
+  async unregister(challengeId) {
+    const user = decodeToken(this.private.tokenV3);
+    const roleId = await this.getResourceRoleId('Submitter');
     const params = {
-      challengeId, memberHandle, roleId,
+      challengeId,
+      memberHandle: user.handle,
+      roleId,
     };
     const res = await this.private.apiV5.delete('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
