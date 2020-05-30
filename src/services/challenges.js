@@ -322,6 +322,16 @@ class ChallengesService {
     const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
+    if (challengeFiltered) {
+      const { events } = challengeFiltered.metadata;
+      if (events) {
+        challengeFiltered.events = _.map(events, e => ({
+          eventName: e.key,
+          eventId: e.id,
+          description: e.name,
+        }));
+      }
+    }
     return challengeFiltered;
   }
 
