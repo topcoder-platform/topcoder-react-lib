@@ -62,7 +62,15 @@ function onGetDetailsDone(state, action) {
   }
 
   const details = action.payload;
-  if (_.toString(details.id) !== state.loadingDetailsForChallengeId) {
+
+  // condition based on ROUTE used for Review Opportunities, change if needed
+  const challengeId = state.loadingDetailsForChallengeId;
+  let compareChallenge = details.id;
+  if (challengeId.length >= 5 && challengeId.length <= 8) {
+    compareChallenge = details.legacyId;
+  }
+
+  if (_.toString(compareChallenge) !== challengeId) {
     return state;
   }
 
