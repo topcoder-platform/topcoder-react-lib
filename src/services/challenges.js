@@ -328,13 +328,21 @@ class ChallengesService {
     } else {
       filters.id = challengeId;
     }
-    const challengeDetails = await this.private.getChallenges('/challenges/', filters)
+    const challengeFiltered = await this.private.getChallenges('/challenges/', filters)
       .then(res => res.challenges[0]);
 
-    if (challengeDetails) {
-      challengeDetails.isLegacyChallenge = isLegacyChallenge;
+    if (challengeFiltered) {
+      challengeFiltered.isLegacyChallenge = isLegacyChallenge;
+      const { events } = challengeFiltered.metadata;
+      if (events) {
+        challengeFiltered.events = _.map(events, e => ({
+          eventName: e.key,
+          eventId: e.id,
+          description: e.name,
+        }));
+      }
     }
-    return challengeDetails;
+    return challengeFiltered;
   }
 
   /**
