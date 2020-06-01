@@ -11,7 +11,7 @@ import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApi } from './api';
+import { getTcM2mToken, getApi } from './api';
 import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
@@ -182,6 +182,7 @@ class ChallengesService {
       apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
       apiV3: getApi('V3', tokenV3),
+      getTcM2mToken,
       getChallenges,
       getMemberChallenges,
       tokenV2,
@@ -309,10 +310,14 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
+    const challenge = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
-    return challengeFiltered;
+    const registrants = await this.getChallengeRegistrants(challengeId);
+
+    challenge.registrants = registrants;
+
+    return challenge;
   }
 
   /**
@@ -321,7 +326,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const registrants = await this.private.apiV5.get(`/resources/challengeId=${challengeId}`)
+    const m2mToken = await this.private.getTcM2mToken();
+    const apiM2M = getApi('V5', m2mToken);
+    const registrants = await apiM2M.get(`/resources?challengeId=${challengeId}`)
       .then(checkError).then(res => res);
     return registrants || [];
   }
