@@ -9,6 +9,7 @@ import moment from 'moment';
 import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
+import { isomorphy } from 'topcoder-react-utils';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getTcM2mToken, getApi } from './api';
@@ -313,9 +314,10 @@ class ChallengesService {
     const challenge = await this.private.getChallenges('/challenges/', { id: challengeId })
       .then(res => res.challenges[0]);
 
-    const registrants = await this.getChallengeRegistrants(challengeId);
-
-    challenge.registrants = registrants;
+    if (isomorphy.isServerSide()) {
+      const registrants = await this.getChallengeRegistrants(challengeId);
+      challenge.registrants = registrants.result;
+    }
 
     return challenge;
   }
@@ -329,7 +331,7 @@ class ChallengesService {
     const m2mToken = await this.private.getTcM2mToken();
     const apiM2M = getApi('V5', m2mToken);
     const registrants = await apiM2M.get(`/resources?challengeId=${challengeId}`)
-      .then(checkError).then(res => res);
+      .then(checkErrorV5).then(res => res);
     return registrants || [];
   }
 
