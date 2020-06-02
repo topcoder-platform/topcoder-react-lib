@@ -319,10 +319,20 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
+    let isLegacyChallenge = false;
+    const filters = {};
+    // condition based on ROUTE used for Review Opportunities, change if needed
+    if (challengeId.length >= 5 && challengeId.length <= 8) {
+      isLegacyChallenge = true;
+      filters.legacyId = challengeId;
+    } else {
+      filters.id = challengeId;
+    }
+    const challengeFiltered = await this.private.getChallenges('/challenges/', filters)
       .then(res => res.challenges[0]);
 
     if (challengeFiltered) {
+      challengeFiltered.isLegacyChallenge = isLegacyChallenge;
       const { events } = challengeFiltered.metadata;
       if (events) {
         challengeFiltered.events = _.map(events, e => ({
