@@ -2,7 +2,7 @@
 
 exports[`challenge.fetchChallengeInit 1`] = `
 Object {
-  "payload": "12345",
+  "payload": "123456789",
   "type": "CHALLENGE/GET_DETAILS_INIT",
 }
 `;
@@ -16,7 +16,7 @@ Object {
 
 exports[`challenge.fetchSubmissionsInit 1`] = `
 Object {
-  "payload": "12345",
+  "payload": "123456789",
   "type": "CHALLENGE/GET_SUBMISSIONS_INIT",
 }
 `;
