@@ -5,24 +5,24 @@ import { actions } from '../../src';
 
 const mockChallengeActions = {
   challenge: {
-    getDetailsInit: mockAction('CHALLENGE/GET_DETAILS_INIT', '12345'),
+    getDetailsInit: mockAction('CHALLENGE/GET_DETAILS_INIT', '123456789'),
     getDetailsDone: mockAction('CHALLENGE/GET_DETAILS_DONE', Promise.resolve({
-      id: 12345,
+      id: 123456789,
       tag: 'v3-normalized-details',
     })),
     getDetailsDoneError: mockAction(
       'CHALLENGE/GET_DETAILS_DONE',
-      { challengeId: '12345' },
+      { challengeId: '123456789' },
       'Unknown error',
     ),
-    getSubmissionsInit: mockAction('CHALLENGE/GET_SUBMISSIONS_INIT', '12345'),
+    getSubmissionsInit: mockAction('CHALLENGE/GET_SUBMISSIONS_INIT', '123456789'),
     getSubmissionsDone: mockAction(
       'CHALLENGE/GET_SUBMISSIONS_DONE',
-      Promise.resolve({ challengeId: '12345', submissions: [{ submissionId: '1' }] }),
+      Promise.resolve({ challengeId: '123456789', submissions: [{ submissionId: '1' }] }),
     ),
     getSubmissionsDoneError: mockAction(
       'CHALLENGE/GET_SUBMISSIONS_DONE',
-      { challengeId: '12345' },
+      { challengeId: '123456789' },
       'Unknown error',
     ),
     getActiveChallengesCountDone: mockAction('CHALLENGE/GET_ACTIVE_CHALLENGES_COUNT_DONE', 5),
@@ -64,7 +64,7 @@ function testReducer() {
   });
 
   test('Handles CHALLENGE/GET_DETAILS_INIT as expected', () => {
-    state = reducer(state, mockChallengeActions.challenge.getDetailsInit(12345));
+    state = reducer(state, mockChallengeActions.challenge.getDetailsInit(123456789));
     expect(state).toMatchSnapshot();
   });
 
@@ -139,7 +139,7 @@ describe('Factory with server-side rendering', () => {
       },
       challenge: {
         challengeDetails: {
-          id: '12345',
+          id: '123456789',
           mySubmission: true,
         },
       },
