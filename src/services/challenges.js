@@ -387,21 +387,10 @@ class ChallengesService {
   /**
    * Gets SRM matches.
    * @param {Object} params
-   * @param {string} typeId Challenge SRM TypeId
    * @return {Promise}
    */
   async getSrms(params) {
-    const typeId = await this.getChallengeTypeId('DEVELOP_SINGLE_ROUND_MATCH');
-    if (!typeId) {
-      return null;
-    }
-
-    const newParams = {
-      ...params,
-      typeId,
-    };
-
-    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
@@ -464,24 +453,13 @@ class ChallengesService {
 
   /**
    * Gets SRM matches related to the user.
-   * @param {Number} memberId
+   * @param {String} handle
    * @param {Object} params
    * @return {Promise}
    */
-  async getUserSrms(memberId, params) {
-    const typeId = await this.getChallengeTypeId('DEVELOP_SINGLE_ROUND_MATCH');
-
-    if (!typeId) {
-      return null;
-    }
-
-    const newParams = {
-      ...params,
-      typeId,
-      memberId,
-    };
-
-    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+  async getUserSrms(handle, params) {
+    const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
+    const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
   }
 
