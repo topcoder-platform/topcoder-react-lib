@@ -371,6 +371,22 @@ class ChallengesService {
   }
 
   /**
+   * Get the ID from a challenge type by abbreviation
+   * @param {String} abbreviation
+   * @return {Promise} ID from first abbreviation match
+   */
+  async getChallengeTypeId(abbreviation) {
+    const ret = await this.private.apiV5.get(`/challenge-types?abbreviation=${abbreviation}`)
+      .then(checkErrorV5).then(res => res);
+
+    if (_.isEmpty(ret.result)) {
+      throw new Error('Challenge typeId not found!');
+    }
+
+    return ret.result[0].id;
+  }
+
+  /**
    * Gets possible challenge tags (technologies).
    * @return {Promise} Resolves to the array of tag strings.
    */
@@ -401,11 +417,10 @@ class ChallengesService {
   /**
    * Gets SRM matches.
    * @param {Object} params
-   * @param {string} typeId Challenge SRM TypeId
    * @return {Promise}
    */
   async getSrms(params) {
-    const res = await this.private.apiV5.get(`/challenges/?${qs.stringify(params)}`);
+    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
@@ -445,17 +460,25 @@ class ChallengesService {
 
   /**
    * Gets marathon matches of the specified user.
-   * @param {String} userId User whose challenges we want to fetch.
-   * @param {Object} filters Optional.
-   * @param {Number} params Optional.
+   * @param {String} memberId User whose challenges we want to fetch.
+   * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getUserMarathonMatches(userId) {
-    const marathonTypeId = 'c2579605-e294-4967-b3db-875ef85240cd';
-    const url = `/challenges?typeId=${marathonTypeId}&memberId=${userId}`;
+  async getUserMarathonMatches(memberId, params) {
+    const typeId = await this.getChallengeTypeId('DEVELOP_MARATHON_MATCH');
 
-    const res = await this.private.apiV5.get(url);
-    return res;
+    if (!typeId) {
+      return null;
+    }
+
+    const newParams = {
+      ...params,
+      typeId,
+      memberId,
+    };
+
+    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -465,18 +488,8 @@ class ChallengesService {
    * @return {Promise}
    */
   async getUserSrms(handle, params) {
-    const challenges = await this.private.apiV5.get(`/resources?memberHandle=${handle}`);
-    let newParams = params;
-    if (challenges) {
-      const { challengeId } = challenges[0];
-      newParams = {
-        ...params,
-        challengeId,
-      };
-    }
-
-    const url = `/challenges/${qs.stringify(newParams)}`;
-    const res = await this.private.apiV5.get(url);
+    const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
+    const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
   }
 
