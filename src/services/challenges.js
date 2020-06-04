@@ -333,14 +333,11 @@ class ChallengesService {
 
     if (challengeFiltered) {
       challengeFiltered.isLegacyChallenge = isLegacyChallenge;
-      const { events } = challengeFiltered.metadata;
-      if (events) {
-        challengeFiltered.events = _.map(events, e => ({
-          eventName: e.key,
-          eventId: e.id,
-          description: e.name,
-        }));
-      }
+      challengeFiltered.events = _.map(challengeFiltered.events, e => ({
+        eventName: e.key,
+        eventId: e.id,
+        description: e.name,
+      }));
     }
     return challengeFiltered;
   }
