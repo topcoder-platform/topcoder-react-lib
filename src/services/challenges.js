@@ -319,6 +319,8 @@ class ChallengesService {
       challenge.registrants = registrants.result;
     }
 
+    challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
+
     return challenge;
   }
 
@@ -330,7 +332,12 @@ class ChallengesService {
   async getChallengeRegistrants(challengeId) {
     const m2mToken = await this.private.getTcM2mToken();
     const apiM2M = getApi('V5', m2mToken);
-    const registrants = await apiM2M.get(`/resources?challengeId=${challengeId}`)
+    const roleId = await this.getResourceRoleId('Submitter');
+    const params = {
+      challengeId,
+      roleId,
+    };
+    const registrants = await apiM2M.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res);
     return registrants || [];
   }
