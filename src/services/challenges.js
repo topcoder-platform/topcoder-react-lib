@@ -14,6 +14,7 @@ import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getTcM2mToken, getApi } from './api';
 import { getService as getMembersService } from './members';
+import { getService as getSubmissionsService } from './submissions';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -189,6 +190,7 @@ class ChallengesService {
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
+      submissionsServices: getSubmissionsService(tokenV3),
     };
   }
 
@@ -318,6 +320,11 @@ class ChallengesService {
       const registrants = await this.getChallengeRegistrants(challengeId);
       challenge.registrants = registrants.result;
     }
+
+    const submissions = await this.private.submissionsServices.getSubmissions({
+      challengeId: challenge.legacy.id,
+    });
+    challenge.submissions = submissions;
 
     challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
 
@@ -476,7 +483,16 @@ class ChallengesService {
       name: roleName,
       isActive: true,
     };
-    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
+    let api = this.private.apiV5;
+
+    // Check if user is authenticated
+    if (!api.private.token && isomorphy.isServerSide()) {
+      // if not, make call with m2m token
+      const m2mToken = await this.private.getTcM2mToken();
+      api = getApi('V5', m2mToken);
+    }
+
+    const roles = await api.get(`/resource-roles?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res);
 
     if (_.isEmpty(roles.result)) {
