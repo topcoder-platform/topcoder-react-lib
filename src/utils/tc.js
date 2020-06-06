@@ -41,6 +41,9 @@ export async function getApiResponsePayload(res, shouldThrowError = true) {
     }
   }
   const x = (await res.json()).result;
+  if (!x) {
+    return null;
+  }
   if ((!x.success)) {
     if (shouldThrowError) {
       throw new Error(x.content);
