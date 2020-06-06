@@ -313,8 +313,8 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challenge = await this.private.getChallenges('/challenges/', { id: challengeId })
-      .then(res => res.challenges[0]);
+    const challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+      .then(res => res.challenges);
 
     if (isomorphy.isServerSide()) {
       const registrants = await this.getChallengeRegistrants(challengeId);
