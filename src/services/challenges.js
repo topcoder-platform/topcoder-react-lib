@@ -403,10 +403,17 @@ class ChallengesService {
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getChallenges(filters, params) {
+  async getChallenges(filters, params) {
+    const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
+    let userChallenges = [];
+    if (memberId) {
+      userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
+        .then(checkErrorV5).then(res => res.result);
+    }
     return this.private.getChallenges('/challenges/', filters, params)
       .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item));
+        res.challenges.forEach(item => normalizeChallenge(item,
+          userChallenges.includes(item.id) ? memberId : null));
         return res;
       });
   }
@@ -433,25 +440,29 @@ class ChallengesService {
   /**
    * Gets challenges of the specified user.
    * @param {String} userId User id whose challenges we want to fetch.
-   * @param {Object} filters Optional.
-   * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
   getUserChallenges(userId, filters, params) {
     const userFilters = _.cloneDeep(filters);
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
-    const query = {
-      ...params,
-      ...userFilters,
-      memberId: userId,
-    };
-    const endpoint = '/challenges';
-    const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
+    return this.private.apiV5.get(`/resources/${userId}/challenges`)
+      .then(checkErrorV5).then((userChallenges) => {
+        const query = {
+          ...params,
+          ...userFilters,
+          ids: userChallenges.result,
+        };
+        const endpoint = '/challenges';
+        const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
 
-    return this.private.apiV5.get(url)
-      .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item, userId));
-        return res;
+        return this.private.apiV5.get(url)
+          .then(checkErrorV5).then((res) => {
+            res.result.forEach(item => normalizeChallenge(item, userId));
+            const newResponse = {};
+            newResponse.challenges = res.result;
+            newResponse.totalCount = res.result.length;
+            return newResponse;
+          });
       });
   }
 
