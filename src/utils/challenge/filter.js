@@ -127,10 +127,7 @@ function filterByEndDate(challenge, state) {
 
 function filterByStarted(challenge, state) {
   if (_.isUndefined(state.started)) return true;
-  if (!challenge.phases) {
-    return true;
-  }
-  return _.some(challenge.phases, { isOpen: true, name: 'Registration' });
+  return moment(challenge.registrationStartDate).isBefore(Date.now());
 }
 
 function filterByStatus(challenge, state) {
