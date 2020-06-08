@@ -291,6 +291,7 @@ Object {
       "getApiV4": [Function],
       "getApiV5": [Function],
       "getTcM2mToken": [Function],
+      "proxyApi": [Function],
     },
     "billing": Object {
       "default": [Function],

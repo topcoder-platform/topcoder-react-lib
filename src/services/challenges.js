@@ -8,10 +8,11 @@ import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
+import { config } from 'topcoder-react-utils';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApi } from './api';
+import { getTcM2mToken, getApi, proxyApi } from './api';
 import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
@@ -147,7 +148,7 @@ class ChallengesService {
       const url = `${endpoint}?${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
       let myChallenges;
-      if (typeof this.private.tokenV3 !== 'undefined') {
+      if (this.private.tokenV3) {
         const { userId } = decodeToken(this.private.tokenV3);
         myChallenges = await this.private.apiV5.get(`/resources/${userId}/challenges`)
           .then(checkErrorV5).then(userChallenges => userChallenges);
@@ -198,6 +199,8 @@ class ChallengesService {
       apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
       apiV3: getApi('V3', tokenV3),
+      getTcM2mToken,
+      proxyApi,
       getChallenges,
       getMemberChallenges,
       tokenV2,
@@ -318,34 +321,52 @@ class ChallengesService {
 
   /**
    * Gets challenge details from Topcoder API.
-   * NOTE: This function also uses API v2 and other endpoints for now, due
+   * NOTE: This function also uses other endpoints for now, due
    * to some information is missing or
    * incorrect in the main endpoint. This may change in the future.
    * @param {Number|String} challengeId
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
+    let challenge = {};
     let isLegacyChallenge = false;
-    const filters = {};
     // condition based on ROUTE used for Review Opportunities, change if needed
-    if (challengeId.length >= 5 && challengeId.length <= 8) {
+    if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
-      filters.legacyId = challengeId;
+      challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
+        .then(res => res.challenges[0]);
     } else {
-      filters.id = challengeId;
+      challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+        .then(res => res.challenges);
     }
-    const challengeFiltered = await this.private.getChallenges('/challenges/', filters)
-      .then(res => res.challenges[0]);
 
-    if (challengeFiltered) {
-      challengeFiltered.isLegacyChallenge = isLegacyChallenge;
-      challengeFiltered.events = _.map(challengeFiltered.events, e => ({
-        eventName: e.key,
-        eventId: e.id,
-        description: e.name,
-      }));
-    }
-    return challengeFiltered;
+    /**
+     * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
+     */
+    const submissions = await this.getChallengeSubmissions(challenge.legacyId);
+    challenge.submissions = submissions;
+
+    const registrants = await this.getChallengeRegistrants(challenge.id);
+    // Add submission date to registrants
+    registrants.forEach((r, i) => {
+      const submission = submissions.find(s => s.memberId === Number(r.memberId));
+      if (submission) {
+        registrants[i].submissionDate = submission.created;
+      }
+    });
+    challenge.registrants = registrants;
+
+    challenge.isLegacyChallenge = isLegacyChallenge;
+
+    challenge.events = _.map(challenge.events, e => ({
+      eventName: e.key,
+      eventId: e.id,
+      description: e.name,
+    }));
+
+    challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
+
+    return challenge;
   }
 
   /**
@@ -354,9 +375,29 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const registrants = await this.private.apiV5.get(`/resources/challengeId=${challengeId}`)
-      .then(checkError).then(res => res);
+    const roleId = await this.getResourceRoleId('Submitter');
+    const params = {
+      challengeId,
+      roleId,
+    };
+    const url = `${config.API.V5}/resources?${qs.stringify(params)}`;
+    const registrants = await this.private.proxyApi(url);
     return registrants || [];
+  }
+
+  /**
+   * Gets challenge submissions from Topcoder API.
+   * @param {Number|String} challengeId
+   * @return {Promise} Resolves to the challenge registrants array.
+   */
+  async getChallengeSubmissions(challengeId) {
+    const params = {
+      challengeId,
+      perPage: 100,
+    };
+    const url = `${config.API.V5}/submissions?${qs.stringify(params)}`;
+    const submissions = await this.private.proxyApi(url);
+    return submissions || [];
   }
 
   /**
@@ -523,14 +564,15 @@ class ChallengesService {
       name: roleName,
       isActive: true,
     };
-    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
-      .then(checkErrorV5).then(res => res);
 
-    if (_.isEmpty(roles.result)) {
+    const url = `${config.API.V5}/resource-roles?${qs.stringify(params)}`;
+    const roles = await this.private.proxyApi(url);
+
+    if (_.isEmpty(roles)) {
       throw new Error('Resource Role not found!');
     }
 
-    return roles.result[0].id;
+    return roles[0].id;
   }
 
   /**
@@ -564,7 +606,7 @@ class ChallengesService {
       memberHandle: user.handle,
       roleId,
     };
-    const res = await this.private.apiV5.delete('/resources', params);
+    const res = await this.private.apiV5.delete('/resources', JSON.stringify(params));
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }

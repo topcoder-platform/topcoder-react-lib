@@ -290,3 +290,25 @@ export async function getTcM2mToken() {
   const token = await m2m.getMachineToken(TC_M2M.CLIENT_ID, TC_M2M.CLIENT_SECRET);
   return token;
 }
+
+/**
+ * Call API via proxy
+ *
+ * @param {String} url  to API endpoint
+ */
+export async function proxyApi(url) {
+  let base = '';
+  if (isomorphy.isServerSide()) {
+    base = `http://localhost:${process.env.PORT || 80}`;
+  }
+  const proxyUrl = `${base}/community-app-assets/api/proxy-get?url=${
+    encodeURIComponent(url)
+  }`;
+  let res = await fetch(proxyUrl, {
+    headers: { Authorization: `ApiKey ${config.SERVER_API_KEY}` },
+  });
+  if (!res.ok) throw new Error(res.statusText);
+  res = (await res.json());
+  if (res.message) throw new Error(res.message);
+  return res;
+}
