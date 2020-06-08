@@ -606,7 +606,7 @@ class ChallengesService {
       memberHandle: user.handle,
       roleId,
     };
-    const res = await this.private.apiV5.delete('/resources', params);
+    const res = await this.private.apiV5.delete('/resources', JSON.stringify(params));
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
