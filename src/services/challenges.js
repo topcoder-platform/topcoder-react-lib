@@ -146,12 +146,18 @@ class ChallengesService {
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      let myChallengesCount = 0;
+      if (typeof this.private.tokenV3 !== 'undefined') {
+        const { userId } = decodeToken(this.private.tokenV3);
+        myChallengesCount = await this.private.apiV5.get(`/resources/${userId}/challenges`)
+          .then(checkErrorV5).then(userChallenges => userChallenges.headers.get('x-total'));
+      }
       return {
         challenges: res.result || [],
         totalCount: res.headers.get('x-total'),
         meta: {
           allChallengesCount: res.headers.get('x-total'),
-          myChallengesCount: 0,
+          myChallengesCount,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
           totalCount: res.headers.get('x-total'),
