@@ -111,28 +111,23 @@ function filterByReviewOpportunityType(opp, state) {
 
 function filterByStartDate(challenge, state) {
   if (!state.startDate) return true;
-  const submissionPhase = challenge.phases.filter(d => d.name === 'Submission')[0];
-  if (submissionPhase) {
-    return moment(state.startDate).isBefore(submissionPhase.scheduledEndDate);
-  }
-  return false;
+  const submissionPhase = (challenge.phases || []).filter(d => d.name === 'Submission')[0];
+  const submissionEndDate = submissionPhase ? submissionPhase.scheduledEndDate
+    : challenge.submissionEndDate;
+  return moment(state.startDate).isBefore(submissionEndDate);
 }
 
 function filterByEndDate(challenge, state) {
   if (!state.endDate) return true;
-  const registrationPhase = challenge.phases.filter(d => d.name === 'Registration')[0];
-  if (registrationPhase) {
-    return moment(state.endDate).isAfter(registrationPhase.scheduledStartDate);
-  }
-  return false;
+  const registrationPhase = (challenge.phases || []).filter(d => d.name === 'Registration')[0];
+  const registrationStartDate = registrationPhase ? registrationPhase.scheduledStartDate
+    : challenge.registrationStartDate;
+  return moment(state.endDate).isAfter(registrationStartDate);
 }
 
 function filterByStarted(challenge, state) {
   if (_.isUndefined(state.started)) return true;
-  if (!challenge.phases) {
-    return true;
-  }
-  return _.some(challenge.phases, { isOpen: true, name: 'Registration' });
+  return moment(challenge.registrationStartDate).isBefore(Date.now());
 }
 
 function filterByStatus(challenge, state) {
@@ -241,8 +236,10 @@ export function getFilterFunction(state) {
  * @param {Object} state
  * @return {Function}
  */
-export function getReviewOpportunitiesFilterFunction(state) {
+export function getReviewOpportunitiesFilterFunction(state, validSubtracks) {
   return (opp) => {
+    const newSubTrack = _.find(validSubtracks, { abbreviation: opp.challenge.subTrack }) || {};
+
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
     // especially after a few normalization tweaks
@@ -256,6 +253,9 @@ export function getReviewOpportunitiesFilterFunction(state) {
       communities: new Set([ // Used to filter by Track, and communities at a future date
         opp.challenge.track.toLowerCase(),
       ]),
+      typeId: newSubTrack.id,
+      tags: opp.challenge.technologies || [],
+      platforms: opp.challenge.platforms || [],
     };
 
     return (

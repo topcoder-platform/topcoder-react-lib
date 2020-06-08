@@ -340,6 +340,7 @@ Object {
     "reviewOpportunities": Object {
       "default": undefined,
       "getReviewOpportunitiesService": [Function],
+      "normalizeChallenges": [Function],
     },
     "submissions": Object {
       "default": undefined,

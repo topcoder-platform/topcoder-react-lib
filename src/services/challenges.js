@@ -31,11 +31,16 @@ export const ORDER_BY = {
  */
 export function normalizeChallenge(challenge, username) {
   const phases = challenge.allPhases || challenge.phases || [];
-  let registrationOpen = phases.filter(d => d.name === 'Registration')[0];
-  if (registrationOpen && registrationOpen.isOpen) {
-    registrationOpen = 'Yes';
-  } else {
-    registrationOpen = 'No';
+  const registration = phases.filter(d => d.name === 'Registration')[0];
+  let registrationOpen = 'No';
+  let registrationStartDate;
+  let registrationEndDate;
+  if (registration) {
+    registrationStartDate = registration.actualStartDate || registration.scheduledStartDate;
+    if (registration.isOpen) {
+      registrationOpen = 'Yes';
+    }
+    registrationEndDate = registration.actualEndDate || registration.scheduledEndDate;
   }
   const groups = {};
   if (challenge.groups) {
@@ -57,11 +62,16 @@ export function normalizeChallenge(challenge, username) {
   if (submissionEndTimestamp) {
     submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
   }
+  const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
     communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
+    registrationStartDate,
+    registrationEndDate,
+    totalPrize: prizes.reduce((acc, prize) => acc + prize.value, 0),
+    submissionEndDate: submissionEndTimestamp,
     users: username ? { [username]: true } : {},
   });
 }
@@ -137,12 +147,18 @@ class ChallengesService {
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      let myChallengesCount = 0;
+      if (this.private.tokenV3) {
+        const { userId } = decodeToken(this.private.tokenV3);
+        myChallengesCount = await this.private.apiV5.get(`/resources/${userId}/challenges`)
+          .then(checkErrorV5).then(userChallenges => userChallenges.headers.get('x-total'));
+      }
       return {
         challenges: res.result || [],
         totalCount: res.headers.get('x-total'),
         meta: {
           allChallengesCount: res.headers.get('x-total'),
-          myChallengesCount: 0,
+          myChallengesCount,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
           totalCount: res.headers.get('x-total'),
@@ -312,8 +328,17 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
-      .then(res => res.challenges);
+    let challenge = {};
+    let isLegacyChallenge = false;
+    // condition based on ROUTE used for Review Opportunities, change if needed
+    if (/^[\d]{5,8}$/.test(challengeId)) {
+      isLegacyChallenge = true;
+      challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
+        .then(res => res.challenges[0]);
+    } else {
+      challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+        .then(res => res.challenges);
+    }
 
     /**
      * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
@@ -321,7 +346,7 @@ class ChallengesService {
     const submissions = await this.getChallengeSubmissions(challenge.legacyId);
     challenge.submissions = submissions;
 
-    const registrants = await this.getChallengeRegistrants(challengeId);
+    const registrants = await this.getChallengeRegistrants(challenge.id);
     // Add submission date to registrants
     registrants.forEach((r, i) => {
       const submission = submissions.find(s => s.memberId === Number(r.memberId));
@@ -330,6 +355,14 @@ class ChallengesService {
       }
     });
     challenge.registrants = registrants;
+
+    challenge.isLegacyChallenge = isLegacyChallenge;
+
+    challenge.events = _.map(challenge.events, e => ({
+      eventName: e.key,
+      eventId: e.id,
+      description: e.name,
+    }));
 
     challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
 
@@ -417,10 +450,17 @@ class ChallengesService {
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getChallenges(filters, params) {
+  async getChallenges(filters, params) {
+    const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
+    let userChallenges = [];
+    if (memberId) {
+      userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
+        .then(checkErrorV5).then(res => res.result);
+    }
     return this.private.getChallenges('/challenges/', filters, params)
       .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item));
+        res.challenges.forEach(item => normalizeChallenge(item,
+          userChallenges.includes(item.id) ? memberId : null));
         return res;
       });
   }
@@ -447,25 +487,29 @@ class ChallengesService {
   /**
    * Gets challenges of the specified user.
    * @param {String} userId User id whose challenges we want to fetch.
-   * @param {Object} filters Optional.
-   * @param {Number} params Optional.
    * @return {Promise} Resolves to the api response.
    */
   getUserChallenges(userId, filters, params) {
     const userFilters = _.cloneDeep(filters);
     ChallengesService.updateFiltersParamsForGettingMemberChallenges(userFilters, params);
-    const query = {
-      ...params,
-      ...userFilters,
-      memberId: userId,
-    };
-    const endpoint = '/challenges';
-    const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
+    return this.private.apiV5.get(`/resources/${userId}/challenges`)
+      .then(checkErrorV5).then((userChallenges) => {
+        const query = {
+          ...params,
+          ...userFilters,
+          ids: userChallenges.result,
+        };
+        const endpoint = '/challenges';
+        const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
 
-    return this.private.apiV5.get(url)
-      .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item, userId));
-        return res;
+        return this.private.apiV5.get(url)
+          .then(checkErrorV5).then((res) => {
+            res.result.forEach(item => normalizeChallenge(item, userId));
+            const newResponse = {};
+            newResponse.challenges = res.result;
+            newResponse.totalCount = res.result.length;
+            return newResponse;
+          });
       });
   }
 
