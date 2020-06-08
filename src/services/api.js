@@ -309,5 +309,6 @@ export async function proxyApi(url) {
   });
   if (!res.ok) throw new Error(res.statusText);
   res = (await res.json());
+  if (res.message) throw new Error(res.message);
   return res;
 }
