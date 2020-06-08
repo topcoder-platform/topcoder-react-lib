@@ -8,13 +8,12 @@ import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
 import { decodeToken } from 'tc-accounts';
-import { isomorphy } from 'topcoder-react-utils';
+import { config } from 'topcoder-react-utils';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getTcM2mToken, getApi } from './api';
+import { getTcM2mToken, getApi, proxyApi } from './api';
 import { getService as getMembersService } from './members';
-import { getService as getSubmissionsService } from './submissions';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -185,12 +184,12 @@ class ChallengesService {
       apiV2: getApi('V2', tokenV2),
       apiV3: getApi('V3', tokenV3),
       getTcM2mToken,
+      proxyApi,
       getChallenges,
       getMemberChallenges,
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
-      submissionsServices: getSubmissionsService(tokenV3),
     };
   }
 
@@ -306,7 +305,7 @@ class ChallengesService {
 
   /**
    * Gets challenge details from Topcoder API.
-   * NOTE: This function also uses API v2 and other endpoints for now, due
+   * NOTE: This function also uses other endpoints for now, due
    * to some information is missing or
    * incorrect in the main endpoint. This may change in the future.
    * @param {Number|String} challengeId
@@ -316,15 +315,21 @@ class ChallengesService {
     const challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
       .then(res => res.challenges);
 
-    if (isomorphy.isServerSide()) {
-      const registrants = await this.getChallengeRegistrants(challengeId);
-      challenge.registrants = registrants.result;
-    }
-
-    const submissions = await this.private.submissionsServices.getSubmissions({
-      challengeId: challenge.legacy.id,
-    });
+    /**
+     * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
+     */
+    const submissions = await this.getChallengeSubmissions(challenge.legacyId);
     challenge.submissions = submissions;
+
+    const registrants = await this.getChallengeRegistrants(challengeId);
+    // Add submission date to registrants
+    registrants.forEach((r, i) => {
+      const submission = submissions.find(s => s.memberId === Number(r.memberId));
+      if (submission) {
+        registrants[i].submissionDate = submission.created;
+      }
+    });
+    challenge.registrants = registrants;
 
     challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
 
@@ -337,16 +342,29 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const m2mToken = await this.private.getTcM2mToken();
-    const apiM2M = getApi('V5', m2mToken);
     const roleId = await this.getResourceRoleId('Submitter');
     const params = {
       challengeId,
       roleId,
     };
-    const registrants = await apiM2M.get(`/resources?${qs.stringify(params)}`)
-      .then(checkErrorV5).then(res => res);
+    const url = `${config.API.V5}/resources?${qs.stringify(params)}`;
+    const registrants = await this.private.proxyApi(url);
     return registrants || [];
+  }
+
+  /**
+   * Gets challenge submissions from Topcoder API.
+   * @param {Number|String} challengeId
+   * @return {Promise} Resolves to the challenge registrants array.
+   */
+  async getChallengeSubmissions(challengeId) {
+    const params = {
+      challengeId,
+      perPage: 100,
+    };
+    const url = `${config.API.V5}/submissions?${qs.stringify(params)}`;
+    const submissions = await this.private.proxyApi(url);
+    return submissions || [];
   }
 
   /**
@@ -496,23 +514,15 @@ class ChallengesService {
       name: roleName,
       isActive: true,
     };
-    let api = this.private.apiV5;
 
-    // Check if user is authenticated
-    if (!api.private.token && isomorphy.isServerSide()) {
-      // if not, make call with m2m token
-      const m2mToken = await this.private.getTcM2mToken();
-      api = getApi('V5', m2mToken);
-    }
+    const url = `${config.API.V5}/resource-roles?${qs.stringify(params)}`;
+    const roles = await this.private.proxyApi(url);
 
-    const roles = await api.get(`/resource-roles?${qs.stringify(params)}`)
-      .then(checkErrorV5).then(res => res);
-
-    if (_.isEmpty(roles.result)) {
+    if (_.isEmpty(roles)) {
       throw new Error('Resource Role not found!');
     }
 
-    return roles.result[0].id;
+    return roles[0].id;
   }
 
   /**
