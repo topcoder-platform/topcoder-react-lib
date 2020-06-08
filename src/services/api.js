@@ -299,7 +299,7 @@ export async function getTcM2mToken() {
 export async function proxyApi(url) {
   let base = '';
   if (isomorphy.isServerSide()) {
-    base = 'http://localhost';
+    base = `http://localhost:${process.env.PORT || 80}`;
   }
   const proxyUrl = `${base}/community-app-assets/api/proxy-get?url=${
     encodeURIComponent(url)
