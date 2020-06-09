@@ -146,6 +146,7 @@ async function getActiveChallengesInit(handle, uuid) {
 async function getActiveChallengesDone(handle, uuid, tokenV3) {
   const filter = { status: 'Active' };
   const service = getChallengesService(tokenV3);
+  const memberInfo = await getService(tokenV3).getMemberInfo(handle);
   /* TODO: Reuse `getAll` from `actions/challenge-listing`
   /* after it moved from `community-app` to here.
    */
@@ -160,7 +161,7 @@ async function getActiveChallengesDone(handle, uuid, tokenV3) {
     });
   }
   const calls = [
-    getAll(params => service.getUserChallenges(handle, filter, params)),
+    getAll(params => service.getUserChallenges(memberInfo.userId, filter, params)),
   ];
 
   const [challenges] = await Promise.all(calls);
