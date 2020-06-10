@@ -523,19 +523,17 @@ class ChallengesService {
    * @param {String} roleName
    * @return {Promise}
    */
-  async getResourceRoleId(roleName) {
+  async getRoleId(roleName) {
     const params = {
       name: roleName,
-      isActive: true,
     };
-    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
-      .then(checkErrorV5).then(res => res);
+    const roles = await this.private.proxyApi(`/challenges/roleId?${qs.stringify(params)}`);
 
-    if (_.isEmpty(roles.result)) {
+    if (_.isEmpty(roles)) {
       throw new Error('Resource Role not found!');
     }
 
-    return roles.result[0].id;
+    return roles[0].id;
   }
 
   /**
@@ -545,7 +543,7 @@ class ChallengesService {
    */
   async register(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const roleId = await this.getResourceRoleId('Submitter');
+    const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
       memberHandle: user.handle,
@@ -563,7 +561,7 @@ class ChallengesService {
    */
   async unregister(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const roleId = await this.getResourceRoleId('Submitter');
+    const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
       memberHandle: user.handle,
