@@ -11,7 +11,7 @@ import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApi } from './api';
+import { getApi, proxyApi } from './api';
 import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
@@ -200,6 +200,7 @@ class ChallengesService {
       apiV3: getApi('V3', tokenV3),
       getChallenges,
       getMemberChallenges,
+      proxyApi,
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
@@ -325,27 +326,32 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
+    let challenge = {};
     let isLegacyChallenge = false;
-    const filters = {};
     // condition based on ROUTE used for Review Opportunities, change if needed
-    if (challengeId.length >= 5 && challengeId.length <= 8) {
+    if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
-      filters.legacyId = challengeId;
+      challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
+        .then(res => res.challenges[0]);
     } else {
-      filters.id = challengeId;
+      challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+        .then(res => res.challenges);
     }
-    const challengeFiltered = await this.private.getChallenges('/challenges/', filters)
-      .then(res => res.challenges[0]);
 
-    if (challengeFiltered) {
-      challengeFiltered.isLegacyChallenge = isLegacyChallenge;
-      challengeFiltered.events = _.map(challengeFiltered.events, e => ({
-        eventName: e.key,
-        eventId: e.id,
-        description: e.name,
-      }));
-    }
-    return challengeFiltered;
+    const registrants = await this.getChallengeRegistrants(challenge.id);
+    challenge.registrants = registrants;
+
+    challenge.isLegacyChallenge = isLegacyChallenge;
+
+    challenge.events = _.map(challenge.events, e => ({
+      eventName: e.key,
+      eventId: e.id,
+      description: e.name,
+    }));
+
+    challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
+
+    return challenge;
   }
 
   /**
@@ -354,8 +360,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const registrants = await this.private.apiV5.get(`/resources/challengeId=${challengeId}`)
-      .then(checkError).then(res => res);
+    const registrants = await this.private.proxyApi(`/challenges/${challengeId}/registrants`);
     return registrants || [];
   }
 
