@@ -367,6 +367,35 @@ function onGetSubmissionInformationDone(state, action) {
 }
 
 /**
+ * Handles CHALLENGE/GET_CHALLENGE_RESOURCES_INIT action.
+ * @param {Object} state Previous state.
+ */
+function onGetChallengeResourcesInit(state) {
+  return {
+    ...state,
+    resources: [],
+  };
+}
+
+/**
+ * Handles CHALLENGE/GET_CHALLENGE_RESOURCES_DONE action.
+ * @param {Object} state Previous state.
+ * @param {Object} payload resource object.
+ * @param {Object} error Error object.
+ */
+function onGetChallengeResourcesDone(state, { payload, error }) {
+  if (error) {
+    logger.error('Failed to challenges resources', payload);
+    return state;
+  }
+
+  return {
+    ...state,
+    resources: payload,
+  };
+}
+
+/**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Challenge reducer.
@@ -409,6 +438,8 @@ function create(initialState) {
     [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
     [a.getSubmissionInformationInit]: onGetSubmissionInformationInit,
     [a.getSubmissionInformationDone]: onGetSubmissionInformationDone,
+    [a.getChallengeResourcesInit]: onGetChallengeResourcesInit,
+    [a.getChallengeResourcesDone]: onGetChallengeResourcesDone,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,

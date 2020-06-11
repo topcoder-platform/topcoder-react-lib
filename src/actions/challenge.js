@@ -394,6 +394,24 @@ function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
     });
 }
 
+/**
+ * @static
+ * @desc Creates an action that gets challenge resource
+ * @return {Action}
+ */
+function getChallengeResourcesInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets challenge resource information by challenge id
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @param {String} submissionId challenge id
+ * @return {Action}
+ */
+function getChallengeResourcesDone(tokenV3, challengeId) {
+  return getChallengesService(tokenV3).getChallengeResources(challengeId);
+}
+
 export default createActions({
   CHALLENGE: {
     DROP_CHECKPOINTS: dropCheckpoints,
@@ -419,5 +437,7 @@ export default createActions({
     GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
     GET_SUBMISSION_INFORMATION_INIT: getSubmissionInformationInit,
     GET_SUBMISSION_INFORMATION_DONE: getSubmissionInformationDone,
+    GET_CHALLENGE_RESOURCES_INIT: getChallengeResourcesInit,
+    GET_CHALLENGE_RESOURCES_DONE: getChallengeResourcesDone,
   },
 });
