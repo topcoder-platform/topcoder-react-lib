@@ -325,8 +325,10 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
+    const user = decodeToken(this.private.tokenV3);
     let challenge = {};
     let isLegacyChallenge = false;
+    let isRegistered = false;
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
@@ -337,10 +339,22 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
-    const registrants = await this.getChallengeRegistrants(challenge.id);
-    challenge.registrants = registrants;
+    // TEMP FIX until API was fixed
+    try {
+      const registrants = await this.getChallengeRegistrants(challenge.id);
+      challenge.registrants = registrants;
+    } catch (err) {
+      challenge.registrants = [];
+    }
+
+    if (user) {
+      const userChallenges = await this.private.apiV5.get(`/resources/${user.userId}/challenges`)
+        .then(checkErrorV5).then(res => res.result);
+      isRegistered = _.includes(userChallenges, challengeId);
+    }
 
     challenge.isLegacyChallenge = isLegacyChallenge;
+    challenge.isRegistered = isRegistered;
 
     challenge.events = _.map(challenge.events, e => ({
       eventName: e.key,
