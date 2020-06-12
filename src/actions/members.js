@@ -245,7 +245,7 @@ async function getSubtrackChallengesInit(handle, uuid) {
  */
 async function getSubtrackChallengesDone(
   uuid, handle, tokenV3, track, subTrack, pageNum, pageSize,
-  refresh,
+  refresh, userId,
 ) {
   const filter = {
     status: 'Completed',
@@ -260,7 +260,7 @@ async function getSubtrackChallengesDone(
   params.offset = pageNum * pageSize;
 
   const service = getChallengesService(tokenV3);
-  return service.getUserChallenges(handle, filter, params)
+  return service.getUserChallenges(userId, filter, params)
     .then(res => ({
       uuid,
       challenges: res.challenges,
