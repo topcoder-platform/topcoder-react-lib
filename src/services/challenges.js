@@ -11,7 +11,7 @@ import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
-import { getApi, proxyApi } from './api';
+import { getApi } from './api';
 import { getService as getMembersService } from './members';
 
 export const ORDER_BY = {
@@ -200,7 +200,6 @@ class ChallengesService {
       apiV3: getApi('V3', tokenV3),
       getChallenges,
       getMemberChallenges,
-      proxyApi,
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
@@ -360,7 +359,19 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const registrants = await this.private.proxyApi(`/challenges/${challengeId}/registrants`);
+    const roleId = await this.getRoleId('Submitter');
+    const params = {
+      challengeId,
+      roleId,
+    };
+
+    const registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
+      .then(checkErrorV5).then(res => res.result);
+
+    if (_.isEmpty(registrants)) {
+      throw new Error('Resource Role not found!');
+    }
+
     return registrants || [];
   }
 
@@ -526,8 +537,10 @@ class ChallengesService {
   async getRoleId(roleName) {
     const params = {
       name: roleName,
+      isActive: true,
     };
-    const roles = await this.private.proxyApi(`/challenges/roleId?${qs.stringify(params)}`);
+    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
+      .then(checkErrorV5).then(res => res.result);
 
     if (_.isEmpty(roles)) {
       throw new Error('Resource Role not found!');
