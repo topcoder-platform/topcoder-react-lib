@@ -325,7 +325,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const user = decodeToken(this.private.tokenV3);
+    const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
     let challenge = {};
     let isLegacyChallenge = false;
     let isRegistered = false;
@@ -347,8 +347,8 @@ class ChallengesService {
       challenge.registrants = [];
     }
 
-    if (user) {
-      const userChallenges = await this.private.apiV5.get(`/resources/${user.userId}/challenges`)
+    if (memberId) {
+      const userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
         .then(checkErrorV5).then(res => res.result);
       isRegistered = _.includes(userChallenges, challengeId);
     }
