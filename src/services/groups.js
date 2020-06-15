@@ -210,7 +210,7 @@ class GroupService {
    */
   async addMember(groupId, memberId, membershipType) {
     const response = await this.private.api.postJson(`/groups/${groupId}/members`, {
-      param: { memberId, membershipType },
+      memberId, membershipType,
     });
 
     return handleApiResponse(response);
