@@ -339,7 +339,11 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
-    const registrants = await this.getChallengeRegistrants(challenge.id);
+    let registrants = await this.getChallengeRegistrants(challenge.id);
+    // This TEMP fix to colorStyle, this will be fixed with issue #4530
+    registrants = _.map(registrants, r => ({
+      ...r, colorStyle: 'color: #151516',
+    }));
     challenge.registrants = registrants;
 
     if (memberId) {
