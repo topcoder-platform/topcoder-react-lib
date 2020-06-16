@@ -339,18 +339,11 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
-    // TEMP FIX until API was fixed
-    try {
-      const registrants = await this.getChallengeRegistrants(challenge.id);
-      challenge.registrants = registrants;
-    } catch (err) {
-      challenge.registrants = [];
-    }
+    const registrants = await this.getChallengeRegistrants(challenge.id);
+    challenge.registrants = registrants;
 
     if (memberId) {
-      const userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
-        .then(checkErrorV5).then(res => res.result);
-      isRegistered = _.includes(userChallenges, challengeId);
+      isRegistered = _.some(registrants, r => r.memberId === memberId);
     }
 
     challenge.isLegacyChallenge = isLegacyChallenge;
@@ -373,18 +366,14 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const roleId = await this.getRoleId('Submitter');
+    /* If no token provided, resource will return Submitter role only */
     const params = {
       challengeId,
-      roleId,
+      roleId: this.private.tokenV3 ? await this.getRoleId('Submitter') : '',
     };
 
     const registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
-
-    if (_.isEmpty(registrants)) {
-      throw new Error('Resource Role not found!');
-    }
 
     return registrants || [];
   }
