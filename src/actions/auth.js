@@ -16,12 +16,14 @@ import { getApi } from '../services/api';
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
-  const api = getApi('V3', userTokenV3);
+  const api = getApi('V5', userTokenV3);
   return Promise.all([
     api.get(`/members/${user.handle}`)
-      .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => (res.message ? new Error(res.message) : res[0])),
     api.get(`/groups?memberId=${user.userId}&membershipType=user`)
-      .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : [])),
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => (res.message ? new Error(res.message) : res)),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
 

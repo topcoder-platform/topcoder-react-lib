@@ -170,8 +170,8 @@ function mergeGroup(groups, group) {
  * @param {Object} group
  * @return {String[]} Array of IDs.
  */
-export function reduceGroupIds({ oldId, subGroups }) {
-  let res = [oldId];
+export function reduceGroupIds({ id, subGroups }) {
+  let res = [id];
   if (subGroups) {
     subGroups.forEach((g) => {
       res = res.concat(reduceGroupIds(g));
