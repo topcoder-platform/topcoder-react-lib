@@ -3,6 +3,7 @@
  * @desc This module provides a service for convenient manipulation with
  *  Topcoder submissions via TC API. Currently only used for MM challenges
  */
+import _ from 'lodash';
 import qs from 'qs';
 import { getApi } from './api';
 
@@ -37,6 +38,26 @@ class SubmissionsService {
     return this.private.apiV5.get(url)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => res);
+  }
+
+  /**
+   * Get scan reviews types
+   * @returns {Promise} Resolves to the api response.
+   */
+  async getScanReviewIds() {
+    const reviews = await Promise.all([
+      this.private.apiV5.get('/reviewTypes?name=AV Scan')
+        .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+        .then(res => res),
+      this.private.apiV5.get('/reviewTypes?name=SonarQube Review')
+        .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+        .then(res => res),
+      this.private.apiV5.get('/reviewTypes?name=Virus Scan')
+        .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+        .then(res => res),
+    ]).then(([av, sonar, virus]) => (_.concat(av, sonar, virus)));
+
+    return reviews.map(r => r.id);
   }
 
   /**

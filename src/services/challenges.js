@@ -13,6 +13,7 @@ import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
+import { getService as getSubmissionsService } from './submissions';
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -203,6 +204,7 @@ class ChallengesService {
       tokenV2,
       tokenV3,
       memberService: getMembersService(),
+      submissionsService: getSubmissionsService(tokenV3),
     };
   }
 
@@ -327,8 +329,11 @@ class ChallengesService {
   async getChallengeDetails(challengeId) {
     const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
     let challenge = {};
+    let registrants = [];
+    let submissions = [];
     let isLegacyChallenge = false;
     let isRegistered = false;
+
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
@@ -339,27 +344,58 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
-    let registrants = await this.getChallengeRegistrants(challenge.id);
-    // This TEMP fix to colorStyle, this will be fixed with issue #4530
-    registrants = _.map(registrants, r => ({
-      ...r, colorStyle: 'color: #151516',
-    }));
-    challenge.registrants = registrants;
+    if (challenge) {
+      registrants = await this.getChallengeRegistrants(challenge.id);
 
-    if (memberId) {
-      isRegistered = _.some(registrants, r => r.memberId === memberId);
+      // This TEMP fix to colorStyle, this will be fixed with issue #4530
+      registrants = _.map(registrants, r => ({
+        ...r, colorStyle: 'color: #151516',
+      }));
+
+      /* Prepare data to logged user */
+      if (memberId) {
+        isRegistered = _.some(registrants, r => r.memberId === memberId);
+
+        /**
+         * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
+         */
+        const subParams = {
+          challengeId: challenge.legacyId,
+          perPage: 100,
+        };
+        submissions = await this.private.submissionsService.getSubmissions(subParams);
+
+        if (submissions) {
+          // Remove AV Scan, SonarQube Review and Virus Scan review types
+          const reviewScans = await this.private.submissionsService.getScanReviewIds();
+          submissions.forEach((s, i) => {
+            submissions[i].review = _.reject(s.review, r => _.includes(reviewScans, r.typeId));
+          });
+
+          // Add submission date to registrants
+          registrants.forEach((r, i) => {
+            const submission = submissions.find(s => s.memberId === Number(r.memberId));
+            if (submission) {
+              registrants[i].submissionDate = submission.created;
+            }
+          });
+        }
+      }
+
+      challenge = {
+        ...challenge,
+        isLegacyChallenge,
+        isRegistered,
+        registrants,
+        submissions,
+        events: _.map(challenge.events, e => ({
+          eventName: e.key,
+          eventId: e.id,
+          description: e.name,
+        })),
+        fetchedWithAuth: Boolean(this.private.apiV5.private.token),
+      };
     }
-
-    challenge.isLegacyChallenge = isLegacyChallenge;
-    challenge.isRegistered = isRegistered;
-
-    challenge.events = _.map(challenge.events, e => ({
-      eventName: e.key,
-      eventId: e.id,
-      description: e.name,
-    }));
-
-    challenge.fetchedWithAuth = Boolean(this.private.apiV5.private.token);
 
     return challenge;
   }
