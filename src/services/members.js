@@ -354,19 +354,6 @@ class MembersService {
 
     challenges.forEach(async (ch) => {
       calls.push(this.getChallengeResources(ch));
-      // try {
-      //   const result = await this.private.apiV5.get(`/resources?challengeId=${ch}`);
-      //   const resources = await result.json();
-      //   const userResource = _.find(resources, { memberId });
-      //   if (userResource) {
-      //     const challengeRole = _.find(roles, { id: userResource.roleId });
-      //     const { name } = challengeRole || '';
-      //     console.log({ id: userResource.challengeId, name });
-      //     // results.push({ id: userResource.challengeId, name });
-      //   }
-      // } catch (error) {
-      //   // logger.error('Failed to load challenge resource', error);
-      // }
     });
 
     return Promise.all(calls).then((resources) => {
