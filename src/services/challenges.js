@@ -363,7 +363,7 @@ class ChallengesService {
           // Remove AV Scan, SonarQube Review and Virus Scan review types
           const reviewScans = await this.private.submissionsService.getScanReviewIds();
           submissions.forEach((s, i) => {
-            submissions[i].review = _.reject(s.review, r => _.includes(reviewScans, r.typeId));
+            submissions[i].review = _.reject(s.review, r => r && _.includes(reviewScans, r.typeId));
           });
 
           // Add submission date to registrants
