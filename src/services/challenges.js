@@ -518,6 +518,16 @@ class ChallengesService {
   }
 
   /**
+   * Gets user resources.
+   * @param {String} userId User id whose challenges we want to fetch.
+   * @return {Promise} Resolves to the api response.
+   */
+  async getUserResources(userId) {
+    const res = await this.private.apiV5.get(`/resources/${userId}/challenges`);
+    return res.json();
+  }
+
+  /**
    * Gets marathon matches of the specified user.
    * @param {String} memberId User whose challenges we want to fetch.
    * @param {Object} params
