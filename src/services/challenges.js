@@ -146,18 +146,12 @@ class ChallengesService {
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
-      let myChallenges;
-      if (typeof this.private.tokenV3 !== 'undefined') {
-        const { userId } = decodeToken(this.private.tokenV3);
-        myChallenges = await this.private.apiV5.get(`/resources/${userId}/challenges`)
-          .then(checkErrorV5).then(userChallenges => userChallenges);
-      }
       return {
         challenges: res.result || [],
         totalCount: res.headers.get('x-total'),
         meta: {
           allChallengesCount: res.headers.get('x-total'),
-          myChallengesCount: (myChallenges && myChallenges.headers.get('x-total')) || 0,
+          myChallengesCount: 0,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
           totalCount: res.headers.get('x-total'),
@@ -339,18 +333,15 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
-    // TEMP FIX until API was fixed
-    try {
-      const registrants = await this.getChallengeRegistrants(challenge.id);
-      challenge.registrants = registrants;
-    } catch (err) {
-      challenge.registrants = [];
-    }
+    let registrants = await this.getChallengeRegistrants(challenge.id);
+    // This TEMP fix to colorStyle, this will be fixed with issue #4530
+    registrants = _.map(registrants, r => ({
+      ...r, colorStyle: 'color: #151516',
+    }));
+    challenge.registrants = registrants;
 
     if (memberId) {
-      const userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
-        .then(checkErrorV5).then(res => res.result);
-      isRegistered = _.includes(userChallenges, challengeId);
+      isRegistered = _.some(registrants, r => r.memberId === memberId);
     }
 
     challenge.isLegacyChallenge = isLegacyChallenge;
@@ -373,18 +364,14 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge registrants array.
    */
   async getChallengeRegistrants(challengeId) {
-    const roleId = await this.getRoleId('Submitter');
+    /* If no token provided, resource will return Submitter role only */
     const params = {
       challengeId,
-      roleId,
+      roleId: this.private.tokenV3 ? await this.getRoleId('Submitter') : '',
     };
 
     const registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
-
-    if (_.isEmpty(registrants)) {
-      throw new Error('Resource Role not found!');
-    }
 
     return registrants || [];
   }
@@ -440,16 +427,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getChallenges(filters, params) {
-    const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
-    let userChallenges = [];
-    if (memberId) {
-      userChallenges = await this.private.apiV5.get(`/resources/${memberId}/challenges`)
-        .then(checkErrorV5).then(res => res.result);
-    }
     return this.private.getChallenges('/challenges/', filters, params)
       .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item,
-          userChallenges.includes(item.id) ? memberId : null));
+        res.challenges.forEach(item => normalizeChallenge(item));
         return res;
       });
   }
