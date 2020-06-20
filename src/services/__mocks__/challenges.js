@@ -85,8 +85,8 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
   // Fill missing data from v3_filtered
   if (v3Filtered) {
     const groups = {};
-    if (v3Filtered.groupIds) {
-      v3Filtered.groupIds.forEach((id) => {
+    if (v3Filtered.groups) {
+      v3Filtered.groups.forEach((id) => {
         groups[id] = true;
       });
     }
@@ -165,8 +165,8 @@ export function normalizeChallengeDetails(v3, v3Filtered, v3User, v2, username) 
 export function normalizeChallenge(challenge, username) {
   const registrationOpen = challenge.allPhases.filter(d => d.name === 'Registration')[0].isOpen ? 'Yes' : 'No';
   const groups = {};
-  if (challenge.groupIds) {
-    challenge.groupIds.forEach((id) => {
+  if (challenge.groups) {
+    challenge.groups.forEach((id) => {
       groups[id] = true;
     });
   }
