@@ -379,15 +379,8 @@ export function combine(...filters) {
  * @return {Object}
  */
 export function mapToBackend(filter) {
-  if (filter.or) return {};
-
   const res = {};
   if (filter.groups) res.groups = filter.groups;
-
-  /* NOTE: Right now the frontend challenge filter by tag works different,
-   * it looks for matches in the challenge name OR in the techs / platforms. */
-  // if (filter.tags) res.technologies = filter.tags.join(',');
-
   return res;
 }
 
