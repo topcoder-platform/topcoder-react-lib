@@ -9,7 +9,7 @@ import { getApi } from '../services/api';
 
 /**
  * @static
- * @desc Creates an action that loads Topcoder user profile from v3 API.
+ * @desc Creates an action that loads Topcoder user profile from v5 API.
  * @param {String} userTokenV3 v3 authentication token.
  * @return {Action}
  */
