@@ -37,7 +37,15 @@ class SubmissionsService {
     const url = `/submissions?${qs.stringify(query, { encode: false })}`;
     return this.private.apiV5.get(url)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
-      .then(res => res);
+      .then((res) => {
+        const unique = [];
+        res.forEach((x) => {
+          if (unique.filter(a => a.updatedBy === x.updatedBy).length < 0) {
+            unique.push(x);
+          }
+        });
+        return unique;
+      });
   }
 
   /**

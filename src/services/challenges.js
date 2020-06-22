@@ -19,6 +19,25 @@ export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
 };
 
+export function fixColorStyle(registrant) {
+  /* eslint-disable no-param-reassign */
+  // set default color
+  registrant.colorStyle = 'color: #999999';
+  if (registrant.rating) {
+    if (registrant.rating >= 2200) {
+      registrant.colorStyle = 'color: #EE0000';
+    } else if (registrant.rating >= 1500 && registrant.rating <= 2199) {
+      registrant.colorStyle = 'color: #DDCC00';
+    } else if (registrant.rating >= 1200 && registrant.rating <= 1499) {
+      registrant.colorStyle = 'color: #6666FF';
+    } else if (registrant.rating >= 900 && registrant.rating <= 1199) {
+      registrant.colorStyle = 'color: #00A900';
+    }
+  }
+  /* eslint-disable no-param-reassign */
+  return registrant;
+}
+
 /**
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
@@ -340,11 +359,7 @@ class ChallengesService {
 
     if (challenge) {
       registrants = await this.getChallengeRegistrants(challenge.id);
-
-      // This TEMP fix to colorStyle, this will be fixed with issue #4530
-      registrants = _.map(registrants, r => ({
-        ...r, colorStyle: 'color: #151516',
-      }));
+      registrants = _.map(registrants, registrant => fixColorStyle(registrant));
 
       /* Prepare data to logged user */
       if (memberId) {
@@ -363,7 +378,7 @@ class ChallengesService {
           // Remove AV Scan, SonarQube Review and Virus Scan review types
           const reviewScans = await this.private.submissionsService.getScanReviewIds();
           submissions.forEach((s, i) => {
-            submissions[i].review = _.reject(s.review, r => _.includes(reviewScans, r.typeId));
+            submissions[i].review = _.reject(s.review, r => r && _.includes(reviewScans, r.typeId));
           });
 
           // Add submission date to registrants
