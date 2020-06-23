@@ -8,6 +8,7 @@ import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 
 import { getService as getCommunityService } from './communities';
+import { getService as getChallengeService } from './challenges';
 import { getApi } from './api';
 
 /**
@@ -15,54 +16,33 @@ import { getApi } from './api';
  */
 class TermsService {
   /**
-   * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
+   * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    */
-  constructor(tokenV2) {
+  constructor(tokenV3) {
     this.private = {
-      api: getApi('V2', tokenV2),
-      tokenV2,
+      api: getApi('V5', tokenV3),
+      tokenV3,
     };
   }
 
   /**
    * get all terms of specified challenge
-   * @param  {Number|String} challengeId id of the challenge
+   * @param  {Array<String>} terms terms of the challenge
    * @return {Promise}       promise of the request result
    */
-  getChallengeTerms(challengeId) {
-    if (this.private.tokenV2) {
-      let registered = false;
-      return this.private.api.get(`/terms/${challengeId}?role=Submitter`)
-        .then(res => res.json())
-        .then((res) => {
-          if (res.error) {
-            if (res.error.details === 'You are already registered for this challenge.') {
-              registered = true;
-            }
-            return this.private.api.get(`/terms/${challengeId}?role=Submitter&noauth=true`)
-              .then((resp) => {
-                if (resp.ok) {
-                  return resp.json().then((result) => {
-                    if (registered) {
-                      // eslint-disable-next-line no-param-reassign
-                      _.forEach(result.terms, (t) => { t.agreed = true; });
-                    }
-                    return result;
-                  });
-                }
-                return new Error(resp.statusText);
-              });
-          }
-          return res;
-        });
+  async getChallengeTerms(terms) {
+    if (this.private.tokenV3) {
+      const challengeService = getChallengeService(this.private.tokenV3);
+      const roleId = await challengeService.getRoleId('Submitter');
+      const registerTerms = _.filter(terms, t => t.roleId === roleId);
+
+      return Promise.all(_.map(registerTerms, term => this.getTermDetails(term.id)))
+        .then(challengeTerms => (
+          _.map(challengeTerms, term => _.pick(term, 'id', 'title', 'agreed'))
+        ));
     }
-    return this.private.api.get(`/terms/${challengeId}?role=Submitter&noauth=true`)
-      .then((resp) => {
-        if (resp.ok) {
-          return resp.json();
-        }
-        throw new Error(resp.statusText);
-      });
+
+    return [];
   }
 
   /**
@@ -110,7 +90,7 @@ class TermsService {
         return Promise.resolve(term);
       }
       // Otherwise grab new details from terms api
-      return this.getTermDetails(term.termsOfUseId).then(res => _.pick(res, ['termsOfUseId', 'agreed', 'title']));
+      return this.getTermDetails(term.id).then(res => _.pick(res, ['id', 'agreed', 'title']));
     });
 
     return Promise.all(promises).then(terms => ({ terms }));
@@ -123,8 +103,7 @@ class TermsService {
    */
   getTermDetails(termId) {
     // looks like server cache responses, to prevent it we add nocache param with always new value
-    const nocache = (new Date()).getTime();
-    return this.private.api.get(`/terms/detail/${termId}?nocache=${nocache}`)
+    return this.private.api.get(`/terms/${termId}`)
       .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
   }
 
@@ -135,7 +114,11 @@ class TermsService {
    * @return {Promise}       promise of the request result
    */
   getDocuSignUrl(templateId, returnUrl) {
-    return this.private.api.post(`/terms/docusign/viewURL?templateId=${templateId}&returnUrl=${returnUrl}`)
+    const params = {
+      templateId,
+      returnUrl,
+    };
+    return this.private.api.postJson('/terms/docusignViewURL', params)
       .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
   }
 
@@ -153,20 +136,20 @@ class TermsService {
 let lastInstance = null;
 /**
  * Returns a new or existing terms service.
- * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
+ * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
  * @return {TermsService} Terms service object
  */
-export function getService(tokenV2) {
+export function getService(tokenV3) {
   /* Because of Topcoder backend restrictions, it is not straightforward to test
    * terms-related functionality in any other way than just providing an option
    * to run the app against mock terms service. */
   if (config.MOCK_TERMS_SERVICE) {
     /* eslint-disable global-require */
-    return require('./__mocks__/terms').getService(tokenV2);
+    return require('./__mocks__/terms').getService(tokenV3);
     /* eslint-enable global-require */
   }
-  if (!lastInstance || (tokenV2 && lastInstance.private.tokenV2 !== tokenV2)) {
-    lastInstance = new TermsService(tokenV2);
+  if (!lastInstance || (tokenV3 && lastInstance.private.tokenV3 !== tokenV3)) {
+    lastInstance = new TermsService(tokenV3);
   }
   return lastInstance;
 }
