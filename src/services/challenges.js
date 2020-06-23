@@ -22,16 +22,16 @@ export const ORDER_BY = {
 export function fixColorStyle(registrant) {
   /* eslint-disable no-param-reassign */
   // set default color
-  registrant.colorStyle = 'color: #999999';
+  registrant.colorStyle = 'color: #555555'; // grey
   if (registrant.rating) {
     if (registrant.rating >= 2200) {
-      registrant.colorStyle = 'color: #EE0000';
+      registrant.colorStyle = 'color: #EA1900'; // red
     } else if (registrant.rating >= 1500 && registrant.rating <= 2199) {
-      registrant.colorStyle = 'color: #DDCC00';
+      registrant.colorStyle = 'color: #F2C900'; // yellow
     } else if (registrant.rating >= 1200 && registrant.rating <= 1499) {
-      registrant.colorStyle = 'color: #6666FF';
+      registrant.colorStyle = 'color: #4C50D9'; // blue
     } else if (registrant.rating >= 900 && registrant.rating <= 1199) {
-      registrant.colorStyle = 'color: #00A900';
+      registrant.colorStyle = 'color: #258205'; // green
     }
   }
   /* eslint-disable no-param-reassign */
