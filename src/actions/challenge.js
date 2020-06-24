@@ -103,12 +103,12 @@ function getSubmissionsInit(challengeId) {
  * @desc Creates an action that loads user's submissions to the specified
  * challenge.
  * @param {String} challengeId Challenge ID.
- * @param {String} tokenV2  Topcoder auth token v2.
+ * @param {String} tokenV23 Topcoder auth token v3.
  * @return {Action}
  */
-function getSubmissionsDone(challengeId, tokenV2) {
-  return getApi('V2', tokenV2)
-    .fetch(`/challenges/submissions/${challengeId}/mySubmissions`)
+function getSubmissionsDone(challengeId, tokenV3) {
+  return getApi('V5', tokenV3)
+    .fetch(`/submissions?challengeId=${challengeId}`)
     .then(response => response.json())
     .then(response => ({
       challengeId: _.toString(challengeId),
