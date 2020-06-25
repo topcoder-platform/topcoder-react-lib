@@ -289,13 +289,13 @@ function fetchCheckpointsDone(tokenV2, challengeId) {
         response.checkpointResults[index].expanded = false;
       });
       return {
-        challengeId: Number(challengeId),
+        challengeId: String(challengeId),
         checkpoints: response,
       };
     })
     .catch(error => ({
       error,
-      challengeId: Number(challengeId),
+      challengeId: String(challengeId),
     }));
 }
 
