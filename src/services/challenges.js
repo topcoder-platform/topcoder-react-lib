@@ -350,14 +350,15 @@ class ChallengesService {
       if (memberId) {
         isRegistered = _.some(registrants, r => r.memberId === memberId);
 
-        /**
-         * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
-         */
         const subParams = {
-          challengeId: challenge.legacyId,
+          challengeId,
           perPage: 100,
         };
-        submissions = await this.private.submissionsService.getSubmissions(subParams);
+        try {
+          submissions = await this.private.submissionsService.getSubmissions(subParams);
+        } catch (err) {
+          submissions = [];
+        }
 
         if (submissions) {
           // Remove AV Scan, SonarQube Review and Virus Scan review types
