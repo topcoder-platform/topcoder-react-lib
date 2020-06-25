@@ -123,14 +123,14 @@ function checkStatusDone(entity, tokens) {
    * @return {Promise}            resolves to the list of term objects
    */
   const checkStatus = maxAttempts => getTermsDone(entity, tokens, mockAgreed).then((res) => {
-    const allAgreed = _.every(res, 'agreed');
+    const allAgreed = _.every(res.terms, 'agreed');
 
     // if not all terms are agreed and we still have some attempts to try
     if (!allAgreed && maxAttempts > 1) {
       return delay(TIME_OUT).then(() => checkStatus(maxAttempts - 1));
     }
 
-    return res;
+    return res.terms;
   });
 
   return checkStatus(MAX_ATTEMPTS);
