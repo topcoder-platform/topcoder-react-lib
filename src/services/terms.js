@@ -68,9 +68,7 @@ class TermsService {
       }
 
       return [];
-    }).then(terms => ({
-      terms,
-    }));
+    }).then(terms => terms);
   }
 
   /**
@@ -93,7 +91,7 @@ class TermsService {
       return this.getTermDetails(term.id).then(res => _.pick(res, ['id', 'agreed', 'title']));
     });
 
-    return Promise.all(promises).then(terms => ({ terms }));
+    return Promise.all(promises).then(terms => terms);
   }
 
   /**
