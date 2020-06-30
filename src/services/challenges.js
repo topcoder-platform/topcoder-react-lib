@@ -354,11 +354,8 @@ class ChallengesService {
           challengeId,
           perPage: 100,
         };
-        try {
-          submissions = await this.private.submissionsService.getSubmissions(subParams);
-        } catch (err) {
-          submissions = [];
-        }
+
+        submissions = await this.private.submissionsService.getSubmissions(subParams);
 
         if (submissions) {
           // Remove AV Scan, SonarQube Review and Virus Scan review types
