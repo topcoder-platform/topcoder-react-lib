@@ -7,6 +7,7 @@
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
+import { decodeToken } from 'tc-accounts';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
 import { getService as getMemberService } from '../services/members';
@@ -103,16 +104,20 @@ function getSubmissionsInit(challengeId) {
  * @desc Creates an action that loads user's submissions to the specified
  * challenge.
  * @param {String} challengeId Challenge ID.
- * @param {String} tokenV23 Topcoder auth token v3.
+ * @param {String} tokenV3 Topcoder auth token v3.
  * @return {Action}
  */
 function getSubmissionsDone(challengeId, tokenV3) {
-  return getApi('V5', tokenV3)
-    .fetch(`/submissions?challengeId=${challengeId}`)
-    .then(response => response.json())
-    .then(response => ({
+  const user = decodeToken(tokenV3);
+  const submissionsService = getSubmissionService(tokenV3);
+  const filters = {
+    challengeId,
+    memberId: user.userId,
+  };
+  return submissionsService.getSubmissions(filters)
+    .then(submissions => ({
       challengeId: _.toString(challengeId),
-      submissions: response.submissions,
+      submissions,
     }))
     .catch((error) => {
       const err = { challengeId: _.toString(challengeId), error };
