@@ -350,13 +350,11 @@ class ChallengesService {
       if (memberId) {
         isRegistered = _.some(registrants, r => r.memberId === memberId);
 
-        /**
-         * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
-         */
         const subParams = {
-          challengeId: challenge.legacyId,
+          challengeId,
           perPage: 100,
         };
+
         submissions = await this.private.submissionsService.getSubmissions(subParams);
 
         if (submissions) {
