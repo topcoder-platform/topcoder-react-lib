@@ -22,6 +22,22 @@ export function normalizeChallenges(challenges) {
   }
   return challenges;
 }
+
+/**
+ * Sync the fields of V3 and V5 for front-end to process successfully
+ * @param challenge - challenge to normalize
+ */
+function normalizeChallengePhases(challenge) {
+  return {
+    ...challenge,
+    phases: _.map(challenge.phases, phase => ({
+      ...phase,
+      scheduledStartDate: phase.scheduledStartTime,
+      scheduledEndDate: phase.scheduledEndTime,
+    })),
+  };
+}
+
 /**
  * Service class.
  */
@@ -64,8 +80,10 @@ class ReviewOpportunitiesService {
       .then(res => res.json())
       .then(res => (
         res.result.status === 200
-          ? res.result.content
-          : Promise.reject(res.result)
+          ? {
+            ...res.result.content,
+            challenge: normalizeChallengePhases(res.result.content.challenge),
+          } : Promise.reject(res.result)
       ));
   }
 
