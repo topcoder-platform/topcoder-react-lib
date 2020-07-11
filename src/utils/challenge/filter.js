@@ -18,7 +18,7 @@
  * endDate {Number|String} - Permits only those challenges with submission
  * deadline before this date.
  *
- * groupIds {Array} - Permits only the challenges belonging to at least one
+ * groups {Array} - Permits only the challenges belonging to at least one
  * of the groups which IDs are presented as keys in this object.
  *
  * or {Object[]} - All other filter fields applied to the challenge with AND
@@ -71,8 +71,8 @@ import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
  */
 
 function filterByGroupIds(challenge, state) {
-  if (!state.groupIds) return true;
-  return state.groupIds.some(id => challenge.groups[id]);
+  if (!state.groups) return true;
+  return state.groups.some(id => challenge.groups[id]);
 }
 
 function filterByRegistrationOpen(challenge, state) {
@@ -173,8 +173,8 @@ function filterByUpcoming(challenge, state) {
 }
 
 function filterByUsers(challenge, state) {
-  if (!state.users) return true;
-  return state.users.find(user => challenge.users[user]);
+  if (!state.userChallenges) return true;
+  return state.userChallenges.find(ch => challenge.id === ch);
 }
 
 /**
@@ -343,7 +343,7 @@ export function combine(...filters) {
   const res = {};
   filters.forEach((filter) => {
     combineEndDate(res, filter);
-    combineArrayRules(res, filter, 'groupIds');
+    combineArrayRules(res, filter, 'groups');
     /* TODO: The registrationOpen rule is just ignored for now. */
     combineStartDate(res, filter);
     combineArrayRules(res, filter, 'or', true);
@@ -379,15 +379,8 @@ export function combine(...filters) {
  * @return {Object}
  */
 export function mapToBackend(filter) {
-  if (filter.or) return {};
-
   const res = {};
-  if (filter.groupIds) res.groupIds = filter.groupIds.join(',');
-
-  /* NOTE: Right now the frontend challenge filter by tag works different,
-   * it looks for matches in the challenge name OR in the techs / platforms. */
-  // if (filter.tags) res.technologies = filter.tags.join(',');
-
+  if (filter.groups) res.groups = filter.groups;
   return res;
 }
 

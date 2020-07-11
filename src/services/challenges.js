@@ -365,13 +365,11 @@ class ChallengesService {
       if (memberId) {
         isRegistered = _.some(registrants, r => r.memberId === memberId);
 
-        /**
-         * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
-         */
         const subParams = {
-          challengeId: challenge.legacyId,
+          challengeId,
           perPage: 100,
         };
+
         submissions = await this.private.submissionsService.getSubmissions(subParams);
 
         if (submissions) {
@@ -530,6 +528,16 @@ class ChallengesService {
       challenges: userChallenges,
       totalCount: userChallenges.length,
     };
+  }
+
+  /**
+   * Gets user resources.
+   * @param {String} userId User id whose challenges we want to fetch.
+   * @return {Promise} Resolves to the api response.
+   */
+  async getUserResources(userId) {
+    const res = await this.private.apiV5.get(`/resources/${userId}/challenges`);
+    return res.json();
   }
 
   /**

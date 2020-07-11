@@ -170,8 +170,8 @@ function mergeGroup(groups, group) {
  * @param {Object} group
  * @return {String[]} Array of IDs.
  */
-export function reduceGroupIds({ oldId, subGroups }) {
-  let res = [oldId];
+export function reduceGroupIds({ id, subGroups }) {
+  let res = [id];
   if (subGroups) {
     subGroups.forEach((g) => {
       res = res.concat(reduceGroupIds(g));
@@ -210,7 +210,7 @@ class GroupService {
    */
   async addMember(groupId, memberId, membershipType) {
     const response = await this.private.api.postJson(`/groups/${groupId}/members`, {
-      param: { memberId, membershipType },
+      memberId, membershipType,
     });
 
     return handleApiResponse(response);

@@ -357,6 +357,30 @@ async function getUserMarathonDone(
     }));
 }
 
+/**
+ * @static
+ * @desc Create an action that fetch user registered challenge's resources.
+ * @param {String} memberId Member id.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserResourcesInit(memberId, uuid) {
+  return { memberId, uuid };
+}
+
+/**
+ * @static
+ * @desc Create an action that fetch user registered challenge's resources.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserResourcesDone(memberId, tokenV3, uuid) {
+  const resources = await getService(tokenV3).getUserResources(memberId);
+
+  return { resources, uuid };
+}
+
 export default createActions({
   MEMBERS: {
     DROP: drop,
@@ -380,5 +404,7 @@ export default createActions({
     GET_USER_SRM_DONE: getUserSRMDone,
     GET_USER_MARATHON_INIT: getUserMarathonInit,
     GET_USER_MARATHON_DONE: getUserMarathonDone,
+    GET_USER_RESOURCES_INIT: getUserResourcesInit,
+    GET_USER_RESOURCES_DONE: getUserResourcesDone,
   },
 });

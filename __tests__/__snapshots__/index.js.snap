@@ -111,6 +111,8 @@ Object {
       "getSubtrackChallengesInit": [Function],
       "getUserMarathonDone": [Function],
       "getUserMarathonInit": [Function],
+      "getUserResourcesDone": [Function],
+      "getUserResourcesInit": [Function],
       "getUserSrmDone": [Function],
       "getUserSrmInit": [Function],
     },
