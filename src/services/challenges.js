@@ -19,6 +19,25 @@ export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
 };
 
+export function fixColorStyle(registrant) {
+  /* eslint-disable no-param-reassign */
+  // set default color
+  registrant.colorStyle = 'color: #555555'; // grey
+  if (registrant.rating) {
+    if (registrant.rating >= 2200) {
+      registrant.colorStyle = 'color: #EA1900'; // red
+    } else if (registrant.rating >= 1500 && registrant.rating <= 2199) {
+      registrant.colorStyle = 'color: #F2C900'; // yellow
+    } else if (registrant.rating >= 1200 && registrant.rating <= 1499) {
+      registrant.colorStyle = 'color: #4C50D9'; // blue
+    } else if (registrant.rating >= 900 && registrant.rating <= 1199) {
+      registrant.colorStyle = 'color: #258205'; // green
+    }
+  }
+  /* eslint-disable no-param-reassign */
+  return registrant;
+}
+
 /**
  * Normalizes a regular challenge object received from the backend.
  * NOTE: This function is copied from the existing code in the challenge listing
@@ -340,11 +359,7 @@ class ChallengesService {
 
     if (challenge) {
       registrants = await this.getChallengeRegistrants(challenge.id);
-
-      // This TEMP fix to colorStyle, this will be fixed with issue #4530
-      registrants = _.map(registrants, r => ({
-        ...r, colorStyle: 'color: #151516',
-      }));
+      registrants = _.map(registrants, registrant => fixColorStyle(registrant));
 
       /* Prepare data to logged user */
       if (memberId) {
