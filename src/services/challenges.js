@@ -363,7 +363,7 @@ class ChallengesService {
 
       /* Prepare data to logged user */
       if (memberId) {
-        isRegistered = _.some(registrants, r => r.memberId === memberId);
+        isRegistered = _.some(registrants, r => `${r.memberId}` === `${memberId}`);
 
         const subParams = {
           challengeId,
@@ -381,7 +381,7 @@ class ChallengesService {
 
           // Add submission date to registrants
           registrants.forEach((r, i) => {
-            const submission = submissions.find(s => s.memberId === Number(r.memberId));
+            const submission = submissions.find(s => `${s.memberId}` === `${r.memberId}`);
             if (submission) {
               registrants[i].submissionDate = submission.created;
             }
