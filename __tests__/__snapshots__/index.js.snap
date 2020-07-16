@@ -303,6 +303,7 @@ Object {
         "SUBMISSION_END_DATE": "submissionEndDate",
       },
       "default": undefined,
+      "fixColorStyle": [Function],
       "getService": [Function],
       "normalizeChallenge": [Function],
     },
