@@ -71,8 +71,8 @@ import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
  */
 
 function filterByGroupIds(challenge, state) {
-  if (!state.groups) return true;
-  return state.groups.some(id => challenge.groups[id]);
+  if (!state.groupIds) return true;
+  return state.groupIds.some(id => challenge.groups[id]);
 }
 
 function filterByRegistrationOpen(challenge, state) {
