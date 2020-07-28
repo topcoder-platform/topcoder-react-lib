@@ -465,15 +465,25 @@ export function factory(options = {}) {
       challengeId,
       tokens.tokenV3,
       tokens.tokenV2,
-    )).then((details) => {
-      const track = _.get(details, 'payload.track', '').toLowerCase();
-      const checkpointsPromise = track === 'design' ? (
-        redux.resolveAction(actions.challenge.fetchCheckpointsDone(tokens.tokenV2, challengeId))
+    )).then((res) => {
+      const challengeDetails = _.get(res, 'payload', {});
+      const track = _.get(challengeDetails, 'legacy.track', '');
+      let checkpointsPromise = null;
+      if (track === 'DESIGN') {
+        const p = _.get(challengeDetails, 'phases', [])
+          .filter(x => x.name === 'Checkpoint Review');
+        if (p.length && !p[0].isOpen) {
+          checkpointsPromise = redux.resolveAction(
+            actions.challenge.fetchCheckpointsDone(tokens.tokenV2, challengeDetails.legacyId),
+          );
+        }
+      }
+      const resultsPromise = challengeDetails.status === 'Completed' ? (
+        redux.resolveAction(
+          actions.challenge.loadResultsDone(tokens, challengeId, track.toLowerCase()),
+        )
       ) : null;
-      const resultsPromise = _.get(details, 'payload.status', '') === 'Completed' ? (
-        redux.resolveAction(actions.challenge.loadResultsDone(tokens, challengeId, track))
-      ) : null;
-      return Promise.all([details, checkpointsPromise, resultsPromise]);
+      return Promise.all([res, checkpointsPromise, resultsPromise]);
     }).then(([details, checkpoints, results]) => {
       state = {
         ...state,
