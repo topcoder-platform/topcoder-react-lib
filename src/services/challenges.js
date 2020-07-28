@@ -15,6 +15,13 @@ import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
 
+export function getClientFilters(frontFilter) {
+  if (frontFilter) {
+    return ' &';
+  }
+  return '';
+}
+
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
 };
@@ -141,11 +148,15 @@ class ChallengesService {
       filters = {},
       params = {},
     ) => {
+      const frontendFilter = _.clone(filters.frontendFilter);
+      const frontendQs = getClientFilters(frontendFilter);
+      // eslint-disable-next-line no-param-reassign
+      delete filters.frontendFilter;
       const query = {
         ...filters,
         ...params,
       };
-      const url = `${endpoint}?${qs.stringify(query)}`;
+      const url = `${endpoint}?${frontendQs}${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
       return {
         challenges: res.result || [],
