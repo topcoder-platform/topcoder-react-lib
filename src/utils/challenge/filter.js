@@ -130,6 +130,14 @@ function filterByStarted(challenge, state) {
   return moment(challenge.registrationStartDate).isBefore(Date.now());
 }
 
+function filterByOngoing(challenge, state) {
+  if (_.isUndefined(state.ongoing)) return true;
+  const registrationPhase = (challenge.phases || []).filter(d => d.name === 'Registration')[0];
+  const registrationEndDate = registrationPhase ? registrationPhase.scheduledEndDate
+    : challenge.registrationEndDate;
+  return moment(registrationEndDate).isBefore(Date.now());
+}
+
 function filterByStatus(challenge, state) {
   if (!state.status) return true;
   return state.status.includes(challenge.status);
@@ -219,6 +227,7 @@ export function getFilterFunction(state) {
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByStarted(challenge, state)
+      && filterByOngoing(challenge, state)
       && filterByRegistrationOpen(challenge, state);
     if (!test && state.or) {
       let pos = 0;
