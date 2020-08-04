@@ -709,7 +709,7 @@ class ChallengesService {
     const url = `/resources?challengeId=${challengeId}&memberHandle=${user.handle}`;
     const getResourcesResponse = await this.private.apiV5.get(url);
     const resources = await getResourcesResponse.json();
-    if (resources) return _.map(resources, 'roleId');
+    if (resources) return _.map(_.filter(resources, r => r.memberHandle === user.handle), 'roleId');
     throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }
