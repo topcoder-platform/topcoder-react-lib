@@ -399,13 +399,17 @@ class ChallengesService {
    */
   async getChallengeRegistrants(challengeId) {
     /* If no token provided, resource will return Submitter role only */
+    const roleId = this.private.tokenV3 ? await this.getRoleId('Submitter') : '';
     const params = {
       challengeId,
-      roleId: this.private.tokenV3 ? await this.getRoleId('Submitter') : '',
+      roleId,
     };
 
-    const registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
+    let registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
+
+    /* API will return all roles to currentUser, so need to filter in FE */
+    registrants = _.filter(registrants, r => r.roleId === roleId);
 
     return registrants || [];
   }
