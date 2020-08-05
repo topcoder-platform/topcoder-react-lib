@@ -160,10 +160,15 @@ function filterByText(challenge, state) {
 function filterByTrack(challenge, state) {
   if (!state.tracks) return true;
 
-  /* Development challenges having Data Science tech tag, still should be
-   * included into data science track. */
+  /* Development challenges having Data Science and QA tech tag, still should be
+   * included into data science and qa tracks. */
   if (state.tracks[COMPETITION_TRACKS.DATA_SCIENCE]
     && _.includes(challenge.tags, 'Data Science')) {
+    return true;
+  }
+
+  if (state.tracks[COMPETITION_TRACKS.QA]
+    && _.includes(challenge.tags, 'QA')) {
     return true;
   }
 

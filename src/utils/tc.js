@@ -14,6 +14,7 @@ export const COMPETITION_TRACKS = {
   DATA_SCIENCE: 'data_science',
   DESIGN: 'design',
   DEVELOP: 'develop',
+  QA: 'qa',
 };
 
 /**

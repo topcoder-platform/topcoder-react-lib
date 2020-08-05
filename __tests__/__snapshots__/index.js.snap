@@ -375,6 +375,7 @@ Object {
       "DATA_SCIENCE": "data_science",
       "DESIGN": "design",
       "DEVELOP": "develop",
+      "QA": "qa",
     },
     "REVIEW_OPPORTUNITY_TYPES": Object {
       "Contest Review": "Review",
