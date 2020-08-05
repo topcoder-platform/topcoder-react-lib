@@ -1,5 +1,5 @@
 import {
-  setText, setTags, setSubtracks, setStartDate,
+  setText, setTags, setTypes, setStartDate,
 } from '../../../src/utils/challenge/filter';
 
 describe('challenge filter', () => {
@@ -22,12 +22,12 @@ describe('challenge filter', () => {
     expect(res).toEqual({});
   });
 
-  test('setSubtracks', () => {
-    res = setSubtracks({});
+  test('setTypes', () => {
+    res = setTypes({});
     expect(res).toEqual({});
-    res = setSubtracks({}, 'subtracks');
-    expect(res).toEqual({ subtracks: 'subtracks' });
-    res = setSubtracks({ subtracks: 'subtracks' });
+    res = setTypes({}, 'types');
+    expect(res).toEqual({ types: 'types' });
+    res = setTypes({ types: 'types' });
     expect(res).toEqual({});
   });
 

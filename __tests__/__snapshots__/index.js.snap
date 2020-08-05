@@ -225,9 +225,9 @@ Object {
       "setEndDate": [Function],
       "setReviewOpportunityType": [Function],
       "setStartDate": [Function],
-      "setSubtracks": [Function],
       "setTags": [Function],
       "setText": [Function],
+      "setTypes": [Function],
     },
   },
   "errors": Object {
