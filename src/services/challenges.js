@@ -327,6 +327,7 @@ class ChallengesService {
     let submissions = [];
     let isLegacyChallenge = false;
     let isRegistered = false;
+    const userDetails = { roles: [] };
 
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
@@ -372,6 +373,7 @@ class ChallengesService {
             }
           });
         }
+        userDetails.roles = await this.getUserRolesInChallenge(challengeId);
       }
 
       challenge = {
@@ -380,6 +382,7 @@ class ChallengesService {
         isRegistered,
         registrants,
         submissions,
+        userDetails,
         events: _.map(challenge.events, e => ({
           eventName: e.key,
           eventId: e.id,
@@ -707,9 +710,10 @@ class ChallengesService {
    */
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const url = `/resources?challengeId=${challengeId}?memberHandle=${user.handle}`;
-    const resources = await this.private.apiV5.get(url);
-    if (resources) return _.map(resources, 'roleId');
+    const url = `/resources?challengeId=${challengeId}&memberHandle=${user.handle}`;
+    const getResourcesResponse = await this.private.apiV5.get(url);
+    const resources = await getResourcesResponse.json();
+    if (resources) return _.map(_.filter(resources, r => r.memberHandle === user.handle), 'roleId');
     throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }
