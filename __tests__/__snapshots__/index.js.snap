@@ -372,10 +372,10 @@ Object {
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
-      "DATA_SCIENCE": "data_science",
-      "DESIGN": "design",
-      "DEVELOP": "develop",
-      "QA": "qa",
+      "DATA_SCIENCE": "Data Science",
+      "DESIGN": "Design",
+      "DEVELOP": "Development",
+      "QA": "Quality Assurance",
     },
     "REVIEW_OPPORTUNITY_TYPES": Object {
       "Contest Review": "Review",
