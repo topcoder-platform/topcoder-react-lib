@@ -159,20 +159,12 @@ function filterByText(challenge, state) {
 
 function filterByTrack(challenge, state) {
   if (!state.tracks) return true;
-
-  /* Development challenges having Data Science tech tag, still should be
-   * included into data science track. */
-  if (state.tracks[COMPETITION_TRACKS.DATA_SCIENCE]
-    && _.includes(challenge.tags, 'Data Science')) {
-    return true;
-  }
-
-  return _.keys(state.tracks).some(track => challenge.communities.has(track));
+  return _.keys(state.tracks).some(track => challenge.track === track);
 }
 
-function filterBySubtracks(challenge, state) {
-  if (!state.subtracks) return true;
-  return state.subtracks.includes(challenge.typeId);
+function filterByTypes(challenge, state) {
+  if (!state.types) return true;
+  return state.types.includes(challenge.typeId);
 }
 
 function filterByUpcoming(challenge, state) {
@@ -222,7 +214,7 @@ export function getFilterFunction(state) {
       && filterByGroupIds(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      && filterBySubtracks(challenge, state)
+      && filterByTypes(challenge, state)
       && filterByUsers(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
@@ -245,9 +237,9 @@ export function getFilterFunction(state) {
  * @param {Object} state
  * @return {Function}
  */
-export function getReviewOpportunitiesFilterFunction(state, validSubtracks) {
+export function getReviewOpportunitiesFilterFunction(state, validTypes) {
   return (opp) => {
-    const newSubTrack = _.find(validSubtracks, { abbreviation: opp.challenge.subTrack }) || {};
+    const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
 
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
@@ -257,12 +249,11 @@ export function getReviewOpportunitiesFilterFunction(state, validSubtracks) {
       // This allows filterByText to search for Review Types and Challenge Titles
       name: `${opp.challenge.title} ${REVIEW_OPPORTUNITY_TYPES[opp.type]}`,
       registrationStartDate: opp.startDate, // startDate of Review, not Challenge
-      subTrack: opp.challenge.subTrack || '', // Sometimes back-end doesn't return this field
       submissionEndDate: opp.startDate, // Currently uses startDate for both date comparisons
       communities: new Set([ // Used to filter by Track, and communities at a future date
         opp.challenge.track.toLowerCase(),
       ]),
-      typeId: newSubTrack.id,
+      typeId: newType.id,
       tags: opp.challenge.technologies || [],
       platforms: opp.challenge.platforms || [],
     };
@@ -271,7 +262,7 @@ export function getReviewOpportunitiesFilterFunction(state, validSubtracks) {
       filterByTrack(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      && filterBySubtracks(challenge, state)
+      && filterByTypes(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByReviewOpportunityType(opp, state)
@@ -455,16 +446,16 @@ export function setStartDate(state, date) {
 }
 
 /**
- * Clones the state and sets the subtracks.
+ * Clones the state and sets the challenge types.
  * @param {Object} state
- * @param {Array} subtracks
+ * @param {Array} types
  * @return {Object}
  */
-export function setSubtracks(state, subtracks) {
-  if (subtracks && subtracks.length) return { ...state, subtracks };
-  if (!state.subtracks) return state;
+export function setTypes(state, types) {
+  if (types && types.length) return { ...state, types };
+  if (!state.types) return state;
   const res = _.clone(state);
-  delete res.subtracks;
+  delete res.types;
   return res;
 }
 
