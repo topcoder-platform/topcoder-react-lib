@@ -16,10 +16,33 @@ import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
 
 export function getClientFilters(frontFilter) {
-  if (frontFilter) {
-    return ' &';
+  const filter = frontFilter;
+  const filterArray = [];
+  if (filter.text && filter.text !== '') {
+    filterArray.push(`keywords=${filter.text}`);
   }
-  return '';
+  if (filter.tags.length > 0) {
+    filterArray.push(filter.tags.map(value => `tags[]=${value}`).join('&'));
+  }
+  if (filter.trackes.design) {
+    filterArray.push('tracks[]=design');
+  }
+  if (filter.trackes.develop) {
+    filterArray.push('tracks[]=develop');
+  }
+  if (filter.trackes.data_science) {
+    filterArray.push('tracks[]=data_science');
+  }
+  // if (filter.communityId !== 'All') {
+  //   filterArray.push(`communityId=${filter.communityId}`);
+  // }
+  // if (filter.startDate !== null) {
+  //   filterArray.push(`startDate=${filter.startDate}`);
+  // }
+  // if (filter.endDate !== null) {
+  //   filterArray.push(`endDate=${filter.endDate}`);
+  // }
+  return filterArray.join('&');
 }
 
 export const ORDER_BY = {
@@ -156,7 +179,8 @@ class ChallengesService {
         ...filters,
         ...params,
       };
-      const url = `${endpoint}?${frontendQs}${qs.stringify(query)}`;
+      const conc = frontendQs.length > 0 ? '&' : '';
+      const url = `${endpoint}?${frontendQs}${conc}${qs.stringify(query)}`;
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
       return {
         challenges: res.result || [],
