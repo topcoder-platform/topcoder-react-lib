@@ -53,11 +53,6 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.tags) challenge.tags = [];
   if (!challenge.platforms) challenge.platforms = [];
 
-  if (challenge.type === 'Marathon Match') {
-    challenge.legacy.track = 'DATA_SCIENCE';
-  }
-  /* eslint-enable no-param-reassign */
-
   let submissionEndTimestamp = phases.filter(d => d.name === 'Submission')[0];
   if (submissionEndTimestamp) {
     submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
@@ -539,15 +534,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getUserMarathonMatches(memberId, params) {
-    const typeId = await this.getChallengeTypeId('DEVELOP_MARATHON_MATCH');
-
-    if (!typeId) {
-      return null;
-    }
-
     const newParams = {
       ...params,
-      typeId,
+      tag: 'Marathon Match',
       memberId,
     };
 
