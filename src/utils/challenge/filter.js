@@ -262,7 +262,7 @@ export function getReviewOpportunitiesFilterFunction(state, validTypes) {
       filterByTrack(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      && filterByTypes(challenge, state)
+      // && filterByTypes(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByReviewOpportunityType(opp, state)
