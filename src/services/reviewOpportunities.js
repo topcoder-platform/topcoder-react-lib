@@ -8,19 +8,31 @@ import { getApi } from './api';
 
 /**
  * Sync the fields of V3 and V5 for front-end to process successfully
- * @param challenges - challenges to normalize
+ * @param opportunities - opportunities to normalize
  */
-export function normalizeChallenges(challenges) {
-  if (challenges) {
-    _.map(challenges, (ch) => {
-      const { challenge } = ch;
-      if (challenge.technologies && challenge.technologies.includes('Data Science')) {
-        challenge.track = 'DATA_SCIENCE';
+export function normalizeChallenges(opportunities) {
+  if (opportunities) {
+    /* Issue#4739 : Temporary add track to review opportunities challenges
+     * until receive API V5 update. */
+    _.map(opportunities, (opportunity) => {
+      const { challenge } = opportunity;
+      challenge.track = 'Development';
+      if (challenge.technologies) {
+        if (challenge.technologies.includes('Data Science')) {
+          challenge.track = 'Data Science';
+        } else if (challenge.technologies.includes('QA')) {
+          challenge.track = 'Quality Assurance';
+        }
+      } else if (challenge.subTrack === 'TEST_SUITES' || challenge.subTrack === 'BUG_HUNT') {
+        challenge.track = 'Quality Assurance';
+      } else if (challenge.track === 'DESIGN') {
+        challenge.track = 'Design';
       }
-      return _.defaults(ch, { challenge });
+      return _.defaults(opportunity, { challenge });
     });
   }
-  return challenges;
+
+  return opportunities;
 }
 
 /**
