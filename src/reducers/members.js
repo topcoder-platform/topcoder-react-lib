@@ -427,6 +427,43 @@ function onGetUserMarathonDone(state, { error, payload }) {
 }
 
 /**
+ * Inits the loading of user challenge resources.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserResourcesInit(state, { payload }) {
+  const { uuid } = payload;
+  return {
+    ...state,
+    userResources: { resources: [], loadingUserResources: uuid },
+  };
+}
+
+/**
+ * Finalizes the loading of user challenge resources.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetUserResourcesDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get user resources', payload);
+    fireErrorMessage('Failed to get user resources', '');
+    return state;
+  }
+
+  const { uuid, resources } = payload;
+
+  if (uuid !== state.userResources.loadingUserResources) return state;
+
+  return {
+    ...state,
+    userResources: { resources, loadingUserResources: '' },
+  };
+}
+
+/**
  * Creates a new Members reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Members reducer.
@@ -455,6 +492,8 @@ function create(initialState = {}) {
     [a.getUserSrmDone]: onGetUserSRMDone,
     [a.getUserMarathonInit]: onGetUserMarathonInit,
     [a.getUserMarathonDone]: onGetUserMarathonDone,
+    [a.getUserResourcesInit]: onGetUserResourcesInit,
+    [a.getUserResourcesDone]: onGetUserResourcesDone,
   }, initialState);
 }
 

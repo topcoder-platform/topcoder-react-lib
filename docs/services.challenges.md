@@ -18,7 +18,7 @@ This module provides a service for convenient manipulation with
             * [.close(challengeId, winnerId)](#module_services.challenges..ChallengesService+close) ⇒ <code>Promise</code>
             * [.createTask(projectId, accountId, title, description, assignee, payment)](#module_services.challenges..ChallengesService+createTask) ⇒ <code>Promise</code>
             * [.getChallengeDetails(challengeId)](#module_services.challenges..ChallengesService+getChallengeDetails) ⇒ <code>Promise</code>
-            * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
+            * [.getChallengeTypes()](#module_services.challenges..ChallengesService+getChallengeTypes) ⇒ <code>Promise</code>
             * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
             * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
             * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
@@ -119,7 +119,7 @@ Challenge service.
     * [.close(challengeId, winnerId)](#module_services.challenges..ChallengesService+close) ⇒ <code>Promise</code>
     * [.createTask(projectId, accountId, title, description, assignee, payment)](#module_services.challenges..ChallengesService+createTask) ⇒ <code>Promise</code>
     * [.getChallengeDetails(challengeId)](#module_services.challenges..ChallengesService+getChallengeDetails) ⇒ <code>Promise</code>
-    * [.getChallengeSubtracks()](#module_services.challenges..ChallengesService+getChallengeSubtracks) ⇒ <code>Promise</code>
+    * [.getChallengeTypes()](#module_services.challenges..ChallengesService+getChallengeTypes) ⇒ <code>Promise</code>
     * [.getChallengeTags()](#module_services.challenges..ChallengesService+getChallengeTags) ⇒ <code>Promise</code>
     * [.getChallenges(filters, params)](#module_services.challenges..ChallengesService+getChallenges) ⇒ <code>Promise</code>
     * [.getMarathonMatches(filters, params)](#module_services.challenges..ChallengesService+getMarathonMatches) ⇒ <code>Promise</code>
@@ -203,9 +203,9 @@ incorrect in the main v3 endpoint. This may change in the future.
 | --- | --- |
 | challengeId | <code>Number</code> \| <code>String</code> | 
 
-<a name="module_services.challenges..ChallengesService+getChallengeSubtracks"></a>
+<a name="module_services.challenges..ChallengesService+getChallengeTypes"></a>
 
-#### challengesService.getChallengeSubtracks() ⇒ <code>Promise</code>
+#### challengesService.getChallengeTypes() ⇒ <code>Promise</code>
 Gets possible challenge subtracks.
 
 **Kind**: instance method of [<code>ChallengesService</code>](#module_services.challenges..ChallengesService)  
