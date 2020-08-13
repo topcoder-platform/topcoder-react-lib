@@ -7,6 +7,7 @@
 /* global XMLHttpRequest */
 import _ from 'lodash';
 import qs from 'qs';
+import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
@@ -329,7 +330,8 @@ class MembersService {
    * @param {Array} challengeId the challenge id
    */
   async getChallengeResources(challengeId) {
-    const url = `/resources?challengeId=${challengeId}`;
+    const user = decodeToken(this.private.tokenV3);
+    const url = `/resources?challengeId=${challengeId}&memberId=${user.userId}`;
     let res = null;
 
     try {
@@ -346,14 +348,14 @@ class MembersService {
    * @param {Array} memberId the member id
    */
   async getUserResources(memberId) {
-    const url = `/resources/${memberId}/challenges`;
+    const url = `/challenges?status=Active&memberId=${memberId}`;
     const res = await this.private.apiV5.get(url);
     const challenges = await res.json();
     const roles = await this.getResourceRoles();
     const calls = [];
 
     challenges.forEach(async (ch) => {
-      calls.push(this.getChallengeResources(ch));
+      calls.push(this.getChallengeResources(ch.id));
     });
 
     return Promise.all(calls).then((resources) => {
