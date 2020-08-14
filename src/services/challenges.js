@@ -407,7 +407,9 @@ class ChallengesService {
       .then(checkErrorV5).then(res => res.result);
 
     /* API will return all roles to currentUser, so need to filter in FE */
-    registrants = _.filter(registrants, r => r.roleId === roleId);
+    if (roleId) {
+      registrants = _.filter(registrants, r => r.roleId === roleId);
+    }
 
     return registrants || [];
   }
