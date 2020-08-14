@@ -636,7 +636,7 @@ class ChallengesService {
     let contentType;
     let url;
 
-    if (track === 'DESIGN') {
+    if (track === COMPETITION_TRACKS.DESIGN) {
       ({ api } = this.private);
       contentType = 'application/json';
       url = '/submissions/'; // The submission info is contained entirely in the JSON body
@@ -654,7 +654,7 @@ class ChallengesService {
     }, onProgress).then((res) => {
       const jres = JSON.parse(res);
       // Return result for Develop submission
-      if (track === 'DEVELOP') {
+      if (track === COMPETITION_TRACKS.DEVELOP) {
         return jres;
       }
       // Design Submission requires an extra "Processing" POST
