@@ -59,7 +59,7 @@ export function normalizeChallenge(challenge, username) {
   }
   const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
