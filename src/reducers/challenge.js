@@ -469,7 +469,7 @@ export function factory(options = {}) {
       tokens.tokenV2,
     )).then((res) => {
       const challengeDetails = _.get(res, 'payload', {});
-      const track = _.get(challengeDetails, 'legacy.track', '');
+      const track = _.get(challengeDetails, 'track', '');
       let checkpointsPromise = null;
       if (track === COMPETITION_TRACKS.DESIGN) {
         const p = _.get(challengeDetails, 'phases', [])
