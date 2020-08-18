@@ -112,9 +112,12 @@ class LookupService {
    * @return {Promise} Resolves to the review types.
    */
   async getReviewTypes() {
-    const res = await this.private.apiV5.get('/reviewTypes');
-    const jsonResult = await res.json();
-    return jsonResult;
+    if (typeof this.private.tokenV3 !== 'undefined') {
+      const res = await this.private.apiV5.get('/reviewTypes');
+      const jsonResult = await res.json();
+      return jsonResult;
+    }
+    return [];
   }
 }
 
