@@ -59,7 +59,7 @@ export function normalizeChallenge(challenge, username) {
   }
   const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
@@ -407,7 +407,9 @@ class ChallengesService {
       .then(checkErrorV5).then(res => res.result);
 
     /* API will return all roles to currentUser, so need to filter in FE */
-    registrants = _.filter(registrants, r => r.roleId === roleId);
+    if (roleId) {
+      registrants = _.filter(registrants, r => r.roleId === roleId);
+    }
 
     return registrants || [];
   }
