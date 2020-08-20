@@ -144,23 +144,24 @@ async function getActiveChallengesInit(handle, uuid) {
  * @returns {Object} Payload
  */
 async function getActiveChallengesDone(handle, uuid, tokenV3) {
-  const filter = { status: 'ACTIVE' };
+  const filter = { status: 'Active' };
   const service = getChallengesService(tokenV3);
+  const memberInfo = await getService(tokenV3).getMemberInfo(handle);
   /* TODO: Reuse `getAll` from `actions/challenge-listing`
   /* after it moved from `community-app` to here.
    */
   function getAll(getter, page = 0, prev = null) {
     const PAGE_SIZE = 50;
     return getter({
-      limit: PAGE_SIZE,
-      offset: page * PAGE_SIZE,
+      perPage: PAGE_SIZE,
+      page: page + 1,
     }).then(({ challenges: chunk }) => {
       if (!chunk.length) return prev || [];
       return getAll(getter, 1 + page, prev ? prev.concat(chunk) : chunk);
     });
   }
   const calls = [
-    getAll(params => service.getUserChallenges(handle, filter, params)),
+    getAll(params => service.getUserChallenges(memberInfo.userId, filter, params)),
   ];
 
   const [challenges] = await Promise.all(calls);
@@ -244,10 +245,10 @@ async function getSubtrackChallengesInit(handle, uuid) {
  */
 async function getSubtrackChallengesDone(
   uuid, handle, tokenV3, track, subTrack, pageNum, pageSize,
-  refresh,
+  refresh, userId,
 ) {
   const filter = {
-    status: 'completed',
+    status: 'Completed',
     hasUserSubmittedForReview: 'true',
     track,
     subTrack,
@@ -259,7 +260,7 @@ async function getSubtrackChallengesDone(
   params.offset = pageNum * pageSize;
 
   const service = getChallengesService(tokenV3);
-  return service.getUserChallenges(handle, filter, params)
+  return service.getUserChallenges(userId, filter, params)
     .then(res => ({
       uuid,
       challenges: res.challenges,
@@ -356,6 +357,30 @@ async function getUserMarathonDone(
     }));
 }
 
+/**
+ * @static
+ * @desc Create an action that fetch user registered challenge's resources.
+ * @param {String} memberId Member id.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserResourcesInit(memberId, uuid) {
+  return { memberId, uuid };
+}
+
+/**
+ * @static
+ * @desc Create an action that fetch user registered challenge's resources.
+ * @param {String} handle Member handle.
+ * @param {String} uuid Operation UUID.
+ * @return {Action}
+ */
+async function getUserResourcesDone(memberId, tokenV3, uuid) {
+  const resources = await getService(tokenV3).getUserResources(memberId);
+
+  return { resources, uuid };
+}
+
 export default createActions({
   MEMBERS: {
     DROP: drop,
@@ -379,5 +404,7 @@ export default createActions({
     GET_USER_SRM_DONE: getUserSRMDone,
     GET_USER_MARATHON_INIT: getUserMarathonInit,
     GET_USER_MARATHON_DONE: getUserMarathonDone,
+    GET_USER_RESOURCES_INIT: getUserResourcesInit,
+    GET_USER_RESOURCES_DONE: getUserResourcesDone,
   },
 });

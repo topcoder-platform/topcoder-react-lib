@@ -18,7 +18,7 @@
  * endDate {Number|String} - Permits only those challenges with submission
  * deadline before this date.
  *
- * groupIds {Array} - Permits only the challenges belonging to at least one
+ * groups {Array} - Permits only the challenges belonging to at least one
  * of the groups which IDs are presented as keys in this object.
  *
  * or {Object[]} - All other filter fields applied to the challenge with AND
@@ -70,11 +70,6 @@ import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
  * from the filter state object, and returns true or false depending on it.
  */
 
-function filterByEndDate(challenge, state) {
-  if (!state.endDate) return true;
-  return moment(state.endDate).isAfter(challenge.registrationStartDate);
-}
-
 function filterByGroupIds(challenge, state) {
   if (!state.groupIds) return true;
   return state.groupIds.some(id => challenge.groups[id]);
@@ -86,16 +81,17 @@ function filterByRegistrationOpen(challenge, state) {
     if (challenge.registrationOpen) {
       return challenge.registrationOpen === 'Yes';
     }
-    if (challenge.subTrack === 'MARATHON_MATCH') {
-      return challenge.status !== 'PAST';
+    if (challenge.challengeType && challenge.challengeType.name === 'Marathon Match') {
+      return challenge.status !== 'Past';
     }
-    const registrationPhase = challenge.allPhases.find(item => item.phaseType === 'Registration');
-    if (!registrationPhase || registrationPhase.phaseStatus !== 'Open') {
+    const challengePhases = challenge.allPhases || challenge.phases || [];
+    const registrationPhase = challengePhases.find(item => item.name === 'Registration')[0];
+    if (!registrationPhase || !registrationPhase.isOpen) {
       return false;
     }
-    if (challenge.track === 'DESIGN') {
-      const checkpointPhase = challenge.allPhases.find(item => item.phaseType === 'Checkpoint Submission');
-      return !checkpointPhase || checkpointPhase.phaseStatus !== 'Closed';
+    if (challenge.track === COMPETITION_TRACKS.DESIGN) {
+      const checkpointPhase = challengePhases.find(item => item.name === 'Checkpoint Submission')[0];
+      return !checkpointPhase || !checkpointPhase.isOpen;
     }
     return true;
   };
@@ -115,7 +111,18 @@ function filterByReviewOpportunityType(opp, state) {
 
 function filterByStartDate(challenge, state) {
   if (!state.startDate) return true;
-  return moment(state.startDate).isBefore(challenge.submissionEndDate);
+  const submissionPhase = (challenge.phases || []).filter(d => d.name === 'Submission')[0];
+  const submissionEndDate = submissionPhase ? submissionPhase.scheduledEndDate
+    : challenge.submissionEndDate;
+  return moment(state.startDate).isBefore(submissionEndDate);
+}
+
+function filterByEndDate(challenge, state) {
+  if (!state.endDate) return true;
+  const registrationPhase = (challenge.phases || []).filter(d => d.name === 'Registration')[0];
+  const registrationStartDate = registrationPhase ? registrationPhase.scheduledStartDate
+    : challenge.registrationStartDate;
+  return moment(state.endDate).isAfter(registrationStartDate);
 }
 
 function filterByStarted(challenge, state) {
@@ -123,48 +130,41 @@ function filterByStarted(challenge, state) {
   return moment(challenge.registrationStartDate).isBefore(Date.now());
 }
 
+function filterByOngoing(challenge, state) {
+  if (_.isUndefined(state.ongoing)) return true;
+  const registrationPhase = (challenge.phases || []).filter(d => d.name === 'Registration')[0];
+  const registrationEndDate = registrationPhase ? registrationPhase.scheduledEndDate
+    : challenge.registrationEndDate;
+  return moment(registrationEndDate).isBefore(Date.now());
+}
+
 function filterByStatus(challenge, state) {
   if (!state.status) return true;
   return state.status.includes(challenge.status);
 }
 
-function filterBySubtracks(challenge, state) {
-  if (!state.subtracks) return true;
-
-  /* TODO: Although this is taken from the current code in prod,
-   * it probably does not work in all cases. It should be double-checked,
-   * why challenge subtracks in challenge objects are different from those
-   * return from the API as the list of possible subtracks. */
-  const filterSubtracks = state.subtracks.map(item => item.toLowerCase().replace(/[_ ]/g, ''));
-  const challengeSubtrack = challenge.subTrack.toLowerCase().replace(/[_ ]/g, '');
-  return filterSubtracks.includes(challengeSubtrack);
-}
-
 function filterByTags(challenge, state) {
   if (!state.tags) return true;
-  const { platforms, technologies } = challenge;
-  const str = `${platforms} ${technologies}`.toLowerCase();
+  const { platforms, tags } = challenge;
+  const str = `${platforms} ${tags}`.toLowerCase();
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
 }
 
 function filterByText(challenge, state) {
   if (!state.text) return true;
-  const str = `${challenge.name} ${challenge.platforms} ${challenge.technologies}`
+  const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.tags}`
     .toLowerCase();
   return str.includes(state.text.toLowerCase());
 }
 
 function filterByTrack(challenge, state) {
   if (!state.tracks) return true;
+  return _.keys(state.tracks).some(track => challenge.track === track);
+}
 
-  /* Development challenges having Data Science tech tag, still should be
-   * included into data science track. */
-  if (state.tracks[COMPETITION_TRACKS.DATA_SCIENCE]
-    && _.includes(challenge.technologies, 'Data Science')) {
-    return true;
-  }
-
-  return _.keys(state.tracks).some(track => challenge.communities.has(track));
+function filterByTypes(challenge, state) {
+  if (!state.types) return true;
+  return state.types.includes(challenge.typeId);
 }
 
 function filterByUpcoming(challenge, state) {
@@ -173,8 +173,8 @@ function filterByUpcoming(challenge, state) {
 }
 
 function filterByUsers(challenge, state) {
-  if (!state.users) return true;
-  return state.users.find(user => challenge.users[user]);
+  if (!state.userChallenges) return true;
+  return state.userChallenges.find(ch => challenge.id === ch);
 }
 
 /**
@@ -214,11 +214,12 @@ export function getFilterFunction(state) {
       && filterByGroupIds(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      && filterBySubtracks(challenge, state)
+      && filterByTypes(challenge, state)
       && filterByUsers(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByStarted(challenge, state)
+      && filterByOngoing(challenge, state)
       && filterByRegistrationOpen(challenge, state);
     if (!test && state.or) {
       let pos = 0;
@@ -236,8 +237,10 @@ export function getFilterFunction(state) {
  * @param {Object} state
  * @return {Function}
  */
-export function getReviewOpportunitiesFilterFunction(state) {
+export function getReviewOpportunitiesFilterFunction(state, validTypes) {
   return (opp) => {
+    const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
+
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
     // especially after a few normalization tweaks
@@ -246,18 +249,20 @@ export function getReviewOpportunitiesFilterFunction(state) {
       // This allows filterByText to search for Review Types and Challenge Titles
       name: `${opp.challenge.title} ${REVIEW_OPPORTUNITY_TYPES[opp.type]}`,
       registrationStartDate: opp.startDate, // startDate of Review, not Challenge
-      subTrack: opp.challenge.subTrack || '', // Sometimes back-end doesn't return this field
       submissionEndDate: opp.startDate, // Currently uses startDate for both date comparisons
       communities: new Set([ // Used to filter by Track, and communities at a future date
         opp.challenge.track.toLowerCase(),
       ]),
+      typeId: newType.id,
+      tags: opp.challenge.technologies || [],
+      platforms: opp.challenge.platforms || [],
     };
 
     return (
       filterByTrack(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      && filterBySubtracks(challenge, state)
+      // && filterByTypes(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByReviewOpportunityType(opp, state)
@@ -338,7 +343,7 @@ export function combine(...filters) {
   const res = {};
   filters.forEach((filter) => {
     combineEndDate(res, filter);
-    combineArrayRules(res, filter, 'groupIds');
+    combineArrayRules(res, filter, 'groups');
     /* TODO: The registrationOpen rule is just ignored for now. */
     combineStartDate(res, filter);
     combineArrayRules(res, filter, 'or', true);
@@ -374,15 +379,8 @@ export function combine(...filters) {
  * @return {Object}
  */
 export function mapToBackend(filter) {
-  if (filter.or) return {};
-
   const res = {};
-  if (filter.groupIds) res.groupIds = filter.groupIds.join(',');
-
-  /* NOTE: Right now the frontend challenge filter by tag works different,
-   * it looks for matches in the challenge name OR in the techs / platforms. */
-  // if (filter.tags) res.technologies = filter.tags.join(',');
-
+  if (filter.groups) res.groups = filter.groups;
   return res;
 }
 
@@ -448,16 +446,16 @@ export function setStartDate(state, date) {
 }
 
 /**
- * Clones the state and sets the subtracks.
+ * Clones the state and sets the challenge types.
  * @param {Object} state
- * @param {Array} subtracks
+ * @param {Array} types
  * @return {Object}
  */
-export function setSubtracks(state, subtracks) {
-  if (subtracks && subtracks.length) return { ...state, subtracks };
-  if (!state.subtracks) return state;
+export function setTypes(state, types) {
+  if (types && types.length) return { ...state, types };
+  if (!state.types) return state;
   const res = _.clone(state);
-  delete res.subtracks;
+  delete res.types;
   return res;
 }
 
