@@ -111,6 +111,8 @@ Object {
       "getSubtrackChallengesInit": [Function],
       "getUserMarathonDone": [Function],
       "getUserMarathonInit": [Function],
+      "getUserResourcesDone": [Function],
+      "getUserResourcesInit": [Function],
       "getUserSrmDone": [Function],
       "getUserSrmInit": [Function],
     },
@@ -223,9 +225,9 @@ Object {
       "setEndDate": [Function],
       "setReviewOpportunityType": [Function],
       "setStartDate": [Function],
-      "setSubtracks": [Function],
       "setTags": [Function],
       "setText": [Function],
+      "setTypes": [Function],
     },
   },
   "errors": Object {
@@ -370,9 +372,10 @@ Object {
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
-      "DATA_SCIENCE": "data_science",
-      "DESIGN": "design",
-      "DEVELOP": "develop",
+      "DATA_SCIENCE": "Data Science",
+      "DESIGN": "Design",
+      "DEVELOP": "Development",
+      "QA": "Quality Assurance",
     },
     "REVIEW_OPPORTUNITY_TYPES": Object {
       "Contest Review": "Review",

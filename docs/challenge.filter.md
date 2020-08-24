@@ -70,7 +70,7 @@ users are participating.
         * [.setEndDate(state, date)](#module_challenge.filter.setEndDate) ⇒ <code>Object</code>
         * [.setReviewOpportunityType(state, reviewOpportunityType)](#module_challenge.filter.setReviewOpportunityType) ⇒ <code>Object</code>
         * [.setStartDate(state, date)](#module_challenge.filter.setStartDate) ⇒ <code>Object</code>
-        * [.setSubtracks(state, subtracks)](#module_challenge.filter.setSubtracks) ⇒ <code>Object</code>
+        * [.setTypes(state, types)](#module_challenge.filter.setTypes) ⇒ <code>Object</code>
         * [.setTags(state, tags)](#module_challenge.filter.setTags) ⇒ <code>Object</code>
         * [.setText(state, text)](#module_challenge.filter.setText) ⇒ <code>Object</code>
     * _inner_
@@ -198,17 +198,17 @@ Clones the state and sets the start date.
 | state | <code>Object</code> |  |
 | date | <code>String</code> | ISO date string. |
 
-<a name="module_challenge.filter.setSubtracks"></a>
+<a name="module_challenge.filter.setTypes"></a>
 
-### challenge.filter.setSubtracks(state, subtracks) ⇒ <code>Object</code>
-Clones the state and sets the subtracks.
+### challenge.filter.setTypes(state, types) ⇒ <code>Object</code>
+Clones the state and sets the challenge types.
 
 **Kind**: static method of [<code>challenge.filter</code>](#module_challenge.filter)  
 
 | Param | Type |
 | --- | --- |
 | state | <code>Object</code> | 
-| subtracks | <code>Array</code> | 
+| types | <code>Array</code> | 
 
 <a name="module_challenge.filter.setTags"></a>
 

@@ -181,7 +181,7 @@ function onAgreeTermDone(state, action) {
   }
   if (action.payload.success) {
     const terms = _.cloneDeep(state.terms);
-    const term = _.find(terms, ['termsOfUseId', action.payload.termId]);
+    const term = _.find(terms, ['id', action.payload.termId]);
     term.agreed = true;
     const selectedTerm = _.find(terms, t => !t.agreed);
     return {

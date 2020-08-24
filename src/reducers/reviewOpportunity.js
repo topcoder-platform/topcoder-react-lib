@@ -23,8 +23,8 @@ function buildRequiredTermsList(details) {
       // Sometimes roles such as Primary Reviewer have no directly equal
       // terms entry.  Include the plain Reviewer terms when present as a back-up.
       .filter(term => term.role === 'Reviewer' || _.includes(roles, term.role))
-      .map(term => _.pick(term, ['termsOfUseId', 'agreed', 'title'])),
-    term => term.termsOfUseId,
+      .map(term => _.pick(term, ['id', 'agreed', 'title'])),
+    term => term.id,
   );
 
   return requiredTerms || [];

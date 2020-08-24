@@ -22,7 +22,7 @@ function deleteSubmissionInit() {}
  * @return {Action}
  */
 function deleteSubmissionDone(tokenV3, submissionId) {
-  return getApi('V3', tokenV3).delete(`/submissions/${submissionId}`)
+  return getApi('V5', tokenV3).delete(`/submissions/${submissionId}`)
     .then(() => submissionId);
 }
 

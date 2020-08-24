@@ -53,18 +53,13 @@ export function normalizeChallenge(challenge, username) {
   if (!challenge.tags) challenge.tags = [];
   if (!challenge.platforms) challenge.platforms = [];
 
-  if (challenge.type === 'Marathon Match') {
-    challenge.legacy.track = 'DATA_SCIENCE';
-  }
-  /* eslint-enable no-param-reassign */
-
   let submissionEndTimestamp = phases.filter(d => d.name === 'Submission')[0];
   if (submissionEndTimestamp) {
     submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
   }
   const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
@@ -327,6 +322,7 @@ class ChallengesService {
     let submissions = [];
     let isLegacyChallenge = false;
     let isRegistered = false;
+    const userDetails = { roles: [] };
 
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
@@ -348,32 +344,31 @@ class ChallengesService {
 
       /* Prepare data to logged user */
       if (memberId) {
-        isRegistered = _.some(registrants, r => r.memberId === memberId);
+        isRegistered = _.some(registrants, r => `${r.memberId}` === `${memberId}`);
 
-        /**
-         * TODO: Currenlty using legacyId until submissions_api fix issue with UUID
-         */
         const subParams = {
-          challengeId: challenge.legacyId,
+          challengeId,
           perPage: 100,
         };
+
         submissions = await this.private.submissionsService.getSubmissions(subParams);
 
         if (submissions) {
           // Remove AV Scan, SonarQube Review and Virus Scan review types
           const reviewScans = await this.private.submissionsService.getScanReviewIds();
           submissions.forEach((s, i) => {
-            submissions[i].review = _.reject(s.review, r => _.includes(reviewScans, r.typeId));
+            submissions[i].review = _.reject(s.review, r => r && _.includes(reviewScans, r.typeId));
           });
 
           // Add submission date to registrants
           registrants.forEach((r, i) => {
-            const submission = submissions.find(s => s.memberId === Number(r.memberId));
+            const submission = submissions.find(s => `${s.memberId}` === `${r.memberId}`);
             if (submission) {
               registrants[i].submissionDate = submission.created;
             }
           });
         }
+        userDetails.roles = await this.getUserRolesInChallenge(challengeId);
       }
 
       challenge = {
@@ -382,6 +377,7 @@ class ChallengesService {
         isRegistered,
         registrants,
         submissions,
+        userDetails,
         events: _.map(challenge.events, e => ({
           eventName: e.key,
           eventId: e.id,
@@ -401,13 +397,19 @@ class ChallengesService {
    */
   async getChallengeRegistrants(challengeId) {
     /* If no token provided, resource will return Submitter role only */
+    const roleId = this.private.tokenV3 ? await this.getRoleId('Submitter') : '';
     const params = {
       challengeId,
-      roleId: this.private.tokenV3 ? await this.getRoleId('Submitter') : '',
+      roleId,
     };
 
-    const registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
+    let registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
+
+    /* API will return all roles to currentUser, so need to filter in FE */
+    if (roleId) {
+      registrants = _.filter(registrants, r => r.roleId === roleId);
+    }
 
     return registrants || [];
   }
@@ -518,21 +520,25 @@ class ChallengesService {
   }
 
   /**
+   * Gets user resources.
+   * @param {String} userId User id whose challenges we want to fetch.
+   * @return {Promise} Resolves to the api response.
+   */
+  async getUserResources(userId) {
+    const res = await this.private.apiV5.get(`/resources/${userId}/challenges`);
+    return res.json();
+  }
+
+  /**
    * Gets marathon matches of the specified user.
    * @param {String} memberId User whose challenges we want to fetch.
    * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
   async getUserMarathonMatches(memberId, params) {
-    const typeId = await this.getChallengeTypeId('DEVELOP_MARATHON_MATCH');
-
-    if (!typeId) {
-      return null;
-    }
-
     const newParams = {
       ...params,
-      typeId,
+      tag: 'Marathon Match',
       memberId,
     };
 
@@ -632,7 +638,7 @@ class ChallengesService {
     let contentType;
     let url;
 
-    if (track === 'DESIGN') {
+    if (track === COMPETITION_TRACKS.DESIGN) {
       ({ api } = this.private);
       contentType = 'application/json';
       url = '/submissions/'; // The submission info is contained entirely in the JSON body
@@ -650,7 +656,7 @@ class ChallengesService {
     }, onProgress).then((res) => {
       const jres = JSON.parse(res);
       // Return result for Develop submission
-      if (track === 'DEVELOP') {
+      if (track === COMPETITION_TRACKS.DEVELOP) {
         return jres;
       }
       // Design Submission requires an extra "Processing" POST
@@ -695,9 +701,10 @@ class ChallengesService {
    */
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
-    const url = `/resources?challengeId=${challengeId}?memberHandle=${user.handle}`;
-    const resources = await this.private.apiV5.get(url);
-    if (resources) return _.map(resources, 'roleId');
+    const url = `/resources?challengeId=${challengeId}&memberHandle=${user.handle}`;
+    const getResourcesResponse = await this.private.apiV5.get(url);
+    const resources = await getResourcesResponse.json();
+    if (resources) return _.map(_.filter(resources, r => r.memberHandle === user.handle), 'roleId');
     throw new Error(`Failed to fetch user role from challenge #${challengeId}`);
   }
 }

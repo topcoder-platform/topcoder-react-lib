@@ -7,6 +7,7 @@
 /* global XMLHttpRequest */
 import _ from 'lodash';
 import qs from 'qs';
+import { decodeToken } from 'tc-accounts';
 import logger from '../utils/logger';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
@@ -21,6 +22,7 @@ class MembersService {
   constructor(tokenV3) {
     this.private = {
       api: getApi('V3', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       tokenV3,
     };
   }
@@ -311,6 +313,64 @@ class MembersService {
     const url = `/members/_search?fields=userId%2Chandle&${query}&${limit}`;
     const res = await this.private.api.get(url);
     return getApiResponsePayload(res);
+  }
+
+  /**
+   * Fetch resources roles
+   * @param {Array} memberId the member id
+   */
+  async getResourceRoles() {
+    const res = await this.private.apiV5.get('/resource-roles');
+    const roles = await res.json();
+    return roles;
+  }
+
+  /**
+   * Fetch user challenge resources
+   * @param {Array} challengeId the challenge id
+   */
+  async getChallengeResources(challengeId) {
+    const user = decodeToken(this.private.tokenV3);
+    const url = `/resources?challengeId=${challengeId}&memberId=${user.userId}`;
+    let res = null;
+
+    try {
+      res = await this.private.apiV5.get(url);
+    } catch (error) {
+      // logger.error('Failed to load challenge resource', error);
+    }
+
+    return res.json();
+  }
+
+  /**
+   * Fetch user registered challenge's resources
+   * @param {Array} memberId the member id
+   */
+  async getUserResources(memberId) {
+    const url = `/challenges?status=Active&memberId=${memberId}`;
+    const res = await this.private.apiV5.get(url);
+    const challenges = await res.json();
+    const roles = await this.getResourceRoles();
+    const calls = [];
+
+    challenges.forEach(async (ch) => {
+      calls.push(this.getChallengeResources(ch.id));
+    });
+
+    return Promise.all(calls).then((resources) => {
+      const results = [];
+      resources.forEach((resource) => {
+        const userResource = _.find(resource, { memberId });
+        if (userResource) {
+          const challengeRole = _.find(roles, { id: userResource.roleId });
+          const { name } = challengeRole || '';
+          results.push({ id: userResource.challengeId, name });
+        }
+      });
+
+      return results;
+    });
   }
 }
 
