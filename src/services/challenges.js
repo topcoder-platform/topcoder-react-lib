@@ -15,6 +15,36 @@ import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
 
+export function getFilterUrl(backendFilter, frontFilter) {
+  const ff = _.clone(frontFilter);
+  const { tags, tracks, types } = ff;
+  delete ff.tags;
+  delete ff.tracks;
+  delete ff.types;
+  delete ff.communityId;
+
+  console.log(ff);
+
+  let urlFilter = qs.stringify(_.reduce(ff, (result, value, key) => {
+    // eslint-disable-next-line no-param-reassign
+    if (value) result[key] = value;
+    return result;
+  }, {}));
+  console.log(urlFilter);
+
+  const ftags = _.map(tags, val => `tags[]=${val}`).join('&');
+  const ftracks = _.map(_.reduce(tracks, (result, value, key) => {
+    // eslint-disable-next-line no-unused-expressions
+    tracks[key] && result.push(key);
+    return result;
+  }, []), val => `tracks[]=${val}`).join('&');
+  const ftypes = _.map(types, val => `types[]=${val}`).join('&');
+  if (ftags.length > 0) urlFilter += `&${ftags}`;
+  if (ftracks.length > 0) urlFilter += `&${ftracks}`;
+  if (ftypes.length > 0) urlFilter += `&${ftypes}`;
+  return urlFilter;
+}
+
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
 };
@@ -133,14 +163,12 @@ class ChallengesService {
      */
     const getChallenges = async (
       endpoint,
-      filters = {},
-      params = {},
+      filter,
     ) => {
-      const query = {
-        ...filters,
-        ...params,
-      };
-      const url = `${endpoint}?${qs.stringify(query)}`;
+      console.log(filter);
+      const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
+      const url = `${endpoint}?${query}`;
+      console.log(url);
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
       return {
         challenges: res.result || [],
@@ -462,8 +490,8 @@ class ChallengesService {
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  async getChallenges(filters, params) {
-    return this.private.getChallenges('/challenges/', filters, params)
+  async getChallenges(filter) {
+    return this.private.getChallenges('/challenges/', filter)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;

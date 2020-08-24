@@ -144,22 +144,23 @@ function filterByStatus(challenge, state) {
 }
 
 function filterByTags(challenge, state) {
-  if (!state.tags) return true;
+  if (!state.tags || state.tags.length === 0) return true;
   const { platforms, tags } = challenge;
-  const str = `${platforms} ${tags}`.toLowerCase();
+  const str = `${platforms.join(' ')} ${tags.join(' ')}`.toLowerCase();
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
 }
 
 function filterByText(challenge, state) {
-  if (!state.text) return true;
+  if (!state.name) return true;
   const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.tags}`
     .toLowerCase();
-  return str.includes(state.text.toLowerCase());
+  return str.includes(state.name.toLowerCase());
 }
 
 function filterByTrack(challenge, state) {
-  if (!state.tracks) return true;
-  return _.keys(state.tracks).some(track => challenge.track === track);
+  // if (!state.tracks) return true;
+  // eslint-disable-next-line max-len
+  return state.tracks[challenge.track] === true;
 }
 
 function filterByTypes(challenge, state) {
@@ -239,7 +240,13 @@ export function getFilterFunction(state) {
  */
 export function getReviewOpportunitiesFilterFunction(state, validTypes) {
   return (opp) => {
-    const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
+    const trackAbbr = {
+      DATA_SCIENCE: 'DS',
+      DEVELOP: 'Dev',
+      DESIGN: 'Des',
+      QA: 'QA',
+    };
+    // const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
 
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
@@ -248,16 +255,27 @@ export function getReviewOpportunitiesFilterFunction(state, validTypes) {
       ...opp.challenge,
       // This allows filterByText to search for Review Types and Challenge Titles
       name: `${opp.challenge.title} ${REVIEW_OPPORTUNITY_TYPES[opp.type]}`,
-      registrationStartDate: opp.startDate, // startDate of Review, not Challenge
-      submissionEndDate: opp.startDate, // Currently uses startDate for both date comparisons
-      communities: new Set([ // Used to filter by Track, and communities at a future date
-        opp.challenge.track.toLowerCase(),
-      ]),
-      typeId: newType.id,
+      // registrationStartDate: opp.startDate, // startDate of Review, not Challenge
+      // submissionEndDate: opp.startDate, // Currently uses startDate for both date comparisons
+      // communities: new Set([ // Used to filter by Track, and communities at a future date
+      // opp.challenge.track === 'QA' ? 'Dev' : trackAbbr[opp.challenge.track],
+      // ]),
+      track: trackAbbr[opp.challenge.track],
+      // typeId: newType.id,
       tags: opp.challenge.technologies || [],
       platforms: opp.challenge.platforms || [],
     };
-
+    /**
+    console.log(challenge);
+    console.log(`=====`);
+    console.log(`11111`);
+    console.log(filterByTrack(challenge, state));
+    console.log(filterByText(challenge, state));
+    console.log(filterByTags(challenge, state));
+    console.log(filterByEndDate(challenge, state));
+    console.log(filterByStartDate(challenge, state));
+    console.log(filterByReviewOpportunityType(opp, state));
+    */
     return (
       filterByTrack(challenge, state)
       && filterByText(challenge, state)

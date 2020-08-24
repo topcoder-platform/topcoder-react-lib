@@ -11,9 +11,9 @@
  * uses upper-case literals to encode the tracks. At some point, we should
  * update it in this code as well! */
 export const COMPETITION_TRACKS = {
-  DATA_SCIENCE: 'Data Science',
-  DESIGN: 'Design',
-  DEVELOP: 'Development',
+  DS: 'Data Science',
+  DES: 'Design',
+  DEV: 'Development',
   QA: 'Quality Assurance',
 };
 
