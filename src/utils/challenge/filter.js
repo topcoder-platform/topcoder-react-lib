@@ -145,7 +145,7 @@ function filterByStatus(challenge, state) {
 }
 
 function filterByTags(challenge, state) {
-  if (!state.tags) return true;
+  if (_.isEmpty(state.tags)) return true;
   const { platforms, tags } = challenge;
   const str = `${platforms} ${tags}`.toLowerCase();
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
