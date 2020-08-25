@@ -4,6 +4,7 @@
  * submitting applications.
  */
 import _ from 'lodash';
+import { COMPETITION_TRACKS, OLD_COMPETITION_TRACKS, OLD_SUBTRACKS } from 'utils/tc';
 import { getApi } from './api';
 
 /**
@@ -16,17 +17,18 @@ export function normalizeChallenges(opportunities) {
      * until receive API V5 update. */
     _.map(opportunities, (opportunity) => {
       const { challenge } = opportunity;
-      challenge.track = 'Development';
+      challenge.track = COMPETITION_TRACKS.DEVELOP;
       if (challenge.technologies) {
-        if (challenge.technologies.includes('Data Science')) {
-          challenge.track = 'Data Science';
-        } else if (challenge.technologies.includes('QA')) {
-          challenge.track = 'Quality Assurance';
+        if (challenge.technologies.includes(COMPETITION_TRACKS.DATA_SCIENCE)) {
+          challenge.track = COMPETITION_TRACKS.DATA_SCIENCE;
+        } else if (challenge.technologies.includes(OLD_COMPETITION_TRACKS.QA)) {
+          challenge.track = COMPETITION_TRACKS.QA;
         }
-      } else if (challenge.subTrack === 'TEST_SUITES' || challenge.subTrack === 'BUG_HUNT') {
-        challenge.track = 'Quality Assurance';
-      } else if (challenge.track === 'DESIGN') {
-        challenge.track = 'Design';
+      } else if (challenge.subTrack === OLD_SUBTRACKS.TEST_SUITES
+          || challenge.subTrack === OLD_SUBTRACKS.BUG_HUNT) {
+        challenge.track = COMPETITION_TRACKS.QA;
+      } else if (challenge.track === OLD_COMPETITION_TRACKS.DESIGN) {
+        challenge.track = COMPETITION_TRACKS.DESIGN;
       }
       return _.defaults(opportunity, { challenge });
     });
