@@ -154,7 +154,7 @@ function filterByTags(challenge, state) {
 function filterByEvents(challenge, state) {
   if (_.isEmpty(state.events)) return true;
   if (_.isEmpty(challenge.events)) return false;
-  return state.events.some(key => challenge.events.find(e => e.key === key ));
+  return state.events.some(key => challenge.events.find(e => e.key === key));
 }
 
 function filterByText(challenge, state) {
