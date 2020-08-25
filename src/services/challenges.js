@@ -328,7 +328,7 @@ class ChallengesService {
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
       challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
-        .then(res => res.challenges[0]);
+        .then(res => res.challenges);
     } else {
       challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
         .then(res => res.challenges);
