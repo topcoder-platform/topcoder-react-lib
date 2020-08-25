@@ -151,6 +151,12 @@ function filterByTags(challenge, state) {
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
 }
 
+function filterByEvents(challenge, state) {
+  if (_.isEmpty(state.events)) return true;
+  if (_.isEmpty(challenge.events)) return false;
+  return state.events.some(key => challenge.events.find(e => e.key === key ));
+}
+
 function filterByText(challenge, state) {
   if (!state.text) return true;
   const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.tags}`
@@ -215,6 +221,7 @@ export function getFilterFunction(state) {
       && filterByGroupIds(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
+      && filterByEvents(challenge, state)
       && filterByTypes(challenge, state)
       && filterByUsers(challenge, state)
       && filterByEndDate(challenge, state)
