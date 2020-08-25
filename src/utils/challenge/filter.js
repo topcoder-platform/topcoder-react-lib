@@ -71,8 +71,9 @@ import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
  */
 
 function filterByGroupIds(challenge, state) {
-  if (!state.groupIds) return true;
-  return state.groupIds.some(id => challenge.groups[id]);
+  if (_.isEmpty(state.groupIds)) return true;
+  if (_.isEmpty(challenge.groups)) return false;
+  return state.groupIds.some(id => challenge.groups.find(gId => gId === id));
 }
 
 function filterByRegistrationOpen(challenge, state) {
@@ -343,7 +344,7 @@ export function combine(...filters) {
   const res = {};
   filters.forEach((filter) => {
     combineEndDate(res, filter);
-    combineArrayRules(res, filter, 'groups');
+    combineArrayRules(res, filter, 'groupIds');
     /* TODO: The registrationOpen rule is just ignored for now. */
     combineStartDate(res, filter);
     combineArrayRules(res, filter, 'or', true);
@@ -380,7 +381,7 @@ export function combine(...filters) {
  */
 export function mapToBackend(filter) {
   const res = {};
-  if (filter.groups) res.groups = filter.groups;
+  if (filter.groupIds) res.groups = filter.groupIds;
   return res;
 }
 
