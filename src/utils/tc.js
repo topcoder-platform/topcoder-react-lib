@@ -17,6 +17,18 @@ export const COMPETITION_TRACKS = {
   QA: 'Quality Assurance',
 };
 
+export const OLD_COMPETITION_TRACKS = {
+  DATA_SCIENCE: 'DATA_SCIENCE',
+  DESIGN: 'DESIGN',
+  DEVELOP: 'DEVELOP',
+  QA: 'QA',
+};
+
+export const OLD_SUBTRACKS = {
+  TEST_SUITES: 'TEST_SUITES',
+  BUG_HUNT: 'BUG_HUNT',
+};
+
 /**
  * Review Opportunity types
  */
