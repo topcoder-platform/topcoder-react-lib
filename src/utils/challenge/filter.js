@@ -173,11 +173,8 @@ function filterByUpcoming(challenge, state) {
 }
 
 function filterByUsers(challenge, state) {
-  const userId = _.get(state, 'userId', null);
-  if (userId) {
-    return _.get(challenge, ['users', userId], false);
-  }
-  return true;
+  if (!state.userChallenges) return true;
+  return state.userChallenges.find(ch => challenge.id === ch);
 }
 
 /**
