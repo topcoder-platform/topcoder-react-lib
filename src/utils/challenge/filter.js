@@ -71,8 +71,9 @@ import { COMPETITION_TRACKS, REVIEW_OPPORTUNITY_TYPES } from '../tc';
  */
 
 function filterByGroupIds(challenge, state) {
-  if (!state.groupIds) return true;
-  return state.groupIds.some(id => challenge.groups[id]);
+  if (_.isEmpty(state.groupIds)) return true;
+  if (_.isEmpty(challenge.groups)) return false;
+  return state.groupIds.some(id => challenge.groups.find(gId => gId === id));
 }
 
 function filterByRegistrationOpen(challenge, state) {
@@ -144,10 +145,16 @@ function filterByStatus(challenge, state) {
 }
 
 function filterByTags(challenge, state) {
-  if (!state.tags) return true;
+  if (_.isEmpty(state.tags)) return true;
   const { platforms, tags } = challenge;
   const str = `${platforms} ${tags}`.toLowerCase();
   return state.tags.some(tag => str.includes(tag.toLowerCase()));
+}
+
+function filterByEvents(challenge, state) {
+  if (_.isEmpty(state.events)) return true;
+  if (_.isEmpty(challenge.events)) return false;
+  return state.events.some(key => challenge.events.find(e => e.key === key));
 }
 
 function filterByText(challenge, state) {
@@ -173,8 +180,11 @@ function filterByUpcoming(challenge, state) {
 }
 
 function filterByUsers(challenge, state) {
-  if (!state.userChallenges) return true;
-  return state.userChallenges.find(ch => challenge.id === ch);
+  const userId = _.get(state, 'userId', null);
+  if (userId) {
+    return _.get(challenge, ['users', userId], false);
+  }
+  return true;
 }
 
 /**
@@ -214,6 +224,7 @@ export function getFilterFunction(state) {
       && filterByGroupIds(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
+      && filterByEvents(challenge, state)
       && filterByTypes(challenge, state)
       && filterByUsers(challenge, state)
       && filterByEndDate(challenge, state)
@@ -343,7 +354,7 @@ export function combine(...filters) {
   const res = {};
   filters.forEach((filter) => {
     combineEndDate(res, filter);
-    combineArrayRules(res, filter, 'groups');
+    combineArrayRules(res, filter, 'groupIds');
     /* TODO: The registrationOpen rule is just ignored for now. */
     combineStartDate(res, filter);
     combineArrayRules(res, filter, 'or', true);
@@ -380,7 +391,7 @@ export function combine(...filters) {
  */
 export function mapToBackend(filter) {
   const res = {};
-  if (filter.groups) res.groups = filter.groups;
+  if (filter.groupIds) res.groups = filter.groupIds;
   return res;
 }
 
