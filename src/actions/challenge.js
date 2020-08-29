@@ -10,7 +10,6 @@ import { createActions } from 'redux-actions';
 import { decodeToken } from 'tc-accounts';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
-import { getService as getMemberService } from '../services/members';
 import { getApi } from '../services/api';
 import * as submissionUtil from '../utils/submission';
 
@@ -147,25 +146,19 @@ function getMMSubmissionsInit(challengeId) {
  * @param {String} tokenV3  Topcoder auth token v3.
  * @return {Action}
  */
-function getMMSubmissionsDone(challengeId, registrants, tokenV3) {
+function getMMSubmissionsDone(challengeId, tokenV3) {
   const filter = { challengeId };
-  const memberService = getMemberService(tokenV3);
   const submissionsService = getSubmissionService(tokenV3);
 
   // TODO: Move those numbers to configs
   return getAll(params => submissionsService.getSubmissions(filter, params), 1, 500)
     .then((submissions) => {
-      const userIds = _.uniq(_.map(submissions, sub => sub.memberId));
-      return memberService.getMembersInformation(userIds)
-        .then((resources) => {
-          const finalSubmissions = submissionUtil
-            .processMMSubmissions(submissions, resources, registrants);
-          return {
-            challengeId,
-            submissions: finalSubmissions,
-            tokenV3,
-          };
-        });
+      const finalSubmissions = submissionUtil.processMMSubmissions(submissions);
+      return {
+        challengeId,
+        submissions: finalSubmissions,
+        tokenV3,
+      };
     });
 }
 

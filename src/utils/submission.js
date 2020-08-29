@@ -30,12 +30,6 @@ function toFixed(num, decimal) {
   return result;
 }
 
-function getMMChallengeHandleStyle(handle, registrants) {
-  const style = _.get(_.find(registrants, m => m.handle === handle), 'colorStyle', null);
-  if (style) return JSON.parse(style.replace(/(\w+):\s*([^;]*)/g, '{"$1": "$2"}'));
-  return {};
-}
-
 /**
  * Process each submission rank of MM challenge
  * @param submissions the array of submissions
@@ -118,21 +112,14 @@ export function getFinalScore(submission) {
  * @param resources the challenge resources
  * @param registrants the challenge registrants
  */
-export function processMMSubmissions(submissions, resources, registrants) {
+export function processMMSubmissions(submissions) {
   const data = {};
   const result = [];
 
   _.each(submissions, (submission) => {
     const { memberId } = submission;
-    let memberHandle;
-    const resource = _.find(resources, r => _.get(r, 'userId').toString() === memberId.toString());
-    if (_.isEmpty(resource)) {
-      memberHandle = memberId;
-    } else {
-      memberHandle = _.has(resource, 'handle') ? _.get(resource, 'handle') : memberId.toString();
-    }
-    if (!data[memberHandle]) {
-      data[memberHandle] = [];
+    if (!data[memberId]) {
+      data[memberId] = [];
     }
     const validReviews = _.reject(submission.review, ['typeId', AV_SCAN_SCORER_REVIEW_TYPE_ID]);
     validReviews.sort((a, b) => {
@@ -149,7 +136,7 @@ export function processMMSubmissions(submissions, resources, registrants) {
     const provisionalScore = toFixed(_.get(validReviews, '[0].score', '-'), 5);
     const finalScore = toFixed(_.get(submission, 'reviewSummation[0].aggregateScore', '-'), 5);
 
-    data[memberHandle].push({
+    data[memberId].push({
       submissionId: submission.id,
       submissionTime: submission.created,
       provisionalScore,
@@ -163,8 +150,7 @@ export function processMMSubmissions(submissions, resources, registrants) {
     result.push({
       submissions: [...value.sort((a, b) => new Date(b.submissionTime)
         .getTime() - new Date(a.submissionTime).getTime())],
-      member: key,
-      colorStyle: getMMChallengeHandleStyle(key, registrants),
+      memberId: key,
     });
   });
 
