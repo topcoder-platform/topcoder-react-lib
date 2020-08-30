@@ -303,6 +303,7 @@ Object {
         "SUBMISSION_END_DATE": "submissionEndDate",
       },
       "default": undefined,
+      "getFilterUrl": [Function],
       "getService": [Function],
       "normalizeChallenge": [Function],
     },
@@ -372,9 +373,9 @@ Object {
   },
   "tc": Object {
     "COMPETITION_TRACKS": Object {
-      "DATA_SCIENCE": "Data Science",
-      "DESIGN": "Design",
-      "DEVELOP": "Development",
+      "DES": "Design",
+      "DEV": "Development",
+      "DS": "Data Science",
       "QA": "Quality Assurance",
     },
     "REVIEW_OPPORTUNITY_TYPES": Object {

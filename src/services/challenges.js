@@ -23,14 +23,14 @@ export function getFilterUrl(backendFilter, frontFilter) {
   delete ff.types;
   delete ff.communityId;
 
-  console.log(ff);
+  // console.log(ff);
 
   let urlFilter = qs.stringify(_.reduce(ff, (result, value, key) => {
     // eslint-disable-next-line no-param-reassign
     if (value) result[key] = value;
     return result;
   }, {}));
-  console.log(urlFilter);
+  // console.log(urlFilter);
 
   const ftags = _.map(tags, val => `tags[]=${val}`).join('&');
   const ftracks = _.map(_.reduce(tracks, (result, value, key) => {
@@ -165,10 +165,10 @@ class ChallengesService {
       endpoint,
       filter,
     ) => {
-      console.log(filter);
+      // console.log(filter);
       const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
       const url = `${endpoint}?${query}`;
-      console.log(url);
+      // console.log(url);
       const res = await this.private.apiV5.get(url).then(checkErrorV5);
       return {
         challenges: res.result || [],

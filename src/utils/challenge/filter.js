@@ -238,7 +238,7 @@ export function getFilterFunction(state) {
  * @param {Object} state
  * @return {Function}
  */
-export function getReviewOpportunitiesFilterFunction(state, validTypes) {
+export function getReviewOpportunitiesFilterFunction(state) {
   return (opp) => {
     const trackAbbr = {
       DATA_SCIENCE: 'DS',
@@ -280,7 +280,7 @@ export function getReviewOpportunitiesFilterFunction(state, validTypes) {
       filterByTrack(challenge, state)
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
-      // && filterByTypes(challenge, state)
+      && filterByTypes(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByReviewOpportunityType(opp, state)
