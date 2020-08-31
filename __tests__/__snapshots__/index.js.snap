@@ -385,6 +385,8 @@ Object {
     },
     "OLD_SUBTRACKS": Object {
       "BUG_HUNT": "BUG_HUNT",
+      "TESTING_COMPETITION": "TESTING_COMPETITION",
+      "TEST_SCENARIOS": "TEST_SCENARIOS",
       "TEST_SUITES": "TEST_SUITES",
     },
     "REVIEW_OPPORTUNITY_TYPES": Object {
