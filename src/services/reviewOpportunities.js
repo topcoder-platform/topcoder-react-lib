@@ -21,11 +21,11 @@ export function normalizeChallenges(opportunities) {
       if (challenge.technologies) {
         if (challenge.technologies.includes(COMPETITION_TRACKS.DATA_SCIENCE)) {
           challenge.track = COMPETITION_TRACKS.DATA_SCIENCE;
-        } else if (challenge.technologies.includes(OLD_COMPETITION_TRACKS.QA)) {
-          challenge.track = COMPETITION_TRACKS.QA;
         }
       } else if (challenge.subTrack === OLD_SUBTRACKS.TEST_SUITES
-          || challenge.subTrack === OLD_SUBTRACKS.BUG_HUNT) {
+          || challenge.subTrack === OLD_SUBTRACKS.BUG_HUNT
+          || challenge.subTrack === OLD_COMPETITION_TRACKS.TEST_SCENARIOS
+          || challenge.subTrack === OLD_COMPETITION_TRACKS.TESTING_COMPETITION) {
         challenge.track = COMPETITION_TRACKS.QA;
       } else if (challenge.track === OLD_COMPETITION_TRACKS.DESIGN) {
         challenge.track = COMPETITION_TRACKS.DESIGN;
