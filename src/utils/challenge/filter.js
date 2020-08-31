@@ -164,7 +164,7 @@ function filterByTrack(challenge, state) {
 }
 
 function filterByTypes(challenge, state) {
-  if (!state.types) return true;
+  if (state.types.length === 0) return true;
   return state.types.includes(challenge.typeId);
 }
 
@@ -173,10 +173,10 @@ function filterByUpcoming(challenge, state) {
   return moment().isBefore(challenge.registrationStartDate);
 }
 
-function filterByUsers(challenge, state) {
-  if (!state.userChallenges) return true;
-  return state.userChallenges.find(ch => challenge.id === ch);
-}
+// function filterByUsers(challenge, state) {
+//   if (!state.userChallenges) return true;
+//   return state.userChallenges.find(ch => challenge.id === ch);
+// }
 
 /**
  * Returns clone of the state with the specified competition track added.
@@ -216,7 +216,7 @@ export function getFilterFunction(state) {
       && filterByText(challenge, state)
       && filterByTags(challenge, state)
       && filterByTypes(challenge, state)
-      && filterByUsers(challenge, state)
+      // && filterByUsers(challenge, state)
       && filterByEndDate(challenge, state)
       && filterByStartDate(challenge, state)
       && filterByStarted(challenge, state)
@@ -238,7 +238,7 @@ export function getFilterFunction(state) {
  * @param {Object} state
  * @return {Function}
  */
-export function getReviewOpportunitiesFilterFunction(state) {
+export function getReviewOpportunitiesFilterFunction(state, validTypes) {
   return (opp) => {
     const trackAbbr = {
       DATA_SCIENCE: 'DS',
@@ -247,6 +247,7 @@ export function getReviewOpportunitiesFilterFunction(state) {
       QA: 'QA',
     };
     // const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
+    const newType = _.find(validTypes, { name: opp.challenge.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
 
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
@@ -261,7 +262,7 @@ export function getReviewOpportunitiesFilterFunction(state) {
       // opp.challenge.track === 'QA' ? 'Dev' : trackAbbr[opp.challenge.track],
       // ]),
       track: trackAbbr[opp.challenge.track],
-      // typeId: newType.id,
+      typeId: newType.abbreviation,
       tags: opp.challenge.technologies || [],
       platforms: opp.challenge.platforms || [],
     };
