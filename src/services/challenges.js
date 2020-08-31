@@ -522,10 +522,12 @@ class ChallengesService {
   /**
    * Gets user resources.
    * @param {String} userId User id whose challenges we want to fetch.
+   * @param {Number} page Current page for paginated API response (default 1)
+   * @param {Number} perPage Page size for paginated API response (default 1000)
    * @return {Promise} Resolves to the api response.
    */
-  async getUserResources(userId) {
-    const res = await this.private.apiV5.get(`/resources/${userId}/challenges`);
+  async getUserResources(userId, page = 1, perPage = 1000) {
+    const res = await this.private.apiV5.get(`/resources/${userId}/challenges?page=${page}&perPage=${perPage}`);
     return res.json();
   }
 
