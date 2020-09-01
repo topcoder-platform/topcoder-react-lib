@@ -10,14 +10,6 @@ import { getApi } from './api';
  * Sync the fields of V3 and V5 for front-end to process successfully
  * @param challenges - challenges to normalize
  */
-<<<<<<< HEAD
-export function normalizeChallenges(challenges) {
-  if (challenges) {
-    _.map(challenges, (ch) => {
-      const { challenge } = ch;
-      if (challenge.technologies && challenge.technologies.includes('Data Science')) {
-        challenge.track = 'DATA_SCIENCE';
-=======
 export function normalizeChallenges(opportunities) {
   if (opportunities) {
     /* Issue#4739 : Temporary add track to review opportunities challenges
@@ -36,7 +28,6 @@ export function normalizeChallenges(opportunities) {
         challenge.track = COMPETITION_TRACKS.QA;
       } else if (challenge.track === OLD_COMPETITION_TRACKS.DESIGN) {
         challenge.track = COMPETITION_TRACKS.DESIGN;
->>>>>>> 978da83... Merge pull request #238 from topcoder-platform/issue-4739-hotfix
       }
       return _.defaults(ch, { challenge });
     });
