@@ -4,11 +4,12 @@
  * submitting applications.
  */
 import _ from 'lodash';
+import { COMPETITION_TRACKS, OLD_COMPETITION_TRACKS, OLD_SUBTRACKS } from 'utils/tc';
 import { getApi } from './api';
 
 /**
  * Sync the fields of V3 and V5 for front-end to process successfully
- * @param challenges - challenges to normalize
+ * @param opportunities - opportunities to normalize
  */
 export function normalizeChallenges(opportunities) {
   if (opportunities) {
@@ -29,10 +30,11 @@ export function normalizeChallenges(opportunities) {
       } else if (challenge.track === OLD_COMPETITION_TRACKS.DESIGN) {
         challenge.track = COMPETITION_TRACKS.DESIGN;
       }
-      return _.defaults(ch, { challenge });
+      return _.defaults(opportunity, { challenge });
     });
   }
-  return challenges;
+
+  return opportunities;
 }
 
 /**
