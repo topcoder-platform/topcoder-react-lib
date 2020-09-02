@@ -377,6 +377,18 @@ Object {
       "DEVELOP": "Development",
       "QA": "Quality Assurance",
     },
+    "OLD_COMPETITION_TRACKS": Object {
+      "DATA_SCIENCE": "DATA_SCIENCE",
+      "DESIGN": "DESIGN",
+      "DEVELOP": "DEVELOP",
+      "QA": "QA",
+    },
+    "OLD_SUBTRACKS": Object {
+      "BUG_HUNT": "BUG_HUNT",
+      "TESTING_COMPETITION": "TESTING_COMPETITION",
+      "TEST_SCENARIOS": "TEST_SCENARIOS",
+      "TEST_SUITES": "TEST_SUITES",
+    },
     "REVIEW_OPPORTUNITY_TYPES": Object {
       "Contest Review": "Review",
       "Iterative Review": "Iterative Review",
