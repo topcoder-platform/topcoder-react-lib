@@ -590,7 +590,7 @@ class ChallengesService {
     const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
-      memberHandle: user.handle,
+      memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
     const res = await this.private.apiV5.postJson('/resources', params);
@@ -608,7 +608,7 @@ class ChallengesService {
     const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
-      memberHandle: user.handle,
+      memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
     const res = await this.private.apiV5.delete('/resources', JSON.stringify(params));
