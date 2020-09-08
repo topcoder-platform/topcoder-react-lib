@@ -31,18 +31,14 @@ class TermsService {
    * @return {Promise}       promise of the request result
    */
   async getChallengeTerms(terms) {
-    if (this.private.tokenV3) {
-      const challengeService = getChallengeService(this.private.tokenV3);
-      const roleId = await challengeService.getRoleId('Submitter');
-      const registerTerms = _.filter(terms, t => t.roleId === roleId);
+    const challengeService = getChallengeService(this.private.tokenV3);
+    const roleId = await challengeService.getRoleId('Submitter');
+    const registerTerms = _.filter(terms, t => t.roleId === roleId);
 
-      return Promise.all(_.map(registerTerms, term => this.getTermDetails(term.id)))
-        .then(challengeTerms => (
-          _.map(challengeTerms, term => _.pick(term, 'id', 'title', 'agreed'))
-        ));
-    }
-
-    return [];
+    return Promise.all(_.map(registerTerms, term => this.getTermDetails(term.id)))
+      .then(challengeTerms => (
+        _.map(challengeTerms, term => _.pick(term, 'id', 'title', 'agreed'))
+      ));
   }
 
   /**
