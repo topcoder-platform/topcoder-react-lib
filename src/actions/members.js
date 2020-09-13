@@ -331,6 +331,7 @@ async function getUserMarathonInit(handle, uuid) {
  * @desc Create an action that loads the member marathon.
  * @param {String} uuid Operation UUID.
  * @param {String} handle Member handle.
+ * @param {String} memberId Member id.
  * @param {String} tokenV3 v3 auth token.
  * @param {Number} start page.
  * @param {Number} page size.
@@ -338,20 +339,21 @@ async function getUserMarathonInit(handle, uuid) {
  * @return {Action}
  */
 async function getUserMarathonDone(
-  uuid, handle, tokenV3, pageNum, pageSize,
+  uuid, handle, memberId, tokenV3, pageNum, pageSize,
   refresh,
 ) {
-  const filter = { status: 'PAST', isRatedForMM: 'true' };
+  const filter = { status: 'Completed' };
   const params = {};
-  params.orderBy = 'endDate desc';
-  params.limit = pageSize;
-  params.offset = pageNum * pageSize;
+  params.sortBy = 'endDate';
+  params.sortOrder = 'desc';
+  params.perPage = pageSize;
+  params.page = pageNum;
 
   const service = getChallengesService(tokenV3);
-  return service.getUserMarathonMatches(handle, filter, params)
+  return service.getUserMarathonMatches(memberId, filter, params)
     .then(res => ({
       uuid,
-      marathons: res,
+      marathons: { challenges: res },
       refresh,
       handle,
     }));
