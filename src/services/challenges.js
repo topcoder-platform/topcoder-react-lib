@@ -534,18 +534,20 @@ class ChallengesService {
   /**
    * Gets marathon matches of the specified user.
    * @param {String} memberId User whose challenges we want to fetch.
+   * @param {Object} filter
    * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getUserMarathonMatches(memberId, params) {
+  async getUserMarathonMatches(memberId, filter, params) {
     const newParams = {
+      ...filter,
       ...params,
       tag: 'Marathon Match',
       memberId,
     };
 
     const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
-    return getApiResponsePayload(res);
+    return res.json();
   }
 
   /**
