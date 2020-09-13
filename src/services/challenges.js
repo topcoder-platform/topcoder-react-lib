@@ -542,7 +542,7 @@ class ChallengesService {
     const newParams = {
       ...filter,
       ...params,
-      tags: ['Marathon Match'],
+      tag: 'Marathon Match',
       memberId,
     };
 
