@@ -95,10 +95,21 @@ class TermsService {
    * @param  {Number|String} termId id of the term
    * @return {Promise}       promise of the request result
    */
-  getTermDetails(termId) {
-    // looks like server cache responses, to prevent it we add nocache param with always new value
-    return this.private.api.get(`/terms/${termId}`)
-      .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
+  async getTermDetails(termId) {
+    let termDetails = {};
+    let isLegacyTerm = false;
+    if (/^[\d]{5,8}$/.test(termId)) {
+      isLegacyTerm = true;
+      termDetails = await this.private.api.get(`/terms?legacyId=${termId}`)
+        .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
+    } else {
+      termDetails = await this.private.api.get(`/terms/${termId}`)
+        .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
+    }
+    return {
+      ...termDetails,
+      isLegacyTerm,
+    };
   }
 
   /**
