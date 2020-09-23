@@ -7,7 +7,7 @@
 import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';

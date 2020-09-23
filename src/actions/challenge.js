@@ -7,7 +7,7 @@
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
 import { getApi } from '../services/api';
