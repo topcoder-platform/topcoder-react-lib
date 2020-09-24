@@ -101,7 +101,8 @@ class TermsService {
     if (/^[\d]{5,8}$/.test(termId)) {
       isLegacyTerm = true;
       termDetails = await this.private.api.get(`/terms?legacyId=${termId}`)
-        .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
+        .then(res => (res.ok ? res.json() : Promise.reject(res.json())))
+        .then(res => (res.result ? res.result[0] : Promise.reject(res.json())));
     } else {
       termDetails = await this.private.api.get(`/terms/${termId}`)
         .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
