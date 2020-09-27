@@ -4,6 +4,7 @@
  * via API V3.
  */
 import qs from 'qs';
+import fetch from 'isomorphic-fetch';
 import { assign } from 'lodash';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
@@ -118,6 +119,16 @@ class LookupService {
       return jsonResult;
     }
     return [];
+  }
+
+    /**
+   * Gets all technologies.
+   * @return {Promise} Resolves to the review types.
+   */
+  async getTechnologies() {
+    const url = 'https://api.topcoder.com/v3/technologies';
+    const res = await fetch(url);
+    return getApiResponsePayload(res);
   }
 }
 
