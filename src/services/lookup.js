@@ -119,6 +119,15 @@ class LookupService {
     }
     return [];
   }
+
+  /**
+   * Gets all technologies.
+   * @return {Promise} Resolves to the technologies.
+   */
+  async getTechnologies() {
+    const res = await this.private.api.get('/technologies');
+    return getApiResponsePayload(res);
+  }
 }
 
 let lastInstance = null;
