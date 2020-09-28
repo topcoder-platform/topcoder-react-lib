@@ -371,6 +371,12 @@ Object {
     "processMMSubmissions": [Function],
   },
   "tc": Object {
+    "CHALLENGE_STATUS": Object {
+      "ACTIVE": "Active",
+      "CANCELLED": "Cancelled",
+      "COMPLETED": "Completed",
+      "DRAFT": "Draft",
+    },
     "COMPETITION_TRACKS": Object {
       "DATA_SCIENCE": "Data Science",
       "DESIGN": "Design",
