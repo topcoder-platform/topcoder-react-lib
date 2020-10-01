@@ -31,6 +31,16 @@ export const OLD_SUBTRACKS = {
   TESTING_COMPETITION: 'TESTING_COMPETITION',
 };
 
+/*
+ * Challenge Status
+ */
+export const CHALLENGE_STATUS = {
+  ACTIVE: 'Active',
+  CANCELLED: 'Cancelled',
+  COMPLETED: 'Completed',
+  DRAFT: 'Draft',
+};
+
 /**
  * Review Opportunity types
  */
