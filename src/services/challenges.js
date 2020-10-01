@@ -186,6 +186,22 @@ class ChallengesService {
         },
       };
     };
+
+    const getChallengeDetails = async (
+      endpoint,
+      legacyInfo,
+    ) => {
+      let query = '';
+      if (legacyInfo) {
+        query = `legacyId=${legacyInfo.legacyId}`;
+      }
+      const url = `${endpoint}?${query}`;
+      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      return {
+        challenges: res.result || [],
+      };
+    };
+
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
@@ -221,6 +237,7 @@ class ChallengesService {
       apiV2: getApi('V2', tokenV2),
       apiV3: getApi('V3', tokenV3),
       getChallenges,
+      getChallengeDetails,
       getMemberChallenges,
       tokenV2,
       tokenV3,
@@ -359,10 +376,10 @@ class ChallengesService {
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
-      challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
+      challenge = await this.private.getChallengeDetails('/challenges/', { legacyId: challengeId })
         .then(res => res.challenges[0]);
     } else {
-      challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+      challenge = await this.private.getChallengeDetails(`/challenges/${challengeId}`)
         .then(res => res.challenges);
     }
 
