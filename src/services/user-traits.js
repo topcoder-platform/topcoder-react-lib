@@ -4,7 +4,6 @@
  * via API V3.
  */
 import toCapitalCase from 'to-capital-case';
-import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 
 /**

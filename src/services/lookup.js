@@ -121,13 +121,12 @@ class LookupService {
     return [];
   }
 
-    /**
+  /**
    * Gets all technologies.
    * @return {Promise} Resolves to the review types.
    */
   async getTechnologies() {
-    const url = 'https://api.topcoder.com/v3/technologies';
-    const res = await fetch(url);
+    const res = await this.private.api.get('/technologies');
     return getApiResponsePayload(res);
   }
 }
