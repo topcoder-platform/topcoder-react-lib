@@ -169,20 +169,21 @@ class ChallengesService {
       endpoint,
       filter,
     ) => {
-      // console.log(filter);
-      const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
-      const url = `${endpoint}?${query}`;
-      // console.log(url);
-      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      let res = {};
+      if (_.some(filter.frontFilter.tracks, val => val)) {
+        const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
+        const url = `${endpoint}?${query}`;
+        res = await this.private.apiV5.get(url).then(checkErrorV5);
+      }
       return {
         challenges: res.result || [],
-        totalCount: res.headers.get('x-total'),
+        totalCount: res.headers ? res.headers.get('x-total') : 0,
         meta: {
-          allChallengesCount: res.headers.get('x-total'),
+          allChallengesCount: res.headers ? res.headers.get('x-total') : 0,
           myChallengesCount: 0,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
-          totalCount: res.headers.get('x-total'),
+          totalCount: res.headers ? res.headers.get('x-total') : 0,
         },
       };
     };
