@@ -18,6 +18,8 @@ import { fireErrorMessage } from '../utils/errors';
 
 import mySubmissionsManagement from './my-submissions-management';
 
+import { COMPETITION_TRACKS } from '../utils/tc';
+
 /**
  * Handles CHALLENGE/GET_DETAILS_INIT action.
  * @param {Object} state
@@ -467,9 +469,9 @@ export function factory(options = {}) {
       tokens.tokenV2,
     )).then((res) => {
       const challengeDetails = _.get(res, 'payload', {});
-      const track = _.get(challengeDetails, 'legacy.track', '');
+      const track = _.get(challengeDetails, 'track', '');
       let checkpointsPromise = null;
-      if (track === 'DESIGN') {
+      if (track === COMPETITION_TRACKS.DESIGN) {
         const p = _.get(challengeDetails, 'phases', [])
           .filter(x => x.name === 'Checkpoint Review');
         if (p.length && !p[0].isOpen) {

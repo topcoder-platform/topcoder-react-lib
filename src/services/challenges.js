@@ -93,7 +93,7 @@ export function normalizeChallenge(challenge, username) {
   }
   const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp,
@@ -377,7 +377,7 @@ class ChallengesService {
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
       challenge = await this.private.getChallengeDetails('/challenges/', { legacyId: challengeId })
-        .then(res => res.challenges[0]);
+        .then(res => res.challenges[0] || {});
     } else {
       challenge = await this.private.getChallengeDetails(`/challenges/${challengeId}`)
         .then(res => res.challenges);
@@ -456,7 +456,9 @@ class ChallengesService {
       .then(checkErrorV5).then(res => res.result);
 
     /* API will return all roles to currentUser, so need to filter in FE */
-    registrants = _.filter(registrants, r => r.roleId === roleId);
+    if (roleId) {
+      registrants = _.filter(registrants, r => r.roleId === roleId);
+    }
 
     return registrants || [];
   }
@@ -569,28 +571,32 @@ class ChallengesService {
   /**
    * Gets user resources.
    * @param {String} userId User id whose challenges we want to fetch.
+   * @param {Number} page Current page for paginated API response (default 1)
+   * @param {Number} perPage Page size for paginated API response (default 1000)
    * @return {Promise} Resolves to the api response.
    */
-  async getUserResources(userId) {
-    const res = await this.private.apiV5.get(`/resources/${userId}/challenges`);
+  async getUserResources(userId, page = 1, perPage = 1000) {
+    const res = await this.private.apiV5.get(`/resources/${userId}/challenges?page=${page}&perPage=${perPage}`);
     return res.json();
   }
 
   /**
    * Gets marathon matches of the specified user.
    * @param {String} memberId User whose challenges we want to fetch.
+   * @param {Object} filter
    * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getUserMarathonMatches(memberId, params) {
+  async getUserMarathonMatches(memberId, filter, params) {
     const newParams = {
+      ...filter,
       ...params,
       tag: 'Marathon Match',
       memberId,
     };
 
     const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
-    return getApiResponsePayload(res);
+    return res.json();
   }
 
   /**
@@ -635,7 +641,7 @@ class ChallengesService {
     const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
-      memberHandle: user.handle,
+      memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
     const res = await this.private.apiV5.postJson('/resources', params);
@@ -653,7 +659,7 @@ class ChallengesService {
     const roleId = await this.getRoleId('Submitter');
     const params = {
       challengeId,
-      memberHandle: user.handle,
+      memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
     const res = await this.private.apiV5.delete('/resources', JSON.stringify(params));
@@ -685,7 +691,7 @@ class ChallengesService {
     let contentType;
     let url;
 
-    if (track === 'DESIGN') {
+    if (track === COMPETITION_TRACKS.DESIGN) {
       ({ api } = this.private);
       contentType = 'application/json';
       url = '/submissions/'; // The submission info is contained entirely in the JSON body
@@ -703,7 +709,7 @@ class ChallengesService {
     }, onProgress).then((res) => {
       const jres = JSON.parse(res);
       // Return result for Develop submission
-      if (track === 'DEVELOP') {
+      if (track === COMPETITION_TRACKS.DEVELOP) {
         return jres;
       }
       // Design Submission requires an extra "Processing" POST
