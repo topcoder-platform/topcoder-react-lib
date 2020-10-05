@@ -249,10 +249,10 @@ export function getFilterFunction(state) {
 export function getReviewOpportunitiesFilterFunction(state, validTypes) {
   return (opp) => {
     const trackAbbr = {
-      DATA_SCIENCE: 'DS',
-      DEVELOP: 'Dev',
-      DESIGN: 'Des',
-      QA: 'QA',
+      'Data Science': 'DS',
+      Development: 'Dev',
+      Design: 'Des',
+      'Quality Assurance': 'QA',
     };
     // const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
     const newType = _.find(validTypes, { name: opp.challenge.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
