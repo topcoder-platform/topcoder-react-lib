@@ -90,7 +90,7 @@ function filterByRegistrationOpen(challenge, state) {
     if (!registrationPhase || !registrationPhase.isOpen) {
       return false;
     }
-    if (challenge.track === COMPETITION_TRACKS.DESIGN) {
+    if (challenge.track === COMPETITION_TRACKS.DES) {
       const checkpointPhase = challengePhases.find(item => item.name === 'Checkpoint Submission')[0];
       return !checkpointPhase || !checkpointPhase.isOpen;
     }
