@@ -4,7 +4,6 @@
  * via API V3.
  */
 import qs from 'qs';
-import fetch from 'isomorphic-fetch';
 import { assign } from 'lodash';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
