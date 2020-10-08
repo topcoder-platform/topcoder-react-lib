@@ -18,12 +18,13 @@ import { getService as getSubmissionsService } from './submissions';
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
   // eslint-disable-next-line object-curly-newline
-  const { tags, tracks, types, groups } = ff;
+  const { tags, tracks, types, groups, events } = ff;
   delete ff.tags;
   delete ff.tracks;
   delete ff.types;
   delete ff.communityId;
   delete ff.groups;
+  delete ff.events;
 
   // console.log(ff);
 
@@ -42,10 +43,12 @@ export function getFilterUrl(backendFilter, frontFilter) {
   }, []), val => `tracks[]=${val}`).join('&');
   const ftypes = _.map(types, val => `types[]=${val}`).join('&');
   const fgroups = _.map(groups, val => `groups[]=${val}`).join('&');
+  const fevents = _.map(events, val => `events[]=${val}`).join('&');
   if (ftags.length > 0) urlFilter += `&${ftags}`;
   if (ftracks.length > 0) urlFilter += `&${ftracks}`;
   if (ftypes.length > 0) urlFilter += `&${ftypes}`;
   if (fgroups.length > 9) urlFilter += `&${fgroups}`;
+  if (fevents.length > 0) urlFilter += `&${fevents}`;
   return urlFilter;
 }
 
