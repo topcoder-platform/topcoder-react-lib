@@ -17,10 +17,10 @@ export function normalizeChallenges(opportunities) {
      * until receive API V5 update. */
     _.map(opportunities, (opportunity) => {
       const { challenge } = opportunity;
-      challenge.track = COMPETITION_TRACKS.DEVELOP;
+      challenge.track = COMPETITION_TRACKS.DEV;
       if (challenge.technologies) {
-        if (challenge.technologies.includes(COMPETITION_TRACKS.DATA_SCIENCE)) {
-          challenge.track = COMPETITION_TRACKS.DATA_SCIENCE;
+        if (challenge.technologies.includes(COMPETITION_TRACKS.DS)) {
+          challenge.track = COMPETITION_TRACKS.DS;
         }
       } else if (challenge.subTrack === OLD_SUBTRACKS.TEST_SUITES
           || challenge.subTrack === OLD_SUBTRACKS.BUG_HUNT
@@ -28,7 +28,7 @@ export function normalizeChallenges(opportunities) {
           || challenge.subTrack === OLD_COMPETITION_TRACKS.TESTING_COMPETITION) {
         challenge.track = COMPETITION_TRACKS.QA;
       } else if (challenge.track === OLD_COMPETITION_TRACKS.DESIGN) {
-        challenge.track = COMPETITION_TRACKS.DESIGN;
+        challenge.track = COMPETITION_TRACKS.DES;
       }
       return _.defaults(opportunity, { challenge });
     });
