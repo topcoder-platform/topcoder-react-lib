@@ -6,7 +6,7 @@
 
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import actions from '../actions/direct';
 import logger from '../utils/logger';
 import { fireErrorMessage } from '../utils/errors';

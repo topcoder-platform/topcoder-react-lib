@@ -44,7 +44,7 @@ const mockSmpActions = {
 };
 _.merge(actions, mockSmpActions);
 
-jest.setMock('tc-accounts', {
+jest.setMock('@topcoder-platform/tc-auth-lib', {
   decodeToken: () => 'User object',
   isTokenExpired: () => false,
 });
