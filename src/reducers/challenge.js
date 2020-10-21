@@ -173,7 +173,7 @@ function onFetchCheckpointsDone(state, action) {
       loadingCheckpoints: false,
     };
   }
-  if (state.details && state.details.legacyId === action.payload.challengeId) {
+  if (state.details && `${state.details.legacyId}` === `${action.payload.challengeId}`) {
     return {
       ...state,
       checkpoints: action.payload.checkpoints,
