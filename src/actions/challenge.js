@@ -248,7 +248,7 @@ function loadResultsInit(challengeId) {
  * @return {Action}
  */
 function loadResultsDone(auth, challengeId, type) {
-  return getApi('V2', auth.tokenV2)
+  return getApi('V2')
     .fetch(`/${type}/challenges/result/${challengeId}`)
     .then(response => response.json())
     .then(response => ({
@@ -273,7 +273,7 @@ function fetchCheckpointsInit() {}
  */
 function fetchCheckpointsDone(tokenV2, challengeId) {
   const endpoint = `/design/challenges/checkpoint/${challengeId}`;
-  return getApi('V2', tokenV2).fetch(endpoint)
+  return getApi('V2').fetch(endpoint)
     .then((response) => {
       if (response.status !== 200) {
         throw response.status;
