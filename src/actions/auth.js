@@ -4,7 +4,7 @@
  */
 
 import { createActions } from 'redux-actions';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getApiV3, getApiV5 } from '../services/api';
 
 /**

@@ -22,7 +22,7 @@ module.exports = {
     'redux',
     'redux-actions',
     'isomorphic-fetch',
-    'tc-accounts',
+    '@topcoder-platform/tc-auth-lib',
     'to-capital-case',
     'topcoder-react-utils',
     'tc-core-library-js',
