@@ -33,7 +33,8 @@ class MembersService {
    * @return {Promise} Resolves to the financial information object.
    */
   async getMemberFinances(handle) {
-    const res = await this.private.api.get(`/members/${handle}/financial`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}/financial`);
     return getApiResponsePayload(res);
   }
 
@@ -46,7 +47,8 @@ class MembersService {
    * @return {Promise} Resolves to the data object.
    */
   async getMemberInfo(handle) {
-    const res = await this.private.api.get(`/members/${handle}`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}`);
     return getApiResponsePayload(res);
   }
 
@@ -56,7 +58,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getExternalAccounts(handle) {
-    const res = await this.private.api.get(`/members/${handle}/externalAccounts`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}/externalAccounts`);
     return getApiResponsePayload(res);
   }
 
@@ -66,7 +69,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getExternalLinks(handle) {
-    const res = await this.private.api.get(`/members/${handle}/externalLinks`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}/externalLinks`);
     return getApiResponsePayload(res);
   }
 
@@ -76,7 +80,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getSkills(handle) {
-    const res = await this.private.api.get(`/members/${handle}/skills`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}/skills`);
     return getApiResponsePayload(res);
   }
 
@@ -87,11 +92,12 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getStats(handle, groupIds) {
+    const api = await this.private.api;
     let res;
     if (groupIds) {
-      res = await this.private.api.get(`/members/${handle}/stats?groupIds=${groupIds}`);
+      res = await api.get(`/members/${handle}/stats?groupIds=${groupIds}`);
     } else {
-      res = await this.private.api.get(`/members/${handle}/stats`);
+      res = await api.get(`/members/${handle}/stats`);
     }
     return getApiResponsePayload(res);
   }
@@ -103,10 +109,11 @@ class MembersService {
    */
   async getStatsHistory(handle, groupIds) {
     let res;
+    const api = await this.private.api;
     if (groupIds) {
-      res = await this.private.api.get(`/members/${handle}/stats/history?groupIds=${groupIds}`);
+      res = await api.get(`/members/${handle}/stats/history?groupIds=${groupIds}`);
     } else {
-      res = await this.private.api.get(`/members/${handle}/stats/history`);
+      res = await api.get(`/members/${handle}/stats/history`);
     }
     return getApiResponsePayload(res);
   }
@@ -119,7 +126,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getStatsDistribution(handle, track, subTrack) {
-    const res = await this.private.api.get(`/members/stats/distribution?filter=${encodeURIComponent(qs.stringify({
+    const api = await this.private.api;
+    const res = await api.get(`/members/stats/distribution?filter=${encodeURIComponent(qs.stringify({
       track,
       subTrack,
     }))}`);
@@ -135,7 +143,8 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async getMemberSuggestions(keyword) {
-    const res = await this.private.api.get(`/members/_suggest/${keyword}`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/_suggest/${keyword}`);
     return getApiResponsePayload(res);
   }
 
@@ -146,7 +155,8 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async addWebLink(userHandle, webLink) {
-    const res = await this.private.api.postJson(`/members/${userHandle}/externalLinks`, { param: { url: webLink } });
+    const api = await this.private.api;
+    const res = await api.postJson(`/members/${userHandle}/externalLinks`, { param: { url: webLink } });
     return getApiResponsePayload(res);
   }
 
@@ -162,7 +172,8 @@ class MembersService {
         handle: webLinkHandle,
       },
     };
-    const res = await this.private.api.delete(`/members/${userHandle}/externalLinks/${webLinkHandle}`, JSON.stringify(body));
+    const api = await this.private.api;
+    const res = await api.delete(`/members/${userHandle}/externalLinks/${webLinkHandle}`, JSON.stringify(body));
     return getApiResponsePayload(res);
   }
 
@@ -182,7 +193,8 @@ class MembersService {
         },
       },
     };
-    const res = await this.private.api.patchJson(`/members/${handle}/skills`, body);
+    const api = await this.private.api;
+    const res = await api.patchJson(`/members/${handle}/skills`, body);
     return getApiResponsePayload(res);
   }
 
@@ -202,7 +214,8 @@ class MembersService {
         },
       },
     };
-    const res = await this.private.api.fetch(`/members/${handle}/skills`, {
+    const api = await this.private.api;
+    const res = await api.fetch(`/members/${handle}/skills`, {
       body: JSON.stringify(body),
       method: 'PATCH',
     });
@@ -216,7 +229,8 @@ class MembersService {
    */
   async updateMemberProfile(profile) {
     const url = profile.verifyUrl ? `/members/${profile.handle}?verifyUrl=${profile.verifyUrl}` : `/members/${profile.handle}`;
-    const res = await this.private.api.putJson(url, { param: profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile });
+    const api = await this.private.api;
+    const res = await api.putJson(url, { param: profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile });
     if (profile.verifyUrl && res.status === 409) {
       return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
     }
@@ -230,7 +244,8 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async getPresignedUrl(userHandle, file) {
-    const res = await this.private.api.postJson(`/members/${userHandle}/photoUploadUrl`, { param: { contentType: file.type } });
+    const api = await this.private.api;
+    const res = await api.postJson(`/members/${userHandle}/photoUploadUrl`, { param: { contentType: file.type } });
     const payload = await getApiResponsePayload(res);
 
     return {
@@ -247,7 +262,8 @@ class MembersService {
    * @return {Promise} Resolves to the api response content
    */
   async updateMemberPhoto(S3Response) {
-    const res = await this.private.api.putJson(`/members/${S3Response.userHandle}/photo`, { param: S3Response.body });
+    const api = await this.private.api;
+    const res = await api.putJson(`/members/${S3Response.userHandle}/photo`, { param: S3Response.body });
     return getApiResponsePayload(res);
   }
 
@@ -299,7 +315,8 @@ class MembersService {
    * @returns {Promise} Resolves to the api response content
    */
   async verifyMemberNewEmail(handle, emailVerifyToken) {
-    const res = await this.private.api.get(`/members/${handle}/verify?token=${emailVerifyToken}`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${handle}/verify?token=${emailVerifyToken}`);
     return getApiResponsePayload(res);
   }
 
@@ -311,7 +328,8 @@ class MembersService {
     const query = `query=${encodeURI(_.map(userIds, id => `userId:${id}`).join(' OR '))}`;
     const limit = `limit=${userIds.length}`;
     const url = `/members/_search?fields=userId%2Chandle&${query}&${limit}`;
-    const res = await this.private.api.get(url);
+    const api = await this.private.api;
+    const res = await api.get(url);
     return getApiResponsePayload(res);
   }
 
@@ -320,7 +338,8 @@ class MembersService {
    * @param {Array} memberId the member id
    */
   async getResourceRoles() {
-    const res = await this.private.apiV5.get('/resource-roles');
+    const apiV5 = await this.private.apiV5;
+    const res = apiV5.get('/resource-roles');
     const roles = await res.json();
     return roles;
   }
@@ -330,12 +349,13 @@ class MembersService {
    * @param {Array} challengeId the challenge id
    */
   async getChallengeResources(challengeId) {
+    const apiV5 = await this.private.apiV5;
     const user = decodeToken(this.private.tokenV3);
     const url = `/resources?challengeId=${challengeId}&memberId=${user.userId}`;
     let res = null;
 
     try {
-      res = await this.private.apiV5.get(url);
+      res = await apiV5.get(url);
     } catch (error) {
       // logger.error('Failed to load challenge resource', error);
     }
@@ -349,7 +369,8 @@ class MembersService {
    */
   async getUserResources(memberId) {
     const url = `/challenges?status=Active&memberId=${memberId}`;
-    const res = await this.private.apiV5.get(url);
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.get(url);
     const challenges = await res.json();
     const roles = await this.getResourceRoles();
     const calls = [];

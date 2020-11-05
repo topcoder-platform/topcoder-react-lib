@@ -21,8 +21,9 @@ function deleteSubmissionInit() {}
  * @param {Number|String} submissionId Submission ID.
  * @return {Action}
  */
-function deleteSubmissionDone(tokenV3, submissionId) {
-  return getApi('V5', tokenV3).delete(`/submissions/${submissionId}`)
+async function deleteSubmissionDone(tokenV3, submissionId) {
+  const apiV5 = await getApi('V5', tokenV3);
+  return apiV5.delete(`/submissions/${submissionId}`)
     .then(() => submissionId);
 }
 

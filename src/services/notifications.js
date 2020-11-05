@@ -25,7 +25,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async getNotifications() {
-    return this.private.apiV5.get('/notifications/?platform=community&limit=20')
+    const apiV5 = await this.private.apiV5;
+    return apiV5.get('/notifications/?platform=community&limit=20')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
 
@@ -34,7 +35,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async markNotificationAsRead(item) {
-    return this.private.apiV5.put(`/notifications/${item}/read`)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.put(`/notifications/${item}/read`)
       .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
@@ -43,7 +45,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async markAllNotificationAsRead() {
-    return this.private.apiV5.put('/notifications/read')
+    const apiV5 = await this.private.apiV5;
+    return apiV5.put('/notifications/read')
       .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
@@ -52,7 +55,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async markAllNotificationAsSeen(items) {
-    return this.private.apiV5.put(`/notifications/${items}/seen`)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.put(`/notifications/${items}/seen`)
       .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 
@@ -61,7 +65,8 @@ class NotificationService {
    * @return {Promise} Resolves to the notification information object.
    */
   async dismissChallengeNotifications(challengeID) {
-    return this.private.apiV5.put(`/notifications/${challengeID}/dismiss`)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.put(`/notifications/${challengeID}/dismiss`)
       .then(res => (res.ok ? null : Promise.reject(new Error(res.statusText))));
   }
 }

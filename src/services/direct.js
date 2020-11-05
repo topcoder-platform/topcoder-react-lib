@@ -32,7 +32,8 @@ class Direct {
    * @return {Promise} Resolves to the project details object.
    */
   async getProjectDetails(projectId) {
-    let res = await this.private.api.get(`/direct/projects/${projectId}`);
+    const api = await this.private.api;
+    let res = await api.get(`/direct/projects/${projectId}`);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -47,7 +48,8 @@ class Direct {
    */
   async getProjectPermissions(projectId) {
     const URL = `/direct/projects/${projectId}/permissions`;
-    let res = await this.private.api.get(URL);
+    const api = await this.private.api;
+    let res = await api.get(URL);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -62,7 +64,8 @@ class Direct {
   async getUserProjects(query) {
     let url = '/direct/projects/user';
     if (query) url += `?${qs.stringify(query)}`;
-    let res = await this.private.api.get(url);
+    const api = await this.private.api;
+    let res = await api.get(url);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);

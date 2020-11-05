@@ -96,15 +96,16 @@ class TermsService {
    * @return {Promise}       promise of the request result
    */
   async getTermDetails(termId) {
+    const api = await this.private.api;
     let termDetails = {};
     let isLegacyTerm = false;
     if (/^[\d]{5,8}$/.test(termId)) {
       isLegacyTerm = true;
-      termDetails = await this.private.api.get(`/terms?legacyId=${termId}`)
+      termDetails = await api.get(`/terms?legacyId=${termId}`)
         .then(res => (res.ok ? res.json() : Promise.reject(res.json())))
         .then(res => (res.result ? res.result[0] : Promise.reject(res.json())));
     } else {
-      termDetails = await this.private.api.get(`/terms/${termId}`)
+      termDetails = await api.get(`/terms/${termId}`)
         .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
     }
     return {
@@ -119,12 +120,13 @@ class TermsService {
    * @param  {String}        returnUrl  callback url after finishing signing
    * @return {Promise}       promise of the request result
    */
-  getDocuSignUrl(templateId, returnUrl) {
+  async getDocuSignUrl(templateId, returnUrl) {
+    const api = await this.private.api;
     const params = {
       templateId,
       returnUrl,
     };
-    return this.private.api.postJson('/terms/docusignViewURL', params)
+    return api.postJson('/terms/docusignViewURL', params)
       .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
   }
 
@@ -133,8 +135,9 @@ class TermsService {
    * @param  {Number|String} termId id of the term
    * @return {Promise}       promise of the request result
    */
-  agreeTerm(termId) {
-    return this.private.api.post(`/terms/${termId}/agree`)
+  async agreeTerm(termId) {
+    const api = await this.private.api;
+    return api.post(`/terms/${termId}/agree`)
       .then(res => (res.ok ? res.json() : Promise.reject(res.json())));
   }
 }

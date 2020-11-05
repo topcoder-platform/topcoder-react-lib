@@ -30,8 +30,9 @@ class Billing {
    * Gets billing accounts accessible to service user.
    * @return {Promise} Resolves to the list of billing account objects.
    */
-  getUserBillingAccounts() {
-    return this.private.api.fetch();
+  async getUserBillingAccounts() {
+    const api = await this.private.api;
+    return api.fetch();
   }
 }
 

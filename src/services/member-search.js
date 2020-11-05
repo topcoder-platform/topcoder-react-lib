@@ -29,7 +29,7 @@ class MemberSearchService {
    * @return {Promise} Resolves to an object containing the array of matched members
    * and the total count
    */
-  getUsernameMatches(searchTerm, offset, limit) {
+  async getUsernameMatches(searchTerm, offset, limit) {
     const params = {
       query: 'MEMBER_SEARCH',
       handle: encodeURIComponent(searchTerm),
@@ -37,7 +37,9 @@ class MemberSearchService {
       limit,
     };
 
-    return this.private.api.get(`/members/_search/?${qs.stringify(params)}`)
+    const api = await this.private.api;
+
+    return api.get(`/members/_search/?${qs.stringify(params)}`)
       .then(checkResponseSucess)
       .then((data) => {
         const usernameMatches = _.get(data, 'result.content');
@@ -64,8 +66,9 @@ class MemberSearchService {
   * @param {String} searchTerm the search term
   * @return {Promise} Resolves to a tag object
   */
-  checkIfSearchTermIsATag(searchTerm) {
-    return this.private.api.get(`/tags/?filter=name%3D${encodeURIComponent(searchTerm)}`)
+  async checkIfSearchTermIsATag(searchTerm) {
+    const api = await this.private.api;
+    return api.get(`/tags/?filter=name%3D${encodeURIComponent(searchTerm)}`)
       .then(checkResponseSucess)
       .then((data) => {
         const tagInfo = _.get(data, 'result.content');
@@ -86,10 +89,11 @@ class MemberSearchService {
   * @param {Object} tag the tag
   * @return {Promise} Resolves to an object containing the array of matched members
   */
-  getTopMembers(tag) {
+  async getTopMembers(tag) {
     const leaderboardType = mapTagToLeaderboardType(tag.domain);
+    const api = await this.private.api;
 
-    return this.private.api.get(`/leaderboards/?filter=id%3D${tag.id}%26type%3D${leaderboardType}`)
+    return api.get(`/leaderboards/?filter=id%3D${tag.id}%26type%3D${leaderboardType}`)
       .then(checkResponseSucess)
       .then((data) => {
         const topMembers = _.get(data, 'result.content', []);

@@ -125,7 +125,8 @@ class User {
    * @return {Object}
    */
   async getAchievements(username) {
-    const res = await this.private.apiV2.get(`/users/${username}`);
+    const apiV2 = await this.private.apiV2;
+    const res = await apiV2.get(`/users/${username}`);
     if (!res.ok) throw new Error(res.statusText);
     return (await res.json()).Achievements || [];
   }
@@ -136,7 +137,8 @@ class User {
    * @return {Object}
    */
   async getUserPublic(username) {
-    const res = await this.private.apiV2.get(`/users/${username}`);
+    const apiV2 = await this.private.apiV2;
+    const res = await apiV2.get(`/users/${username}`);
     if (!res.ok) throw new Error(res.statusText);
     return res.json() || null;
   }
@@ -147,7 +149,8 @@ class User {
    * @return {Object}
    */
   async getUserPublicV3(username) {
-    const res = await this.private.api.get(`/members/${username}`);
+    const api = await this.private.api;
+    const res = await api.get(`/members/${username}`);
     return getApiResponsePayload(res);
   }
 
@@ -160,8 +163,9 @@ class User {
    * @return {Promise} Resolves to the user data object.
    */
   async getUser(username) {
+    const api = await this.private.api;
     const url = `/users?filter=handle%3D${username}`;
-    const res = await this.private.api.get(url);
+    const res = await api.get(url);
     return (await getApiResponsePayload(res))[0];
   }
 
@@ -174,8 +178,9 @@ class User {
    * @returns {Promise} Resolves to the email preferences result
    */
   async getEmailPreferences(userId) {
+    const api = await this.private.api;
     const url = `/users/${userId}/preferences/email`;
-    const res = await this.private.api.get(url);
+    const res = await api.get(url);
     const x = (await res.json()).result;
     return x.content;
   }
@@ -190,6 +195,7 @@ class User {
    * @returns {Promise} Resolves to the email preferences result
    */
   async saveEmailPreferences({ firstName, lastName, userId }, preferences) {
+    const api = await this.private.api;
     const settings = {
       firstName,
       lastName,
@@ -203,7 +209,7 @@ class User {
     }
     const url = `/users/${userId}/preferences/email`;
 
-    const res = await this.private.api.putJson(url, { param: settings });
+    const res = await api.putJson(url, { param: settings });
     return getApiResponsePayload(res);
   }
 
@@ -216,8 +222,9 @@ class User {
    * @return {Promise} Resolves to the linked accounts array.
    */
   async getCredential(userId) {
+    const api = await this.private.api;
     const url = `/users/${userId}?fields=credential`;
-    const res = await this.private.api.get(url);
+    const res = await api.get(url);
     return getApiResponsePayload(res);
   }
 
@@ -232,13 +239,14 @@ class User {
    * @return {Promise} Resolves to the update result.
    */
   async updatePassword(userId, newPassword, oldPassword) {
+    const api = await this.private.api;
     const credential = {
       password: newPassword,
       currentPassword: oldPassword,
     };
 
     const url = `/users/${userId}`;
-    const res = await this.private.api.patchJson(url, { param: { credential } });
+    const res = await api.patchJson(url, { param: { credential } });
     return getApiResponsePayload(res);
   }
 
@@ -251,8 +259,9 @@ class User {
    * @return {Promise} Resolves to the linked accounts array.
    */
   async getLinkedAccounts(userId) {
+    const api = await this.private.api;
     const url = `/users/${userId}?fields=profiles`;
-    const res = await this.private.api.get(url);
+    const res = await api.get(url);
     return getApiResponsePayload(res);
   }
 
@@ -263,8 +272,9 @@ class User {
    * @returns {Promise} Resolves to the unlink result
    */
   async unlinkExternalAccount(userId, provider) {
+    const api = await this.private.api;
     const url = `/users/${userId}/profiles/${provider}`;
-    const res = await this.private.api.delete(url);
+    const res = await api.delete(url);
     return getApiResponsePayload(res);
   }
 
@@ -276,6 +286,7 @@ class User {
    * @returns {Promise} Resolves to the linked account result
    */
   async linkExternalAccount(userId, provider, callbackUrl) {
+    const api = await this.private.api;
     return new Promise((resolve, reject) => {
       getAuth0().signin(
         {
@@ -309,7 +320,7 @@ class User {
             postData.context.accessTokenSecret = socialData.accessTokenSecret;
           }
           logger.debug(`link API postdata: ${JSON.stringify(postData)}`);
-          this.private.api.postJson(`/users/${userId}/profiles`, { param: postData })
+          api.postJson(`/users/${userId}/profiles`, { param: postData })
             .then(resp => getApiResponsePayload(resp).then((result) => {
               logger.debug(`Succesfully linked account: ${JSON.stringify(result)}`);
               resolve(postData);

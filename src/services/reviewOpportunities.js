@@ -72,9 +72,10 @@ class ReviewOpportunitiesService {
    * @param {Number} offset Offset, used with limit to lazy load.
    * @return {Promise} Resolves to the api response in JSON.
    */
-  getReviewOpportunities(limit, offset) {
+  async getReviewOpportunities(limit, offset) {
+    const api = await this.private.api;
     const endpoint = `/reviewOpportunities?limit=${limit}&offset=${offset}`;
-    return this.private.api.get(endpoint)
+    return api.get(endpoint)
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`Error Code: ${res.status}`))))
       .then(res => (
         res.result.status === 200
@@ -88,9 +89,10 @@ class ReviewOpportunitiesService {
    * @param {Number} challengeId The ID of the challenge (not the opportunity id)
    * @return {Promise} Resolves to the api response in JSON.
    */
-  getDetails(challengeId) {
+  async getDetails(challengeId) {
+    const api = await this.private.api;
     const endpoint = `/reviewOpportunities/${challengeId}`;
-    return this.private.api.get(endpoint)
+    return api.get(endpoint)
       .then(res => res.json())
       .then(res => (
         res.result.status === 200
@@ -107,9 +109,10 @@ class ReviewOpportunitiesService {
    * @param {Array} roleIds List of review role IDs to apply for
    * @return {Promise} Resolves to the api response in JSON.
    */
-  submitApplications(challengeId, roleIds) {
+  async submitApplications(challengeId, roleIds) {
+    const api = await this.private.api;
     const endpoint = `/reviewOpportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
-    return this.private.api.post(endpoint, {})
+    return api.post(endpoint, {})
       .then(res => JSON.parse(res));
   }
 
@@ -119,9 +122,10 @@ class ReviewOpportunitiesService {
    * @param {Array} roleIds List of review role IDs to cancel applications for
    * @return {Promise} Resolves to the api response in JSON.
    */
-  cancelApplications(challengeId, roleIds) {
+  async cancelApplications(challengeId, roleIds) {
+    const api = await this.private.api;
     const endpoint = `/reviewOpportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
-    return this.private.api.delete(endpoint, {})
+    return api.delete(endpoint, {})
       .then(res => JSON.parse(res));
   }
 }

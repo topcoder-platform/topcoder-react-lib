@@ -37,11 +37,11 @@ async function checkErrorV5(res) {
  * @param {String} userTokenV3 v3 authentication token.
  * @return {Action}
  */
-function loadProfileDone(userTokenV3) {
+async function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
-  const apiV3 = getApiV3(userTokenV3);
-  const apiV5 = getApiV5(userTokenV3);
+  const apiV3 = await getApiV3(userTokenV3);
+  const apiV5 = await getApiV5(userTokenV3);
   return Promise.all([
     apiV3.get(`/members/${user.handle}`)
       .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),

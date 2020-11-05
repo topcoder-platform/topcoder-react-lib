@@ -176,7 +176,8 @@ class ChallengesService {
       if (_.some(filter.frontFilter.tracks, val => val)) {
         const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
         const url = `${endpoint}?${query}`;
-        res = await this.private.apiV5.get(url).then(checkErrorV5);
+        const apiV5 = await this.private.apiV5;
+        res = await apiV5.get(url).then(checkErrorV5);
       }
       return {
         challenges: res.result || [],
@@ -200,7 +201,8 @@ class ChallengesService {
         query = `legacyId=${legacyInfo.legacyId}`;
       }
       const url = `${endpoint}?${query}`;
-      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get(url).then(checkErrorV5);
       return {
         challenges: res.result || [],
       };
@@ -227,7 +229,8 @@ class ChallengesService {
         memberId,
       };
       const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-      const res = await this.private.apiV5.get(url).then(checkError);
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get(url).then(checkError);
       const totalCount = res.length;
       return {
         challenges: res || [],
@@ -261,7 +264,8 @@ class ChallengesService {
       status: 'Active',
     };
 
-    let res = await this.private.apiV5.patch(`/challenge/${challengeId}`, params);
+    const apiV5 = await this.private.apiV5;
+    let res = await apiV5.patch(`/challenge/${challengeId}`, params);
 
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
@@ -279,7 +283,8 @@ class ChallengesService {
     const params = {
       status: 'Completed',
     };
-    let res = await this.private.apiV5.patch(`/challenges/${challengeId}`, params);
+    const apiV5 = await this.private.apiV5;
+    let res = await apiV5.patch(`/challenges/${challengeId}`, params);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -312,7 +317,8 @@ class ChallengesService {
     copilotFee,
     tags,
   ) {
-    const registrationPhase = await this.private.apiV5.get('/challenge-phases?name=Registration');
+    const apiV5 = await this.private.apiV5;
+    const registrationPhase = await apiV5.get('/challenge-phases?name=Registration');
 
     const payload = {
       param: {
@@ -353,7 +359,7 @@ class ChallengesService {
         copilotFee,
       });
     }
-    let res = await this.private.apiV5.postJson('/challenges', payload);
+    let res = await apiV5.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -369,6 +375,7 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
+    const apiV5 = await this.private.apiV5;
     const memberId = this.private.tokenV3 ? decodeToken(this.private.tokenV3).userId : null;
     let challenge = {};
     let registrants = [];
@@ -436,7 +443,7 @@ class ChallengesService {
           eventId: e.id,
           description: e.name,
         })),
-        fetchedWithAuth: Boolean(this.private.apiV5.private.token),
+        fetchedWithAuth: Boolean(apiV5.private.token),
       };
     }
 
@@ -456,7 +463,8 @@ class ChallengesService {
       roleId,
     };
 
-    let registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
+    const apiV5 = await this.private.apiV5;
+    let registrants = await apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
 
     /* API will return all roles to currentUser, so need to filter in FE */
@@ -471,8 +479,9 @@ class ChallengesService {
    * Gets possible challenge types.
    * @return {Promise} Resolves to the array of subtrack names.
    */
-  getChallengeTypes() {
-    return this.private.apiV5.get('/challenge-types')
+  async getChallengeTypes() {
+    const apiV5 = await this.private.apiV5;
+    return apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
@@ -487,7 +496,8 @@ class ChallengesService {
    * @return {Promise} ID from first abbreviation match
    */
   async getChallengeTypeId(abbreviation) {
-    const ret = await this.private.apiV5.get(`/challenge-types?abbreviation=${abbreviation}`)
+    const apiV5 = await this.private.apiV5;
+    const ret = await apiV5.get(`/challenge-types?abbreviation=${abbreviation}`)
       .then(checkErrorV5).then(res => res);
 
     if (_.isEmpty(ret.result)) {
@@ -501,8 +511,9 @@ class ChallengesService {
    * Gets possible challenge tags (technologies).
    * @return {Promise} Resolves to the array of tag strings.
    */
-  getChallengeTags() {
-    return this.private.api.get('/technologies')
+  async getChallengeTags() {
+    const api = await this.private.api;
+    return api.get('/technologies')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.result.status === 200
@@ -531,7 +542,8 @@ class ChallengesService {
    * @return {Promise}
    */
   async getSrms(params) {
-    const res = await this.private.api.get(`/srms/?${qs.stringify(params)}`);
+    const api = await this.private.api;
+    const res = await api.get(`/srms/?${qs.stringify(params)}`);
     return getApiResponsePayload(res);
   }
 
@@ -559,7 +571,8 @@ class ChallengesService {
       memberId: userId,
     };
     const url = `/challenges?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-    const userChallenges = await this.private.apiV5.get(url)
+    const apiV5 = await this.private.apiV5;
+    const userChallenges = await apiV5.get(url)
       .then(checkErrorV5)
       .then((res) => {
         res.result.forEach(item => normalizeChallenge(item, userId));
@@ -580,7 +593,8 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getUserResources(userId, page = 1, perPage = 1000) {
-    const res = await this.private.apiV5.get(`/resources/${userId}/challenges?page=${page}&perPage=${perPage}`);
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.get(`/resources/${userId}/challenges?page=${page}&perPage=${perPage}`);
     return res.json();
   }
 
@@ -599,7 +613,8 @@ class ChallengesService {
       memberId,
     };
 
-    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.get(`/challenges?${qs.stringify(newParams)}`);
     return res.json();
   }
 
@@ -611,7 +626,8 @@ class ChallengesService {
    */
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const res = await this.private.api.get(url);
+    const api = await this.private.api;
+    const res = await api.get(url);
     return getApiResponsePayload(res);
   }
 
@@ -625,7 +641,8 @@ class ChallengesService {
       name: roleName,
       isActive: true,
     };
-    const roles = await this.private.apiV5.get(`/resource-roles?${qs.stringify(params)}`)
+    const apiV5 = await this.private.apiV5;
+    const roles = await apiV5.get(`/resource-roles?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
 
     if (_.isEmpty(roles)) {
@@ -648,7 +665,8 @@ class ChallengesService {
       memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
-    const res = await this.private.apiV5.postJson('/resources', params);
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.postJson('/resources', params);
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -666,7 +684,8 @@ class ChallengesService {
       memberHandle: encodeURIComponent(user.handle),
       roleId,
     };
-    const res = await this.private.apiV5.delete('/resources', JSON.stringify(params));
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.delete('/resources', JSON.stringify(params));
     if (!res.ok) throw new Error(res.statusText);
     return res.json();
   }
@@ -690,7 +709,7 @@ class ChallengesService {
    * @param {String} track Either DESIGN or DEVELOP
    * @return {Promise}
    */
-  submit(body, challengeId, track, onProgress) {
+  async submit(body, challengeId, track, onProgress) {
     let api;
     let contentType;
     let url;
@@ -737,7 +756,8 @@ class ChallengesService {
    */
   async updateChallenge(challenge) {
     const url = `/challenges/${challenge.id}`;
-    let res = await this.private.apiV5.put(url, challenge);
+    const apiV5 = await this.private.apiV5;
+    let res = await apiV5.put(url, challenge);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json()).result;
     if (res.status !== 200) throw new Error(res.content);
@@ -759,7 +779,8 @@ class ChallengesService {
   async getUserRolesInChallenge(challengeId) {
     const user = decodeToken(this.private.tokenV3);
     const url = `/resources?challengeId=${challengeId}&memberHandle=${user.handle}`;
-    const getResourcesResponse = await this.private.apiV5.get(url);
+    const apiV5 = await this.private.apiV5;
+    const getResourcesResponse = await apiV5.get(url);
     const resources = await getResourcesResponse.json();
     if (resources) return _.map(_.filter(resources, r => r.memberHandle === user.handle), 'roleId');
     throw new Error(`Failed to fetch user role from challenge #${challengeId}`);

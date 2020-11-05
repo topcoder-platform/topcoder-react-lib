@@ -26,7 +26,8 @@ class LookupService {
    */
   async getTypes() {
     try {
-      const res = await this.private.apiV5.get('/lookups/devices/types');
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get('/lookups/devices/types');
       return res.json();
     } catch (e) {
       throw e;
@@ -44,7 +45,8 @@ class LookupService {
     };
 
     try {
-      const res = await this.private.apiV5.get(`/lookups/devices/manufacturers?${qs.stringify(params)}`);
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get(`/lookups/devices/manufacturers?${qs.stringify(params)}`);
       return res.json();
     } catch (e) {
       throw e;
@@ -69,7 +71,8 @@ class LookupService {
     });
 
     try {
-      const res = await this.private.apiV5.get(`/lookups/devices?${qs.stringify(params)}`);
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get(`/lookups/devices?${qs.stringify(params)}`);
       return res.json();
     } catch (e) {
       throw e;
@@ -83,7 +86,8 @@ class LookupService {
    * @return {Promise} Resolves to the tags.
    */
   async getTags(params) {
-    const res = await this.private.api.get(`/tags/?filter=${encodeURIComponent(qs.stringify(params.filter))}&${qs.stringify(params.limit)}`);
+    const api = await this.private.api;
+    const res = await api.get(`/tags/?filter=${encodeURIComponent(qs.stringify(params.filter))}&${qs.stringify(params.limit)}`);
     return getApiResponsePayload(res);
   }
 
@@ -93,7 +97,8 @@ class LookupService {
    * @return {Promise} Resolves to the countries.
    */
   async getCountries() {
-    const res = await this.private.api.get('/members/lookup/countries');
+    const api = await this.private.api;
+    const res = await api.get('/members/lookup/countries');
     return getApiResponsePayload(res);
   }
 
@@ -102,7 +107,8 @@ class LookupService {
    * @return {Promise} Resolves to the countries.
    */
   async getAllCountries() {
-    const res = await this.private.apiV5.get('/lookups/countries');
+    const apiV5 = await this.private.apiV5;
+    const res = await apiV5.get('/lookups/countries');
     const jsonResult = await res.json();
     return jsonResult;
   }
@@ -113,7 +119,8 @@ class LookupService {
    */
   async getReviewTypes() {
     if (typeof this.private.tokenV3 !== 'undefined') {
-      const res = await this.private.apiV5.get('/reviewTypes');
+      const apiV5 = await this.private.apiV5;
+      const res = await apiV5.get('/reviewTypes');
       const jsonResult = await res.json();
       return jsonResult;
     }

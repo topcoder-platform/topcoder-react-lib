@@ -253,11 +253,12 @@ class ChallengesService {
    * Gets possible challenge types.
    * @return {Promise} Resolves to the array of challenge type names.
    */
-  getChallengeTypes() {
+  async getChallengeTypes() {
+    const apiV2 = await this.private.apiV2;
     return Promise.all([
-      this.private.apiV2.get('/design/challengetypes')
+      apiV2.get('/design/challengetypes')
         .then(res => (res.ok ? res.json() : new Error(res.statusText))),
-      this.private.apiV2.get('/develop/challengetypes')
+      apiV2.get('/develop/challengetypes')
         .then(res => (res.ok ? res.json() : new Error(res.statusText))),
     ]).then(([a, b]) => a.concat(b));
   }
@@ -266,8 +267,9 @@ class ChallengesService {
    * Gets possible challenge tags (technologies).
    * @return {Promise} Resolves to the array of tag strings.
    */
-  getChallengeTags() {
-    return this.private.api.get('/technologies')
+  async getChallengeTags() {
+    const api = await this.private.api;
+    return api.get('/technologies')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.result.status === 200
@@ -311,9 +313,10 @@ class ChallengesService {
    * @param {String} challengeId
    * @return {Promise}
    */
-  register(challengeId) {
+  async register(challengeId) {
+    const apiV2 = await this.private.apiV2;
     const endpoint = `/challenges/${challengeId}/register`;
-    return this.private.apiV2.postJson(endpoint)
+    return apiV2.postJson(endpoint)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
 
@@ -322,9 +325,10 @@ class ChallengesService {
    * @param {String} challengeId
    * @return {Promise}
    */
-  unregister(challengeId) {
+  async unregister(challengeId) {
+    const apiV2 = await this.private.apiV2;
     const endpoint = `/challenges/${challengeId}/unregister`;
-    return this.private.apiV2.post(endpoint)
+    return apiV2.post(endpoint)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)));
   }
 

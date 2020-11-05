@@ -78,44 +78,48 @@ describe('Test api', () => {
   }
 
   let api;
-  test('API v2 service works without auth token', () => {
-    api = getApi('V2');
+  test('API v2 service works without auth token', async () => {
+    api = await getApi('V2');
     return testApi(api, config.API.V2);
   });
 
-  test('API v2 service works with auth token', () => {
-    api = getApi('V2', 'TOKEN');
+  test('API v2 service works with auth token', async () => {
+    api = await getApi('V2', 'TOKEN');
     return testApi(api, config.API.V2, 'TOKEN');
   });
 
   test(
-    'API v2 service from the previous call is re-used, if token is the same',
-    () => expect(getApi('V2', 'TOKEN')).toBe(api),
+    'API v2 service from the previous call is re-used, if token is the same', async () => {
+      const api2 = await getApi('V2', 'TOKEN');
+      expect(api2).toBe(api);
+    },
   );
 
-  test('New API v2 service is created if token is new', () => {
-    const api2 = getApi('V2', 'TOKEN2');
+  test('New API v2 service is created if token is new', async () => {
+    const api2 = await getApi('V2', 'TOKEN2');
     expect(api2).not.toBe(api);
     return testApi(api2, config.API.V2, 'TOKEN2');
   });
 
-  test('API v3 service works without auth token', () => {
-    api = getApi('V3');
+  test('API v3 service works without auth token', async () => {
+    api = await getApi('V3');
     return testApi(api, config.API.V3);
   });
 
-  test('API v3 service works with auth token', () => {
-    api = getApi('V3', 'TOKEN');
+  test('API v3 service works with auth token', async () => {
+    api = await getApi('V3', 'TOKEN');
     return testApi(api, config.API.V3, 'TOKEN');
   });
 
   test(
-    'API v3 service from the previous call is re-used, if token is the same',
-    () => expect(getApi('V3', 'TOKEN')).toBe(api),
+    'API v3 service from the previous call is re-used, if token is the same', async () => {
+      const api2 = await getApi('V3', 'TOKEN');
+      return expect(api2).toBe(api);
+    },
   );
 
-  test('New API v3 service is created if token is new', () => {
-    const api2 = getApi('V3', 'TOKEN2');
+  test('New API v3 service is created if token is new', async () => {
+    const api2 = await getApi('V3', 'TOKEN2');
     expect(api2).not.toBe(api);
     return testApi(api2, config.API.V3, 'TOKEN2');
   });

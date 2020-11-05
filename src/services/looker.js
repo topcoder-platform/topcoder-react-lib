@@ -25,7 +25,8 @@ class LookerService {
    * @return {Promise} Resolves to the json data.
    */
   async getLooker(lookerId) {
-    const res = await this.private.api.get(`/looks/${lookerId}/run/json`);
+    const api = await this.private.api;
+    const res = await api.get(`/looks/${lookerId}/run/json`);
     return getLookerApiResponsePayload(res);
   }
 }

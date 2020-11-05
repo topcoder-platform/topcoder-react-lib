@@ -6,6 +6,7 @@
 import _ from 'lodash';
 import fetch from 'isomorphic-fetch';
 import { config, isomorphy } from 'topcoder-react-utils';
+import { isTokenExpired, getFreshToken, configureConnector } from '@topcoder-platform/tc-auth-lib';
 import { auth } from 'tc-core-library-js';
 import { delay } from '../utils/time';
 import {
@@ -251,12 +252,25 @@ const lastApiInstances = {};
  * @param {String} token Optional. Auth token for Topcoder API.
  * @return {Api} API service object.
  */
-export function getApi(version, token) {
+export async function getApi(version, token) {
+  let nToken = token;
+  if (isomorphy.isClientSide() && nToken && isTokenExpired(nToken)) {
+    configureConnector({
+      connectorUrl: config.URL.ACCOUNTS_APP_CONNECTOR,
+      frameId: 'tc-accounts-iframe',
+      frameTitle: 'Accounts authentication window',
+    });
+    console.log('currently Token: ', nToken);
+    console.log('token expired, getting new one...');
+    nToken = await getFreshToken();
+    console.log('newToken: ', nToken);
+  }
+
   if (!version || !config.API[version]) {
     throw new Error(`${version} is not a valid API version`);
   }
-  if (!lastApiInstances[version] || lastApiInstances[version].private.token !== token) {
-    lastApiInstances[version] = new Api(config.API[version], token);
+  if (!lastApiInstances[version] || lastApiInstances[version].private.token !== nToken) {
+    lastApiInstances[version] = new Api(config.API[version], nToken);
   }
   return lastApiInstances[version];
 }
@@ -266,10 +280,10 @@ export function getApi(version, token) {
  * DO NOT USE THEM FOR NEW IMPLEMENTATIONS.
  * USE THE getApi(version, token) FACTORY.
  */
-export const getApiV2 = token => getApi('V2', token);
-export const getApiV3 = token => getApi('V3', token);
-export const getApiV4 = token => getApi('V4', token);
-export const getApiV5 = token => getApi('V5', token);
+export const getApiV2 = async token => getApi('V2', token);
+export const getApiV3 = async token => getApi('V3', token);
+export const getApiV4 = async token => getApi('V4', token);
+export const getApiV5 = async token => getApi('V5', token);
 
 /**
  * Gets a valid TC M2M token, either requesting one from TC Auth0 API, or

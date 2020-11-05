@@ -209,7 +209,8 @@ class GroupService {
    * @return {Promise}
    */
   async addMember(groupId, memberId, membershipType) {
-    const response = await this.private.api.postJson(`/groups/${groupId}/members`, {
+    const api = await this.private.api;
+    const response = await api.postJson(`/groups/${groupId}/members`, {
       memberId, membershipType,
     });
 
@@ -234,7 +235,8 @@ class GroupService {
       url = `${url}/?includeSubGroups=true&oneLevel=false`;
     }
 
-    const response = await this.private.api.get(url);
+    const api = await this.private.api;
+    const response = await api.get(url);
     return handleApiResponse(response);
   }
 
@@ -326,7 +328,8 @@ class GroupService {
    *  which include user IDs, membership time, and some bookkeeping data.
    */
   async getMembers(groupId) {
-    const response = await this.private.api.get(`/groups/${groupId}/members`);
+    const api = await this.private.api;
+    const response = await api.get(`/groups/${groupId}/members`);
     return handleApiResponse(response);
   }
 
@@ -340,7 +343,8 @@ class GroupService {
   async getMembersCount(groupId, withSubGroups) {
     let url = `/groups/${groupId}/membersCount`;
     if (withSubGroups) url += '?includeSubGroups=true';
-    let res = await this.private.api.get(url);
+    const api = await this.private.api;
+    let res = await api.get(url);
     if (!res.ok) throw new Error(res.statusText);
     res = (await res.json());
     // if (!res.success) throw new Error(res.content);

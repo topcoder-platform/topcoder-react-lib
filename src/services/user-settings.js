@@ -36,8 +36,9 @@ class UserSettings {
    * @param {String} id
    * @return {Promise}
    */
-  deleteFilter(id) {
-    return this.private.api.delete(`/saved-searches/${id}`)
+  async deleteFilter(id) {
+    const api = await this.private.api;
+    return api.delete(`/saved-searches/${id}`)
       .then(res => (res.ok ? null : new Error(res.statusText)));
   }
 
@@ -45,8 +46,9 @@ class UserSettings {
    * Gets saved filters.
    * @return {Promise}
    */
-  getFilters() {
-    return this.private.api.get('/saved-searches')
+  async getFilters() {
+    const api = await this.private.api;
+    return api.get('/saved-searches')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => res.map((item) => {
       /* NOTE: Previous version of the challenge listing saved filter in
@@ -69,8 +71,9 @@ class UserSettings {
    * @param {String} name
    * @param {Object} filter
    */
-  saveFilter(name, filter) {
-    return this.private.api.postJson('/saved-searches', {
+  async saveFilter(name, filter) {
+    const api = await this.private.api;
+    return api.postJson('/saved-searches', {
       filter: JSON.stringify(filter),
       name,
       type: 'develop',
@@ -84,8 +87,9 @@ class UserSettings {
    * @param {Object} filter
    * @return {Promise}
    */
-  updateFilter(id, name, filter) {
-    return this.private.api.putJson(`/saved-searches/${id}`, {
+  async updateFilter(id, name, filter) {
+    const api = await this.private.api;
+    return api.putJson(`/saved-searches/${id}`, {
       filter: JSON.stringify(filter),
       name,
       type: 'develop',

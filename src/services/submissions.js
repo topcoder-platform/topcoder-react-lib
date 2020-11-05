@@ -59,7 +59,8 @@ class SubmissionsService {
     };
 
     const url = `/submissions?${qs.stringify(query, { encode: false })}`;
-    return this.private.apiV5.get(url)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.get(url)
       .then(checkErrorV5)
       .then(res => res.result);
   }
@@ -69,14 +70,15 @@ class SubmissionsService {
    * @returns {Promise} Resolves to the api response.
    */
   async getScanReviewIds() {
+    const apiV5 = await this.private.apiV5;
     const reviews = await Promise.all([
-      this.private.apiV5.get('/reviewTypes?name=AV Scan')
+      apiV5.get('/reviewTypes?name=AV Scan')
         .then(checkErrorV5)
         .then(res => res.result),
-      this.private.apiV5.get('/reviewTypes?name=SonarQube Review')
+      apiV5.get('/reviewTypes?name=SonarQube Review')
         .then(checkErrorV5)
         .then(res => res.result),
-      this.private.apiV5.get('/reviewTypes?name=Virus Scan')
+      apiV5.get('/reviewTypes?name=Virus Scan')
         .then(checkErrorV5)
         .then(res => res.result),
     ]).then(([av, sonar, virus]) => (_.concat(av, sonar, virus)));
@@ -91,7 +93,8 @@ class SubmissionsService {
    */
   async getSubmissionInformation(submissionId) {
     const url = `/submissions/${submissionId}`;
-    return this.private.apiV5.get(url)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.get(url)
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => res);
   }
@@ -102,7 +105,8 @@ class SubmissionsService {
    * @return {Promise} Resolves to the list of submission object.
    */
   async downloadSubmission(submissionId) {
-    return this.private.apiV5.get(`/submissions/${submissionId}/download`)
+    const apiV5 = await this.private.apiV5;
+    return apiV5.get(`/submissions/${submissionId}/download`)
       .then(response => response.blob());
   }
 }

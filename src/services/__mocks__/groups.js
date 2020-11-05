@@ -184,8 +184,9 @@ class GroupService {
    * @param {String} membershipType
    * @return {Promise}
    */
-  addMember(groupId, memberId, membershipType) {
-    return this.private.api.postJson(`/groups/${groupId}/members`, {
+  async addMember(groupId, memberId, membershipType) {
+    const api = await this.private.api;
+    return api.postJson(`/groups/${groupId}/members`, {
       param: { memberId, membershipType },
     }).then(handleApiResponse);
   }
@@ -202,12 +203,13 @@ class GroupService {
    *  whether the response should information about sub-groups, if any.
    * @return {Promise} On success resolves to the group data object.
    */
-  getGroup(groupId, withSubGroups = true) {
+  async getGroup(groupId, withSubGroups = true) {
+    const api = await this.private.api;
     let url = `/groups/${groupId}`;
     if (withSubGroups) {
       url = `${url}/getSubGroups?includeSubGroups=true&oneLevel=false`;
     }
-    return this.private.api.get(url).then(handleApiResponse);
+    return api.get(url).then(handleApiResponse);
   }
 
   /**
@@ -255,8 +257,9 @@ class GroupService {
    * @return {Promise} On sucess resolves to the array of member objects,
    *  which include user IDs, membership time, and some bookkeeping data.
    */
-  getMembers(groupId) {
-    return this.private.api.get(`/groups/${groupId}/members`)
+  async getMembers(groupId) {
+    const api = await this.private.api;
+    return api.get(`/groups/${groupId}/members`)
       .then(handleApiResponse);
   }
 

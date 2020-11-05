@@ -27,8 +27,9 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async getAllUserTraits(handle) {
+    const api = await this.private.api;
     // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
-    const res = await this.private.api.get(`/members/${handle.toLowerCase()}/traits`);
+    const res = await api.get(`/members/${handle.toLowerCase()}/traits`);
     return getApiResponsePayload(res);
   }
 
@@ -40,6 +41,7 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async addUserTrait(handle, traitId, data) {
+    const api = await this.private.api;
     const body = {
       param: [{
         traitId,
@@ -50,7 +52,7 @@ class UserTraitsService {
       }],
     };
 
-    const res = await this.private.api.postJson(`/members/${handle}/traits`, body);
+    const res = await api.postJson(`/members/${handle}/traits`, body);
     return getApiResponsePayload(res);
   }
 
@@ -62,6 +64,7 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async updateUserTrait(handle, traitId, data) {
+    const api = await this.private.api;
     const body = {
       param: [{
         traitId,
@@ -72,7 +75,7 @@ class UserTraitsService {
       }],
     };
 
-    const res = await this.private.api.putJson(`/members/${handle}/traits`, body);
+    const res = await api.putJson(`/members/${handle}/traits`, body);
     return getApiResponsePayload(res);
   }
 
@@ -83,7 +86,8 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async deleteUserTrait(handle, traitId) {
-    const res = await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
+    const api = await this.private.api;
+    const res = await api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
     return getApiResponsePayload(res);
   }
 }
