@@ -7,7 +7,7 @@
 /* global XMLHttpRequest */
 import _ from 'lodash';
 import qs from 'qs';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import logger from '../utils/logger';
 import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';

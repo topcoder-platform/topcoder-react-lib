@@ -7,13 +7,50 @@
 import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
+
+export function getFilterUrl(backendFilter, frontFilter) {
+  const ff = _.clone(frontFilter);
+  // eslint-disable-next-line object-curly-newline
+  const { tags, tracks, types, groups, events } = ff;
+  delete ff.tags;
+  delete ff.tracks;
+  delete ff.types;
+  delete ff.communityId;
+  delete ff.groups;
+  delete ff.events;
+
+  // console.log(ff);
+
+  let urlFilter = qs.stringify(_.reduce(ff, (result, value, key) => {
+    // eslint-disable-next-line no-param-reassign
+    if (value) result[key] = value;
+    return result;
+  }, {}));
+  // console.log(urlFilter);
+
+  const ftags = _.map(tags, val => `tags[]=${val}`).join('&');
+  const ftracks = _.map(_.reduce(tracks, (result, value, key) => {
+    // eslint-disable-next-line no-unused-expressions
+    tracks[key] && result.push(key);
+    return result;
+  }, []), val => `tracks[]=${val}`).join('&');
+  const ftypes = _.map(types, val => `types[]=${val}`).join('&');
+  const fgroups = _.map(groups, val => `groups[]=${val}`).join('&');
+  const fevents = _.map(events, val => `events[]=${val}`).join('&');
+  if (ftags.length > 0) urlFilter += `&${ftags}`;
+  if (ftracks.length > 0) urlFilter += `&${ftracks}`;
+  if (ftypes.length > 0) urlFilter += `&${ftypes}`;
+  if (fgroups.length > 9) urlFilter += `&${fgroups}`;
+  if (fevents.length > 0) urlFilter += `&${fevents}`;
+  return urlFilter;
+}
 
 export const ORDER_BY = {
   SUBMISSION_END_DATE: 'submissionEndDate',
@@ -133,27 +170,42 @@ class ChallengesService {
      */
     const getChallenges = async (
       endpoint,
-      filters = {},
-      params = {},
+      filter,
     ) => {
-      const query = {
-        ...filters,
-        ...params,
-      };
-      const url = `${endpoint}?${qs.stringify(query)}`;
-      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      let res = {};
+      if (_.some(filter.frontFilter.tracks, val => val)) {
+        const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
+        const url = `${endpoint}?${query}`;
+        res = await this.private.apiV5.get(url).then(checkErrorV5);
+      }
       return {
         challenges: res.result || [],
-        totalCount: res.headers.get('x-total'),
+        totalCount: res.headers ? res.headers.get('x-total') : 0,
         meta: {
-          allChallengesCount: res.headers.get('x-total'),
+          allChallengesCount: res.headers ? res.headers.get('x-total') : 0,
           myChallengesCount: 0,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
-          totalCount: res.headers.get('x-total'),
+          totalCount: res.headers ? res.headers.get('x-total') : 0,
         },
       };
     };
+
+    const getChallengeDetails = async (
+      endpoint,
+      legacyInfo,
+    ) => {
+      let query = '';
+      if (legacyInfo) {
+        query = `legacyId=${legacyInfo.legacyId}`;
+      }
+      const url = `${endpoint}?${query}`;
+      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      return {
+        challenges: res.result || [],
+      };
+    };
+
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
@@ -189,6 +241,7 @@ class ChallengesService {
       apiV2: getApi('V2', tokenV2),
       apiV3: getApi('V3', tokenV3),
       getChallenges,
+      getChallengeDetails,
       getMemberChallenges,
       tokenV2,
       tokenV3,
@@ -327,10 +380,10 @@ class ChallengesService {
     // condition based on ROUTE used for Review Opportunities, change if needed
     if (/^[\d]{5,8}$/.test(challengeId)) {
       isLegacyChallenge = true;
-      challenge = await this.private.getChallenges('/challenges/', { legacyId: challengeId })
+      challenge = await this.private.getChallengeDetails('/challenges/', { legacyId: challengeId })
         .then(res => res.challenges[0] || {});
     } else {
-      challenge = await this.private.getChallenges(`/challenges/${challengeId}`)
+      challenge = await this.private.getChallengeDetails(`/challenges/${challengeId}`)
         .then(res => res.challenges);
     }
 
@@ -464,8 +517,8 @@ class ChallengesService {
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  async getChallenges(filters, params) {
-    return this.private.getChallenges('/challenges/', filters, params)
+  async getChallenges(filter) {
+    return this.private.getChallenges('/challenges/', filter)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
@@ -642,7 +695,7 @@ class ChallengesService {
     let contentType;
     let url;
 
-    if (track === COMPETITION_TRACKS.DESIGN) {
+    if (track === COMPETITION_TRACKS.DES) {
       ({ api } = this.private);
       contentType = 'application/json';
       url = '/submissions/'; // The submission info is contained entirely in the JSON body
@@ -660,7 +713,7 @@ class ChallengesService {
     }, onProgress).then((res) => {
       const jres = JSON.parse(res);
       // Return result for Develop submission
-      if (track === COMPETITION_TRACKS.DEVELOP) {
+      if (track === COMPETITION_TRACKS.DEV) {
         return jres;
       }
       // Design Submission requires an extra "Processing" POST

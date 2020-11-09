@@ -4,8 +4,32 @@
  */
 
 import { createActions } from 'redux-actions';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getApiV3, getApiV5 } from '../services/api';
+import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
+
+/**
+ * Helper method that checks for HTTP error response v5 and throws Error in this case.
+ * @param {Object} res HTTP response object
+ * @return {Object} API JSON response object
+ * @private
+ */
+async function checkErrorV5(res) {
+  if (!res.ok) {
+    if (res.status === 403) {
+      setErrorIcon(ERROR_ICON_TYPES.API, 'Auth0', res.statusText);
+    }
+    throw new Error(res.statusText);
+  }
+  const jsonRes = (await res.json());
+  if (jsonRes.message) {
+    throw new Error(res.message);
+  }
+  return {
+    result: jsonRes,
+    headers: res.headers,
+  };
+}
 
 /**
  * @static
@@ -22,8 +46,7 @@ function loadProfileDone(userTokenV3) {
     apiV3.get(`/members/${user.handle}`)
       .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
     apiV5.get(`/groups?memberId=${user.userId}&membershipType=user`)
-      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
-      .then(res => (res.message ? new Error(res.message) : res)),
+      .then(checkErrorV5).then(res => res.result || []),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
 

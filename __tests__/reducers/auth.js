@@ -20,7 +20,7 @@ const mockActions = {
 jest.setMock(require.resolve('actions/auth'), mockActions);
 jest.setMock(require.resolve('actions/profile'), mockActions);
 
-jest.setMock('tc-accounts', {
+jest.setMock('@topcoder-platform/tc-auth-lib', {
   decodeToken: () => 'User object',
   isTokenExpired: () => false,
 });

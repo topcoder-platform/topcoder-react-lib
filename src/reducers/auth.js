@@ -13,7 +13,7 @@
  */
 
 import _ from 'lodash';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { redux } from 'topcoder-react-utils';
 import actions from '../actions/auth';
 import profileActions from '../actions/profile';

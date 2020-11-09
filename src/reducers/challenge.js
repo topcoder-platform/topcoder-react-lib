@@ -173,7 +173,7 @@ function onFetchCheckpointsDone(state, action) {
       loadingCheckpoints: false,
     };
   }
-  if (state.details && state.details.legacyId === action.payload.challengeId) {
+  if (state.details && `${state.details.legacyId}` === `${action.payload.challengeId}`) {
     return {
       ...state,
       checkpoints: action.payload.checkpoints,
@@ -471,7 +471,7 @@ export function factory(options = {}) {
       const challengeDetails = _.get(res, 'payload', {});
       const track = _.get(challengeDetails, 'track', '');
       let checkpointsPromise = null;
-      if (track === COMPETITION_TRACKS.DESIGN) {
+      if (track === COMPETITION_TRACKS.DES) {
         const p = _.get(challengeDetails, 'phases', [])
           .filter(x => x.name === 'Checkpoint Review');
         if (p.length && !p[0].isOpen) {
