@@ -237,25 +237,6 @@ function onGetAllCountriesDone(state, { payload, error }) {
 }
 
 /**
- * Handles LOOKUP/GET_TECHNOLOGIES_DONE action.
- * @param {Object} state
- * @param {Object} action Payload will be JSON from api call
- * @return {Object} New state
- */
-function onGetTechnologiesDone(state, { payload, error }) {
-  if (error) {
-    logger.error('Failed to get technologies', payload);
-    return { ...state, loadingTechnologiesError: true };
-  }
-
-  return ({
-    ...state,
-    loadingTechnologiesError: false,
-    technologies: payload,
-  });
-}
-
-/**
  * Creates a new Lookup reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Lookup reducer.
@@ -279,8 +260,6 @@ function create(initialState = {}) {
     [a.getReviewTypesDone]: onGetReviewTypesDone,
     [a.getAllCountriesInit]: state => state,
     [a.getAllCountriesDone]: onGetAllCountriesDone,
-    [a.getTechnologiesInit]: state => state,
-    [a.getTechnologiesDone]: onGetTechnologiesDone,
   }, _.defaults(initialState, {
     skillTags: [],
     countries: [],
@@ -294,7 +273,6 @@ function create(initialState = {}) {
     osPage: 1,
     hasMoreOses: false,
     reviewTypes: [],
-    technologies: [],
   }));
 }
 

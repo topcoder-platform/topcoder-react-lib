@@ -15,7 +15,6 @@ class LookupService {
   constructor(tokenV3) {
     this.private = {
       api: getApi('V3', tokenV3),
-      apiV4: getApi('V4', tokenV3),
       apiV5: getApi('V5', tokenV3),
       tokenV3,
     };
@@ -119,15 +118,6 @@ class LookupService {
       return jsonResult;
     }
     return [];
-  }
-
-  /**
-   * Gets all technologies.
-   * @return {Promise} Resolves to the review types.
-   */
-  async getTechnologies() {
-    const res = await this.private.apiV4.get('/technologies');
-    return getApiResponsePayload(res);
   }
 }
 

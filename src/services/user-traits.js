@@ -4,17 +4,8 @@
  * via API V3.
  */
 import toCapitalCase from 'to-capital-case';
+import { getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
-
-/**
- * Private. Handles given response from the member's traits API.
- * @param {Object} response
- * @return {Promise} On success resolves to the data fetched from the API.
- */
-function handleApiResponse(response) {
-  if (!response.ok) throw new Error(response.statusText);
-  return response.json();
-}
 
 /**
  * Service class.
@@ -25,7 +16,7 @@ class UserTraitsService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V5', tokenV3),
+      api: getApi('V3', tokenV3),
       tokenV3,
     };
   }
@@ -38,7 +29,7 @@ class UserTraitsService {
   async getAllUserTraits(handle) {
     // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
     const res = await this.private.api.get(`/members/${handle.toLowerCase()}/traits`);
-    return handleApiResponse(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -49,17 +40,18 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async addUserTrait(handle, traitId, data) {
-    const body = [{
-      traitId,
-      categoryName: toCapitalCase(traitId),
-      traits: {
+    const body = {
+      param: [{
         traitId,
-        data,
-      },
-    }];
+        categoryName: toCapitalCase(traitId),
+        traits: {
+          data,
+        },
+      }],
+    };
 
     const res = await this.private.api.postJson(`/members/${handle}/traits`, body);
-    return handleApiResponse(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -70,16 +62,18 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async updateUserTrait(handle, traitId, data) {
-    const body = [{
-      traitId,
-      categoryName: toCapitalCase(traitId),
-      traits: {
-        data,
-      },
-    }];
+    const body = {
+      param: [{
+        traitId,
+        categoryName: toCapitalCase(traitId),
+        traits: {
+          data,
+        },
+      }],
+    };
 
     const res = await this.private.api.putJson(`/members/${handle}/traits`, body);
-    return handleApiResponse(res);
+    return getApiResponsePayload(res);
   }
 
   /**
@@ -89,7 +83,8 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async deleteUserTrait(handle, traitId) {
-    await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
+    const res = await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
+    return getApiResponsePayload(res);
   }
 }
 

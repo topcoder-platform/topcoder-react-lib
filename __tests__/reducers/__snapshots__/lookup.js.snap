@@ -27,7 +27,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -59,7 +58,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -85,7 +83,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -111,7 +108,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -129,7 +125,6 @@ Object {
   "oses": Array [],
   "reviewTypes": Array [],
   "skillTags": Array [],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -161,7 +156,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -193,7 +187,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -219,7 +212,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -245,7 +237,6 @@ Object {
       "status": "APPROVED",
     },
   ],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
@@ -263,7 +254,6 @@ Object {
   "oses": Array [],
   "reviewTypes": Array [],
   "skillTags": Array [],
-  "technologies": Array [],
   "types": Array [],
 }
 `;
