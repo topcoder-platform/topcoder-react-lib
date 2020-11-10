@@ -7,7 +7,7 @@
 import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import { createActions } from 'redux-actions';
-import { decodeToken } from 'tc-accounts';
+import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
 import { getApi } from '../services/api';
@@ -248,7 +248,7 @@ function loadResultsInit(challengeId) {
  * @return {Action}
  */
 function loadResultsDone(auth, challengeId, type) {
-  return getApi('V2', auth.tokenV2)
+  return getApi('V2')
     .fetch(`/${type}/challenges/result/${challengeId}`)
     .then(response => response.json())
     .then(response => ({
@@ -273,7 +273,7 @@ function fetchCheckpointsInit() {}
  */
 function fetchCheckpointsDone(tokenV2, challengeId) {
   const endpoint = `/design/challenges/checkpoint/${challengeId}`;
-  return getApi('V2', tokenV2).fetch(endpoint)
+  return getApi('V2').fetch(endpoint)
     .then((response) => {
       if (response.status !== 200) {
         throw response.status;
