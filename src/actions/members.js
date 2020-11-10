@@ -143,6 +143,7 @@ async function getActiveChallengesInit(handle, uuid) {
  * @param {String} tokenV3
  * @returns {Object} Payload
  */
+/* eslint-disable no-unused-vars */
 async function getActiveChallengesDone(handle, uuid, tokenV3) {
   const filter = { status: 'Active' };
   const service = getChallengesService(tokenV3);
@@ -162,6 +163,38 @@ async function getActiveChallengesDone(handle, uuid, tokenV3) {
   }
   const calls = [
     getAll(params => service.getUserChallenges(memberInfo.userId, filter, params)),
+  ];
+
+  const [challenges] = await Promise.all(calls);
+
+  return { handle, challenges, uuid };
+}
+/* eslint-enable no-unused-vars */
+
+/**
+ * @static
+ * @desc Payload creator for the action that loads the member active challenges from v4 api.
+ * @param {String} handle
+ * @param {String} uuid
+ * @param {String} tokenV3
+ * @returns {Object} Payload
+ */
+async function getActiveChallengesV4Done(handle, uuid, tokenV3) {
+  const filter = { status: 'Active' };
+  const service = getChallengesService(tokenV3);
+
+  function getAll(getter, page = 0, prev = null) {
+    const PAGE_SIZE = 50;
+    return getter({
+      limit: PAGE_SIZE,
+      offset: page * PAGE_SIZE,
+    }).then(({ challenges: chunk }) => {
+      if (!chunk.length) return prev || [];
+      return getAll(getter, 1 + page, prev ? prev.concat(chunk) : chunk);
+    });
+  }
+  const calls = [
+    getAll(params => service.getUserChallengesV4(handle, filter, params)),
   ];
 
   const [challenges] = await Promise.all(calls);
@@ -243,6 +276,7 @@ async function getSubtrackChallengesInit(handle, uuid) {
  * @param {Boolean} whether to refresh.
  * @return {Action}
  */
+/* eslint-disable no-unused-vars */
 async function getSubtrackChallengesDone(
   uuid, handle, tokenV3, track, subTrack, pageNum, pageSize,
   refresh, userId,
@@ -261,6 +295,46 @@ async function getSubtrackChallengesDone(
 
   const service = getChallengesService(tokenV3);
   return service.getUserChallenges(userId, filter, params)
+    .then(res => ({
+      uuid,
+      challenges: res.challenges,
+      refresh,
+      handle,
+    }));
+}
+/* eslint-enable no-unused-vars */
+
+/**
+ * @static
+ * @desc Create an action that loads the member subtrack challenges from v4 api.
+ * @param {String} uuid Operation UUID.
+ * @param {String} handle Member handle.
+ * @param {String} tokenV3 v3 auth token.
+ * @param {String} track Main track name.
+ * @param {String} subTrack Subtrack name.
+ * @param {Number} start page.
+ * @param {Number} page size.
+ * @param {Boolean} whether to refresh.
+ * @return {Action}
+ */
+async function getSubtrackChallengesV4Done(
+  uuid, handle, tokenV3, track, subTrack, pageNum, pageSize,
+  refresh,
+) {
+  const filter = {
+    status: 'Completed',
+    hasUserSubmittedForReview: 'true',
+    track,
+    subTrack,
+  };
+
+  const params = {};
+  params.orderBy = 'submissionEndDate desc';
+  params.limit = pageSize;
+  params.offset = (pageNum - 1) * pageSize; // pageNum - 1 to match with v4 offset
+
+  const service = getChallengesService(tokenV3);
+  return service.getUserChallengesV4(handle, filter, params)
     .then(res => ({
       uuid,
       challenges: res.challenges,
@@ -399,9 +473,9 @@ export default createActions({
     GET_STATS_DISTRIBUTION_INIT: getStatsDistributionInit,
     GET_STATS_DISTRIBUTION_DONE: getStatsDistributionDone,
     GET_ACTIVE_CHALLENGES_INIT: getActiveChallengesInit,
-    GET_ACTIVE_CHALLENGES_DONE: getActiveChallengesDone,
+    GET_ACTIVE_CHALLENGES_DONE: getActiveChallengesV4Done,
     GET_SUBTRACK_CHALLENGES_INIT: getSubtrackChallengesInit,
-    GET_SUBTRACK_CHALLENGES_DONE: getSubtrackChallengesDone,
+    GET_SUBTRACK_CHALLENGES_DONE: getSubtrackChallengesV4Done,
     GET_USER_SRM_INIT: getUserSRMInit,
     GET_USER_SRM_DONE: getUserSRMDone,
     GET_USER_MARATHON_INIT: getUserMarathonInit,
