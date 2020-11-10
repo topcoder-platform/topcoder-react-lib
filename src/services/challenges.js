@@ -573,6 +573,25 @@ class ChallengesService {
   }
 
   /**
+   * Gets challenges of the specified user from v4 api.
+   * @param {String} username User name whose challenges we want to fetch.
+   * @return {Promise} Resolves to the api response.
+   */
+  async getUserChallengesV4(username, filters, params) {
+    const endpoint = `/members/${username.toLowerCase()}/challenges/`;
+    const query = {
+      filter: qs.stringify(filters, { encode: false }),
+      ...params,
+    };
+    const url = `${endpoint}?${qs.stringify(query)}`;
+    const res = await this.private.api.get(url).then(checkError);
+    return {
+      challenges: res.content || [],
+      totalCount: res.metadata.totalCount,
+    };
+  }
+
+  /**
    * Gets user resources.
    * @param {String} userId User id whose challenges we want to fetch.
    * @param {Number} page Current page for paginated API response (default 1)
