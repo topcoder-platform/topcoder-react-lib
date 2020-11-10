@@ -72,8 +72,6 @@ Object {
       "getReviewTypesInit": [Function],
       "getSkillTagsDone": [Function],
       "getSkillTagsInit": [Function],
-      "getTechnologiesDone": [Function],
-      "getTechnologiesInit": [Function],
       "getTypesDone": [Function],
       "getTypesInit": [Function],
     },

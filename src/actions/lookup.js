@@ -173,22 +173,6 @@ function getAllCountriesDone(tokenV3) {
   return getService(tokenV3).getAllCountries();
 }
 
-/**
- * @static
- * @desc Creates an action that signals beginning of getting all technologies.
- * @return {Action}
- */
-function getTechnologiesInit() {}
-
-/**
- * @static
- * @desc Creates an action that gets all technologies.
- * @return {Action}
- */
-function getTechnologiesDone() {
-  return getService().getTechnologies();
-}
-
 export default createActions({
   LOOKUP: {
     GET_TYPES_INIT: getTypesInit,
@@ -207,7 +191,5 @@ export default createActions({
     GET_REVIEW_TYPES_DONE: getReviewTypesDone,
     GET_ALL_COUNTRIES_INIT: getAllCountriesInit,
     GET_ALL_COUNTRIES_DONE: getAllCountriesDone,
-    GET_TECHNOLOGIES_INIT: getTechnologiesInit,
-    GET_TECHNOLOGIES_DONE: getTechnologiesDone,
   },
 });
