@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "1.1.1",
+  "version": "1000.25.7",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
