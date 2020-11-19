@@ -94,7 +94,8 @@ export function normalizeChallenge(challenge, username) {
   if (submissionEndTimestamp) {
     submissionEndTimestamp = submissionEndTimestamp.scheduledEndDate;
   }
-  const prizes = (challenge.prizeSets[0] && challenge.prizeSets[0].prizes) || [];
+  const placementPrizes = _.find(challenge.prizeSets, { type: 'placement' });
+  const { prizes } = placementPrizes || [];
   _.defaults(challenge, {
     communities: new Set([COMPETITION_TRACKS[challenge.track]]),
     groups,
