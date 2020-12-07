@@ -106,8 +106,8 @@ function filterByRegistrationOpen(challenge, state) {
  * @return {Boolean} True if opp satifies the filter
  */
 function filterByReviewOpportunityType(opp, state) {
-  if (!state.reviewOpportunityType) return true;
-  return opp.type === state.reviewOpportunityType;
+  if (state.reviewOpportunityTypes.length === 0) return false;
+  return state.reviewOpportunityTypes.includes(opp.type);
 }
 
 function filterByStartDate(challenge, state) {
@@ -447,14 +447,16 @@ export function setEndDate(state, date) {
 /**
  * Clones the state and sets the review opportunity type.
  * @param {Object} state
- * @param {Array} reviewOpportunityType Possible values found in utils/tc REVIEW_OPPORTUNITY_TYPES
+ * @param {Array} reviewOpportunityTypes Possible values found in utils/tc REVIEW_OPPORTUNITY_TYPES
  * @return {Object}
  */
-export function setReviewOpportunityType(state, reviewOpportunityType) {
-  if (reviewOpportunityType) return { ...state, reviewOpportunityType };
-  if (!state.reviewOpportunityType) return state;
+export function setReviewOpportunityType(state, reviewOpportunityTypes) {
+  if (reviewOpportunityTypes && reviewOpportunityTypes.length) {
+    return { ...state, reviewOpportunityTypes };
+  }
+  if (!state.reviewOpportunityTypes) return state;
   const res = _.clone(state);
-  delete res.reviewOpportunityType;
+  delete res.reviewOpportunityTypes;
   return res;
 }
 
