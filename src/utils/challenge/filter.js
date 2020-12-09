@@ -158,10 +158,10 @@ function filterByEvents(challenge, state) {
 }
 
 function filterByText(challenge, state) {
-  if (!state.name) return true;
+  if (!state.search) return true;
   const str = `${challenge.name} ${challenge.tags} ${challenge.platforms} ${challenge.tags}`
     .toLowerCase();
-  return str.includes(state.name.toLowerCase());
+  return str.includes(state.search.toLowerCase());
 }
 
 function filterByTrack(challenge, state) {
