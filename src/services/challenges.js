@@ -174,7 +174,8 @@ class ChallengesService {
       filter,
     ) => {
       let res = {};
-      if (_.some(filter.frontFilter.tracks, val => val)) {
+      if (_.some(filter.frontFilter.tracks, val => val)
+        && !_.isEqual(filter.frontFilter.types, [])) {
         const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
         const url = `${endpoint}?${query}`;
         res = await this.private.apiV5.get(url).then(checkErrorV5);
