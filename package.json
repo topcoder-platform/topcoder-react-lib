@@ -31,7 +31,7 @@
     "lint:js": "./node_modules/.bin/eslint --ext .js,.jsx .",
     "test": "npm run lint && npm run jest"
   },
-  "version": "1.1.4",
+  "version": "1.1.5",
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
@@ -50,7 +50,7 @@
     "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
     "to-capital-case": "^1.0.0",
     "topcoder-react-utils": "0.7.5",
-    "@topcoder-platform/tc-auth-lib": "git+https://github.com/topcoder-platform/tc-auth-lib.git#1.0.1"
+    "@topcoder-platform/tc-auth-lib": "git+https://github.com/topcoder-platform/tc-auth-lib.git#1.0.4"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.4",
