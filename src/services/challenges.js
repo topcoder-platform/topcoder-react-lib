@@ -514,17 +514,86 @@ class ChallengesService {
   }
 
   /**
+   * Gets challenges recommend.
+   */
+  async getChallengesRecommend(challenges) {
+    // No Open Recommendation Challenges that match their skills
+    // return Promise.resolve([]);
+    const { tokenV2, tokenV3 } = this.private.tokenV2;
+    if ((!tokenV2 && !tokenV3) || !challenges || challenges.length < 4) {
+      return Promise.resolve([]);
+    }
+    return Promise.resolve([
+      {
+        'challenge-id': challenges[0].id,
+        'match-score': 0.25,
+      },
+      {
+        'challenge-id': challenges[1].id,
+        'match-score': 0.01,
+      },
+      {
+        'challenge-id': challenges[2].id,
+        'match-score': -0.98,
+      },
+      {
+        'challenge-id': challenges[3].id,
+        'match-score': -0.24,
+      },
+    ]);
+  }
+
+  /**
    * Gets challenges.
    * @param {Object} filters Optional.
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
   async getChallenges(filter) {
-    return this.private.getChallenges('/challenges/', filter)
-      .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item));
-        return res;
-      });
+    const filterQuery = _.cloneDeep(filter);
+    const types = _.get(filterQuery, 'frontFilter.types');
+    const sortBy = _.get(filterQuery, 'frontFilter.sortBy');
+    const sortOrder = _.get(filterQuery, 'frontFilter.sortOrder');
+    const currentPhaseName = _.get(filterQuery, 'frontFilter.currentPhaseName');
+    let isRecommended = false;
+    if (types) {
+      isRecommended = types.indexOf('Recommended') >= 0;
+      filterQuery.frontFilter.types = null;
+    }
+    let isSortByBestMatch = false;
+    if (sortBy === 'best-match') {
+      filterQuery.frontFilter.sortBy = null;
+      isSortByBestMatch = true;
+    }
+    const challengesResults = await this.private.getChallenges(
+      '/challenges/',
+      filterQuery,
+    );
+    challengesResults.challenges.forEach(item => normalizeChallenge(item));
+    if (isRecommended && currentPhaseName === 'Registration') {
+      const recommendedChallenges = await this.getChallengesRecommend(
+        challengesResults.challenges,
+      );
+      challengesResults.challenges = _.filter(
+        challengesResults.challenges,
+        (c) => {
+          const match = _.find(recommendedChallenges, { 'challenge-id': c.id });
+          if (match) {
+            c['match-score'] = match['match-score'];
+            return true;
+          }
+          return false;
+        },
+      );
+      if (isSortByBestMatch) {
+        challengesResults.challenges = _.orderBy(
+          challengesResults.challenges,
+          ['match-score'],
+          [sortOrder],
+        );
+      }
+    }
+    return challengesResults;
   }
 
   /**
