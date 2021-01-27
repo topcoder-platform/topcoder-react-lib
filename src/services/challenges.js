@@ -14,6 +14,7 @@ import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
+import mockRecommendedChallenges from './__mocks__/data/recommended-challenges.json';
 
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
@@ -185,6 +186,7 @@ class ChallengesService {
         totalCount: res.headers ? res.headers.get('x-total') : 0,
         meta: {
           allChallengesCount: res.headers ? res.headers.get('x-total') : 0,
+          allRecommendedChallengesCount: 0,
           myChallengesCount: 0,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
@@ -474,12 +476,21 @@ class ChallengesService {
    * @return {Promise} Resolves to the array of subtrack names.
    */
   getChallengeTypes() {
+    const recommended = {
+      id: 'e06b074d-43c2-4e7e-9cd3-c43e13d51b40',
+      name: 'Recommended',
+      description: "Available challenges that match competitor's skills",
+      isActive: true,
+      isTask: false,
+      abbreviation: 'REC',
+    };
+
     return this.private.apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
           ? new Error(res.message)
-          : res
+          : [...res, recommended]
       ));
   }
 
@@ -525,6 +536,38 @@ class ChallengesService {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
       });
+  }
+
+  /**
+   * TODO: Integrate with real API.
+   * Gets recommended challenges.
+   * @param {Object} sort
+   * @param {Object} filter
+   * @return {Promise} Resolves to the api response.
+   */
+  async getRecommendedChallenges(sort, filter) {
+    let sortedChallenges = [];
+    const tracks = [];
+    if (filter.tracks.DS) tracks.push('Data Science');
+    if (filter.tracks.Des) tracks.push('Design');
+    if (filter.tracks.Dev) tracks.push('Development');
+    if (filter.tracks.QA) tracks.push('Quality Assurance');
+    if (filter.openForRegistration === 'best-match' || sort.openForRegistration === {}) {
+      sortedChallenges = _.sortBy(mockRecommendedChallenges, ['matchScore']);
+    } else {
+      sortedChallenges = _.sortBy(mockRecommendedChallenges, [sort.openForRegistration]);
+    }
+
+    const filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
+    const mockResponse = _.clone(this.private.tokenV3 ? filteredChallenges : []);
+
+    const sleep = m => new Promise(r => setTimeout(r, m));
+    await sleep(1000);
+
+    return Promise.resolve({
+      challenges: mockResponse,
+      meta: mockResponse.length,
+    });
   }
 
   /**
