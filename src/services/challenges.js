@@ -519,7 +519,7 @@ class ChallengesService {
   async getChallengesRecommend(challenges) {
     // No Open Recommendation Challenges that match their skills
     // return Promise.resolve([]);
-    const { tokenV2, tokenV3 } = this.private.tokenV2;
+    const { tokenV2, tokenV3 } = this.private;
     if ((!tokenV2 && !tokenV3) || !challenges || challenges.length < 4) {
       return Promise.resolve([]);
     }
