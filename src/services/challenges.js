@@ -547,7 +547,13 @@ class ChallengesService {
    */
   async getRecommendedChallenges(sort, filter) {
     let sortedChallenges = [];
+
     const tracks = [];
+    const types = [];
+    if (filter.types.includes('CH')) types.push('Challenge');
+    if (filter.types.includes('F2F')) types.push('First2Finish');
+    if (filter.types.includes('TSK')) types.push('Task');
+
     if (filter.tracks.DS) tracks.push('Data Science');
     if (filter.tracks.Des) tracks.push('Design');
     if (filter.tracks.Dev) tracks.push('Development');
@@ -558,7 +564,8 @@ class ChallengesService {
       sortedChallenges = _.sortBy(mockRecommendedChallenges, [sort.openForRegistration]);
     }
 
-    const filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
+    let filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
+    filteredChallenges = filteredChallenges.filter(item => types.includes(item.type));
     const mockResponse = _.clone(this.private.tokenV3 ? filteredChallenges : []);
 
     const sleep = m => new Promise(r => setTimeout(r, m));
