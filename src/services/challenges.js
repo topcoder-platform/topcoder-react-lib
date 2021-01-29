@@ -558,8 +558,12 @@ class ChallengesService {
     if (filter.tracks.Des) tracks.push('Design');
     if (filter.tracks.Dev) tracks.push('Development');
     if (filter.tracks.QA) tracks.push('Quality Assurance');
-    if (filter.openForRegistration === 'best-match' || sort.openForRegistration === {}) {
-      sortedChallenges = _.sortBy(mockRecommendedChallenges, ['matchScore']);
+    if (sort.openForRegistration === 'bestMatch' || sort.openForRegistration === {}) {
+      const ascArray = _.sortBy(mockRecommendedChallenges, [
+        item => Math.trunc((parseFloat(item.matchScore) + 1.0) / 2.0 * 100.0)]);
+      sortedChallenges = _.reverse(ascArray);
+    } else if (sort.openForRegistration === 'name') {
+      sortedChallenges = _.sortBy(mockRecommendedChallenges, ['name']);
     } else {
       sortedChallenges = _.sortBy(mockRecommendedChallenges, [sort.openForRegistration]);
     }
