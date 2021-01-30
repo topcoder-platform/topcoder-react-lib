@@ -539,46 +539,50 @@ class ChallengesService {
   }
 
   /**
-   * TODO: Integrate with real API.
-   * Gets recommended challenges.
-   * @param {Object} sort
-   * @param {Object} filter
+   * Gets challenges.
+   * @param {Object} filters Optional.
+   * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
   async getRecommendedChallenges(sort, filter) {
-    let sortedChallenges = [];
+    return this.private.getChallenges('/challenges/', { frontFilter: filter })
+      .then((res) => {
+        res.challenges.forEach(item => normalizeChallenge(item));
+        let sortedChallenges = [];
+        const challenges = res.challenges.slice(0, 8).map((item, index) => ({
+          ...item,
+          matchScore: mockRecommendedChallenges[index].matchScore,
+        }));
 
-    const tracks = [];
-    const types = [];
-    if (filter.types.includes('CH')) types.push('Challenge');
-    if (filter.types.includes('F2F')) types.push('First2Finish');
-    if (filter.types.includes('TSK')) types.push('Task');
+        const tracks = [];
+        const types = [];
+        if (filter.types.includes('CH')) types.push('Challenge');
+        if (filter.types.includes('F2F')) types.push('First2Finish');
+        if (filter.types.includes('TSK')) types.push('Task');
 
-    if (filter.tracks.DS) tracks.push('Data Science');
-    if (filter.tracks.Des) tracks.push('Design');
-    if (filter.tracks.Dev) tracks.push('Development');
-    if (filter.tracks.QA) tracks.push('Quality Assurance');
-    if (sort.openForRegistration === 'bestMatch' || sort.openForRegistration === {}) {
-      const ascArray = _.sortBy(mockRecommendedChallenges, [
-        item => Math.trunc((parseFloat(item.matchScore) + 1.0) / 2.0 * 100.0)]);
-      sortedChallenges = _.reverse(ascArray);
-    } else if (sort.openForRegistration === 'name') {
-      sortedChallenges = _.sortBy(mockRecommendedChallenges, ['name']);
-    } else {
-      sortedChallenges = _.sortBy(mockRecommendedChallenges, [sort.openForRegistration]);
-    }
+        if (filter.tracks.DS) tracks.push('Data Science');
+        if (filter.tracks.Des) tracks.push('Design');
+        if (filter.tracks.Dev) tracks.push('Development');
+        if (filter.tracks.QA) tracks.push('Quality Assurance');
+        if (sort.openForRegistration === 'bestMatch' || sort.openForRegistration === {}) {
+          const ascArray = _.sortBy(challenges, [
+            item => Math.trunc((parseFloat(item.matchScore) + 1.0) / 2.0 * 100.0)]);
+          sortedChallenges = _.reverse(ascArray);
+        } else if (sort.openForRegistration === 'name') {
+          sortedChallenges = _.sortBy(challenges, ['name']);
+        } else {
+          sortedChallenges = _.sortBy(challenges, [sort.openForRegistration]);
+        }
 
-    let filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
-    filteredChallenges = filteredChallenges.filter(item => types.includes(item.type));
-    const mockResponse = _.clone(this.private.tokenV3 ? filteredChallenges : []);
+        let filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
+        filteredChallenges = filteredChallenges.filter(item => types.includes(item.type));
+        const mockResponse = _.clone(this.private.tokenV3 ? filteredChallenges : []);
 
-    const sleep = m => new Promise(r => setTimeout(r, m));
-    await sleep(1000);
-
-    return Promise.resolve({
-      challenges: mockResponse,
-      meta: mockResponse.length,
-    });
+        return {
+          challenges: mockResponse,
+          meta: mockResponse.length,
+        };
+      });
   }
 
   /**
