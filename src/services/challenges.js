@@ -545,7 +545,9 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getRecommendedChallenges(sort, filter) {
-    return this.private.getChallenges('/challenges/', { frontFilter: filter })
+    return this.private.getChallenges('/challenges/', {
+      frontFilter: { ...filter, types: ['TSK', 'CH', 'F2F'] },
+    })
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         let sortedChallenges = [];
