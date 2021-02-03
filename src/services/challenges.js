@@ -34,29 +34,26 @@ export const ORDER_BY = {
  * @param {String} username Optional.
  * @return {Object} Normalized challenge object.
  */
-export function normalizeChallengeDetails(challenge, filtered, user, username) {
+export function normalizeChallengeDetails(challenge, username) {
   // Normalize exising data to make it consistent with the rest of the code
   const finalChallenge = {
     ...challenge,
-
-    id: challenge.challengeId,
-    reliabilityBonus: _.get(filtered, 'reliabilityBonus', 0),
-    status: (challenge.currentStatus || '').toUpperCase(),
-
-    allPhases: [],
-    currentPhases: [],
-    name: challenge.challengeName || challenge.challengeTitle,
+    id: challenge.id,
+    status: (challenge.status || '').toUpperCase(),
+    allPhases: challenge.phases,
+    currentPhases: challenge.currentPhaseNames,
+    name: challenge.name,
     projectId: Number(challenge.projectId),
-    forumId: Number(challenge.forumId),
+    forumId: Number(challenge.legacy.forumId),
     introduction: challenge.introduction || '',
-    detailedRequirements: challenge.detailedRequirements === 'null' ? '' : challenge.detailedRequirements,
+    detailedRequirements: challenge.description === 'null' ? '' : challenge.description,
     finalSubmissionGuidelines: challenge.finalSubmissionGuidelines === 'null' ? '' : challenge.finalSubmissionGuidelines,
     screeningScorecardId: Number(challenge.screeningScorecardId),
-    reviewScorecardId: Number(challenge.reviewScorecardId),
+    reviewScorecardId: Number(challenge.legacy.reviewScorecardId),
     numberOfCheckpointsPrizes: challenge.numberOfCheckpointsPrizes,
     topCheckPointPrize: challenge.topCheckPointPrize,
     submissionsViewable: challenge.submissionsViewable || 'false',
-    reviewType: challenge.reviewType,
+    reviewType: challenge.legacy.reviewType,
     allowStockArt: challenge.allowStockArt === 'true',
     fileTypes: challenge.filetypes || [],
     environment: challenge.environment,
@@ -65,18 +62,17 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     submissionLimit: Number(challenge.submissionLimit) || 0,
     drPoints: challenge.digitalRunPoints,
     directUrl: challenge.directUrl,
-    technologies: challenge.technologies || challenge.technology || [],
+    technologies: challenge.tags || [],
     platforms: challenge.platforms || [],
-    prizes: challenge.prize || challenge.prizes || [],
-    events: _.map(challenge.event, e => ({
-      eventName: e.eventShortDesc,
+    prizes: challenge.prizeSets || [],
+    events: _.map(challenge.events, e => ({
+      eventName: e.name,
       eventId: e.id,
-      description: e.eventDescription,
     })),
     terms: challenge.terms,
     submissions: challenge.submissions,
-    track: _.toUpper(challenge.challengeCommunity),
-    subTrack: challenge.subTrack,
+    track: _.toUpper(challenge.track ? challenge.track : challenge.legacy.track),
+    subTrack: challenge.legacy.subTrack,
     checkpoints: challenge.checkpoints,
     documents: challenge.documents || [],
     numRegistrants: challenge.numberOfRegistrants,
@@ -84,77 +80,20 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
     registrants: challenge.registrants || [],
   };
 
-  // Winners have different field names, needs to be normalized to match `filtered` and `challenge`
-  finalChallenge.winners = _.map(
-    challenge.winners,
-    (winner, index) => ({
-      ...winner,
-      handle: winner.submitter,
-      placement: winner.rank || index + 1, // Legacy MMs do not have a rank but are sorted by points
-    }),
-  );
-
-  if (finalChallenge.subTrack === 'MARATHON_MATCH') {
-    finalChallenge.track = 'DATA_SCIENCE';
-  }
-
   // It's not clear if this will be the main event, will need to be investigated
   finalChallenge.mainEvent = finalChallenge.events[0] || {};
 
-  /* It's unclear if these normalization steps are still required for `challenge` */
-  // Fill missing data from filtered
-  if (filtered) {
-    const groups = {};
-    if (filtered.groupIds) {
-      filtered.groupIds.forEach((id) => {
-        groups[id] = true;
-      });
-    }
-
-    _.merge(finalChallenge, {
-      componentId: filtered.componentId,
-      contestId: filtered.contestId,
-
-      submissionEndDate: filtered.submissionEndDate, // Dates are not correct in `challenge`
-      submissionEndTimestamp: filtered.submissionEndDate, // Dates are not correct in `challenge`
-
-      /* Taking phases from filtered, because dates are not correct in `challenge` */
-      allPhases: filtered.allPhases || [],
-
-      /* Taking phases from filtered, because dates are not correct in `challenge` */
-      currentPhases: filtered.currentPhases || [],
-
-      /* `challenge` has incorrect value for numberOfSubmissions for some reason */
-      numSubmissions: filtered.numSubmissions,
-      groups,
-    });
-  }
-
-  // Fill missing data from user
-  if (user) {
-    _.defaults(finalChallenge, {
-      userDetails: user.userDetails,
-    });
-  }
 
   // Fill some derived data
   const registrationOpen = _.some(
     finalChallenge.allPhases,
-    phase => phase.phaseType === 'Registration' && phase.phaseStatus === 'Open',
+    phase => phase.name === 'Registration' && phase.isOpen,
   ) ? 'Yes' : 'No';
   _.defaults(finalChallenge, {
-    communities: new Set([COMPETITION_TRACKS[finalChallenge.track]]),
+    communities: new Set([COMPETITION_TRACKS[finalChallenge.legacy.track]]),
     registrationOpen,
     users: username ? { [username]: true } : {},
   });
-
-  // A hot fix to show submissions for on-going challenges
-  if (!finalChallenge.submissions || !finalChallenge.submissions.length) {
-    finalChallenge.submissions = finalChallenge.registrants
-      .filter(r => r.submissionDate || '')
-      .sort((a, b) => (a.submissionDate || '')
-        .localeCompare(b.submissionDate || ''));
-  }
 
   if (!finalChallenge.allPhases) finalChallenge.allPhases = [];
   if (!finalChallenge.track) finalChallenge.track = '';
@@ -173,28 +112,31 @@ export function normalizeChallengeDetails(challenge, filtered, user, username) {
  * @param {String} username Optional.
  */
 export function normalizeChallenge(challenge, username) {
-  const registrationOpen = challenge.allPhases.filter(d => d.phaseType === 'Registration')[0].phaseStatus === 'Open' ? 'Yes' : 'No';
+  const registrationPhase = challenge.phases.filter(d => d.name === 'Registration')[0];
+  let registrationOpen = false;
+  if (registrationPhase) {
+    registrationOpen = registrationPhase.isOpen ? 'Yes' : 'No';
+  }
   const groups = {};
-  if (challenge.groupIds) {
-    challenge.groupIds.forEach((id) => {
+  if (challenge.groups) {
+    challenge.groups.forEach((id) => {
       groups[id] = true;
     });
   }
   /* eslint-disable no-param-reassign */
-  if (!challenge.prizes) challenge.prizes = challenge.prize || [];
+  challenge.prizes = challenge.prizeSets || [];
+  challenge.status = (challenge.status || '').toUpperCase();
+  challenge.totalPrize = challenge.overview ? challenge.overview.totalPrizes : 0;
   if (!challenge.totalPrize) {
-    challenge.totalPrize = challenge.prizes.reduce((sum, x) => sum + x, 0);
+    const prizeSet = challenge.prizes.filter(prize => prize.type === 'placement')[0];
+    challenge.totalPrize = prizeSet ? prizeSet.prizes.reduce((sum, x) => sum + x.value, 0) : 0;
   }
   if (!challenge.technologies) challenge.technologies = [];
   if (!challenge.platforms) challenge.platforms = [];
 
-  if (challenge.subTrack === 'DEVELOP_MARATHON_MATCH') {
-    challenge.track = 'DATA_SCIENCE';
-  }
   /* eslint-enable no-param-reassign */
-
   _.defaults(challenge, {
-    communities: new Set([COMPETITION_TRACKS[challenge.track]]),
+    communities: new Set([COMPETITION_TRACKS[challenge.legacy.track]]),
     groups,
     registrationOpen,
     submissionEndTimestamp: challenge.submissionEndDate,
@@ -242,23 +184,24 @@ class ChallengesService {
     const getChallenges = async (
       endpoint,
       filters = {},
-      params = {},
     ) => {
       const query = {
-        filter: qs.stringify(filters, { encode: false }),
-        ...params,
+        ...filters,
       };
       const url = `${endpoint}?${qs.stringify(query)}`;
-      const res = await this.private.api.get(url).then(checkError);
+      const result = await this.private.apiV5.get(url);
+      if (!result.ok) throw new Error(result.statusText);
+      const res = await result.json();
       return {
-        challenges: res.content || [],
-        totalCount: res.metadata.totalCount,
+        challenges: res || [],
+        totalCount: res.length,
         meta: res.metadata,
       };
     };
 
     this.private = {
       api: getApi('V4', tokenV3),
+      apiV5: getApi('V5', tokenV3),
       apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,
@@ -315,45 +258,59 @@ class ChallengesService {
    */
   async createTask(
     projectId,
-    accountId,
     title,
     description,
-    assignee,
+    descriptionFormat,
     payment,
-    submissionGuidelines,
-    copilotId,
     copilotFee,
     technologies,
+    typeId,
+    trackId,
+    timelineTemplateId,
   ) {
     const payload = {
-      param: {
-        assignees: [assignee],
-        billingAccountId: accountId,
+      typeId,
+      trackId,
+      timelineTemplateId,
+      legacy: {
         confidentialityType: 'public',
-        detailedRequirements: description,
-        submissionGuidelines,
-        milestoneId: 1,
-        name: title,
-        technologies,
-        prizes: payment ? [payment] : [],
-        projectId,
-        registrationStartsAt: moment().toISOString(),
         reviewType: 'INTERNAL',
-        subTrack: 'FIRST_2_FINISH',
-        task: true,
       },
+      task: {
+        isTask: true,
+      },
+      descriptionFormat,
+      description,
+      name: title,
+      tags: technologies.map(tech => tech.name),
+      prizeSets: [
+        {
+          type: 'placement',
+          prizes: [
+            {
+              type: 'USD',
+              value: payment,
+            },
+          ],
+        },
+        {
+          prizes: [
+            {
+              type: 'USD',
+              value: copilotFee,
+            },
+          ],
+          type: 'copilot',
+        },
+      ],
+      status: 'Draft',
+      projectId,
+      startDate: moment().toISOString(),
     };
-    if (copilotId) {
-      _.assign(payload.param, {
-        copilotId,
-        copilotFee,
-      });
-    }
-    let res = await this.private.api.postJson('/challenges', payload);
+    let res = await this.private.apiV5.postJson('/challenges', payload);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (res.status !== 200) throw new Error(res.content);
-    return res.content;
+    res = await res.json();
+    return res;
   }
 
   /**
@@ -365,20 +322,14 @@ class ChallengesService {
    * @return {Promise} Resolves to the challenge object.
    */
   async getChallengeDetails(challengeId) {
-    const challenge = await this.private.api.get(`/challenges/${challengeId}`)
-      .then(checkError).then(res => res.content);
-
-    const challengeFiltered = await this.private.getChallenges('/challenges/', { id: challengeId })
-      .then(res => res.challenges[0]);
+    const result = await this.private.apiV5.get(`/challenges/${challengeId}`);
+    if (!result.ok) throw new Error(result.statusText);
+    const challenge = await result.json();
 
     const username = this.private.tokenV3 && decodeToken(this.private.tokenV3).handle;
-    const challengeUser = username && await this.getUserChallenges(username, { id: challengeId })
-      .then(res => res.challenges[0]).catch(() => null);
 
     const finalChallenge = normalizeChallengeDetails(
       challenge,
-      challengeFiltered,
-      challengeUser,
       username,
     );
 
@@ -432,8 +383,8 @@ class ChallengesService {
    * @param {Object} params Optional.
    * @return {Promise} Resolves to the api response.
    */
-  getChallenges(filters, params) {
-    return this.private.getChallenges('/challenges/', filters, params)
+  getChallenges(filters) {
+    return this.private.getChallenges('/challenges', filters)
       .then((res) => {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
@@ -578,14 +529,54 @@ class ChallengesService {
    * @param {String} tokenV3
    * @return {Promise}
    */
-  async updateChallenge(challenge) {
-    const URL = `/challenges/${challenge.id}`;
-    const body = { param: challenge };
-    let res = await this.private.api.putJson(URL, body);
+  async updateChallenge(challengeId, body) {
+    const URL = `/challenges/${challengeId}`;
+    let res = await this.private.apiV5.patchJson(URL, body);
     if (!res.ok) throw new Error(res.statusText);
-    res = (await res.json()).result;
-    if (res.status !== 200) throw new Error(res.content);
-    return res.content;
+    res = await res.json();
+    return res;
+  }
+
+  /**
+   * Gets the challenge types
+   * @param {Object} query
+   * @return {Promise}
+   */
+  async getChallengeTypes(query) {
+    const endpoint = '/challenge-types';
+    const url = `${endpoint}?${qs.stringify(query)}`;
+    let res = await this.private.apiV5.get(url);
+    if (!res.ok) throw new Error(res.statusText);
+    res = await res.json();
+    return res;
+  }
+
+  /**
+   * Gets the challenge tracks
+   * @param {Object} query
+   * @return {Promise}
+   */
+  async getChallengeTracks(query) {
+    const endpoint = '/challenge-tracks';
+    const url = `${endpoint}?${qs.stringify(query)}`;
+    let res = await this.private.apiV5.get(url);
+    if (!res.ok) throw new Error(res.statusText);
+    res = await res.json();
+    return res;
+  }
+
+  /**
+   * Gets the challenge timelines
+   * @param {Object} query
+   * @return {Promise}
+   */
+  async getChallengeTimeLines(query) {
+    const endpoint = '/challenge-timelines';
+    const url = `${endpoint}?${qs.stringify(query)}`;
+    let res = await this.private.apiV5.get(url);
+    if (!res.ok) throw new Error(res.statusText);
+    res = await res.json();
+    return res;
   }
 
   /**

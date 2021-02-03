@@ -61,9 +61,10 @@ function getDone(uuid, projectId, pageNum, tokenV3) {
   return getService(tokenV3).getChallenges({
     isTask: true,
     projectId,
-  }, {
-    limit: PAGE_SIZE,
-    offset: pageNum * PAGE_SIZE,
+    sortBy: 'updated',
+    sortOrder: 'desc',
+    perPage: PAGE_SIZE,
+    page: pageNum + 1,
   }).then(({ challenges, totalCount }) => ({
     projectId,
     tasks: challenges,

@@ -15,6 +15,7 @@ import * as user from './user';
 import * as lookup from './lookup';
 import * as userTraits from './user-traits';
 import * as submissions from './submissions';
+import * as resource from './resources';
 
 export const services = {
   api,
@@ -26,6 +27,7 @@ export const services = {
   groups,
   members,
   user,
+  resource,
   userSetting,
   reviewOpportunities,
   lookup,

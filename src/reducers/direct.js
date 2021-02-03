@@ -54,7 +54,7 @@ function onGetProjectDetailsDone(state, { error, payload }) {
     logger.error('Failed to load project details', payload);
     throw payload;
   }
-  if (payload.project.projectId !== state.loadingProjectDetailsForId) {
+  if (payload.id !== state.loadingProjectDetailsForId) {
     return state;
   }
   return {

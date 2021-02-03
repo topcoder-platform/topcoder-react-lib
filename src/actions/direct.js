@@ -79,16 +79,15 @@ function getUserProjectsInit(tokenV3) {
  * @static
  * @desc Creates an action that loads projects related to a user.
  * @param {String} tokenV3 Topcoder auth token v3.
- * @param {Boolean} hasActiveBillingAccount Optional. Defaults to false.
- *  Whether only projects with active billing accounts should be included
- *  into the results.
  * @return {Action}
  */
-async function getUserProjectsDone(tokenV3, hasActiveBillingAccount) {
-  const projects = await getService(tokenV3).getUserProjects();
-  if (hasActiveBillingAccount) {
-    _.remove(projects, proj => !proj.billingAccountId || proj.billingAccountId === 0);
-  }
+async function getUserProjectsDone(tokenV3) {
+  // Fetches Member's only Active projects
+  const projects = await getService(tokenV3).getUserProjects({
+    memberOnly: true,
+    sort: 'lastActivityAt desc',
+    status: 'active',
+  });
   return { tokenV3, projects };
 }
 

@@ -294,6 +294,10 @@ Object {
       "default": undefined,
       "getService": [Function],
     },
+    "resource": Object {
+      "default": undefined,
+      "getService": [Function],
+    },
     "reviewOpportunities": Object {
       "default": undefined,
       "getReviewOpportunitiesService": [Function],
