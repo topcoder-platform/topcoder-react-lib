@@ -14,7 +14,6 @@ import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
-import mockRecommendedChallenges from './__mocks__/data/recommended-challenges.json';
 
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
@@ -476,21 +475,12 @@ class ChallengesService {
    * @return {Promise} Resolves to the array of subtrack names.
    */
   getChallengeTypes() {
-    const recommended = {
-      id: 'e06b074d-43c2-4e7e-9cd3-c43e13d51b40',
-      name: 'Recommended',
-      description: "Available challenges that match competitor's skills",
-      isActive: true,
-      isTask: false,
-      abbreviation: 'REC',
-    };
-
     return this.private.apiV5.get('/challenge-types')
       .then(res => (res.ok ? res.json() : new Error(res.statusText)))
       .then(res => (
         res.message
           ? new Error(res.message)
-          : [...res, recommended]
+          : res
       ));
   }
 
@@ -542,49 +532,36 @@ class ChallengesService {
    * Gets challenges.
    * @param {Object} filters Optional.
    * @param {Object} params Optional.
+   * @param {String} handle user handle
    * @return {Promise} Resolves to the api response.
    */
-  async getRecommendedChallenges(sort, filter) {
-    return this.private.getChallenges('/challenges/', {
-      frontFilter: { ...filter, types: ['TSK', 'CH', 'F2F'] },
-    })
-      .then((res) => {
-        res.challenges.forEach(item => normalizeChallenge(item));
-        let sortedChallenges = [];
-        const challenges = res.challenges.slice(0, 8).map((item, index) => ({
-          ...item,
-          matchScore: mockRecommendedChallenges[index].matchScore,
-        }));
+  async getRecommendedChallenges(filter, handle) {
+    const query = getFilterUrl(
+      filter.backendFilter,
+      { ...filter.frontFilter, per_page: filter.frontFilter.perPage },
+    );
 
-        const tracks = [];
-        const types = [];
-        if (filter.types.includes('CH')) types.push('Challenge');
-        if (filter.types.includes('F2F')) types.push('First2Finish');
-        if (filter.types.includes('TSK')) types.push('Task');
+    let res = {};
+    if (_.some(filter.frontFilter.tracks, val => val)
+      && !_.isEqual(filter.frontFilter.types, [])) {
+      const url = `/recommender-api/${handle}?${query}`;
+      res = await this.private.apiV5.get(url).then(checkErrorV5);
+    }
+    const challenges = res.result.filter(ch => ch.jaccard_index > 0);
 
-        if (filter.tracks.DS) tracks.push('Data Science');
-        if (filter.tracks.Des) tracks.push('Design');
-        if (filter.tracks.Dev) tracks.push('Development');
-        if (filter.tracks.QA) tracks.push('Quality Assurance');
-        if (sort.openForRegistration === 'bestMatch' || sort.openForRegistration === {}) {
-          const ascArray = _.sortBy(challenges, [
-            item => Math.trunc((parseFloat(item.matchScore) + 1.0) / 2.0 * 100.0)]);
-          sortedChallenges = _.reverse(ascArray);
-        } else if (sort.openForRegistration === 'name') {
-          sortedChallenges = _.sortBy(challenges, ['name']);
-        } else {
-          sortedChallenges = _.sortBy(challenges, [sort.openForRegistration]);
-        }
-
-        let filteredChallenges = sortedChallenges.filter(item => tracks.includes(item.track));
-        filteredChallenges = filteredChallenges.filter(item => types.includes(item.type));
-        const mockResponse = _.clone(this.private.tokenV3 ? filteredChallenges : []);
-
-        return {
-          challenges: mockResponse,
-          meta: mockResponse.length,
-        };
-      });
+    const totalCount = challenges.length;
+    return {
+      challenges,
+      totalCount,
+      meta: {
+        allChallengesCount: challenges.length,
+        allRecommendedChallengesCount: 0,
+        myChallengesCount: 0,
+        ongoingChallengesCount: 0,
+        openChallengesCount: 0,
+        totalCount,
+      },
+    };
   }
 
   /**
