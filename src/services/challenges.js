@@ -536,25 +536,26 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getRecommendedChallenges(filter, handle) {
-    const query = getFilterUrl(
-      filter.backendFilter,
-      { ...filter.frontFilter, per_page: filter.frontFilter.perPage },
-    );
+    filter.frontFilter.per_page = filter.frontFilter.perPage;
+    delete filter.frontFilter.perPage;
+
+    const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
 
     let res = {};
+    let totalCount = 0;
     if (_.some(filter.frontFilter.tracks, val => val)
       && !_.isEqual(filter.frontFilter.types, [])) {
       const url = `/recommender-api/${handle}?${query}`;
       res = await this.private.apiV5.get(url).then(checkErrorV5);
+      totalCount = res.headers.get('x-total') || 0;
     }
-    const challenges = res.result.filter(ch => ch.jaccard_index > 0);
 
-    const totalCount = challenges.length;
+    const challenges = res.result ? res.result.filter(ch => ch.jaccard_index > 0) : [];
     return {
       challenges,
       totalCount,
       meta: {
-        allChallengesCount: challenges.length,
+        allChallengesCount: totalCount,
         allRecommendedChallengesCount: 0,
         myChallengesCount: 0,
         ongoingChallengesCount: 0,
