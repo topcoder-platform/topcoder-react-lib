@@ -15,6 +15,8 @@ import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
 
+const MAX_PER_PAGE = 300;
+
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
   // eslint-disable-next-line object-curly-newline
@@ -536,25 +538,37 @@ class ChallengesService {
    * @return {Promise} Resolves to the api response.
    */
   async getRecommendedChallenges(filter, handle) {
-    const query = getFilterUrl(
+    filter.frontFilter.per_page = filter.frontFilter.perPage;
+    delete filter.frontFilter.perPage;
+
+    const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
+
+    const totalQuery = getFilterUrl(
       filter.backendFilter,
-      { ...filter.frontFilter, per_page: filter.frontFilter.perPage },
+      { ...filter.frontFilter, page: 1, perPage: MAX_PER_PAGE },
     );
 
     let res = {};
+    let totalChallengeCount = {};
     if (_.some(filter.frontFilter.tracks, val => val)
       && !_.isEqual(filter.frontFilter.types, [])) {
       const url = `/recommender-api/${handle}?${query}`;
       res = await this.private.apiV5.get(url).then(checkErrorV5);
+      // Note: Recommender API is not returning X-Total response header.
+      // Please remove below statement with response get method.
+      const totalUrl = `/recommender-api/${handle}?${totalQuery}`;
+      totalChallengeCount = await this.private.apiV5.get(totalUrl).then(checkErrorV5);
     }
-    const challenges = res.result.filter(ch => ch.jaccard_index > 0);
+    const challenges = res.result ? res.result.filter(ch => ch.jaccard_index > 0) : [];
+    const total = totalChallengeCount.result
+      ? totalChallengeCount.result.filter(ch => ch.jaccard_index > 0) : [];
 
-    const totalCount = challenges.length;
+    const totalCount = total.length;
     return {
       challenges,
       totalCount,
       meta: {
-        allChallengesCount: challenges.length,
+        allChallengesCount: totalCount,
         allRecommendedChallengesCount: 0,
         myChallengesCount: 0,
         ongoingChallengesCount: 0,
