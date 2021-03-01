@@ -185,6 +185,7 @@ class ChallengesService {
         totalCount: res.headers ? res.headers.get('x-total') : 0,
         meta: {
           allChallengesCount: res.headers ? res.headers.get('x-total') : 0,
+          allRecommendedChallengesCount: 0,
           myChallengesCount: 0,
           ongoingChallengesCount: 0,
           openChallengesCount: 0,
@@ -525,6 +526,43 @@ class ChallengesService {
         res.challenges.forEach(item => normalizeChallenge(item));
         return res;
       });
+  }
+
+  /**
+   * Gets challenges.
+   * @param {Object} filters Optional.
+   * @param {Object} params Optional.
+   * @param {String} handle user handle
+   * @return {Promise} Resolves to the api response.
+   */
+  async getRecommendedChallenges(filter, handle) {
+    filter.frontFilter.per_page = filter.frontFilter.perPage;
+    delete filter.frontFilter.perPage;
+
+    const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
+
+    let res = {};
+    let totalCount = 0;
+    if (_.some(filter.frontFilter.tracks, val => val)
+      && !_.isEqual(filter.frontFilter.types, [])) {
+      const url = `/recommender-api/${handle}?${query}`;
+      res = await this.private.apiV5.get(url).then(checkErrorV5);
+      totalCount = res.headers.get('x-total') || 0;
+    }
+
+    const challenges = res.result ? res.result.filter(ch => ch.jaccard_index > 0) : [];
+    return {
+      challenges,
+      totalCount,
+      meta: {
+        allChallengesCount: totalCount,
+        allRecommendedChallengesCount: 0,
+        myChallengesCount: 0,
+        ongoingChallengesCount: 0,
+        openChallengesCount: 0,
+        totalCount,
+      },
+    };
   }
 
   /**
