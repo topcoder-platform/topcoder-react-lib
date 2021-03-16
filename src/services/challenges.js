@@ -404,7 +404,7 @@ class ChallengesService {
 
         const subParams = {
           challengeId,
-          perPage: 100,
+          perPage: challenge.numOfSubmissions,
         };
 
         submissions = await this.private.submissionsService.getSubmissions(subParams);
