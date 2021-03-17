@@ -95,7 +95,7 @@ class MembersService {
     const groupIdsArray = _.isArray(groupIds) ? groupIds : _.split(groupIds, ',');
     const groupIdChunks = _.chunk(groupIdsArray, 50);
 
-    const getStatRequests = _.map(groupIdChunks, async groupIdChunk => {
+    const getStatRequests = _.map(groupIdChunks, async (groupIdChunk) => {
       const res = await this.private.api.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`);
       return getApiResponsePayload(res, false);
     });
@@ -103,9 +103,9 @@ class MembersService {
 
     return _.uniqBy(
       _.flatten(
-        _.filter(results, _.isArray)
+        _.filter(results, _.isArray),
       ),
-      item => item.groupId
+      item => item.groupId,
     );
   }
 
