@@ -101,11 +101,11 @@ class MembersService {
     });
     const results = await Promise.all(getStatRequests);
 
-    return _.flatten(
-      _.uniqBy(
-        _.filter(results, _.isArray),
-        item => item.groupId
-      )
+    return _.uniqBy(
+      _.flatten(
+        _.filter(results, _.isArray)
+      ),
+      item => item.groupId
     );
   }
 
