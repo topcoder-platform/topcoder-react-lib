@@ -7,7 +7,6 @@ import _ from 'lodash';
 import qs from 'qs';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { getApi } from './api';
-import { getAll } from '../utils/tc'
 
 /**
  * Helper method that checks for HTTP error response v5 and throws Error in this case.
