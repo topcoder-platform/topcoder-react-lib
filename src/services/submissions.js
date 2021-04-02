@@ -7,6 +7,7 @@ import _ from 'lodash';
 import qs from 'qs';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { getApi } from './api';
+import { getAll } from '../utils/tc'
 
 /**
  * Helper method that checks for HTTP error response v5 and throws Error in this case.
@@ -52,7 +53,7 @@ class SubmissionsService {
    * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getSubmissions(filters, params) {
+  async getSubmissions(filters, params = {}) {
     const query = {
       ...filters,
       ...params,
