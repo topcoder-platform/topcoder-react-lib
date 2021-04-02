@@ -87,7 +87,7 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getStats(handle, groupIds) {
-    if (!groupIds) {
+    if (!groupIds || (_.isArray(groupIds) && groupIds.length === 0)) {
       const res = await this.private.api.get(`/members/${handle}/stats`);
       return getApiResponsePayload(res);
     }
