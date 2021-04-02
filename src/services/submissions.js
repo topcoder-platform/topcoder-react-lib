@@ -52,7 +52,7 @@ class SubmissionsService {
    * @param {Object} params
    * @return {Promise} Resolves to the api response.
    */
-  async getSubmissions(filters, params) {
+  async getSubmissions(filters, params = {}) {
     const query = {
       ...filters,
       ...params,

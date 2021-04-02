@@ -10,7 +10,7 @@ import qs from 'qs';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import logger from '../utils/logger';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
-import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
+import { COMPETITION_TRACKS, getAll, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
@@ -402,12 +402,14 @@ class ChallengesService {
       if (memberId) {
         isRegistered = _.some(registrants, r => `${r.memberId}` === `${memberId}`);
 
-        const subParams = {
+        const filter = {
           challengeId,
-          perPage: challenge.numOfSubmissions ? challenge.numOfSubmissions : 100,
         };
 
-        submissions = await this.private.submissionsService.getSubmissions(subParams);
+        submissions = await getAll(
+          params => this.private.submissionsService.getSubmissions(filter, params),
+          1,
+        );
 
         if (submissions) {
           // Remove AV Scan, SonarQube Review and Virus Scan review types

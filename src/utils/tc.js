@@ -101,3 +101,34 @@ export async function getLookerApiResponsePayload(res) {
     status: x.status,
   };
 }
+
+/**
+ * Private. Loads from the backend all data matching some conditions.
+ * @param {Function} getter Given params object of shape { limit, offset }
+ *  loads from the backend at most "limit" data, skipping the first
+ *  "offset" ones. Returns loaded data as an array.
+ * @param {Number} page Optional. Next page of data to load.
+ * @param {Number} perPage Optional. The size of the page content to load.
+ * @param {Array} prev Optional. data loaded so far.
+ */
+export function getAll(getter, page = 1, perPage = 500, prev) {
+  /* Amount of items to fetch in one API call. 50 is the current maximum
+   * amount of items the backend returns, event when the larger limit is
+   * explicitely required. */
+  return getter({
+    page,
+    perPage,
+  }).then((res) => {
+    if (res.length === 0) {
+      return prev || res;
+    }
+    // parse items
+    let current = [];
+    if (prev) {
+      current = prev.concat(res);
+    } else {
+      current = res;
+    }
+    return getAll(getter, 1 + page, perPage, current);
+  });
+}
