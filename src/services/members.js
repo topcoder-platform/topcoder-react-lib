@@ -83,17 +83,30 @@ class MembersService {
   /**
    * Gets member statistics.
    * @param {String} handle
-   * @param {String} groupIds
+   * @param {Array<String>|String} groupIds
    * @return {Promise} Resolves to the stats object.
    */
   async getStats(handle, groupIds) {
-    let res;
-    if (groupIds) {
-      res = await this.private.api.get(`/members/${handle}/stats?groupIds=${groupIds}`);
-    } else {
-      res = await this.private.api.get(`/members/${handle}/stats`);
+    if (!groupIds || (_.isArray(groupIds) && groupIds.length === 0)) {
+      const res = await this.private.api.get(`/members/${handle}/stats`);
+      return getApiResponsePayload(res);
     }
-    return getApiResponsePayload(res);
+
+    const groupIdsArray = _.isArray(groupIds) ? groupIds : _.split(groupIds, ',');
+    const groupIdChunks = _.chunk(groupIdsArray, 50);
+
+    const getStatRequests = _.map(groupIdChunks, async (groupIdChunk) => {
+      const res = await this.private.api.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`);
+      return getApiResponsePayload(res, false);
+    });
+    const results = await Promise.all(getStatRequests);
+
+    return _.uniqBy(
+      _.flatten(
+        _.filter(results, _.isArray),
+      ),
+      item => item.groupId,
+    );
   }
 
   /**

@@ -114,7 +114,7 @@ async function getStatsInit(handle, uuid) {
  * @static
  * @desc Create an action that loads member statistics.
  * @param {String} handle Member handle.
- * @param {String} groupIds Group ids.
+ * @param {Array<String>|String} groupIds Group ids.
  * @param {String} uuid Operation UUID.
  * @param {String} tokenV3 v3 auth token.
  * @return {Action}
