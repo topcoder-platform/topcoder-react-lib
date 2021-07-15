@@ -151,6 +151,17 @@ async function checkErrorV5(res) {
 }
 
 /**
+ * check if is marathon match challenge
+ * @param {Object} challenge challenge object
+ * @return {Boolean}
+ * @private
+ */
+function checkMM(challenge) {
+  const tags = _.get(challenge, 'tags') || [];
+  return tags.includes('Marathon Match');
+}
+
+/**
  * Challenge service.
  */
 class ChallengesService {
@@ -390,13 +401,17 @@ class ChallengesService {
         .then(res => res.challenges);
     }
 
+    const isMM = checkMM(challenge);
+
     if (challenge) {
       registrants = await this.getChallengeRegistrants(challenge.id);
 
       // This TEMP fix to colorStyle, this will be fixed with issue #4530
-      registrants = _.map(registrants, r => ({
-        ...r, colorStyle: 'color: #151516',
-      }));
+      registrants = await Promise.all(_.map(registrants, async r => ({
+        ...r,
+        colorStyle: 'color: #151516',
+        rating: isMM ? await this.private.memberService.getMMRating(r.memberHandle) : r.rating,
+      })));
 
       /* Prepare data to logged user */
       if (memberId) {
