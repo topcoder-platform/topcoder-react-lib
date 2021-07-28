@@ -53,6 +53,7 @@ Object {
       "dropGroups": [Function],
       "getGroupsDone": [Function],
       "getGroupsInit": [Function],
+      "getMemberGroups": [Function],
     },
     "looker": Object {
       "getLookerDone": [Function],
