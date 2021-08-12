@@ -8,6 +8,7 @@ const photoURL = 'http://url';
 const mockActions = {
   auth: {
     loadProfile: mockAction('LOAD_PROFILE', Promise.resolve('Profile')),
+    getMemberGroups: mockAction('GET_MEMBER_GROUPS', Promise.resolve(['Group'])),
     setTcTokenV2: mockAction('SET_TC_TOKEN_V2', 'Token V2'),
     setTcTokenV3: mockAction('SET_TC_TOKEN_V3', 'Token V3'),
   },
@@ -107,6 +108,7 @@ describe('Default reducer', () => {
   reducer = reducers.default;
   testReducer({
     authenticating: true,
+    memberGroups: [],
     profile: null,
     tokenV2: '',
     tokenV3: '',
@@ -124,6 +126,7 @@ describe('Factory without server side rendering', () => {
 
   testReducer({
     authenticating: true,
+    memberGroups: [],
     profile: null,
     tokenV2: '',
     tokenV3: '',
@@ -145,6 +148,6 @@ describe('Factory with server side rendering', () => {
   });
 
   testReducer({
-    authenticating: false, user: 'User object', profile: 'Profile', tokenV2: 'Token V2', tokenV3: 'Token V3',
+    authenticating: false, user: 'User object', profile: 'Profile', tokenV2: 'Token V2', tokenV3: 'Token V3', memberGroups: ['Group'],
   });
 });

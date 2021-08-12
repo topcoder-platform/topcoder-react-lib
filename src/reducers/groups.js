@@ -85,10 +85,6 @@ function onGetGroupsDone(state, action) {
 }
 
 
-function onGetMemberGroups(state, action) {
-  return { ...state, memberGroups: action.payload };
-}
-
 /**
  * Creates a new Groups reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
@@ -100,11 +96,9 @@ function create(initialState) {
     [a.dropGroups]: onDropGroups,
     [a.getGroupsInit]: onGetGroupsInit,
     [a.getGroupsDone]: onGetGroupsDone,
-    [a.getMemberGroups]: onGetMemberGroups,
   }, _.defaults(initialState ? _.clone(initialState) : {}, {
     groups: {},
     loading: {},
-    memberGroups: [],
   }));
 }
 

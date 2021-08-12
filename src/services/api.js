@@ -128,8 +128,8 @@ class Api {
    * @param {String} endpoint
    * @return {Promise}
    */
-  get(endpoint) {
-    return this.fetch(endpoint);
+  get(endpoint, options = {}) {
+    return this.fetch(endpoint, options);
   }
 
   /**

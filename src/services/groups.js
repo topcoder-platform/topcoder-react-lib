@@ -354,17 +354,6 @@ class GroupService {
   getTokenV3() {
     return this.private.tokenV3;
   }
-
-  /**
-   * Gets the corresponding user's groups information
-   * @param {*} userId the userId
-   * @returns
-   */
-  async getMemberGroups(userId) {
-    const url = `/groups/memberGroups/${userId}`;
-    const res = await this.private.api.get(url);
-    return handleApiResponse(res);
-  }
 }
 
 let lastInstance = null;

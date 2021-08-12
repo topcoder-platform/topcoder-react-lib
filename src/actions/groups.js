@@ -42,21 +42,10 @@ function getGroupsDone(groupIds, tokenV3) {
   return getService(tokenV3).getGroupMap(groupIds);
 }
 
-/**
- * Get groups that a member belong to
- * @param {*} userId the member's userId
- * @param {*} tokenV3 the member's token
- * @returns
- */
-function getMemberGroups(userId, tokenV3) {
-  return getService(tokenV3).getMemberGroups(userId);
-}
-
 export default createActions({
   GROUPS: {
     DROP_GROUPS: dropGroups,
     GET_GROUPS_INIT: getGroupsInit,
     GET_GROUPS_DONE: getGroupsDone,
-    GET_MEMBER_GROUPS: getMemberGroups,
   },
 });

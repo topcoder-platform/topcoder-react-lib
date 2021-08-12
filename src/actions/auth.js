@@ -72,10 +72,24 @@ function setTcTokenV3(tokenV3) {
   return tokenV3;
 }
 
+/**
+ * Get groups that a member belong to
+ * @param {*} tokenV3 the member's token
+ * @returns
+ */
+async function getMemberGroups(tokenV3) {
+  if (!tokenV3) return Promise.resolve([]);
+  const user = decodeToken(tokenV3);
+  const apiV5 = getApiV5(tokenV3);
+  const res = await apiV5.get(`/groups/memberGroups/${user.userId}`).then(checkErrorV5).then(r => r.result || []);
+  return res;
+}
+
 export default createActions({
   AUTH: {
     LOAD_PROFILE: loadProfileDone,
     SET_TC_TOKEN_V2: setTcTokenV2,
     SET_TC_TOKEN_V3: setTcTokenV3,
+    GET_MEMBER_GROUPS: getMemberGroups,
   },
 });
