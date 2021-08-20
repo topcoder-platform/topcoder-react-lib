@@ -9,7 +9,7 @@ import _ from 'lodash';
 import qs from 'qs';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import logger from '../utils/logger';
-import { getApiResponsePayload } from '../utils/tc';
+import { getApiResponsePayload, handleApiResponse } from '../utils/tc';
 import { getApi } from './api';
 
 /**
@@ -86,18 +86,19 @@ class MembersService {
    * @param {Array<String>|String} groupIds
    * @return {Promise} Resolves to the stats object.
    */
-  async getStats(handle, groupIds) {
+  async getStats(handle, groupIds, tokenV3) {
+    const options = tokenV3 ? { headers: { Authorization: `Bearer ${tokenV3}` } } : {};
     if (!groupIds || (_.isArray(groupIds) && groupIds.length === 0)) {
-      const res = await this.private.api.get(`/members/${handle}/stats`);
-      return getApiResponsePayload(res);
+      const res = await this.private.apiV5.get(`/members/${handle}/stats`, options);
+      return handleApiResponse(res);
     }
 
     const groupIdsArray = _.isArray(groupIds) ? groupIds : _.split(groupIds, ',');
     const groupIdChunks = _.chunk(groupIdsArray, 50);
 
     const getStatRequests = _.map(groupIdChunks, async (groupIdChunk) => {
-      const res = await this.private.api.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`);
-      return getApiResponsePayload(res, false);
+      const res = await this.private.apiV5.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`, options);
+      return handleApiResponse(res);
     });
     const results = await Promise.all(getStatRequests);
 
@@ -114,14 +115,15 @@ class MembersService {
    * @param {String} handle
    * @return {Promise} Resolves to the stats object.
    */
-  async getStatsHistory(handle, groupIds) {
+  async getStatsHistory(handle, groupIds, tokenV3) {
+    const options = tokenV3 ? { headers: { Authorization: `Bearer ${tokenV3}` } } : {};
     let res;
     if (groupIds) {
-      res = await this.private.api.get(`/members/${handle}/stats/history?groupIds=${groupIds}`);
+      res = await this.private.apiV5.get(`/members/${handle}/stats/history?groupIds=${groupIds}`, options);
     } else {
-      res = await this.private.api.get(`/members/${handle}/stats/history`);
+      res = await this.private.apiV5.get(`/members/${handle}/stats/history`, options);
     }
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**

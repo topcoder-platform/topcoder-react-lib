@@ -120,7 +120,7 @@ async function getStatsInit(handle, uuid) {
  * @return {Action}
  */
 async function getStatsDone(handle, groupIds, uuid, tokenV3) {
-  const data = await getService(tokenV3).getStats(handle, groupIds);
+  const data = await getService(tokenV3).getStats(handle, groupIds, tokenV3);
   return { data, handle, uuid };
 }
 
@@ -222,7 +222,7 @@ async function getStatsHistoryInit(handle, uuid) {
  * @return {Action}
  */
 async function getStatsHistoryDone(handle, groupIds, uuid, tokenV3) {
-  const data = await getService(tokenV3).getStatsHistory(handle, groupIds);
+  const data = await getService(tokenV3).getStatsHistory(handle, groupIds, tokenV3);
   return { data, handle, uuid };
 }
 
