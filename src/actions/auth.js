@@ -7,6 +7,7 @@ import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getApiV3, getApiV5 } from '../services/api';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
+import { getService } from '../services/groups';
 
 /**
  * Helper method that checks for HTTP error response v5 and throws Error in this case.
@@ -77,12 +78,10 @@ function setTcTokenV3(tokenV3) {
  * @param {*} tokenV3 the member's token
  * @returns
  */
-async function getMemberGroups(tokenV3) {
+async function getAuthenticatedMemberGroups(tokenV3) {
   if (!tokenV3) return Promise.resolve([]);
   const user = decodeToken(tokenV3);
-  const apiV5 = getApiV5(tokenV3);
-  const res = await apiV5.get(`/groups/memberGroups/${user.userId}`).then(checkErrorV5).then(r => r.result || []);
-  return res;
+  return getService(tokenV3).getMemberGroups(user.userId);
 }
 
 export default createActions({
@@ -90,6 +89,6 @@ export default createActions({
     LOAD_PROFILE: loadProfileDone,
     SET_TC_TOKEN_V2: setTcTokenV2,
     SET_TC_TOKEN_V3: setTcTokenV3,
-    GET_MEMBER_GROUPS: getMemberGroups,
+    GET_AUTHENTICATED_MEMBER_GROUPS: getAuthenticatedMemberGroups,
   },
 });

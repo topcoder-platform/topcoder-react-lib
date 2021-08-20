@@ -8,7 +8,7 @@ const photoURL = 'http://url';
 const mockActions = {
   auth: {
     loadProfile: mockAction('LOAD_PROFILE', Promise.resolve('Profile')),
-    getMemberGroups: mockAction('GET_MEMBER_GROUPS', Promise.resolve(['Group'])),
+    getAuthenticatedMemberGroups: mockAction('GET_AUTHENTICATED_MEMBER_GROUPS', Promise.resolve(['Group'])),
     setTcTokenV2: mockAction('SET_TC_TOKEN_V2', 'Token V2'),
     setTcTokenV3: mockAction('SET_TC_TOKEN_V3', 'Token V3'),
   },

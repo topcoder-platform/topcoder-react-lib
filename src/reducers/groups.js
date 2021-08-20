@@ -23,6 +23,7 @@
 import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 import actions from '../actions/groups';
+// import { getApiResponsePayload } from '../utils/tc';
 
 /**
  * Private. Given two user group maps, it adds to "dst" the root group from
@@ -84,6 +85,10 @@ function onGetGroupsDone(state, action) {
   return { ...state, groups, loading };
 }
 
+function onGetMemberGroups(state, action) {
+  return { ...state, memberGroups: action.payload };
+}
+
 
 /**
  * Creates a new Groups reducer with the specified initial state.
@@ -96,9 +101,11 @@ function create(initialState) {
     [a.dropGroups]: onDropGroups,
     [a.getGroupsInit]: onGetGroupsInit,
     [a.getGroupsDone]: onGetGroupsDone,
+    [a.getMemberGroups]: onGetMemberGroups,
   }, _.defaults(initialState ? _.clone(initialState) : {}, {
     groups: {},
     loading: {},
+    memberGroups: [],
   }));
 }
 

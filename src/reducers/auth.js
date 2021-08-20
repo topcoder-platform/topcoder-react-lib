@@ -18,7 +18,7 @@ import { redux } from 'topcoder-react-utils';
 import actions from '../actions/auth';
 import profileActions from '../actions/profile';
 
-function onGetMemberGroups(state, action) {
+function onGetAuthenticatedMemberGroups(state, action) {
   return { ...state, memberGroups: action.payload };
 }
 
@@ -43,7 +43,7 @@ function onProfileLoaded(state, action) {
  */
 function create(initialState) {
   return redux.handleActions({
-    [actions.auth.getMemberGroups]: onGetMemberGroups,
+    [actions.auth.getAuthenticatedMemberGroups]: onGetAuthenticatedMemberGroups,
     [actions.auth.loadProfile]: onProfileLoaded,
     [actions.auth.setTcTokenV2]: (state, action) => ({
       ...state,
@@ -134,10 +134,10 @@ export async function factory(options = {}) {
   if (state.tokenV3) {
     state.user = decodeToken(state.tokenV3);
     let a = actions.auth.loadProfile(state.tokenV3);
-    let g = actions.auth.getMemberGroups(state.tokenV3);
+    let g = actions.auth.getAuthenticatedMemberGroups(state.tokenV3);
     a = await redux.resolveAction(a);
     g = await redux.resolveAction(g);
-    return create(onGetMemberGroups(onProfileLoaded(state, a), g));
+    return create(onGetAuthenticatedMemberGroups(onProfileLoaded(state, a), g));
   }
   return create(state);
 }
