@@ -4,6 +4,7 @@ exports[`Library interface test 1`] = `
 Object {
   "actions": Object {
     "auth": Object {
+      "getAuthenticatedMemberGroups": [Function],
       "loadProfile": [Function],
       "setTcTokenV2": [Function],
       "setTcTokenV3": [Function],
@@ -53,6 +54,7 @@ Object {
       "dropGroups": [Function],
       "getGroupsDone": [Function],
       "getGroupsInit": [Function],
+      "getMemberGroups": [Function],
     },
     "looker": Object {
       "getLookerDone": [Function],
@@ -403,6 +405,7 @@ Object {
     },
     "getApiResponsePayload": [Function],
     "getLookerApiResponsePayload": [Function],
+    "handleApiResponse": [Function],
   },
   "time": Object {
     "default": undefined,

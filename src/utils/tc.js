@@ -80,6 +80,17 @@ export async function getApiResponsePayload(res, shouldThrowError = true) {
 }
 
 /**
+ * Gets payload from a stand success response from TC V5 API or
+ * thorw errors in case of a failure responose
+ * @param {Object} response
+ * @returns V5 API response
+ */
+export function handleApiResponse(response) {
+  if (!response.ok) throw new Error(response.statusText);
+  return response.json();
+}
+
+/**
  * Gets payload from a standard success response from TC LOOKER API; or throws
  * an error in case of a failure response.
  * @param {Object} res

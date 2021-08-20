@@ -6,6 +6,13 @@
 
 The [Topcoder](https://www.topcoder.com) lib for internal ReactJS projects.
 
+### Before create a Test Release
+
+Add `--tag test-release` to link 31 in `.circleci/config.yml`
+```
+- run: npm publish --tag test-release
+```
+
 ### Configuration for AV-Scan scorer review type ID
 
 Change the property in `AV_SCAN_SCORER_REVIEW_TYPE_ID` in config.

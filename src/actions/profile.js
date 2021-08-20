@@ -135,8 +135,8 @@ function getStatsInit() {}
  * @param {Array<String>|String} groupIds Group ids.
  * @return {Action}
  */
-function getStatsDone(handle, groupIds) {
-  return getMembersService().getStats(handle, groupIds);
+function getStatsDone(handle, groupIds, tokenV3) {
+  return getMembersService().getStats(handle, groupIds, tokenV3);
 }
 
 /**

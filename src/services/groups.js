@@ -20,6 +20,7 @@ import _ from 'lodash';
 import { config } from 'topcoder-react-utils';
 import logger from '../utils/logger';
 import { getApi } from './api';
+import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 
 /* The value of USER_GROUP_MAXAGE constant converted to [ms]. */
 const USER_GROUP_MAXAGE = config.USER_GROUP_MAXAGE * 1000;
@@ -140,6 +141,29 @@ export function checkUserGroups(groupIds, userGroups, knownGroups) {
 function handleApiResponse(response) {
   if (!response.ok) throw new Error(response.statusText);
   return response.json();
+}
+
+/**
+ * Helper method that checks for HTTP error response v5 and throws Error in this case.
+ * @param {Object} res HTTP response object
+ * @return {Object} API JSON response object
+ * @private
+ */
+async function checkErrorV5(res) {
+  if (!res.ok) {
+    if (res.status === 403) {
+      setErrorIcon(ERROR_ICON_TYPES.API, 'Auth0', res.statusText);
+    }
+    throw new Error(res.statusText);
+  }
+  const jsonRes = (await res.json());
+  if (jsonRes.message) {
+    throw new Error(res.message);
+  }
+  return {
+    result: jsonRes,
+    headers: res.headers,
+  };
 }
 
 /**
@@ -353,6 +377,21 @@ class GroupService {
    */
   getTokenV3() {
     return this.private.tokenV3;
+  }
+
+  /**
+   * Gets the corresponding user's groups information
+   * @param {*} userId the userId
+   * @returns
+   */
+  async getMemberGroups(userId) {
+    const url = `/groups/memberGroups/${userId}`;
+    const response = await this.private.api.get(url)
+      .then(res => checkErrorV5(res))
+      .then(r => r.result || [])
+      .catch(() => []);
+
+    return response;
   }
 }
 
