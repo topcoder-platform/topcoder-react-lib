@@ -459,7 +459,7 @@ class ChallengesService {
     };
 
     if (roleId) {
-      params = { ...params, roleId }
+      params = { ...params, roleId };
     }
 
     let registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
