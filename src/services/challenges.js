@@ -453,11 +453,14 @@ class ChallengesService {
    */
   async getChallengeRegistrants(challengeId) {
     /* If no token provided, resource will return Submitter role only */
-    const roleId = this.private.tokenV3 ? await this.getRoleId('Submitter') : '';
-    const params = {
+    const roleId = this.private.tokenV3 ? await this.getRoleId('Submitter') : null;
+    let params = {
       challengeId,
-      roleId,
     };
+
+    if (roleId) {
+      params = { ...params, roleId };
+    }
 
     let registrants = await this.private.apiV5.get(`/resources?${qs.stringify(params)}`)
       .then(checkErrorV5).then(res => res.result);
