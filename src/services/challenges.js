@@ -553,7 +553,7 @@ class ChallengesService {
       totalCount = res.headers.get('x-total') || 0;
     }
 
-    const challenges = res.result ? res.result.filter(ch => ch.jaccard_index > 0) : [];
+    const challenges = res.result ? res.result.filter(ch => ch.bucket) : [];
     return {
       challenges,
       totalCount,
