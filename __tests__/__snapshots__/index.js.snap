@@ -16,6 +16,8 @@ Object {
       "fetchCheckpointsInit": [Function],
       "getActiveChallengesCountDone": [Function],
       "getActiveChallengesCountInit": [Function],
+      "getChallengeStatisticsDone": [Function],
+      "getChallengeStatisticsInit": [Function],
       "getDetailsDone": [Function],
       "getDetailsInit": [Function],
       "getMmSubmissionsDone": [Function],
