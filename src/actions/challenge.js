@@ -436,7 +436,7 @@ export default createActions({
     GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
     GET_SUBMISSION_INFORMATION_INIT: getSubmissionInformationInit,
     GET_SUBMISSION_INFORMATION_DONE: getSubmissionInformationDone,
-    GET_CHALLENGE_STATISTICS_INIT: fetchChallengeStatisticsInit,
-    GET_CHALLENGE_STATISTICS_DONE: fetchChallengeStatisticsDone,
+    FETCH_CHALLENGE_STATISTICS_INIT: fetchChallengeStatisticsInit,
+    FETCH_CHALLENGE_STATISTICS_DONE: fetchChallengeStatisticsDone,
   },
 });
