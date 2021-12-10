@@ -397,7 +397,7 @@ function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
  * @desc Creates an action that signals beginning of fetching challenge statistics
  * @return {Action}
  */
- function fetchChallengeStatisticsInit() {}
+function fetchChallengeStatisticsInit() {}
 
 /**
  * @static
@@ -408,7 +408,7 @@ function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
  */
 function fetchChallengeStatisticsDone(challengeId, tokenV3) {
   const challengeService = getChallengesService(tokenV3);
-  return challengeService.getChallengeStatistics(challengeId)
+  return challengeService.getChallengeStatistics(challengeId);
 }
 
 export default createActions({

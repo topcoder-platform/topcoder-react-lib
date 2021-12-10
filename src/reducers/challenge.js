@@ -369,19 +369,6 @@ function onGetSubmissionInformationDone(state, action) {
 }
 
 /**
- * Handles CHALLENGE/GET_CHALLENGE_STATISTICS_INIT action.
- * @param {Object} state
- * @param {Object} action
- * @return {Object} New state.
- */
- function onFetchChallengeStatisticsInit(state, action) {
-  return {
-    ...state,
-    statisticsData: [],
-  };
-}
-
-/**
  * Handles CHALLENGE/GET_CHALLENGE_STATISTICS_DONE action.
  * @param {Object} state Previous state.
  * @param {Object} action Action.
@@ -444,7 +431,7 @@ function create(initialState) {
     [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
     [a.getSubmissionInformationInit]: onGetSubmissionInformationInit,
     [a.getSubmissionInformationDone]: onGetSubmissionInformationDone,
-    [a.fetchChallengeStatisticsInit]: onFetchChallengeStatisticsInit,
+    [a.fetchChallengeStatisticsInit]: state => state,
     [a.fetchChallengeStatisticsDone]: onFetchChallengeStatisticsDone,
   }, _.defaults(initialState, {
     details: null,
@@ -462,7 +449,7 @@ function create(initialState) {
     updatingChallengeUuid: '',
     mmSubmissions: [],
     submissionInformation: null,
-    statisticsData: []
+    statisticsData: [],
   }));
 }
 
