@@ -369,6 +369,39 @@ function onGetSubmissionInformationDone(state, action) {
 }
 
 /**
+ * Handles CHALLENGE/GET_CHALLENGE_STATISTICS_INIT action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+ function onFetchChallengeStatisticsInit(state, action) {
+  return {
+    ...state,
+    statisticsData: [],
+  };
+}
+
+/**
+ * Handles CHALLENGE/GET_CHALLENGE_STATISTICS_DONE action.
+ * @param {Object} state Previous state.
+ * @param {Object} action Action.
+ */
+function onFetchChallengeStatisticsDone(state, action) {
+  if (action.error) {
+    logger.error('Failed to get challenge statistics', action.payload);
+    return {
+      ...state,
+      statisticsData: [],
+    };
+  }
+
+  return {
+    ...state,
+    statisticsData: action.payload,
+  };
+}
+
+/**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Challenge reducer.
@@ -411,6 +444,8 @@ function create(initialState) {
     [a.getActiveChallengesCountDone]: onGetActiveChallengesCountDone,
     [a.getSubmissionInformationInit]: onGetSubmissionInformationInit,
     [a.getSubmissionInformationDone]: onGetSubmissionInformationDone,
+    [a.fetchChallengeStatisticsInit]: onFetchChallengeStatisticsInit,
+    [a.fetchChallengeStatisticsDone]: onFetchChallengeStatisticsDone,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,
@@ -427,6 +462,7 @@ function create(initialState) {
     updatingChallengeUuid: '',
     mmSubmissions: [],
     submissionInformation: null,
+    statisticsData: []
   }));
 }
 

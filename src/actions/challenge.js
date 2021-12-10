@@ -392,6 +392,25 @@ function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
     });
 }
 
+/**
+ * @static
+ * @desc Creates an action that signals beginning of fetching challenge statistics
+ * @return {Action}
+ */
+ function fetchChallengeStatisticsInit() {}
+
+/**
+ * @static
+ * @desc Creates an action that gets challenge statistics from the backend.
+ * @param {String} challengeId The challenge id
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @return {Action}
+ */
+function fetchChallengeStatisticsDone(challengeId, tokenV3) {
+  const challengeService = getChallengesService(tokenV3);
+  return challengeService.getChallengeStatistics(challengeId)
+}
+
 export default createActions({
   CHALLENGE: {
     DROP_CHECKPOINTS: dropCheckpoints,
@@ -417,5 +436,7 @@ export default createActions({
     GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
     GET_SUBMISSION_INFORMATION_INIT: getSubmissionInformationInit,
     GET_SUBMISSION_INFORMATION_DONE: getSubmissionInformationDone,
+    GET_CHALLENGE_STATISTICS_INIT: fetchChallengeStatisticsInit,
+    GET_CHALLENGE_STATISTICS_DONE: fetchChallengeStatisticsDone,
   },
 });
