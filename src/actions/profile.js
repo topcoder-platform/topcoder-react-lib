@@ -216,9 +216,7 @@ function uploadPhotoInit() {}
  */
 function uploadPhotoDone(handle, tokenV3, file) {
   const service = getMembersService(tokenV3);
-  return service.getPresignedUrl(handle, file)
-    .then(res => service.uploadFileToS3(res))
-    .then(res => service.updateMemberPhoto(res))
+  return service.updateMemberPhoto(handle, file)
     .then(photoURL => ({ handle, photoURL }));
 }
 

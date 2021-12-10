@@ -18,8 +18,6 @@ const linkedAccounts = [{
 
 // Mock services
 const mockMembersService = {
-  getPresignedUrl: jest.fn().mockReturnValue(Promise.resolve()),
-  uploadFileToS3: jest.fn().mockReturnValue(Promise.resolve()),
   updateMemberPhoto: jest.fn().mockReturnValue(Promise.resolve('url-of-photo')),
   updateMemberProfile: jest.fn().mockReturnValue(Promise.resolve(profile)),
   addSkill: jest.fn().mockReturnValue(Promise.resolve({ skills: [skill] })),
@@ -47,8 +45,6 @@ test('Module exports', () => expect(actions).toMatchSnapshot());
 test('profile.uploadPhotoDone', async () => {
   const actionResult = await redux.resolveAction(actions.profile.uploadPhotoDone(handle, tokenV3));
   expect(actionResult).toMatchSnapshot();
-  expect(mockMembersService.getPresignedUrl).toBeCalled();
-  expect(mockMembersService.uploadFileToS3).toBeCalled();
   expect(mockMembersService.updateMemberPhoto).toBeCalled();
 });
 
