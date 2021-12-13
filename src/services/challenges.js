@@ -254,6 +254,21 @@ class ChallengesService {
   }
 
   /**
+   * Gets challenge statistics.
+   * @param {Number} challengeId
+   * @return {Promise} The array of statistics
+   */
+  async getChallengeStatistics(challengeId) {
+    return this.private.apiV5.get(`/challenges/${challengeId}/statistics`)
+      .then(res => (res.ok ? res.json() : new Error(res.statusText)))
+      .then(res => (
+        res.message
+          ? new Error(res.message)
+          : res
+      ));
+  }
+
+  /**
    * Activates the specified challenge.
    * @param {Number} challengeId
    * @return {Promise} Resolves to null value in case of success; otherwise it
