@@ -87,8 +87,7 @@ export async function getApiResponsePayload(res, shouldThrowError = true) {
  */
 export function handleApiResponse(response) {
   if (!response.ok) throw new Error(response.statusText);
-  return response.json()
-    .catch(() => null);
+  return response.json();
 }
 
 /**

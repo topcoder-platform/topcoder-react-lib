@@ -25,7 +25,9 @@ members via API V3.
             * [.addSkill(handle, skillTagId)](#module_services.members..MembersService+addSkill) ⇒ <code>Promise</code>
             * [.hideSkill(handle, skillTagId)](#module_services.members..MembersService+hideSkill) ⇒ <code>Promise</code>
             * [.updateMemberProfile(profile)](#module_services.members..MembersService+updateMemberProfile) ⇒ <code>Promise</code>
-            * [.updateMemberPhoto(userHandle, file)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
+            * [.getPresignedUrl(userHandle, file)](#module_services.members..MembersService+getPresignedUrl) ⇒ <code>Promise</code>
+            * [.updateMemberPhoto(S3Response)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
+            * [.uploadFileToS3(presignedUrlResponse)](#module_services.members..MembersService+uploadFileToS3) ⇒ <code>Promise</code>
            * [.verifyMemberNewEmail(handle, emailVerifyToken)](#module_services.members..MembersService+verifyMemberNewEmail) ⇒ <code>Promise</code>
 
 <a name="module_services.members.getService"></a>
@@ -63,7 +65,9 @@ Service class.
     * [.addSkill(handle, skillTagId)](#module_services.members..MembersService+addSkill) ⇒ <code>Promise</code>
     * [.hideSkill(handle, skillTagId)](#module_services.members..MembersService+hideSkill) ⇒ <code>Promise</code>
     * [.updateMemberProfile(profile)](#module_services.members..MembersService+updateMemberProfile) ⇒ <code>Promise</code>
-    * [.updateMemberPhoto(userHandle, file)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
+    * [.getPresignedUrl(userHandle, file)](#module_services.members..MembersService+getPresignedUrl) ⇒ <code>Promise</code>
+    * [.updateMemberPhoto(S3Response)](#module_services.members..MembersService+updateMemberPhoto) ⇒ <code>Promise</code>
+    * [.uploadFileToS3(presignedUrlResponse)](#module_services.members..MembersService+uploadFileToS3) ⇒ <code>Promise</code>
     * [.verifyMemberNewEmail(handle, emailVerifyToken)](#module_services.members..MembersService+verifyMemberNewEmail) ⇒ <code>Promise</code>
 
 <a name="new_module_services.members..MembersService_new"></a>
@@ -252,10 +256,10 @@ Updates member profile.
 | --- | --- | --- |
 | profile | <code>Object</code> | The profile to update. |
 
-<a name="module_services.members..MembersService+updateMemberPhoto"></a>
+<a name="module_services.members..MembersService+getPresignedUrl"></a>
 
-#### membersService.updateMemberPhoto(userHandle, file) ⇒ <code>Promise</code>
-Uploads and updates member photo.
+#### membersService.getPresignedUrl(userHandle, file) ⇒ <code>Promise</code>
+Gets presigned url for member photo file.
 
 **Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
 **Returns**: <code>Promise</code> - Resolves to the api response content
@@ -263,7 +267,31 @@ Uploads and updates member photo.
 | Param | Type | Description |
 | --- | --- | --- |
 | userHandle | <code>String</code> | The user handle |
-| file | <code>File</code> | The file to be uploaded |
+| file | <code>File</code> | The file to get its presigned url |
+
+<a name="module_services.members..MembersService+updateMemberPhoto"></a>
+
+#### membersService.updateMemberPhoto(S3Response) ⇒ <code>Promise</code>
+Updates member photo.
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
+
+| Param | Type | Description |
+| --- | --- | --- |
+| S3Response | <code>Object</code> | The response from uploadFileToS3() function. |
+
+<a name="module_services.members..MembersService+uploadFileToS3"></a>
+
+#### membersService.uploadFileToS3(presignedUrlResponse) ⇒ <code>Promise</code>
+Uploads file to S3.
+
+**Kind**: instance method of [<code>MembersService</code>](#module_services.members..MembersService)
+**Returns**: <code>Promise</code> - Resolves to the api response content
+
+| Param | Type | Description |
+| --- | --- | --- |
+| presignedUrlResponse | <code>Object</code> | The presigned url response from                                      getPresignedUrl() function. |
 
 <a name="module_services.members..MembersService+verifyMemberNewEmail"></a>
 
