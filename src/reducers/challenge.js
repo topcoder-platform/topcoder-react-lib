@@ -378,7 +378,7 @@ function onFetchChallengeStatisticsDone(state, action) {
     logger.error('Failed to get challenge statistics', action.payload);
     return {
       ...state,
-      statisticsData: [],
+      statisticsData: null,
     };
   }
 
@@ -449,7 +449,7 @@ function create(initialState) {
     updatingChallengeUuid: '',
     mmSubmissions: [],
     submissionInformation: null,
-    statisticsData: [],
+    statisticsData: null,
   }));
 }
 
