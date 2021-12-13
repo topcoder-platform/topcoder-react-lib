@@ -4,10 +4,11 @@
  * members via API V3.
  */
 
-/* global FormData */
+/* global XMLHttpRequest */
 import _ from 'lodash';
 import qs from 'qs';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
+import logger from '../utils/logger';
 import { getApiResponsePayload, handleApiResponse } from '../utils/tc';
 import { getApi } from './api';
 
@@ -238,23 +239,72 @@ class MembersService {
   }
 
   /**
-   * Updates member photo.
+   * Gets presigned url for member photo file.
    * @param {String} userHandle The user handle
-   * @param {File} file The photo to upload
+   * @param {File} file The file to get its presigned url
    * @return {Promise} Resolves to the api response content
    */
-  async updateMemberPhoto(userHandle, file) {
-    const formData = new FormData();
-    formData.append('photo', file);
-    const res = await this.private.apiV5.fetch(`/members/${userHandle}/photo`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': null,
-      },
-      body: formData,
+  async getPresignedUrl(userHandle, file) {
+    const res = await this.private.api.postJson(`/members/${userHandle}/photoUploadUrl`, { param: { contentType: file.type } });
+    const payload = await getApiResponsePayload(res);
+
+    return {
+      preSignedURL: payload.preSignedURL,
+      token: payload.token,
+      file,
+      userHandle,
+    };
+  }
+
+  /**
+   * Updates member photo.
+   * @param {Object} S3Response The response from uploadFileToS3() function.
+   * @return {Promise} Resolves to the api response content
+   */
+  async updateMemberPhoto(S3Response) {
+    const res = await this.private.api.putJson(`/members/${S3Response.userHandle}/photo`, { param: S3Response.body });
+    return getApiResponsePayload(res);
+  }
+
+  /**
+   * Uploads file to S3.
+   * @param {Object} presignedUrlResponse The presigned url response from
+   *                                      getPresignedUrl() function.
+   * @return {Promise} Resolves to the api response content
+   */
+  uploadFileToS3(presignedUrlResponse) {
+    _.noop(this);
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+
+      xhr.open('PUT', presignedUrlResponse.preSignedURL, true);
+      xhr.setRequestHeader('Content-Type', presignedUrlResponse.file.type);
+
+      xhr.onreadystatechange = () => {
+        const { status } = xhr;
+        if (((status >= 200 && status < 300) || status === 304) && xhr.readyState === 4) {
+          resolve({
+            userHandle: presignedUrlResponse.userHandle,
+            body: {
+              token: presignedUrlResponse.token,
+              contentType: presignedUrlResponse.file.type,
+            },
+          });
+        } else if (status >= 400) {
+          const err = new Error('Could not upload image to S3');
+          err.status = status;
+          reject(err);
+        }
+      };
+
+      xhr.onerror = (err) => {
+        logger.error('Could not upload image to S3', err);
+
+        reject(err);
+      };
+
+      xhr.send(presignedUrlResponse.file);
     });
-    return handleApiResponse(res)
-      .then(({ photoURL }) => photoURL);
   }
 
   /**
