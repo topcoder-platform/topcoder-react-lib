@@ -267,6 +267,49 @@ function onUpdateProfileDone(state, { payload, error }) {
 }
 
 /**
+ * Handles PROFILE/UPDATE_PROFILE_DONE_V5 action.
+ * @param {Object} state
+ * @param {Object} action Payload will be JSON from api call
+ * @return {Object} New state
+ */
+function onUpdateProfileDoneV5(state, { payload, error }) {
+  const newState = { ...state, updatingProfile: false };
+
+  if (payload.isEmailConflict) {
+    return {
+      ...newState,
+      isEmailConflict: true,
+      updateProfileSuccess: false,
+    };
+  }
+
+  if (error) {
+    logger.error('Failed to update user profile', payload);
+    fireErrorMessage('ERROR: Failed to update user profile!');
+    return {
+      ...newState,
+      updateProfileSuccess: false,
+    };
+  }
+
+  if (!newState.info || newState.info.handle !== payload.handle) {
+    return {
+      ...newState,
+      updateProfileSuccess: true,
+    };
+  }
+
+  return {
+    ...newState,
+    info: {
+      ...newState.info,
+      ...payload,
+    },
+    updateProfileSuccess: true,
+  };
+}
+
+/**
  * Handles PROFILE/ADD_SKILL_DONE action.
  * @param {Object} state
  * @param {Object} action Payload will be JSON from api call
@@ -530,6 +573,8 @@ function create(initialState) {
     [a.deletePhotoDone]: onDeletePhotoDone,
     [a.updateProfileInit]: state => ({ ...state, updatingProfile: true }),
     [a.updateProfileDone]: onUpdateProfileDone,
+    [a.updateProfileInitV5]: state => ({ ...state, updatingProfile: true }),
+    [a.updateProfileDoneV5]: onUpdateProfileDoneV5,
     [a.addSkillInit]: state => ({ ...state, addingSkill: true }),
     [a.addSkillDone]: onAddSkillDone,
     [a.hideSkillInit]: state => ({ ...state, hidingSkill: true }),

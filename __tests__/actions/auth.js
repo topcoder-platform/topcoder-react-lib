@@ -1,5 +1,5 @@
 const MOCK_GROUPS_REQ_URL = 'https://api.topcoder-dev.com/v5/groups?memberId=12345&membershipType=user';
-const MOCK_PROFILE_REQ_URL = 'https://api.topcoder-dev.com/v3/members/username12345';
+const MOCK_PROFILE_REQ_URL = 'https://api.topcoder-dev.com/v5/members/username12345';
 
 jest.mock('isomorphic-fetch', () => jest.fn(url => Promise.resolve({
   ok: true,
@@ -10,7 +10,7 @@ jest.mock('isomorphic-fetch', () => jest.fn(url => Promise.resolve({
         content = ['Group1', 'Group2'];
         break;
       case MOCK_PROFILE_REQ_URL:
-        content = { result: { content: { userId: 12345 }, status: 200 } };
+        content = Promise.resolve({ userId: 12345 });
         break;
       default: throw new Error('Unexpected URL!');
     }

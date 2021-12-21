@@ -106,6 +106,21 @@ function create(initialState) {
         },
       };
     },
+    [profileActions.profile.updateProfileDoneV5]: (state, { payload, error }) => {
+      if (error) {
+        return state;
+      }
+      if (!state.profile || state.profile.handle !== payload.handle) {
+        return state;
+      }
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...payload,
+        },
+      };
+    },
   }, _.defaults(initialState, {
     authenticating: true,
     profile: null,
