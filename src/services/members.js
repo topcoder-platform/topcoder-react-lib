@@ -45,8 +45,8 @@ class MembersService {
    * @return {Promise} Resolves to the data object.
    */
   async getMemberInfo(handle) {
-    const res = await this.private.api.get(`/members/${handle}`);
-    return getApiResponsePayload(res);
+    const res = await this.private.apiV5.get(`/members/${handle}`);
+    return handleApiResponse(res);
   }
 
   /**
@@ -75,8 +75,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getSkills(handle) {
-    const res = await this.private.api.get(`/members/${handle}/skills`);
-    return getApiResponsePayload(res);
+    const res = await this.private.apiV5.get(`/members/${handle}/skills`);
+    return handleApiResponse(res);
   }
 
   /**
@@ -188,16 +188,12 @@ class MembersService {
    */
   async addSkill(handle, skillTagId) {
     const body = {
-      param: {
-        skills: {
-          [skillTagId]: {
-            hidden: false,
-          },
-        },
+      [skillTagId]: {
+        hidden: false,
       },
     };
-    const res = await this.private.api.patchJson(`/members/${handle}/skills`, body);
-    return getApiResponsePayload(res);
+    const res = await this.private.apiV5.patchJson(`/members/${handle}/skills`, body);
+    return handleApiResponse(res);
   }
 
   /**
@@ -208,19 +204,15 @@ class MembersService {
    */
   async hideSkill(handle, skillTagId) {
     const body = {
-      param: {
-        skills: {
-          [skillTagId]: {
-            hidden: true,
-          },
-        },
+      [skillTagId]: {
+        hidden: true,
       },
     };
-    const res = await this.private.api.fetch(`/members/${handle}/skills`, {
+    const res = await this.private.apiV5.fetch(`/members/${handle}/skills`, {
       body: JSON.stringify(body),
       method: 'PATCH',
     });
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**
@@ -235,6 +227,20 @@ class MembersService {
       return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
     }
     return getApiResponsePayload(res);
+  }
+
+  /**
+   * Updates member profile.
+   * @param {Object} profile The profile to update.
+   * @return {Promise} Resolves to the api response content
+   */
+  async updateMemberProfileV5(profile, handle) {
+    const url = profile.verifyUrl ? `/members/${handle}?verifyUrl=${profile.verifyUrl}` : `/members/${handle}`;
+    const res = await this.private.apiV5.putJson(url, profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile);
+    if (profile.verifyUrl && res.status === 409) {
+      return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
+    }
+    return handleApiResponse(res);
   }
 
   /**

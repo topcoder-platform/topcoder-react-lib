@@ -248,6 +248,25 @@ function updateProfileDone(profile, tokenV3) {
 
 /**
  * @static
+ * @desc Creates an action that signals beginning of updating user's profile.
+ * @return {Action}
+ */
+function updateProfileInitV5() {}
+
+/**
+ * @static
+ * @desc Creates an action that updates user's profile.
+ * @param {String} profile Topcoder user profile.
+ * @param {String} tokenV5 Topcoder auth token v5.
+ * @return {Action}
+ */
+function updateProfileDoneV5(profile, handle, tokenV3) {
+  const service = getMembersService(tokenV3);
+  return service.updateMemberProfileV5(profile, handle);
+}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of adding user's skill.
  * @return {Action}
  */
@@ -483,6 +502,8 @@ export default createActions({
     DELETE_PHOTO_DONE: updateProfileDone,
     UPDATE_PROFILE_INIT: updateProfileInit,
     UPDATE_PROFILE_DONE: updateProfileDone,
+    UPDATE_PROFILE_INIT_V5: updateProfileInitV5,
+    UPDATE_PROFILE_DONE_V5: updateProfileDoneV5,
     ADD_SKILL_INIT: addSkillInit,
     ADD_SKILL_DONE: addSkillDone,
     HIDE_SKILL_INIT: hideSkillInit,

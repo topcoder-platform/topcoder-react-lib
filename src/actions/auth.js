@@ -5,9 +5,10 @@
 
 import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
-import { getApiV3, getApiV5 } from '../services/api';
+import { getApiV5 } from '../services/api';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { getService } from '../services/groups';
+import { handleApiResponse } from '../utils/tc';
 
 /**
  * Helper method that checks for HTTP error response v5 and throws Error in this case.
@@ -41,11 +42,10 @@ async function checkErrorV5(res) {
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
-  const apiV3 = getApiV3(userTokenV3);
   const apiV5 = getApiV5(userTokenV3);
   return Promise.all([
-    apiV3.get(`/members/${user.handle}`)
-      .then(res => res.json()).then(res => (res.result.status === 200 ? res.result.content : {})),
+    apiV5.get(`/members/${user.handle}`)
+      .then(handleApiResponse),
     apiV5.get(`/groups?memberId=${user.userId}&membershipType=user`)
       .then(checkErrorV5).then(res => res.result || []),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
