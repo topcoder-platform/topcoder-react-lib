@@ -216,9 +216,7 @@ function uploadPhotoInit() {}
  */
 function uploadPhotoDone(handle, tokenV3, file) {
   const service = getMembersService(tokenV3);
-  return service.getPresignedUrl(handle, file)
-    .then(res => service.uploadFileToS3(res))
-    .then(res => service.updateMemberPhoto(res))
+  return service.updateMemberPhoto(handle, file)
     .then(photoURL => ({ handle, photoURL }));
 }
 
@@ -246,6 +244,25 @@ function updateProfileInit() {}
 function updateProfileDone(profile, tokenV3) {
   const service = getMembersService(tokenV3);
   return service.updateMemberProfile(profile);
+}
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of updating user's profile.
+ * @return {Action}
+ */
+function updateProfileInitV5() {}
+
+/**
+ * @static
+ * @desc Creates an action that updates user's profile.
+ * @param {String} profile Topcoder user profile.
+ * @param {String} tokenV5 Topcoder auth token v5.
+ * @return {Action}
+ */
+function updateProfileDoneV5(profile, handle, tokenV3) {
+  const service = getMembersService(tokenV3);
+  return service.updateMemberProfileV5(profile, handle);
 }
 
 /**
@@ -485,6 +502,8 @@ export default createActions({
     DELETE_PHOTO_DONE: updateProfileDone,
     UPDATE_PROFILE_INIT: updateProfileInit,
     UPDATE_PROFILE_DONE: updateProfileDone,
+    UPDATE_PROFILE_INIT_V5: updateProfileInitV5,
+    UPDATE_PROFILE_DONE_V5: updateProfileDoneV5,
     ADD_SKILL_INIT: addSkillInit,
     ADD_SKILL_DONE: addSkillDone,
     HIDE_SKILL_INIT: hideSkillInit,
