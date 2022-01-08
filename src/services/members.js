@@ -187,12 +187,22 @@ class MembersService {
    * @return {Promise} Resolves to operation result
    */
   async addSkill(handle, skillTagId) {
+    let res = {};
+    const url = `/members/${handle}/skills`;
+    const skills = await this.getSkills(handle);
+
     const body = {
       [skillTagId]: {
         hidden: false,
       },
     };
-    const res = await this.private.apiV5.patchJson(`/members/${handle}/skills`, body);
+
+    if (skills && skills.createdAt) {
+      res = await this.private.apiV5.patchJson(url, body);
+    } else {
+      res = await this.private.apiV5.postJson(url, body);
+    }
+
     return handleApiResponse(res);
   }
 
