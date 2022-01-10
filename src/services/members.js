@@ -4,11 +4,10 @@
  * members via API V3.
  */
 
-/* global XMLHttpRequest */
+/* global FormData */
 import _ from 'lodash';
 import qs from 'qs';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
-import logger from '../utils/logger';
 import { getApiResponsePayload, handleApiResponse } from '../utils/tc';
 import { getApi } from './api';
 
@@ -46,8 +45,8 @@ class MembersService {
    * @return {Promise} Resolves to the data object.
    */
   async getMemberInfo(handle) {
-    const res = await this.private.api.get(`/members/${handle}`);
-    return getApiResponsePayload(res);
+    const res = await this.private.apiV5.get(`/members/${handle}`);
+    return handleApiResponse(res);
   }
 
   /**
@@ -76,8 +75,8 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getSkills(handle) {
-    const res = await this.private.api.get(`/members/${handle}/skills`);
-    return getApiResponsePayload(res);
+    const res = await this.private.apiV5.get(`/members/${handle}/skills`);
+    return handleApiResponse(res);
   }
 
   /**
@@ -188,17 +187,23 @@ class MembersService {
    * @return {Promise} Resolves to operation result
    */
   async addSkill(handle, skillTagId) {
+    let res = {};
+    const url = `/members/${handle}/skills`;
+    const skills = await this.getSkills(handle);
+
     const body = {
-      param: {
-        skills: {
-          [skillTagId]: {
-            hidden: false,
-          },
-        },
+      [skillTagId]: {
+        hidden: false,
       },
     };
-    const res = await this.private.api.patchJson(`/members/${handle}/skills`, body);
-    return getApiResponsePayload(res);
+
+    if (skills && skills.createdAt) {
+      res = await this.private.apiV5.patchJson(url, body);
+    } else {
+      res = await this.private.apiV5.postJson(url, body);
+    }
+
+    return handleApiResponse(res);
   }
 
   /**
@@ -209,19 +214,15 @@ class MembersService {
    */
   async hideSkill(handle, skillTagId) {
     const body = {
-      param: {
-        skills: {
-          [skillTagId]: {
-            hidden: true,
-          },
-        },
+      [skillTagId]: {
+        hidden: true,
       },
     };
-    const res = await this.private.api.fetch(`/members/${handle}/skills`, {
+    const res = await this.private.apiV5.fetch(`/members/${handle}/skills`, {
       body: JSON.stringify(body),
       method: 'PATCH',
     });
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**
@@ -239,72 +240,37 @@ class MembersService {
   }
 
   /**
-   * Gets presigned url for member photo file.
-   * @param {String} userHandle The user handle
-   * @param {File} file The file to get its presigned url
+   * Updates member profile.
+   * @param {Object} profile The profile to update.
    * @return {Promise} Resolves to the api response content
    */
-  async getPresignedUrl(userHandle, file) {
-    const res = await this.private.api.postJson(`/members/${userHandle}/photoUploadUrl`, { param: { contentType: file.type } });
-    const payload = await getApiResponsePayload(res);
-
-    return {
-      preSignedURL: payload.preSignedURL,
-      token: payload.token,
-      file,
-      userHandle,
-    };
+  async updateMemberProfileV5(profile, handle) {
+    const url = profile.verifyUrl ? `/members/${handle}?verifyUrl=${profile.verifyUrl}` : `/members/${handle}`;
+    const res = await this.private.apiV5.putJson(url, profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile);
+    if (profile.verifyUrl && res.status === 409) {
+      return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
+    }
+    return handleApiResponse(res);
   }
 
   /**
    * Updates member photo.
-   * @param {Object} S3Response The response from uploadFileToS3() function.
+   * @param {String} userHandle The user handle
+   * @param {File} file The photo to upload
    * @return {Promise} Resolves to the api response content
    */
-  async updateMemberPhoto(S3Response) {
-    const res = await this.private.api.putJson(`/members/${S3Response.userHandle}/photo`, { param: S3Response.body });
-    return getApiResponsePayload(res);
-  }
-
-  /**
-   * Uploads file to S3.
-   * @param {Object} presignedUrlResponse The presigned url response from
-   *                                      getPresignedUrl() function.
-   * @return {Promise} Resolves to the api response content
-   */
-  uploadFileToS3(presignedUrlResponse) {
-    _.noop(this);
-    return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-
-      xhr.open('PUT', presignedUrlResponse.preSignedURL, true);
-      xhr.setRequestHeader('Content-Type', presignedUrlResponse.file.type);
-
-      xhr.onreadystatechange = () => {
-        const { status } = xhr;
-        if (((status >= 200 && status < 300) || status === 304) && xhr.readyState === 4) {
-          resolve({
-            userHandle: presignedUrlResponse.userHandle,
-            body: {
-              token: presignedUrlResponse.token,
-              contentType: presignedUrlResponse.file.type,
-            },
-          });
-        } else if (status >= 400) {
-          const err = new Error('Could not upload image to S3');
-          err.status = status;
-          reject(err);
-        }
-      };
-
-      xhr.onerror = (err) => {
-        logger.error('Could not upload image to S3', err);
-
-        reject(err);
-      };
-
-      xhr.send(presignedUrlResponse.file);
+  async updateMemberPhoto(userHandle, file) {
+    const formData = new FormData();
+    formData.append('photo', file);
+    const res = await this.private.apiV5.fetch(`/members/${userHandle}/photo`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': null,
+      },
+      body: formData,
     });
+    return handleApiResponse(res)
+      .then(({ photoURL }) => photoURL);
   }
 
   /**

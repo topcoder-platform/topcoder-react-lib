@@ -4,7 +4,7 @@
  * via API V3.
  */
 import toCapitalCase from 'to-capital-case';
-import { getApiResponsePayload } from '../utils/tc';
+import { handleApiResponse } from '../utils/tc';
 import { getApi } from './api';
 
 /**
@@ -16,7 +16,7 @@ class UserTraitsService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V5', tokenV3),
       tokenV3,
     };
   }
@@ -29,7 +29,7 @@ class UserTraitsService {
   async getAllUserTraits(handle) {
     // FIXME: Remove the .toLowerCase() when the API is fixed to ignore the case in the route params
     const res = await this.private.api.get(`/members/${handle.toLowerCase()}/traits`);
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**
@@ -40,18 +40,16 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async addUserTrait(handle, traitId, data) {
-    const body = {
-      param: [{
-        traitId,
-        categoryName: toCapitalCase(traitId),
-        traits: {
-          data,
-        },
-      }],
-    };
+    const body = [{
+      traitId,
+      categoryName: toCapitalCase(traitId),
+      traits: {
+        data,
+      },
+    }];
 
     const res = await this.private.api.postJson(`/members/${handle}/traits`, body);
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**
@@ -62,18 +60,16 @@ class UserTraitsService {
    * @return {Promise} Resolves to the member traits.
    */
   async updateUserTrait(handle, traitId, data) {
-    const body = {
-      param: [{
-        traitId,
-        categoryName: toCapitalCase(traitId),
-        traits: {
-          data,
-        },
-      }],
-    };
+    const body = [{
+      traitId,
+      categoryName: toCapitalCase(traitId),
+      traits: {
+        data,
+      },
+    }];
 
     const res = await this.private.api.putJson(`/members/${handle}/traits`, body);
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 
   /**
@@ -84,7 +80,7 @@ class UserTraitsService {
    */
   async deleteUserTrait(handle, traitId) {
     const res = await this.private.api.delete(`/members/${handle}/traits?traitIds=${traitId}`);
-    return getApiResponsePayload(res);
+    return handleApiResponse(res);
   }
 }
 
