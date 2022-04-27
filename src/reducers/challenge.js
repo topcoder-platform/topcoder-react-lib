@@ -52,10 +52,18 @@ function onGetDetailsInit(state, action) {
 function onGetDetailsDone(state, action) {
   if (action.error) {
     logger.error('Failed to get challenge details!', action.payload);
-    fireErrorMessage(
-      'ERROR: Failed to load the challenge',
-      'Please, try again a bit later',
-    );
+    if (action.payload.message === 'Forbidden') {
+      fireErrorMessage(
+        'ERROR: Private challenge',
+        'This challenge is only available to those in a private group.'
+          + ' It looks like you do not have access to this challenge.',
+      );
+    } else {
+      fireErrorMessage(
+        'ERROR: Failed to load the challenge',
+        'Please, try again a bit later',
+      );
+    }
     return {
       ...state,
       fetchChallengeFailure: action.error,

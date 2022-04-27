@@ -138,7 +138,7 @@ async function checkErrorV5(res) {
     if (res.status >= 500) {
       setErrorIcon(ERROR_ICON_TYPES.API, '/challenges', res.statusText);
     }
-    throw new Error(res.statusText);
+    throw new Error((!res.statusText && res.status === 403) ? 'Forbidden' : res.statusText);
   }
   const jsonRes = (await res.json());
   if (jsonRes.message) {
