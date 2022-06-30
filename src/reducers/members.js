@@ -464,6 +464,47 @@ function onGetUserResourcesDone(state, { error, payload }) {
 }
 
 /**
+ * Inits the loading of user's rewards.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetGamificationRewardsInit(state, { payload }) {
+  const { handle } = payload;
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      rewards: [],
+    },
+  };
+}
+
+/**
+ * Finalizes the loading of user's rewards.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onGetGamificationRewardsDone(state, { error, payload }) {
+  if (error) {
+    logger.error('Failed to get user rewards', payload);
+    fireErrorMessage('Failed to get user rewards', '');
+    return state;
+  }
+
+  const { rewards, handle } = payload;
+
+  return {
+    ...state,
+    [handle]: {
+      ...state[handle],
+      rewards,
+    },
+  };
+}
+
+/**
  * Creates a new Members reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Members reducer.
@@ -494,6 +535,8 @@ function create(initialState = {}) {
     [a.getUserMarathonDone]: onGetUserMarathonDone,
     [a.getUserResourcesInit]: onGetUserResourcesInit,
     [a.getUserResourcesDone]: onGetUserResourcesDone,
+    [a.getGamificationRewardsInit]: onGetGamificationRewardsInit,
+    [a.getGamificationRewardsDone]: onGetGamificationRewardsDone,
   }, initialState);
 }
 

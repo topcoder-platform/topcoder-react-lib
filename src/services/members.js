@@ -353,6 +353,26 @@ class MembersService {
       return results;
     });
   }
+
+  /**
+   * Fetch member's rewards
+   * @param {String} handle member handle
+   */
+  async getRewards(handle) {
+    const url = `/members/${handle}/gamification/rewards`;
+    try {
+      const res = await this.private.apiV5.get(url);
+      const rewards = await res.json();
+
+      if (_.get(rewards, 'message') === 'Request failed with status code 404') {
+        return { rewards: [], handle };
+      }
+
+      return { rewards, handle };
+    } catch (error) {
+      return { rewards: [], handle };
+    }
+  }
 }
 
 let lastInstance = null;
