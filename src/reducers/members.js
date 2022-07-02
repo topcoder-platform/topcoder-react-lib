@@ -289,10 +289,16 @@ function onGetActiveChallengesDone(state, { error, payload }) {
  * @return {Object} New state.
  */
 function onGetSubtrackChallengesInit(state, { payload }) {
-  const { handle, uuid } = payload;
+  const { handle, uuid, pageNum } = payload;
+
   return {
     ...state,
-    [handle]: { ...state[handle], loadingSubTrackChallengesUUID: uuid },
+    [handle]: {
+      ...state[handle],
+      loadingSubTrackChallengesUUID: uuid,
+      subtrackChallengesHasMore: false,
+      ...(pageNum === 1 ? { subtrackChallenges: [] } : {}),
+    },
   };
 }
 
@@ -303,18 +309,28 @@ function onGetSubtrackChallengesInit(state, { payload }) {
  * @return {Object} New state.
  */
 function onGetSubtrackChallengesDone(state, { error, payload }) {
-  if (error) {
-    logger.error('Failed to get member subtrack challenges', payload);
-    fireErrorMessage('Failed to get member subtrack challenges', '');
-    return state;
-  }
-
   const {
     uuid,
     challenges,
     refresh,
     handle,
+    error: payloadError,
   } = payload;
+
+  if (error || payloadError) {
+    logger.error('Failed to get member subtrack challenges', payload);
+    fireErrorMessage('Failed to get member subtrack challenges', '');
+
+    return {
+      ...state,
+      [handle]: {
+        ...state[handle],
+        subtrackChallengesHasMore: false,
+        loadingSubTrackChallengesUUID: '',
+      },
+    };
+  }
+
   if (uuid !== state[handle].loadingSubTrackChallengesUUID) return state;
 
   return {
