@@ -457,29 +457,6 @@ async function getUserResourcesDone(memberId, tokenV3, uuid) {
   return { resources, uuid };
 }
 
-/**
- * @static
- * @desc Initiates an action that fetch member's awards
- * @param {String} handle Member handle.
- * @return {Action}
- */
-async function getGamificationRewardsInit(handle) {
-  return { handle };
-}
-
-/**
- * @static
- * @desc Creates an action that gets member's awards
- *
- * @param {String} handle Topcoder member handle.
- * @return {Action}
- */
-async function getGamificationRewardsDone(handle, tokenV3) {
-  const rewards = await getService(tokenV3).getRewards(handle);
-  return rewards;
-}
-
-
 export default createActions({
   MEMBERS: {
     DROP: drop,
@@ -505,7 +482,5 @@ export default createActions({
     GET_USER_MARATHON_DONE: getUserMarathonDone,
     GET_USER_RESOURCES_INIT: getUserResourcesInit,
     GET_USER_RESOURCES_DONE: getUserResourcesDone,
-    GET_GAMIFICATION_REWARDS_INIT: getGamificationRewardsInit,
-    GET_GAMIFICATION_REWARDS_DONE: getGamificationRewardsDone,
   },
 });

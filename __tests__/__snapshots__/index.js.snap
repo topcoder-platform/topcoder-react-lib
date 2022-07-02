@@ -105,8 +105,6 @@ Object {
       "getActiveChallengesInit": [Function],
       "getFinancesDone": [Function],
       "getFinancesInit": [Function],
-      "getGamificationRewardsDone": [Function],
-      "getGamificationRewardsInit": [Function],
       "getStatsDistributionDone": [Function],
       "getStatsDistributionInit": [Function],
       "getStatsDone": [Function],
