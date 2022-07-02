@@ -257,10 +257,11 @@ async function getStatsDistributionDone(handle, track, subTrack, uuid, tokenV3) 
  * @desc Create an action that signals beginning of subtrack challenges loading.
  * @param {String} handle Member handle.
  * @param {String} uuid Operation UUID.
+ * @param {Number} pageNum Page index.
  * @return {Action}
  */
-async function getSubtrackChallengesInit(handle, uuid) {
-  return { handle, uuid };
+async function getSubtrackChallengesInit(handle, uuid, pageNum) {
+  return { handle, uuid, pageNum };
 }
 
 /**
@@ -340,7 +341,7 @@ async function getSubtrackChallengesV4Done(
       challenges: res.challenges,
       refresh,
       handle,
-    }));
+    })).catch(e => ({ handle, error: e }));
 }
 
 /**
