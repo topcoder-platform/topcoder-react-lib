@@ -13,6 +13,7 @@ import challenge, { factory as challengeFactory } from './challenge';
 import profile, { factory as profileFactory } from './profile';
 import members, { factory as membersFactory } from './members';
 import notifications, { factory as notificationsFactory } from './notifications';
+import tcAcademy, { factory as tcAcademyFactory } from './tc-academy';
 import lookup, { factory as lookupFactory } from './lookup';
 import memberTasks, { factory as memberTasksFactory } from './member-tasks';
 import reviewOpportunity, { factory as reviewOpportunityFactory }
@@ -44,6 +45,7 @@ export function factory(options) {
     looker: lookerFactory(options),
     memberSearch: memberSearchFactory(options),
     notifications: notificationsFactory(options),
+    tcAcademy: tcAcademyFactory(options),
   });
 }
 
@@ -65,4 +67,5 @@ export default ({
   looker,
   memberSearch,
   notifications,
+  tcAcademy,
 });
