@@ -206,6 +206,10 @@ Object {
       "getCommunityStatsDone": [Function],
       "getCommunityStatsInit": [Function],
     },
+    "tcAcademy": Object {
+      "getTcaCertificationsDone": [Function],
+      "getTcaCertificationsInit": [Function],
+    },
     "terms": Object {
       "agreeTermDone": [Function],
       "agreeTermInit": [Function],
@@ -288,6 +292,7 @@ Object {
     "reviewOpportunity": [Function],
     "settings": [Function],
     "stats": [Function],
+    "tcAcademy": [Function],
     "terms": [Function],
   },
   "services": Object {
@@ -351,6 +356,10 @@ Object {
       "normalizeChallenges": [Function],
     },
     "submissions": Object {
+      "default": undefined,
+      "getService": [Function],
+    },
+    "tcAcademy": Object {
       "default": undefined,
       "getService": [Function],
     },
