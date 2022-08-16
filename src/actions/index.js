@@ -15,6 +15,7 @@ import settingsActions from './settings';
 import lookerActions from './looker';
 import memberSearchActions from './member-search';
 import notificationActions from './notifications';
+import tcAcademyActions from './tc-academy';
 
 export const actions = {
   auth: authActions.auth,
@@ -34,6 +35,7 @@ export const actions = {
   looker: lookerActions.looker,
   memberSearch: memberSearchActions.memberSearch,
   notifications: notificationActions.notifications,
+  tcAcademy: tcAcademyActions.tcAcademy,
 };
 
 export default undefined;
