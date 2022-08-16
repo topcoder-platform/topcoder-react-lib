@@ -113,7 +113,7 @@ class LookupService {
    */
   async getReviewTypes() {
     if (typeof this.private.tokenV3 !== 'undefined') {
-      const res = await this.private.apiV5.get('/reviewTypes');
+      const res = await this.private.apiV5.get('/reviewTypes?isActive=true&perPage=100');
       const jsonResult = await res.json();
       return jsonResult;
     }
