@@ -76,11 +76,18 @@ function onGetDetailsDone(state, action) {
   // condition based on ROUTE used for Review Opportunities, change if needed
   const challengeId = state.loadingDetailsForChallengeId;
   let compareChallenge = details.id;
+  // to be compatible with old mm challenge, we should get legacyId from roundId firstly,
+  // like roundId '19038' to legacyId '30233148'
+  let isOldMmChallenge = false;
   if (challengeId.length >= 5 && challengeId.length <= 8) {
     compareChallenge = details.legacyId;
+
+    if (challengeId !== _.toString(compareChallenge)) {
+      isOldMmChallenge = true;
+    }
   }
 
-  if (_.toString(compareChallenge) !== challengeId) {
+  if (!isOldMmChallenge && _.toString(compareChallenge) !== challengeId) {
     return state;
   }
 
