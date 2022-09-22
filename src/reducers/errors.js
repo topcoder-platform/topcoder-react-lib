@@ -30,6 +30,7 @@ function create(initialState) {
     [a.clearError]: state => ({ ...state, alerts: state.alerts.slice(1) }),
     [a.newError]: (state, { payload }) => ({
       ...state,
+      // eslint-disable-next-line max-len
       alerts: [...state.alerts, { title: payload.title, details: payload.details, support: payload.support }],
     }),
     [a.clearAllErrorIcons]: state => ({
