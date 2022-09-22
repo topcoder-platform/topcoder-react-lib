@@ -55,8 +55,9 @@ function onGetDetailsDone(state, action) {
     if (action.payload.message === 'Forbidden') {
       fireErrorMessage(
         'ERROR: Private challenge',
-        'This challenge is only available to those in a private group.'
-          + ' It looks like you do not have access to this challenge.',
+        'The challenge is only available to those in a private group.'
+          + ' It looks like you are not part of the group.',
+        'Please work with the challenge creator to get yourself added to the group.',
       );
     } else {
       fireErrorMessage(

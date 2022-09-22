@@ -22,10 +22,10 @@ export function setErrorsStore(s) {
  * The function behaves similarly to javascript alert()
  * it will show a modal error diaglog with styling until the user clicks OK.
  */
-export function fireErrorMessage(title, details) {
+export function fireErrorMessage(title, details, support) {
   if (isomorphy.isClientSide() && store) {
     setImmediate(() => {
-      store.dispatch(actions.errors.newError(title, details));
+      store.dispatch(actions.errors.newError(title, details, support));
     });
   }
 }
