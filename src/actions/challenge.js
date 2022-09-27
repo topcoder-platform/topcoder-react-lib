@@ -394,6 +394,16 @@ function getSubmissionInformationDone(challengeId, submissionId, tokenV3) {
 
 /**
  * @static
+ * @desc Creates an action that gets communityId
+ * @param {String} communityId The communityId
+ * @return {Action}
+ */
+function setCommunityId(communityId) {
+  return { communityId: _.toString(communityId) };
+}
+
+/**
+ * @static
  * @desc Creates an action that signals beginning of fetching challenge statistics
  * @return {Action}
  */
@@ -415,6 +425,7 @@ export default createActions({
   CHALLENGE: {
     DROP_CHECKPOINTS: dropCheckpoints,
     DROP_RESULTS: dropResults,
+    SET_COMMUNITY_ID: setCommunityId,
     FETCH_CHECKPOINTS_INIT: fetchCheckpointsInit,
     FETCH_CHECKPOINTS_DONE: fetchCheckpointsDone,
     GET_DETAILS_INIT: getDetailsInit,

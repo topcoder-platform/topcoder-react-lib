@@ -3,6 +3,7 @@
 exports[`Default reducer Creates expected intial state 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "loadingCheckpoints": false,
   "loadingDetailsForChallengeId": "",
@@ -25,6 +26,7 @@ Object {
 exports[`Default reducer Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -51,6 +53,7 @@ Object {
 exports[`Default reducer Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -77,6 +80,7 @@ Object {
 exports[`Default reducer Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "fetchChallengeFailure": false,
   "loadingCheckpoints": false,
@@ -100,6 +104,7 @@ Object {
 exports[`Default reducer Handles deleteSubmissionDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -132,6 +137,7 @@ Object {
 exports[`Default reducer Handles fetchSubmissionsDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -166,6 +172,7 @@ Object {
 exports[`Default reducer Handles fetchSubmissionsDoneError as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -198,6 +205,7 @@ Object {
 exports[`Default reducer Handles fetchSubmissionsInit as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -229,6 +237,7 @@ exports[`Default reducer Handles getActiveChallengesCountDone as expected 1`] = 
 Object {
   "activeChallengesCount": 5,
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -261,6 +270,7 @@ Object {
 exports[`Factory with server-side rendering Creates expected intial state 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -295,6 +305,7 @@ Object {
 exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -329,6 +340,7 @@ Object {
 exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -363,6 +375,7 @@ Object {
 exports[`Factory with server-side rendering Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -397,6 +410,7 @@ Object {
 exports[`Factory with server-side rendering Handles deleteSubmissionDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -429,6 +443,7 @@ Object {
 exports[`Factory with server-side rendering Handles fetchSubmissionsDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -463,6 +478,7 @@ Object {
 exports[`Factory with server-side rendering Handles fetchSubmissionsDoneError as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -495,6 +511,7 @@ Object {
 exports[`Factory with server-side rendering Handles fetchSubmissionsInit as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -526,6 +543,7 @@ exports[`Factory with server-side rendering Handles getActiveChallengesCountDone
 Object {
   "activeChallengesCount": 5,
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -558,6 +576,7 @@ Object {
 exports[`Factory without http request Creates expected intial state 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "loadingCheckpoints": false,
   "loadingDetailsForChallengeId": "",
@@ -580,6 +599,7 @@ Object {
 exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -606,6 +626,7 @@ Object {
 exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -632,6 +653,7 @@ Object {
 exports[`Factory without http request Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "fetchChallengeFailure": false,
   "loadingCheckpoints": false,
@@ -655,6 +677,7 @@ Object {
 exports[`Factory without http request Handles deleteSubmissionDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -687,6 +710,7 @@ Object {
 exports[`Factory without http request Handles fetchSubmissionsDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -721,6 +745,7 @@ Object {
 exports[`Factory without http request Handles fetchSubmissionsDoneError as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -753,6 +778,7 @@ Object {
 exports[`Factory without http request Handles fetchSubmissionsInit as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -784,6 +810,7 @@ exports[`Factory without http request Handles getActiveChallengesCountDone as ex
 Object {
   "activeChallengesCount": 5,
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -816,6 +843,7 @@ Object {
 exports[`Factory without server-side rendering Creates expected intial state 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "loadingCheckpoints": false,
   "loadingDetailsForChallengeId": "",
@@ -838,6 +866,7 @@ Object {
 exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_DONE as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -864,6 +893,7 @@ Object {
 exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_DONE with error as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -890,6 +920,7 @@ Object {
 exports[`Factory without server-side rendering Handles CHALLENGE/GET_DETAILS_INIT as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": null,
   "fetchChallengeFailure": false,
   "loadingCheckpoints": false,
@@ -913,6 +944,7 @@ Object {
 exports[`Factory without server-side rendering Handles deleteSubmissionDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -945,6 +977,7 @@ Object {
 exports[`Factory without server-side rendering Handles fetchSubmissionsDone as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -979,6 +1012,7 @@ Object {
 exports[`Factory without server-side rendering Handles fetchSubmissionsDoneError as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -1011,6 +1045,7 @@ Object {
 exports[`Factory without server-side rendering Handles fetchSubmissionsInit as expected 1`] = `
 Object {
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
@@ -1042,6 +1077,7 @@ exports[`Factory without server-side rendering Handles getActiveChallengesCountD
 Object {
   "activeChallengesCount": 5,
   "checkpoints": null,
+  "communityId": null,
   "details": Object {
     "id": 123456789,
     "tag": "v3-normalized-details",
