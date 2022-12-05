@@ -320,32 +320,26 @@ class GroupService {
    * @return {Promise} Resolves to ID array.
    */
   async getGroupTreeIds(rootGroupId, maxage = 5 * 60 * 1000) {
-    //TODO: Once the fix is validated and working, remove all commented code related to caching
-    /**
-     * Removing the caching mechanism, 
-     * as the group created on the day will only be pickedup on the next day
-     * and stored in the cache
-     */
-    // const now = Date.now();
-    // const cache = this.private.cache.groupTreeIds;
+    const now = Date.now();
+    const cache = this.private.cache.groupTreeIds;
 
     /* Clean-up: removes stale records from the cache. */
-    // const CLEAN_UP_INTERVAL = 24 * 60 * 60 * 1000; // 1 day in ms.
-    // if (now - cache.lastCleanUp > CLEAN_UP_INTERVAL) {
-    //   _.forOwn(cache, ({ timestamp }, key) => {
-    //     if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key];
-    //   });
-    //   cache.lastCleanUp = now;
-    // }
+    const CLEAN_UP_INTERVAL = 1 * 60 * 60 * 1000; // 1 hour in ms.
+    if (now - cache.lastCleanUp > CLEAN_UP_INTERVAL) {
+      _.forOwn(cache, ({ timestamp }, key) => {
+        if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key];
+      });
+      cache.lastCleanUp = now;
+    }
 
     /* If result is found in cache, and is fresh enough, return it. */
-    // const cached = cache[rootGroupId];
-    // if (cached && now - cached.timestamp < maxage) return _.clone(cached.data);
+    const cached = cache[rootGroupId];
+    if (cached && now - cached.timestamp < maxage) return _.clone(cached.data);
 
     /* Otherwise, fetch result from the API, write it to the cache, and
      * finally return that. */
     const res = reduceGroupIds(await this.getGroup(rootGroupId));
-    // cache[rootGroupId] = { data: res, timestamp: now };
+    cache[rootGroupId] = { data: res, timestamp: now };
     return _.clone(res);
   }
 
