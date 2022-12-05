@@ -53,11 +53,20 @@ function onGetDetailsDone(state, action) {
   if (action.error) {
     logger.error('Failed to get challenge details!', action.payload);
     if (action.payload.message === 'Forbidden') {
-      fireErrorMessage(
-        'ERROR: Private challenge',
-        'This challenge is only available to those in a private group.'
-          + ' It looks like you do not have access to this challenge.',
-      );
+      if (state.communityId === 'wipro') {
+        fireErrorMessage(
+          'ERROR: Private challenge',
+          'The challenge is only available to those in a private group.'
+            + ' It looks like you are not part of the group.',
+          'Please work with the challenge creator to get yourself added to the group.',
+        );
+      } else {
+        fireErrorMessage(
+          'ERROR: Private challenge',
+          'This challenge is only available to those in a private group.'
+            + ' It looks like you do not have access to this challenge.',
+        );
+      }
     } else {
       fireErrorMessage(
         'ERROR: Failed to load the challenge',
@@ -404,6 +413,20 @@ function onFetchChallengeStatisticsDone(state, action) {
 }
 
 /**
+ * Handles CHALLENGE/SET_COMMUNITY_ID action.
+ * @param {Object} state
+ * @param {Object} action
+ * @return {Object} New state.
+ */
+function onSetCommunityId(state, action) {
+  return {
+    ...state,
+    communityId: action.payload.communityId,
+  };
+}
+
+
+/**
  * Creates a new Challenge reducer with the specified initial state.
  * @param {Object} initialState Optional. Initial state.
  * @return {Function} Challenge reducer.
@@ -448,6 +471,7 @@ function create(initialState) {
     [a.getSubmissionInformationDone]: onGetSubmissionInformationDone,
     [a.fetchChallengeStatisticsInit]: state => state,
     [a.fetchChallengeStatisticsDone]: onFetchChallengeStatisticsDone,
+    [a.setCommunityId]: onSetCommunityId,
   }, _.defaults(initialState, {
     details: null,
     loadingCheckpoints: false,
@@ -456,6 +480,7 @@ function create(initialState) {
     loadingMMSubmissionsForChallengeId: '',
     loadingSubmissionInformationForSubmissionId: '',
     mySubmissions: {},
+    communityId: null,
     checkpoints: null,
     registering: false,
     results: null,

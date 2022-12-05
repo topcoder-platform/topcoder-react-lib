@@ -30,6 +30,7 @@ Object {
       "loadResultsInit": [Function],
       "registerDone": [Function],
       "registerInit": [Function],
+      "setCommunityId": [Function],
       "toggleCheckpointFeedback": [Function],
       "unregisterDone": [Function],
       "unregisterInit": [Function],
