@@ -319,14 +319,13 @@ class GroupService {
    *  cache. Defaults to 5 minutes.
    * @return {Promise} Resolves to ID array.
    */
-  async getGroupTreeIds(rootGroupId, maxage = 5 * 60 * 1000) {
-
-    let url = `/groups/${rootGroupId}?flattenGroupIdTree=true`;
+  async getGroupTreeIds(rootGroupId) {
+    const url = `/groups/${rootGroupId}?flattenGroupIdTree=true`;
     const response = await this.private.api.get(url);
     const responseJSON = handleApiResponse(response);
 
-    const treeIds = responseJSON.flattenGroupIdTree
-    treeIds.push(rootGroupId)
+    const treeIds = responseJSON.flattenGroupIdTree;
+    treeIds.push(rootGroupId);
 
     return treeIds;
   }
