@@ -325,7 +325,7 @@ class GroupService {
     const responseJSON = await handleApiResponse(response);
 
     const treeIds = responseJSON.flattenGroupIdTree;
-    treeIds.push(rootGroupId);
+    treeIds.push(responseJSON.id);
 
     return treeIds;
   }
