@@ -322,7 +322,7 @@ class GroupService {
   async getGroupTreeIds(rootGroupId) {
     const url = `/groups/${rootGroupId}?flattenGroupIdTree=true`;
     const response = await this.private.api.get(url);
-    const responseJSON = handleApiResponse(response);
+    const responseJSON = await handleApiResponse(response);
 
     const treeIds = responseJSON.flattenGroupIdTree;
     treeIds.push(rootGroupId);
