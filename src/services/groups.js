@@ -319,28 +319,19 @@ class GroupService {
    *  cache. Defaults to 5 minutes.
    * @return {Promise} Resolves to ID array.
    */
-  async getGroupTreeIds(rootGroupId, maxage = 5 * 60 * 1000) {
-    const now = Date.now();
-    const cache = this.private.cache.groupTreeIds;
+  async getGroupTreeIds(rootGroupId) {
+    const rootGroupURL = `/groups/${rootGroupId}`;
+    const rootGroupRes = await this.private.api.get(rootGroupURL);
+    const rootGroupJSON = await handleApiResponse(rootGroupRes);
 
-    /* Clean-up: removes stale records from the cache. */
-    const CLEAN_UP_INTERVAL = 24 * 60 * 60 * 1000; // 1 day in ms.
-    if (now - cache.lastCleanUp > CLEAN_UP_INTERVAL) {
-      _.forOwn(cache, ({ timestamp }, key) => {
-        if (now - timestamp > CLEAN_UP_INTERVAL) delete cache[key];
-      });
-      cache.lastCleanUp = now;
-    }
+    const url = `/groups/${rootGroupJSON.id}?flattenGroupIdTree=true`;
+    const response = await this.private.api.get(url);
+    const responseJSON = await handleApiResponse(response);
 
-    /* If result is found in cache, and is fresh enough, return it. */
-    const cached = cache[rootGroupId];
-    if (cached && now - cached.timestamp < maxage) return _.clone(cached.data);
+    const treeIds = responseJSON.flattenGroupIdTree;
+    treeIds.push(responseJSON.id);
 
-    /* Otherwise, fetch result from the API, write it to the cache, and
-     * finally return that. */
-    const res = reduceGroupIds(await this.getGroup(rootGroupId));
-    cache[rootGroupId] = { data: res, timestamp: now };
-    return _.clone(res);
+    return treeIds;
   }
 
   /**
