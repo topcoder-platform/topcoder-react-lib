@@ -33,7 +33,7 @@
   },
   "version": "1.2.11",
   "dependencies": {
-    "auth0-js": "^6.8.4",
+    "auth0-js": "^9.13.2",
     "config": "^3.2.0",
     "isomorphic-fetch": "^2.2.1",
     "le_node": "^1.7.0",
