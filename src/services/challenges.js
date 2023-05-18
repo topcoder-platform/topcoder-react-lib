@@ -471,6 +471,7 @@ class ChallengesService {
     const roleId = this.private.tokenV3 ? await this.getRoleId('Submitter') : null;
     let params = {
       challengeId,
+      perPage: 5000,
     };
 
     if (roleId) {
