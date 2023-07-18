@@ -110,6 +110,25 @@ class MembersService {
   }
 
   /**
+   * Gets member Marathon Match rating.
+   * @param {String} handle
+   * @returns {Promise} resolves to the rating
+   */
+  async getMMRating(handle) {
+    const res = await this.private.apiV5.get(`/members/${handle}/stats`);
+    const stats = await res.json();
+
+    if (stats.length === 1) {
+      if (stats[0].DATA_SCIENCE != null && stats[0].DATA_SCIENCE.MARATHON_MATCH != null) {
+        return stats[0].DATA_SCIENCE.MARATHON_MATCH.rank.rating;
+      }
+      return 0;
+    }
+
+    return 0;
+  }
+
+  /**
    * Gets member statistics history
    * @param {String} handle
    * @return {Promise} Resolves to the stats object.
