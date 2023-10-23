@@ -70,7 +70,8 @@ class MembersService {
   }
 
   /**
-   * @deprecated This method is using the old API skills, and the returned skills may not be what you're looking for
+   * @deprecated This method is using the old API skills,
+   *  and the returned skills may not be what you're looking for
    * @todo Replace this method and use the new standardized skills when needed
    * @see https://topcoder.atlassian.net/browse/TSJR-27
    *
