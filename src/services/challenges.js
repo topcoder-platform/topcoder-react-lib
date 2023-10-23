@@ -4,6 +4,7 @@
  *  Topcoder challenges via TC API.
  */
 
+/* global CONFIG */
 import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
@@ -14,6 +15,8 @@ import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
+
+const { CHALLENGE_APP_VERSION } = CONFIG;
 
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
@@ -154,15 +157,12 @@ async function checkErrorV5(res) {
  * Challenge service.
  */
 class ChallengesService {
-
   /**
    * Creates a new ChallengeService instance.
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
    */
   constructor(tokenV3, tokenV2) {
-    const { CHALLENGE_APP_VERSION } = CONFIG;
-
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
@@ -181,7 +181,7 @@ class ChallengesService {
         && !_.isEqual(filter.frontFilter.types, [])) {
         const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
         const url = `${endpoint}?${query}`;
-        const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+        const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
         res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       }
       return {
@@ -206,8 +206,8 @@ class ChallengesService {
       if (legacyInfo) {
         query = `legacyId=${legacyInfo.legacyId}`;
       }
-      const url = `${endpoint}?${query}`;        
-      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      const url = `${endpoint}?${query}`;
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
       const res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       return {
         challenges: res.result || [],
@@ -235,7 +235,7 @@ class ChallengesService {
         memberId,
       };
       const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
       const res = await this.private.apiV5.get(url, options).then(checkError);
       const totalCount = res.length;
       return {
@@ -571,7 +571,7 @@ class ChallengesService {
     if (_.some(filter.frontFilter.tracks, val => val)
       && !_.isEqual(filter.frontFilter.types, [])) {
       const url = `/recommender-api/${handle}?${query}`;
-      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
       res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       totalCount = res.headers.get('x-total') || 0;
     }
@@ -625,7 +625,7 @@ class ChallengesService {
       memberId: userId,
     };
     const url = `/challenges?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
     const userChallenges = await this.private.apiV5.get(url, options)
       .then(checkErrorV5)
       .then((res) => {
@@ -685,7 +685,7 @@ class ChallengesService {
       memberId,
     };
 
-    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
     const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`, options);
     return res.json();
   }
@@ -698,7 +698,7 @@ class ChallengesService {
    */
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
     const res = await this.private.api.get(url, options);
     return getApiResponsePayload(res);
   }
