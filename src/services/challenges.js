@@ -154,12 +154,15 @@ async function checkErrorV5(res) {
  * Challenge service.
  */
 class ChallengesService {
+
   /**
    * Creates a new ChallengeService instance.
    * @param {String} tokenV3 Optional. Auth token for Topcoder API v3.
    * @param {String} tokenV2 Optional. Auth token for Topcoder API v2.
    */
   constructor(tokenV3, tokenV2) {
+    const { CHALLENGE_APP_VERSION } = CONFIG;
+
     /**
      * Private function being re-used in all methods related to getting
      * challenges. It handles query-related arguments in the uniform way:
@@ -178,7 +181,8 @@ class ChallengesService {
         && !_.isEqual(filter.frontFilter.types, [])) {
         const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
         const url = `${endpoint}?${query}`;
-        res = await this.private.apiV5.get(url).then(checkErrorV5);
+        const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+        res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       }
       return {
         challenges: res.result || [],
@@ -202,8 +206,9 @@ class ChallengesService {
       if (legacyInfo) {
         query = `legacyId=${legacyInfo.legacyId}`;
       }
-      const url = `${endpoint}?${query}`;
-      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      const url = `${endpoint}?${query}`;        
+      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      const res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       return {
         challenges: res.result || [],
       };
@@ -230,7 +235,8 @@ class ChallengesService {
         memberId,
       };
       const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-      const res = await this.private.apiV5.get(url).then(checkError);
+      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      const res = await this.private.apiV5.get(url, options).then(checkError);
       const totalCount = res.length;
       return {
         challenges: res || [],
@@ -565,7 +571,8 @@ class ChallengesService {
     if (_.some(filter.frontFilter.tracks, val => val)
       && !_.isEqual(filter.frontFilter.types, [])) {
       const url = `/recommender-api/${handle}?${query}`;
-      res = await this.private.apiV5.get(url).then(checkErrorV5);
+      const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+      res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       totalCount = res.headers.get('x-total') || 0;
     }
 
@@ -618,7 +625,8 @@ class ChallengesService {
       memberId: userId,
     };
     const url = `/challenges?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-    const userChallenges = await this.private.apiV5.get(url)
+    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const userChallenges = await this.private.apiV5.get(url, options)
       .then(checkErrorV5)
       .then((res) => {
         res.result.forEach(item => normalizeChallenge(item, userId));
@@ -677,7 +685,8 @@ class ChallengesService {
       memberId,
     };
 
-    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`, options);
     return res.json();
   }
 
@@ -689,7 +698,8 @@ class ChallengesService {
    */
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const res = await this.private.api.get(url);
+    const options =  {headers: { 'app-version': CHALLENGE_APP_VERSION}}
+    const res = await this.private.api.get(url, options);
     return getApiResponsePayload(res);
   }
 
