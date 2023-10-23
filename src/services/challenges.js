@@ -4,6 +4,7 @@
  *  Topcoder challenges via TC API.
  */
 
+/* global CONFIG */
 import _ from 'lodash';
 import moment from 'moment';
 import qs from 'qs';
@@ -14,6 +15,8 @@ import { COMPETITION_TRACKS, getApiResponsePayload } from '../utils/tc';
 import { getApi } from './api';
 import { getService as getMembersService } from './members';
 import { getService as getSubmissionsService } from './submissions';
+
+const { CHALLENGE_APP_VERSION } = CONFIG;
 
 export function getFilterUrl(backendFilter, frontFilter) {
   const ff = _.clone(frontFilter);
@@ -178,7 +181,8 @@ class ChallengesService {
         && !_.isEqual(filter.frontFilter.types, [])) {
         const query = getFilterUrl(filter.backendFilter, filter.frontFilter);
         const url = `${endpoint}?${query}`;
-        res = await this.private.apiV5.get(url).then(checkErrorV5);
+        const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+        res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       }
       return {
         challenges: res.result || [],
@@ -203,7 +207,8 @@ class ChallengesService {
         query = `legacyId=${legacyInfo.legacyId}`;
       }
       const url = `${endpoint}?${query}`;
-      const res = await this.private.apiV5.get(url).then(checkErrorV5);
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+      const res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       return {
         challenges: res.result || [],
       };
@@ -230,7 +235,8 @@ class ChallengesService {
         memberId,
       };
       const url = `${endpoint}?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-      const res = await this.private.apiV5.get(url).then(checkError);
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+      const res = await this.private.apiV5.get(url, options).then(checkError);
       const totalCount = res.length;
       return {
         challenges: res || [],
@@ -565,7 +571,8 @@ class ChallengesService {
     if (_.some(filter.frontFilter.tracks, val => val)
       && !_.isEqual(filter.frontFilter.types, [])) {
       const url = `/recommender-api/${handle}?${query}`;
-      res = await this.private.apiV5.get(url).then(checkErrorV5);
+      const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+      res = await this.private.apiV5.get(url, options).then(checkErrorV5);
       totalCount = res.headers.get('x-total') || 0;
     }
 
@@ -618,7 +625,8 @@ class ChallengesService {
       memberId: userId,
     };
     const url = `/challenges?${qs.stringify(_.omit(query, ['limit', 'offset', 'technologies']))}`;
-    const userChallenges = await this.private.apiV5.get(url)
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+    const userChallenges = await this.private.apiV5.get(url, options)
       .then(checkErrorV5)
       .then((res) => {
         res.result.forEach(item => normalizeChallenge(item, userId));
@@ -677,7 +685,8 @@ class ChallengesService {
       memberId,
     };
 
-    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`);
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+    const res = await this.private.apiV5.get(`/challenges?${qs.stringify(newParams)}`, options);
     return res.json();
   }
 
@@ -689,7 +698,8 @@ class ChallengesService {
    */
   async getUserSrms(handle, params) {
     const url = `/members/${handle}/srms/?${qs.stringify(params)}`;
-    const res = await this.private.api.get(url);
+    const options = { headers: { 'app-version': CHALLENGE_APP_VERSION } };
+    const res = await this.private.api.get(url, options);
     return getApiResponsePayload(res);
   }
 
