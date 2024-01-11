@@ -239,22 +239,16 @@ function loadResultsInit(challengeId) {
 /**
  * @static
  * @desc Creates an action that loads challenge results.
- * @param {Object} auth Object that holds Topcoder auth tokens.
- * @param {String} [auth.tokenV2] v2 token.
- * @param {String} [auth.tokenV3] v3 token.
- * @param {Number|String} challengeId Challenge ID. Should match the one passed
- *  in the previous {@link module:actions.challenge.loadResultsInit} call.
- * @param {String} type Challenge type.
+ * @param {String} challengeId The challenge id
+ * @param {String} tokenV3 Topcoder auth token v3.
  * @return {Action}
  */
-function loadResultsDone(auth, challengeId, type) {
-  return getApi('V2')
-    .fetch(`/${type}/challenges/result/${challengeId}`)
-    .then(response => response.json())
-    .then(response => ({
-      challengeId: _.toString(challengeId),
-      results: response.results,
-    }));
+function loadResultsDone(challengeId, tokenV3) {
+  const service = getChallengesService(tokenV3);
+  return service.getChallengeDetails(challengeId).then(response => ({
+    challengeId,
+    results: response.winners,
+  }));
 }
 
 /**
