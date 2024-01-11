@@ -16,7 +16,7 @@ Actions related to Topcoder challenges APIs.
     * [.unregisterInit()](#module_actions.challenge.unregisterInit) ⇒ <code>Action</code>
     * [.unregisterDone(auth, challengeId)](#module_actions.challenge.unregisterDone) ⇒ <code>Action</code>
     * [.loadResultsInit(challengeId)](#module_actions.challenge.loadResultsInit) ⇒ <code>Action</code>
-    * [.loadResultsDone(auth, challengeId, type)](#module_actions.challenge.loadResultsDone) ⇒ <code>Action</code>
+    * [.loadResultsDone(challengeId, tokenV3)](#module_actions.challenge.loadResultsDone) ⇒ <code>Action</code>
     * [.fetchCheckpointsInit()](#module_actions.challenge.fetchCheckpointsInit) ⇒ <code>Action</code>
     * [.fetchCheckpointsDone(tokenV2, challengeId)](#module_actions.challenge.fetchCheckpointsDone)
     * [.toggleCheckpointFeedback(id, open)](#module_actions.challenge.toggleCheckpointFeedback) ⇒ <code>Action</code>
@@ -144,18 +144,15 @@ Creates an action that signals beginning of challenge results loading.
 
 <a name="module_actions.challenge.loadResultsDone"></a>
 
-### actions.challenge.loadResultsDone(auth, challengeId, type) ⇒ <code>Action</code>
+### actions.challenge.loadResultsDone(challengeId, tokenV3) ⇒ <code>Action</code>
 Creates an action that loads challenge results.
 
-**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)  
+**Kind**: static method of [<code>actions.challenge</code>](#module_actions.challenge)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| auth | <code>Object</code> | Object that holds Topcoder auth tokens. |
-| [auth.tokenV2] | <code>String</code> | v2 token. |
-| [auth.tokenV3] | <code>String</code> | v3 token. |
 | challengeId | <code>Number</code> \| <code>String</code> | Challenge ID. Should match the one passed  in the previous [loadResultsInit](#module_actions.challenge.loadResultsInit) call. |
-| type | <code>String</code> | Challenge type. |
+| tokenV3 | <code>String</code> | Topcoder v3 auth token. |
 
 <a name="module_actions.challenge.fetchCheckpointsInit"></a>
 

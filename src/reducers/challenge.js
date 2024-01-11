@@ -520,7 +520,7 @@ export function factory(options = {}) {
       }
       const resultsPromise = challengeDetails.status === 'Completed' ? (
         redux.resolveAction(
-          actions.challenge.loadResultsDone(tokens, challengeId, track.toLowerCase()),
+          actions.challenge.loadResultsDone(challengeId, tokens.tokenV3),
         )
       ) : null;
       return Promise.all([res, checkpointsPromise, resultsPromise]);
