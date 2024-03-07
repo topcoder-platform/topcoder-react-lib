@@ -10,7 +10,7 @@ import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
-import { getApi } from '../services/api';
+// import { getApi } from '../services/api';
 import * as submissionUtil from '../utils/submission';
 
 const { PAGE_SIZE } = CONFIG;
@@ -293,7 +293,7 @@ function fetchCheckpointsDone(tokenV2, challengeId) {
   return {
     challengeId: String(challengeId),
     checkpoints: [],
-  },
+  };
 }
 
 /**
