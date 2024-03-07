@@ -266,29 +266,34 @@ function fetchCheckpointsInit() {}
  * @param {String} challengeId Challenge ID.
  */
 function fetchCheckpointsDone(tokenV2, challengeId) {
-  const endpoint = `/design/challenges/checkpoint/${challengeId}`;
-  return getApi('V2').fetch(endpoint)
-    .then((response) => {
-      if (response.status !== 200) {
-        throw response.status;
-      } else {
-        return response.json();
-      }
-    })
-    .then((response) => {
-      // Expanded key is used for UI expand/collapse.
-      response.checkpointResults.forEach((checkpoint, index) => {
-        response.checkpointResults[index].expanded = false;
-      });
-      return {
-        challengeId: String(challengeId),
-        checkpoints: response,
-      };
-    })
-    .catch(error => ({
-      error,
-      challengeId: String(challengeId),
-    }));
+  // const endpoint = `/design/challenges/checkpoint/${challengeId}`;
+  // return getApi('V2').fetch(endpoint)
+  //   .then((response) => {
+  //     if (response.status !== 200) {
+  //       throw response.status;
+  //     } else {
+  //       return response.json();
+  //     }
+  //   })
+  //   .then((response) => {
+  //     // Expanded key is used for UI expand/collapse.
+  //     response.checkpointResults.forEach((checkpoint, index) => {
+  //       response.checkpointResults[index].expanded = false;
+  //     });
+  //     return {
+  //       challengeId: String(challengeId),
+  //       checkpoints: response,
+  //     };
+  //   })
+  //   .catch(error => ({
+  //     error,
+  //     challengeId: String(challengeId),
+  //   }));
+
+  return {
+    challengeId: String(challengeId),
+    checkpoints: [],
+  },
 }
 
 /**
