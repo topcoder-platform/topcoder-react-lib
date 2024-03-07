@@ -17,6 +17,7 @@ jobs:
             - node_modules
       - run: npm run build
       - run: npm test
+      - run: npm publish --tag test-release
       - persist_to_workspace:
           root: .
           paths:
