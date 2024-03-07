@@ -290,10 +290,12 @@ function fetchCheckpointsDone(tokenV2, challengeId) {
   //     challengeId: String(challengeId),
   //   }));
 
-  return {
+  return Promise.resolve({
     challengeId: String(challengeId),
-    checkpoints: [],
-  };
+    checkpoints: {
+      checkpointResults: [],
+    },
+  });
 }
 
 /**
