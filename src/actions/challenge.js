@@ -10,7 +10,7 @@ import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
-import { getApi } from '../services/api';
+// import { getApi } from '../services/api';
 import * as submissionUtil from '../utils/submission';
 
 const { PAGE_SIZE } = CONFIG;
@@ -266,29 +266,34 @@ function fetchCheckpointsInit() {}
  * @param {String} challengeId Challenge ID.
  */
 function fetchCheckpointsDone(tokenV2, challengeId) {
-  const endpoint = `/design/challenges/checkpoint/${challengeId}`;
-  return getApi('V2').fetch(endpoint)
-    .then((response) => {
-      if (response.status !== 200) {
-        throw response.status;
-      } else {
-        return response.json();
-      }
-    })
-    .then((response) => {
-      // Expanded key is used for UI expand/collapse.
-      response.checkpointResults.forEach((checkpoint, index) => {
-        response.checkpointResults[index].expanded = false;
-      });
-      return {
-        challengeId: String(challengeId),
-        checkpoints: response,
-      };
-    })
-    .catch(error => ({
-      error,
-      challengeId: String(challengeId),
-    }));
+  // const endpoint = `/design/challenges/checkpoint/${challengeId}`;
+  // return getApi('V2').fetch(endpoint)
+  //   .then((response) => {
+  //     if (response.status !== 200) {
+  //       throw response.status;
+  //     } else {
+  //       return response.json();
+  //     }
+  //   })
+  //   .then((response) => {
+  //     // Expanded key is used for UI expand/collapse.
+  //     response.checkpointResults.forEach((checkpoint, index) => {
+  //       response.checkpointResults[index].expanded = false;
+  //     });
+  //     return {
+  //       challengeId: String(challengeId),
+  //       checkpoints: response,
+  //     };
+  //   })
+  //   .catch(error => ({
+  //     error,
+  //     challengeId: String(challengeId),
+  //   }));
+
+  return {
+    challengeId: String(challengeId),
+    checkpoints: [],
+  };
 }
 
 /**
