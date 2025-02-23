@@ -66,7 +66,7 @@ class SubmissionsService {
 
   /**
    * Get submission artifacts of challenge
-   * @param {Object} submissionId
+   * @param {String} submissionId
    * @return {Promise} Resolves to the api response.
    */
   async getSubmissionArtifacts(submissionId) { 
