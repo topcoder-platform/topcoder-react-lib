@@ -69,7 +69,7 @@ class SubmissionsService {
    * @param {String} submissionId
    * @return {Promise} Resolves to the api response.
    */
-  async getSubmissionArtifacts(submissionId) { 
+  async getSubmissionArtifacts(submissionId) {
     const url = `/submissions/${submissionId}/artifacts`;
     return this.private.apiV5.get(url)
       .then(checkErrorV5)
