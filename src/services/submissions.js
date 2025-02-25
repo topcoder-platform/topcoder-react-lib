@@ -77,6 +77,17 @@ class SubmissionsService {
   }
 
   /**
+   * Download submission artifact.
+   * @param {Number|String} submissionId Submission ID.
+   * * @param {String} fileName Artifact file name.
+   * @return {Promise} Resolves to the list of submission object.
+   */
+  async downloadSubmissionArtifact(submissionId, fileName) {
+    return this.private.apiV5.get(`/submissions/${submissionId}/artifacts/${fileName}/download`)
+      .then(response => response.blob());
+  }
+
+  /**
    * Get scan reviews types
    * @returns {Promise} Resolves to the api response.
    */
