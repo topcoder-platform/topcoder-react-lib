@@ -65,6 +65,29 @@ class SubmissionsService {
   }
 
   /**
+   * Get submission artifacts of challenge
+   * @param {String} submissionId
+   * @return {Promise} Resolves to the api response.
+   */
+  async getSubmissionArtifacts(submissionId) {
+    const url = `/submissions/${submissionId}/artifacts`;
+    return this.private.apiV5.get(url)
+      .then(checkErrorV5)
+      .then(res => res.result);
+  }
+
+  /**
+   * Download submission artifact.
+   * @param {Number|String} submissionId Submission ID.
+   * * @param {String} fileName Artifact file name.
+   * @return {Promise} Resolves to the list of submission object.
+   */
+  async downloadSubmissionArtifact(submissionId, fileName) {
+    return this.private.apiV5.get(`/submissions/${submissionId}/artifacts/${fileName}/download`)
+      .then(response => response.blob());
+  }
+
+  /**
    * Get scan reviews types
    * @returns {Promise} Resolves to the api response.
    */
