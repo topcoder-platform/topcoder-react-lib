@@ -61,7 +61,7 @@ class ReviewOpportunitiesService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V6', tokenV3),
       tokenV3,
     };
   }

@@ -16,6 +16,7 @@ class LookupService {
     this.private = {
       api: getApi('V3', tokenV3),
       apiV5: getApi('V5', tokenV3),
+      apiV6: getApi('V6', tokenV3),
       tokenV3,
     };
   }
