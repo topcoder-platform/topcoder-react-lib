@@ -41,7 +41,7 @@ class SubmissionsService {
    */
   constructor(tokenV3) {
     this.private = {
-      apiV5: getApi('V5', tokenV3),
+      apiV6: getApi('V6', tokenV3),
       tokenV3,
     };
   }
