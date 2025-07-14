@@ -122,6 +122,9 @@ export function processMMSubmissions(submissions) {
       data[memberId] = [];
     }
     const validReviews = _.reject(submission.review, ['typeId', AV_SCAN_SCORER_REVIEW_TYPE_ID]);
+    console.log(AV_SCAN_SCORER_REVIEW_TYPE_ID, 'AV_SCAN_SCORER_REVIEW_TYPE_ID');
+    console.log(submission.review, 'submission.review');
+    console.log(validReviews, 'validReviews');
     validReviews.sort((a, b) => {
       const dateA = new Date(a.created);
       const dateB = new Date(b.created);
