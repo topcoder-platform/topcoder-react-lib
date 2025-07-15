@@ -334,7 +334,7 @@ class MembersService {
    * @param {Array} memberId the member id
    */
   async getUserResources(memberId) {
-    const url = `/challenges?status=Active&memberId=${memberId}`;
+    const url = `/challenges?status=ACTIVE&memberId=${memberId}`;
     const res = await this.private.apiV5.get(url);
     const challenges = await res.json();
     const roles = await this.getResourceRoles();
