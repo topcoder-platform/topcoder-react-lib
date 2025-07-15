@@ -283,7 +283,7 @@ class ChallengesService {
    */
   async activate(challengeId) {
     const params = {
-      status: 'Active',
+      status: 'ACTIVE',
     };
 
     let res = await this.private.apiV6.patch(`/challenge/${challengeId}`, params);
@@ -302,7 +302,7 @@ class ChallengesService {
    */
   async close(challengeId) {
     const params = {
-      status: 'Completed',
+      status: 'COMPLETED',
     };
     let res = await this.private.apiV6.patch(`/challenges/${challengeId}`, params);
     if (!res.ok) throw new Error(res.statusText);
@@ -766,7 +766,7 @@ class ChallengesService {
    * @return {Action} Resolves to the api response.
    */
   getActiveChallengesCount(handle) {
-    const filter = { status: 'Active' };
+    const filter = { status: 'ACTIVE' };
     const params = { limit: 1, offset: 0 };
     return this.getUserChallenges(handle, filter, params).then(res => res.totalCount);
   }

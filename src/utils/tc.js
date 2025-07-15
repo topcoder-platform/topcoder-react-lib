@@ -35,10 +35,10 @@ export const OLD_SUBTRACKS = {
  * Challenge Status
  */
 export const CHALLENGE_STATUS = {
-  ACTIVE: 'Active',
-  CANCELLED: 'Cancelled',
-  COMPLETED: 'Completed',
-  DRAFT: 'Draft',
+  ACTIVE: 'ACTIVE',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED',
+  DRAFT: 'DRAFT',
 };
 
 /**
