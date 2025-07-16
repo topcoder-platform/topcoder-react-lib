@@ -5,7 +5,7 @@
 /* eslint-disable no-param-reassign */
 import _ from 'lodash';
 
-const { AV_SCAN_SCORER_REVIEW_TYPE_ID, AV_SCAN_TYPE_IDS, PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID } = CONFIG;
+const { AV_SCAN_TYPE_IDS, PROVISIONAL_SCORING_COMPLETED_REVIEW_TYPE_ID } = CONFIG;
 
 function removeDecimal(num) {
   const re = new RegExp('^-?\\d+');
@@ -122,9 +122,6 @@ export function processMMSubmissions(submissions) {
       data[memberId] = [];
     }
     const validReviews = _.reject(submission.review, review => AV_SCAN_TYPE_IDS.includes(review.typeId));
-    console.log(AV_SCAN_SCORER_REVIEW_TYPE_ID, 'AV_SCAN_SCORER_REVIEW_TYPE_ID');
-    console.log(submission.review, 'submission.review');
-    console.log(validReviews, 'validReviews');
     validReviews.sort((a, b) => {
       const dateA = new Date(a.created);
       const dateB = new Date(b.created);
