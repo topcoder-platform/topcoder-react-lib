@@ -5,7 +5,7 @@
 
 import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
-import { getApiV5 } from '../services/api';
+import { getApiV6 } from '../services/api';
 import { setErrorIcon, ERROR_ICON_TYPES } from '../utils/errors';
 import { getService } from '../services/groups';
 import { handleApiResponse } from '../utils/tc';
@@ -42,11 +42,11 @@ async function checkErrorV5(res) {
 function loadProfileDone(userTokenV3) {
   if (!userTokenV3) return Promise.resolve(null);
   const user = decodeToken(userTokenV3);
-  const apiV5 = getApiV5(userTokenV3);
+  const apiV6 = getApiV6(userTokenV3);
   return Promise.all([
-    apiV5.get(`/members/${user.handle}`)
+    apiV6.get(`/members/${user.handle}`)
       .then(handleApiResponse),
-    apiV5.get(`/groups?memberId=${user.userId}&membershipType=user`)
+    apiV6.get(`/groups?memberId=${user.userId}&membershipType=user`)
       .then(checkErrorV5).then(res => res.result || []),
   ]).then(([profile, groups]) => ({ ...profile, groups }));
 }
