@@ -45,9 +45,11 @@ export const CHALLENGE_STATUS = {
  * Review Opportunity types
  */
 export const REVIEW_OPPORTUNITY_TYPES = {
-  'Contest Review': 'Review',
-  'Spec Review': 'Specification Review',
-  'Iterative Review': 'Iterative Review',
+  'REGULAR_REVIEW' : 'Review',
+  'COMPONENT_DEV_REVIEW' : 'Component Dev Review',
+  'SPEC_REVIEW' : 'Specification Review',
+  'ITERATIVE_REVIEW' : 'Iterative Review',
+  'SCENARIOS_REVIEW' : 'Scenarios Review',
 };
 
 /**
