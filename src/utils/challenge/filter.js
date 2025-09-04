@@ -258,7 +258,7 @@ export function getReviewOpportunitiesFilterFunction(state, validTypes) {
     const challengeData = opp.challengeData;
 
     // const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
-    const newType = _.find(validTypes, { name: challengeData.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
+    const newType = _.find(validTypes, { name: challengeData?.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
 
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
