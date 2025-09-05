@@ -61,7 +61,7 @@ class SubmissionsService {
     const url = `/submissions?${qs.stringify(query, { encode: false })}`;
     return this.private.apiV6.get(url)
       .then(checkErrorV5)
-      .then(res => res.result);
+      .then(res => res.result.data);
   }
 
   /**
