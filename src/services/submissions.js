@@ -61,7 +61,17 @@ class SubmissionsService {
     const url = `/submissions?${qs.stringify(query, { encode: false })}`;
     return this.private.apiV6.get(url)
       .then(checkErrorV5)
-      .then(res => res.result.data);
+      .then((res) => {
+        const items = res.result && res.result.data ? res.result.data : [];
+        // Normalize fields expected by callers (legacy shape compatibility)
+        return items.map((s) => ({
+          ...s,
+          // Many callers expect `created`; map from V6 fields
+          created: s.created || s.createdAt || s.submittedDate || null,
+          // Some responses include a trailing newline in `url`
+          url: typeof s.url === 'string' ? s.url.trim() : s.url,
+        }));
+      });
   }
 
   /**
