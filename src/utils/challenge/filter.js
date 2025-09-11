@@ -254,25 +254,28 @@ export function getReviewOpportunitiesFilterFunction(state, validTypes) {
       Design: 'Des',
       'Quality Assurance': 'QA',
     };
+
+    const challengeData = opp.challengeData;
+
     // const newType = _.find(validTypes, { name: opp.challenge.type }) || {};
-    const newType = _.find(validTypes, { name: opp.challenge.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
+    const newType = _.find(validTypes, { name: challengeData.subTrack === 'FIRST_2_FINISH' ? 'First2Finish' : 'Challenge' }) || {};
 
     // Review Opportunity objects have a challenge field which
     // is largely compatible with many of the existing filter functions
     // especially after a few normalization tweaks
     const challenge = {
-      ...opp.challenge,
+      ...challengeData,
       // This allows filterByText to search for Review Types and Challenge Titles
-      name: `${opp.challenge.title} ${REVIEW_OPPORTUNITY_TYPES[opp.type]}`,
+      name: `${challengeData.title} ${REVIEW_OPPORTUNITY_TYPES[opp.type]}`,
       // registrationStartDate: opp.startDate, // startDate of Review, not Challenge
       // submissionEndDate: opp.startDate, // Currently uses startDate for both date comparisons
       // communities: new Set([ // Used to filter by Track, and communities at a future date
       // opp.challenge.track === 'QA' ? 'Dev' : trackAbbr[opp.challenge.track],
       // ]),
-      track: trackAbbr[opp.challenge.track],
+      track: trackAbbr[challengeData.track],
       typeId: newType.abbreviation,
-      tags: opp.challenge.technologies || [],
-      platforms: opp.challenge.platforms || [],
+      tags: challengeData.technologies || [],
+      platforms: challengeData.platforms || [],
     };
     /**
     console.log(challenge);

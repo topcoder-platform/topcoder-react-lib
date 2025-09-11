@@ -72,6 +72,7 @@ class SubmissionsService {
           url: typeof s.url === 'string' ? s.url.trim() : s.url,
         }));
       });
+      .then(res => res.result.data);
   }
 
   /**
