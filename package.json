@@ -47,10 +47,10 @@
     "react-redux": "^6.0.1",
     "redux": "^3.7.2",
     "redux-actions": "^2.4.0",
-    "tc-core-library-js": "appirio-tech/tc-core-library-js.git#v2.6",
+    "tc-core-library-js": "github:topcoder-platform/tc-core-library-js#master",
     "to-capital-case": "^1.0.0",
-    "topcoder-react-utils": "0.7.5",
-    "@topcoder-platform/tc-auth-lib": "git+https://github.com/topcoder-platform/tc-auth-lib.git#1.0.4"
+    "topcoder-react-utils": "github:topcoder-platform/topcoder-react-utils#v6",
+    "@topcoder-platform/tc-auth-lib": "git+https://github.com/topcoder-platform/tc-auth-lib.git#v2.0"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.4",

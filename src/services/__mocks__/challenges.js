@@ -215,7 +215,7 @@ class ChallengesService {
     };
 
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V6', tokenV3),
       apiV2: getApi('V2', tokenV2),
       getChallenges,
       tokenV2,

@@ -283,7 +283,7 @@ async function getSubtrackChallengesDone(
   refresh, userId,
 ) {
   const filter = {
-    status: 'Completed',
+    status: 'COMPLETED',
     hasUserSubmittedForReview: 'true',
     track,
     subTrack,
@@ -323,7 +323,7 @@ async function getSubtrackChallengesV4Done(
   refresh,
 ) {
   const filter = {
-    status: 'Completed',
+    status: 'COMPLETED',
     hasUserSubmittedForReview: 'true',
     track,
     subTrack,
@@ -417,7 +417,7 @@ async function getUserMarathonDone(
   uuid, handle, memberId, tokenV3, pageNum, pageSize,
   refresh,
 ) {
-  const filter = { status: 'Completed' };
+  const filter = { status: 'COMPLETED' };
   const params = {};
   params.sortBy = 'endDate';
   params.sortOrder = 'desc';

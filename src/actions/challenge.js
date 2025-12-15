@@ -10,6 +10,7 @@ import { createActions } from 'redux-actions';
 import { decodeToken } from '@topcoder-platform/tc-auth-lib';
 import { getService as getChallengesService } from '../services/challenges';
 import { getService as getSubmissionService } from '../services/submissions';
+import { getService as getReviewSummationsService } from '../services/reviewSummations';
 // import { getApi } from '../services/api';
 import * as submissionUtil from '../utils/submission';
 
@@ -160,6 +161,45 @@ function getMMSubmissionsDone(challengeId, tokenV3) {
         tokenV3,
       };
     });
+}
+
+/**
+ * @static
+ * @desc Creates an action that signals beginning of MM review summations loading.
+ * @param {String|Number} challengeId Challenge ID.
+ * @return {Action}
+ */
+function getReviewSummationsInit(challengeId) {
+  return _.toString(challengeId);
+}
+
+/**
+ * @static
+ * @desc Creates an action that loads review summations for Marathon Match submissions.
+ * @param {String|Number} challengeId Challenge ID.
+ * @param {String} tokenV3 Topcoder auth token v3.
+ * @return {Action}
+ */
+function getReviewSummationsDone(challengeId, tokenV3) {
+  const service = getReviewSummationsService(tokenV3);
+  return service.getReviewSummations(challengeId)
+    .then((response) => {
+      const data = _.get(response, 'data', []);
+      const meta = _.get(response, 'meta', {});
+      return {
+        challengeId: _.toString(challengeId),
+        data,
+        meta,
+      };
+    })
+    .catch((error) => {
+      const err = { challengeId: _.toString(challengeId), error };
+      throw err;
+    });
+}
+
+function getReviewSummationsDoneMeta(challengeId) {
+  return { challengeId: _.toString(challengeId) };
 }
 
 /**
@@ -435,6 +475,8 @@ export default createActions({
     GET_ACTIVE_CHALLENGES_COUNT_DONE: getActiveChallengesCountDone,
     GET_MM_SUBMISSIONS_INIT: getMMSubmissionsInit,
     GET_MM_SUBMISSIONS_DONE: getMMSubmissionsDone,
+    GET_REVIEW_SUMMATIONS_INIT: getReviewSummationsInit,
+    GET_REVIEW_SUMMATIONS_DONE: [getReviewSummationsDone, getReviewSummationsDoneMeta],
     GET_SUBMISSION_INFORMATION_INIT: getSubmissionInformationInit,
     GET_SUBMISSION_INFORMATION_DONE: getSubmissionInformationDone,
     FETCH_CHALLENGE_STATISTICS_INIT: fetchChallengeStatisticsInit,
