@@ -518,7 +518,7 @@ export function factory(options = {}) {
           );
         }
       }
-      const resultsPromise = challengeDetails.status === 'Completed' ? (
+      const resultsPromise = challengeDetails.status === 'COMPLETED' ? (
         redux.resolveAction(
           actions.challenge.loadResultsDone(challengeId, tokens.tokenV3),
         )

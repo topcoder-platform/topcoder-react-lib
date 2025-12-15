@@ -61,7 +61,7 @@ class ReviewOpportunitiesService {
    */
   constructor(tokenV3) {
     this.private = {
-      api: getApi('V3', tokenV3),
+      api: getApi('V6', tokenV3),
       tokenV3,
     };
   }
@@ -73,7 +73,7 @@ class ReviewOpportunitiesService {
    * @return {Promise} Resolves to the api response in JSON.
    */
   getReviewOpportunities(limit, offset) {
-    const endpoint = `/reviewOpportunities?limit=${limit}&offset=${offset}`;
+    const endpoint = `/review-opportunities?limit=${limit}&offset=${offset}`;
     return this.private.api.get(endpoint)
       .then(res => (res.ok ? res.json() : Promise.reject(new Error(`Error Code: ${res.status}`))))
       .then(res => (
@@ -89,7 +89,7 @@ class ReviewOpportunitiesService {
    * @return {Promise} Resolves to the api response in JSON.
    */
   getDetails(challengeId) {
-    const endpoint = `/reviewOpportunities/${challengeId}`;
+    const endpoint = `/review-opportunities/${challengeId}`;
     return this.private.api.get(endpoint)
       .then(res => res.json())
       .then(res => (
@@ -108,7 +108,7 @@ class ReviewOpportunitiesService {
    * @return {Promise} Resolves to the api response in JSON.
    */
   submitApplications(challengeId, roleIds) {
-    const endpoint = `/reviewOpportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
+    const endpoint = `/review-opportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
     return this.private.api.post(endpoint, {})
       .then(res => JSON.parse(res));
   }
@@ -120,7 +120,7 @@ class ReviewOpportunitiesService {
    * @return {Promise} Resolves to the api response in JSON.
    */
   cancelApplications(challengeId, roleIds) {
-    const endpoint = `/reviewOpportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
+    const endpoint = `/review-opportunities/${challengeId}/applications?reviewApplicationRoleIds=${roleIds.join(',')}`;
     return this.private.api.delete(endpoint, {})
       .then(res => JSON.parse(res));
   }

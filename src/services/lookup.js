@@ -16,6 +16,7 @@ class LookupService {
     this.private = {
       api: getApi('V3', tokenV3),
       apiV5: getApi('V5', tokenV3),
+      apiV6: getApi('V6', tokenV3),
       tokenV3,
     };
   }
@@ -26,7 +27,7 @@ class LookupService {
    */
   async getTypes() {
     try {
-      const res = await this.private.apiV5.get('/lookups/devices/types');
+      const res = await this.private.apiV6.get('/lookups/devices/types');
       return res.json();
     } catch (e) {
       throw e;
@@ -44,7 +45,7 @@ class LookupService {
     };
 
     try {
-      const res = await this.private.apiV5.get(`/lookups/devices/manufacturers?${qs.stringify(params)}`);
+      const res = await this.private.apiV6.get(`/lookups/devices/manufacturers?${qs.stringify(params)}`);
       return res.json();
     } catch (e) {
       throw e;
@@ -69,7 +70,7 @@ class LookupService {
     });
 
     try {
-      const res = await this.private.apiV5.get(`/lookups/devices?${qs.stringify(params)}`);
+      const res = await this.private.apiV6.get(`/lookups/devices?${qs.stringify(params)}`);
       return res.json();
     } catch (e) {
       throw e;
@@ -102,7 +103,7 @@ class LookupService {
    * @return {Promise} Resolves to the countries.
    */
   async getAllCountries() {
-    const res = await this.private.apiV5.get('/lookups/countries');
+    const res = await this.private.apiV6.get('/lookups/countries');
     const jsonResult = await res.json();
     return jsonResult;
   }
@@ -113,7 +114,7 @@ class LookupService {
    */
   async getReviewTypes() {
     if (typeof this.private.tokenV3 !== 'undefined') {
-      const res = await this.private.apiV5.get('/reviewTypes?isActive=true&perPage=100');
+      const res = await this.private.apiV6.get('/reviewTypes?isActive=true&perPage=100');
       const jsonResult = await res.json();
       return jsonResult;
     }

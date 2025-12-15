@@ -18,6 +18,7 @@ import * as submissions from './submissions';
 import * as memberSearch from './member-search';
 import * as notifications from './notifications';
 import * as tcAcademy from './tc-academy';
+import * as reviewSummations from './reviewSummations';
 
 export const services = {
   api,
@@ -37,6 +38,7 @@ export const services = {
   memberSearch,
   notifications,
   tcAcademy,
+  reviewSummations,
 };
 
 export default undefined;

@@ -22,6 +22,7 @@ class MembersService {
     this.private = {
       api: getApi('V3', tokenV3),
       apiV5: getApi('V5', tokenV3),
+      apiV6: getApi('V6', tokenV3),
       tokenV3,
     };
   }
@@ -45,7 +46,7 @@ class MembersService {
    * @return {Promise} Resolves to the data object.
    */
   async getMemberInfo(handle) {
-    const res = await this.private.apiV5.get(`/members/${handle}`);
+    const res = await this.private.apiV6.get(`/members/${handle}`);
     return handleApiResponse(res);
   }
 
@@ -80,7 +81,7 @@ class MembersService {
    * @return {Promise} Resolves to the stats object.
    */
   async getSkills(handle) {
-    const res = await this.private.apiV5.get(`/members/${handle}/skills`);
+    const res = await this.private.apiV6.get(`/members/${handle}/skills`);
     return handleApiResponse(res);
   }
 
@@ -93,7 +94,7 @@ class MembersService {
   async getStats(handle, groupIds, tokenV3) {
     const options = tokenV3 ? { headers: { Authorization: `Bearer ${tokenV3}` } } : {};
     if (!groupIds || (_.isArray(groupIds) && groupIds.length === 0)) {
-      const res = await this.private.apiV5.get(`/members/${handle}/stats`, options);
+      const res = await this.private.apiV6.get(`/members/${handle}/stats`, options);
       return handleApiResponse(res);
     }
 
@@ -101,7 +102,7 @@ class MembersService {
     const groupIdChunks = _.chunk(groupIdsArray, 50);
 
     const getStatRequests = _.map(groupIdChunks, async (groupIdChunk) => {
-      const res = await this.private.apiV5.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`, options);
+      const res = await this.private.apiV6.get(`/members/${handle}/stats?groupIds=${_.join(groupIdChunk)}`, options);
       return handleApiResponse(res);
     });
     const results = await Promise.all(getStatRequests);
@@ -123,9 +124,9 @@ class MembersService {
     const options = tokenV3 ? { headers: { Authorization: `Bearer ${tokenV3}` } } : {};
     let res;
     if (groupIds) {
-      res = await this.private.apiV5.get(`/members/${handle}/stats/history?groupIds=${groupIds}`, options);
+      res = await this.private.apiV6.get(`/members/${handle}/stats/history?groupIds=${groupIds}`, options);
     } else {
-      res = await this.private.apiV5.get(`/members/${handle}/stats/history`, options);
+      res = await this.private.apiV6.get(`/members/${handle}/stats/history`, options);
     }
     return handleApiResponse(res);
   }
@@ -203,9 +204,9 @@ class MembersService {
     };
 
     if (skills && skills.createdAt) {
-      res = await this.private.apiV5.patchJson(url, body);
+      res = await this.private.apiV6.patchJson(url, body);
     } else {
-      res = await this.private.apiV5.postJson(url, body);
+      res = await this.private.apiV6.postJson(url, body);
     }
 
     return handleApiResponse(res);
@@ -223,7 +224,7 @@ class MembersService {
         hidden: true,
       },
     };
-    const res = await this.private.apiV5.fetch(`/members/${handle}/skills`, {
+    const res = await this.private.apiV6.fetch(`/members/${handle}/skills`, {
       body: JSON.stringify(body),
       method: 'PATCH',
     });
@@ -251,7 +252,7 @@ class MembersService {
    */
   async updateMemberProfileV5(profile, handle) {
     const url = profile.verifyUrl ? `/members/${handle}?verifyUrl=${profile.verifyUrl}` : `/members/${handle}`;
-    const res = await this.private.apiV5.putJson(url, profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile);
+    const res = await this.private.apiV6.putJson(url, profile.verifyUrl ? _.omit(profile, ['verifyUrl']) : profile);
     if (profile.verifyUrl && res.status === 409) {
       return Promise.resolve(Object.assign({}, profile, { isEmailConflict: true }));
     }
@@ -267,7 +268,7 @@ class MembersService {
   async updateMemberPhoto(userHandle, file) {
     const formData = new FormData();
     formData.append('photo', file);
-    const res = await this.private.apiV5.fetch(`/members/${userHandle}/photo`, {
+    const res = await this.private.apiV6.fetch(`/members/${userHandle}/photo`, {
       method: 'POST',
       headers: {
         'Content-Type': null,
@@ -306,7 +307,7 @@ class MembersService {
    * @param {Array} memberId the member id
    */
   async getResourceRoles() {
-    const res = await this.private.apiV5.get('/resource-roles');
+    const res = await this.private.apiV6.get('/resource-roles');
     const roles = await res.json();
     return roles;
   }
@@ -321,7 +322,7 @@ class MembersService {
     let res = null;
 
     try {
-      res = await this.private.apiV5.get(url);
+      res = await this.private.apiV6.get(url);
     } catch (error) {
       // logger.error('Failed to load challenge resource', error);
     }
@@ -334,8 +335,8 @@ class MembersService {
    * @param {Array} memberId the member id
    */
   async getUserResources(memberId) {
-    const url = `/challenges?status=Active&memberId=${memberId}`;
-    const res = await this.private.apiV5.get(url);
+    const url = `/challenges?status=ACTIVE&memberId=${memberId}`;
+    const res = await this.private.apiV6.get(url);
     const challenges = await res.json();
     const roles = await this.getResourceRoles();
     const calls = [];
