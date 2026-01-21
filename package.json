@@ -35,7 +35,7 @@
   "dependencies": {
     "auth0-js": "^6.8.4",
     "config": "^3.2.0",
-    "isomorphic-fetch": "^2.2.1",
+    "isomorphic-fetch": "^3.0.0",
     "le_node": "^1.7.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
